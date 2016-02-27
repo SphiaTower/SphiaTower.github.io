@@ -1,0 +1,855 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Source Code,Volley," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="Volley是安卓中处理网络请求的一个包。虽然从来没有使用过，但从文档来看使用起来还是很容易的。但一直疑惑的一点就是为什么要使用这个包来进行网络操作。接下来就从源代码看起。
+Volley.newRequestQueue()使用Volley首先要创建一个请求队列，接下来就先看这个方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="源码解析 - Volley">
+<meta property="og:url" content="http://yoursite.com/2015/09/29/source-code-of-volley/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="Volley是安卓中处理网络请求的一个包。虽然从来没有使用过，但从文档来看使用起来还是很容易的。但一直疑惑的一点就是为什么要使用这个包来进行网络操作。接下来就从源代码看起。
+Volley.newRequestQueue()使用Volley首先要创建一个请求队列，接下来就先看这个方法。">
+<meta property="og:updated_time" content="2015-10-01T06:28:38.130Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="源码解析 - Volley">
+<meta name="twitter:description" content="Volley是安卓中处理网络请求的一个包。虽然从来没有使用过，但从文档来看使用起来还是很容易的。但一直疑惑的一点就是为什么要使用这个包来进行网络操作。接下来就从源代码看起。
+Volley.newRequestQueue()使用Volley首先要创建一个请求队列，接下来就先看这个方法。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 源码解析 - Volley | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                源码解析 - Volley
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-29T19:45:23+08:00" content="2015-09-29">
+              2015-09-29
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Volley是安卓中处理网络请求的一个包。虽然从来没有使用过，但从文档来看使用起来还是很容易的。但一直疑惑的一点就是为什么要使用这个包来进行网络操作。接下来就从源代码看起。</p>
+<h2 id="Volley-newRequestQueue"><a href="#Volley-newRequestQueue" class="headerlink" title="Volley.newRequestQueue()"></a>Volley.newRequestQueue()</h2><p>使用Volley首先要创建一个请求队列，接下来就先看这个方法。<br><a id="more"></a></p>
+<pre><code>public static RequestQueue newRequestQueue(Context context, HttpStack stack, int maxDiskCacheBytes) {
+     File cacheDir = new File(context.getCacheDir(), DEFAULT_CACHE_DIR);
+
+     String userAgent = &quot;volley/0&quot;;
+     try {
+         String packageName = context.getPackageName();
+         PackageInfo info = context.getPackageManager().getPackageInfo(packageName, 0);
+         userAgent = packageName + &quot;/&quot; + info.versionCode;
+     } catch (NameNotFoundException e) {
+     }
+
+     if (stack == null) {
+         if (Build.VERSION.SDK_INT &gt;= 9) {
+             stack = new HurlStack();
+         } else {
+             // Prior to Gingerbread, HttpUrlConnection was unreliable.
+             // See: http://android-developers.blogspot.com/2011/09/androids-http-clients.html
+             stack = new HttpClientStack(AndroidHttpClient.newInstance(userAgent));
+         }
+     }
+
+     Network network = new BasicNetwork(stack);
+
+     RequestQueue queue;
+     if (maxDiskCacheBytes &lt;= -1)
+     {
+         // No maximum size specified
+         queue = new RequestQueue(new DiskBasedCache(cacheDir), network);
+     }
+     else
+     {
+         // Disk cache size specified
+         queue = new RequestQueue(new DiskBasedCache(cacheDir, maxDiskCacheBytes), network);
+     }
+
+     queue.start();
+
+     return queue;
+ }
+</code></pre><p>首先在一开始创建了一个文件作为缓存文件，然后设置了UA。如果没有传入的话，创建一个<code>HttpStack</code>，在高版本使用<code>HttpURLConnection</code>，低版本使用<code>HttpClient</code>。再然后创造一个<code>RequestQueue</code>实例，并传入<code>Network</code>和<code>DiskBasedCache</code>，在队列启动后返回。总之这里主要就是初始化的操作，以及在最后的启动队列。</p>
+<h2 id="RequestQueue"><a href="#RequestQueue" class="headerlink" title="RequestQueue"></a>RequestQueue</h2><pre><code>public void start() {
+    stop();  // Make sure any currently running dispatchers are stopped.
+    // Create the cache dispatcher and start it.
+    mCacheDispatcher = new CacheDispatcher(mCacheQueue, mNetworkQueue, mCache, mDelivery);
+    mCacheDispatcher.start();
+
+    // Create network dispatchers (and corresponding threads) up to the pool size.
+    for (int i = 0; i &lt; mDispatchers.length; i++) {
+        NetworkDispatcher networkDispatcher = new NetworkDispatcher(mNetworkQueue, mNetwork,
+                mCache, mDelivery);
+        mDispatchers[i] = networkDispatcher;
+        networkDispatcher.start();
+    }
+}
+</code></pre><p><code>RequestQueue</code>启动时首先调用<code>stop()</code>停止当前正在运行的dispatcher，创建缓存调度者并启动，然后根据构造时传入的线程池大小参量，创造相应数量的网络调度者并启动。</p>
+<p>而<code>NetworkDispatcher</code>是<code>Thread</code>的子类，保有一个阻塞队列，一个<code>Network</code>接口，一个<code>Cache</code>实例，一个<code>ResponseDelivery</code>实例。</p>
+<h2 id="添加请求"><a href="#添加请求" class="headerlink" title="添加请求"></a>添加请求</h2><p>获得<code>RequestQueue</code>之后就可以向其中添加请求了。</p>
+<pre><code>public &lt;T&gt; Request&lt;T&gt; add(Request&lt;T&gt; request) {
+    // Tag the request as belonging to this queue and add it to the set of current requests.
+    request.setRequestQueue(this);
+    synchronized (mCurrentRequests) {
+        mCurrentRequests.add(request);
+    }
+
+    // Process requests in the order they are added.
+    request.setSequence(getSequenceNumber());
+    request.addMarker(&quot;add-to-queue&quot;);
+
+    // If the request is uncacheable, skip the cache queue and go straight to the network.
+    if (!request.shouldCache()) {
+        mNetworkQueue.add(request);
+        return request;
+    }
+
+    // Insert request into stage if there&apos;s already a request with the same cache key in flight.
+    synchronized (mWaitingRequests) {
+        String cacheKey = request.getCacheKey();
+        if (mWaitingRequests.containsKey(cacheKey)) {
+            // There is already a request in flight. Queue up.
+            Queue&lt;Request&lt;?&gt;&gt; stagedRequests = mWaitingRequests.get(cacheKey);
+            if (stagedRequests == null) {
+                stagedRequests = new LinkedList&lt;Request&lt;?&gt;&gt;();
+            }
+            stagedRequests.add(request);
+            mWaitingRequests.put(cacheKey, stagedRequests);
+            if (VolleyLog.DEBUG) {
+                VolleyLog.v(&quot;Request for cacheKey=%s is in flight, putting on hold.&quot;, cacheKey);
+            }
+        } else {
+            // Insert &apos;null&apos; queue for this cacheKey, indicating there is now a request in
+            // flight.
+            mWaitingRequests.put(cacheKey, null);
+            mCacheQueue.add(request);
+        }
+        return request;
+    }
+}
+</code></pre><p>首先，让新请求获得队列的引用。然后再同步块中将请求添加到一个集合中并添加一些信息。然后检查请求能否缓存，如果不能就添加到网络队列中并返回请求。如果能，检查是否已经有同样的请求在缓存中。通过<code>request.getCacheKey()</code>在等待队列的<code>Map</code>中查找请求。这里非常难以理解，因为返回的并不是一个<code>Request</code>而是一个<code>Queue&lt;Request&lt;?&gt;&gt;</code>对象。如果得到的这个队列为空则新建一个，然后将当前请求存入，并在<code>Map</code>中进行更新。如果没有根据key取出队列，则向<code>Map</code>中放入<code>cacheKey,null</code>组合，向缓存队列中添加这个请求。</p>
+<h2 id="PriorityBlockingQueue"><a href="#PriorityBlockingQueue" class="headerlink" title="PriorityBlockingQueue"></a>PriorityBlockingQueue</h2><p>前面的一段很复杂，接下来就先从无法缓存，直接添加至网络队列的流程看起。但奇怪的是，在那段代码中怎么也找不到<code>Request</code>执行的语句，很有可能与阻塞队列有关。</p>
+<pre><code>/** The queue of requests that are actually going out to the network. */
+private final PriorityBlockingQueue&lt;Request&lt;?&gt;&gt; mNetworkQueue =
+    new PriorityBlockingQueue&lt;Request&lt;?&gt;&gt;();
+</code></pre><p>可以猜想的是，这个队列应该早已在运行中，并不断取出新的元素进行处理。</p>
+<h2 id="NetworkDisptcher"><a href="#NetworkDisptcher" class="headerlink" title="NetworkDisptcher"></a>NetworkDisptcher</h2><p>还记得刚才提过的传入了阻塞队列的<code>NetworkDispatcher</code>吗？在<code>RequestQueue</code>创建之后，马上就生成了一定数量的网络调度者线程，并被执行。在他的<code>run()</code>方法中，果然用到了阻塞队列。</p>
+<pre><code>public void run() {
+    Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+    Request&lt;?&gt; request;
+    while (true) {
+        long startTimeMs = SystemClock.elapsedRealtime();
+        // release previous request object to avoid leaking request object when mQueue is drained.
+        request = null;
+        try {
+            // Take a request from the queue.
+            request = mQueue.take();
+        } catch (InterruptedException e) {
+            // We may have been interrupted because it was time to quit.
+            if (mQuit) {
+                return;
+            }
+            continue;
+        }
+
+        try {
+            request.addMarker(&quot;network-queue-take&quot;);
+
+            // If the request was cancelled already, do not perform the
+            // network request.
+            if (request.isCanceled()) {
+                request.finish(&quot;network-discard-cancelled&quot;);
+                continue;
+            }
+
+            addTrafficStatsTag(request);
+
+            // Perform the network request.
+            NetworkResponse networkResponse = mNetwork.performRequest(request);
+            request.addMarker(&quot;network-http-complete&quot;);
+
+            // If the server returned 304 AND we delivered a response already,
+            // we&apos;re done -- don&apos;t deliver a second identical response.
+            if (networkResponse.notModified &amp;&amp; request.hasHadResponseDelivered()) {
+                request.finish(&quot;not-modified&quot;);
+                continue;
+            }
+
+            // Parse the response here on the worker thread.
+            Response&lt;?&gt; response = request.parseNetworkResponse(networkResponse);
+            request.addMarker(&quot;network-parse-complete&quot;);
+
+            // Write to cache if applicable.
+            // TODO: Only update cache metadata instead of entire record for 304s.
+            if (request.shouldCache() &amp;&amp; response.cacheEntry != null) {
+                mCache.put(request.getCacheKey(), response.cacheEntry);
+                request.addMarker(&quot;network-cache-written&quot;);
+            }
+
+            // Post the response back.
+            request.markDelivered();
+            mDelivery.postResponse(request, response);
+        } catch (VolleyError volleyError) {
+            volleyError.setNetworkTimeMs(SystemClock.elapsedRealtime() - startTimeMs);
+            parseAndDeliverNetworkError(request, volleyError);
+        } catch (Exception e) {
+            VolleyLog.e(e, &quot;Unhandled exception %s&quot;, e.toString());
+            VolleyError volleyError = new VolleyError(e);
+            volleyError.setNetworkTimeMs(SystemClock.elapsedRealtime() - startTimeMs);
+            mDelivery.postError(request, volleyError);
+        }
+    }
+}
+</code></pre><p>在设置了线程的后台优先级之后，在一个死循环中，不断从队列中取出一个<code>Request</code>元素。然后对其进行标注，调用<code>mNetwork.performRequest(request)</code>并获取一个<code>NetworkResponse</code>。这应该就是执行请求的操作了。</p>
+<p>然后调用<code>request.parseNetworkResponse(networkResponse)</code>解析获得<code>Response</code>对象。如果请求可以缓存，则添加到<code>Cache</code>中。最后调用<code>mDelivery.postResponse(request, response);</code>发布结果。而请求的执行者<code>Network</code>由构造器传入，实现的类是<code>BasicNetwork</code>，其代码中主要是一些针对HTTP协议的处理内容就不仔细看了。</p>
+<h2 id="ExecutorDelivery"><a href="#ExecutorDelivery" class="headerlink" title="ExecutorDelivery"></a>ExecutorDelivery</h2><p><code>RequestQueue</code>中默认创建的<code>ResponseDelivery</code>是：</p>
+<pre><code>new ExecutorDelivery(new Handler(Looper.getMainLooper()))
+</code></pre><p>它在构造器中传入了一个UI线程的<code>Handler</code>。而<code>ExecutorDelivery</code>的构造器中创建了一个<code>Executor</code>实现，其<code>execute()</code>方法重写成了<code>handler.post()</code>方法。也就是用这个执行者的执行方法代理了<code>Handler</code>发布<code>Runnable</code>的方法<br>。在<code>ExecutorDelivery</code>的<code>postResonse()</code>方法中，主要做的就是调用这个<code>execute()</code>方法执行一个<code>ResonseDeliveryRunnable</code>对象</p>
+<h2 id="ResponseDeliveryRunnable"><a href="#ResponseDeliveryRunnable" class="headerlink" title="ResponseDeliveryRunnable"></a>ResponseDeliveryRunnable</h2><p>这个<code>Runnable</code>组合了一个<code>Request</code>、一个<code>Response</code>和一个<code>Runnable</code>对象。在执行时，所做的就是检查<code>Request</code>的状态：取消、成功和失败，然后分别调用方法进行发布。如果提供了一个发布后的<code>Runnable</code>就使之运行。而这些发布方法也非常简单，最终就是调用创建<code>Request</code>时传入的侦听器来实现。</p>
+<p>剩下的问题就是，发布的方法究竟在哪个线程中运行？答案当然是在UI线程。<code>ExecutorDelivery</code>通过其持有的<code>Executor</code>执行发布任务的<code>ResponseDeliveryRunnable</code>，而在前面已经提过，执行的方法被转换成了UI线程<code>Handler</code>的<code>post</code>方法。所以，发布的任务被添加到了UI线程的消息队列之中。</p>
+<h2 id="Cache"><a href="#Cache" class="headerlink" title="Cache"></a>Cache</h2><p>分析完了没有缓存的流程，接下来看看有缓存情况下的流程。</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Source-Code/" rel="tag">#Source Code</a>
+          
+            <a href="/tags/Volley/" rel="tag">#Volley</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/28/singleton-in-android/" rel="next" title="安卓中使用Singleton的问题">
+                <i class="fa fa-chevron-left"></i> 安卓中使用Singleton的问题
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/30/Scheduling-Repeating-Alarms/" rel="prev" title="安卓调度重复闹钟">
+                安卓调度重复闹钟 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">82</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Volley-newRequestQueue"><span class="nav-number">1.</span> <span class="nav-text">Volley.newRequestQueue()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RequestQueue"><span class="nav-number">2.</span> <span class="nav-text">RequestQueue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加请求"><span class="nav-number">3.</span> <span class="nav-text">添加请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PriorityBlockingQueue"><span class="nav-number">4.</span> <span class="nav-text">PriorityBlockingQueue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NetworkDisptcher"><span class="nav-number">5.</span> <span class="nav-text">NetworkDisptcher</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ExecutorDelivery"><span class="nav-number">6.</span> <span class="nav-text">ExecutorDelivery</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ResponseDeliveryRunnable"><span class="nav-number">7.</span> <span class="nav-text">ResponseDeliveryRunnable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cache"><span class="nav-number">8.</span> <span class="nav-text">Cache</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

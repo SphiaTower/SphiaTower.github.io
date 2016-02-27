@@ -1,0 +1,792 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Material Design," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="Some apps have a layout containing both a top Toolbar/Actionbar and a bottom toolbar-like view. And when you scroll a RecyclerView, both the top and bottom toolbar will enter/exit the screen with anim">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Layout and Animation with Both Top & Bottom Bars">
+<meta property="og:url" content="http://yoursite.com/2015/10/21/top-bottom-toolbar/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="Some apps have a layout containing both a top Toolbar/Actionbar and a bottom toolbar-like view. And when you scroll a RecyclerView, both the top and bottom toolbar will enter/exit the screen with anim">
+<meta property="og:updated_time" content="2015-10-21T15:05:53.869Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Layout and Animation with Both Top & Bottom Bars">
+<meta name="twitter:description" content="Some apps have a layout containing both a top Toolbar/Actionbar and a bottom toolbar-like view. And when you scroll a RecyclerView, both the top and bottom toolbar will enter/exit the screen with anim">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Layout and Animation with Both Top & Bottom Bars | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Layout and Animation with Both Top & Bottom Bars
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-21T22:10:58+08:00" content="2015-10-21">
+              2015-10-21
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Some apps have a layout containing both a top Toolbar/Actionbar and a bottom toolbar-like view. And when you scroll a <code>RecyclerView</code>, both the top and bottom toolbar will enter/exit the screen with animation.</p>
+<p>It’s not difficult for the top toolbar. The solution is using <code>CoordinatorLayout</code> in the android material design library with a <code>Toolbar</code> and a <code>RecyclerView</code>. If the <code>RecyclerView</code> is added dynamically at runtime, you can add a <code>FrameLayout</code> as the container, and set scroll flags on it.<br><a id="more"></a><br>For the bottom bar, the same approach of the top one does not work correctly. There may be lots of bugs. The solution is to use a custom layout like a <code>LinearLayout</code>, and set <code>CoordinatorLayout.Behavior</code> on it, which will make the layout cooperates with the <code>CoordinatorLayout</code>.</p>
+<p><strong>The activity xml:</strong></p>
+<pre><code>&lt;android.support.design.widget.CoordinatorLayout
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
+    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;
+
+    &lt;android.support.design.widget.AppBarLayout
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;&gt;
+
+        &lt;android.support.v7.widget.Toolbar
+            android:id=&quot;@+id/top_toolbar&quot;
+            android:layout_width=&quot;fill_parent&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            app:layout_scrollFlags=&quot;scroll|enterAlways&quot; /&gt;
+
+    &lt;/android.support.design.widget.AppBarLayout&gt;
+
+    &lt;FrameLayout
+        android:layout_width=&quot;fill_parent&quot;
+        android:orientation=&quot;vertical&quot;
+        app:layout_behavior=&quot;@string/appbar_scrolling_view_behavior&quot;
+        android:id=&quot;@+id/recycler_view_container&quot;
+        android:layout_height=&quot;fill_parent&quot;/&gt;
+
+    &lt;LinearLayout
+        android:id=&quot;@+id/bottom_bar&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:orientation=&quot;horizontal&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_gravity=&quot;bottom&quot;
+        app:layout_behavior=&quot;*THE_FULL_PACKAGE_NAME*.LinearLayoutBehavior &quot;&gt;
+        &lt;!-- child views --&gt;
+    &lt;/LinearLayout&gt;
+
+&lt;/android.support.design.widget.CoordinatorLayout&gt;
+</code></pre><p><strong>The <code>Behavior</code> class:</strong></p>
+<pre><code>public class LinearLayoutBehavior extends CoordinatorLayout.Behavior&lt;LinearLayout&gt; {
+    private static final Interpolator INTERPOLATOR = new FastOutSlowInInterpolator();
+    private boolean mIsAnimatingOut = false;
+
+    public LinearLayoutBehavior(Context context, AttributeSet attrs) {
+        super();
+    }
+
+    @Override
+    public boolean onStartNestedScroll(final CoordinatorLayout coordinatorLayout, final LinearLayout child,
+                                       final View directTargetChild, final View target, final int nestedScrollAxes) {
+        return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL
+                || super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target, nestedScrollAxes);
+    }
+
+    @Override
+    public void onNestedScroll(final CoordinatorLayout coordinatorLayout, final LinearLayout child,
+                               final View target, final int dxConsumed, final int dyConsumed,
+                               final int dxUnconsumed, final int dyUnconsumed) {
+        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
+        if (dyConsumed &gt; 0 &amp;&amp; !this.mIsAnimatingOut &amp;&amp; child.getVisibility() == View.VISIBLE) {
+            // User scrolled down and the FAB is currently visible -&gt; hide the FAB
+            animateOut(child);
+        } else if (dyConsumed &lt; 0 &amp;&amp; child.getVisibility() != View.VISIBLE) {
+            // User scrolled up and the FAB is currently not visible -&gt; show the FAB
+            animateIn(child);
+        }
+    }
+
+    private void animateOut(final LinearLayout linearLayout) {
+        if (Build.VERSION.SDK_INT &gt;= 14) {
+            ViewCompat.animate(linearLayout).translationY(168F).alpha(0.0F).setInterpolator(INTERPOLATOR).withLayer()
+                    .setListener(new ViewPropertyAnimatorListener() {
+                        public void onAnimationStart(View view) {
+                            LinearLayoutBehavior.this.mIsAnimatingOut = true;
+                        }
+
+                        public void onAnimationCancel(View view) {
+                            LinearLayoutBehavior.this.mIsAnimatingOut = false;
+                        }
+
+                        public void onAnimationEnd(View view) {
+                            LinearLayoutBehavior.this.mIsAnimatingOut = false;
+                            view.setVisibility(View.GONE);
+                        }
+                    }).start();
+        } else {
+            Animation anim = AnimationUtils.loadAnimation(linearLayout.getContext(), R.anim.fab_out);
+            anim.setInterpolator(INTERPOLATOR);
+            anim.setDuration(200L);
+            anim.setAnimationListener(new Animation.AnimationListener() {
+                public void onAnimationStart(Animation animation) {
+                    LinearLayoutBehavior.this.mIsAnimatingOut = true;
+                }
+
+                public void onAnimationEnd(Animation animation) {
+                    LinearLayoutBehavior.this.mIsAnimatingOut = false;
+                    linearLayout.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAnimationRepeat(final Animation animation) {
+                }
+            });
+            linearLayout.startAnimation(anim);
+        }
+    }
+
+    private void animateIn(LinearLayout linearLayout) {
+        linearLayout.setVisibility(View.VISIBLE);
+        if (Build.VERSION.SDK_INT &gt;= 14) {
+            ViewCompat.animate(linearLayout).translationY(0).scaleX(1.0F).scaleY(1.0F).alpha(1.0F)
+                    .setInterpolator(INTERPOLATOR).withLayer().setListener(null)
+                    .start();
+        } else {
+            Animation anim = AnimationUtils.loadAnimation(linearLayout.getContext(), R.anim.fab_in);
+            anim.setDuration(200L);
+            anim.setInterpolator(INTERPOLATOR);
+            linearLayout.startAnimation(anim);
+        }
+    }
+}
+</code></pre>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Material-Design/" rel="tag">#Material Design</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/21/include-local-library-using-gradle/" rel="next" title="Including Local Libraries Using Gradle">
+                <i class="fa fa-chevron-left"></i> Including Local Libraries Using Gradle
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/11/11/clion-encoding/" rel="prev" title="An Encoding Problem in Clion">
+                An Encoding Problem in Clion <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">82</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

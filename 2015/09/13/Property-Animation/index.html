@@ -1,0 +1,736 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Animation," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="学习了上两节发现其中的代码有很多看不懂的地方，所以接下来从动画本身来学起。  
+属性动画是一个几乎能为任何东西实现动画的健壮框架。可以定义动画来随时间改变对象属性，无论是否绘制在屏幕上。属性动画在一段时间内改变一个属性（对象的域）。必须指定想要进行动画的对象属性，比如其位置，动画的时长，动画起止的属性值。属性动画系统允许设定以下几个特性：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓动画学习笔记（三） 属性动画">
+<meta property="og:url" content="http://yoursite.com/2015/09/13/Property-Animation/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="学习了上两节发现其中的代码有很多看不懂的地方，所以接下来从动画本身来学起。  
+属性动画是一个几乎能为任何东西实现动画的健壮框架。可以定义动画来随时间改变对象属性，无论是否绘制在屏幕上。属性动画在一段时间内改变一个属性（对象的域）。必须指定想要进行动画的对象属性，比如其位置，动画的时长，动画起止的属性值。属性动画系统允许设定以下几个特性：">
+<meta property="og:updated_time" content="2015-09-13T12:35:36.376Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="安卓动画学习笔记（三） 属性动画">
+<meta name="twitter:description" content="学习了上两节发现其中的代码有很多看不懂的地方，所以接下来从动画本身来学起。  
+属性动画是一个几乎能为任何东西实现动画的健壮框架。可以定义动画来随时间改变对象属性，无论是否绘制在屏幕上。属性动画在一段时间内改变一个属性（对象的域）。必须指定想要进行动画的对象属性，比如其位置，动画的时长，动画起止的属性值。属性动画系统允许设定以下几个特性：">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 安卓动画学习笔记（三） 属性动画 | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                安卓动画学习笔记（三） 属性动画
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-13T14:27:32+08:00" content="2015-09-13">
+              2015-09-13
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>学习了上两节发现其中的代码有很多看不懂的地方，所以接下来从动画本身来学起。  </p>
+<p>属性动画是一个几乎能为任何东西实现动画的健壮框架。可以定义动画来随时间改变对象属性，无论是否绘制在屏幕上。属性动画在一段时间内改变一个属性（对象的域）。必须指定想要进行动画的对象属性，比如其位置，动画的时长，动画起止的属性值。<br>属性动画系统允许设定以下几个特性：<br><a id="more"></a></p>
+<ul>
+<li>时长：可以指定动画的时长。默认长度为300ms。</li>
+<li>时间插值：指定属性值如何随时间流逝变化。</li>
+<li>重复计数和行为：可以指定当动画结束后是否重复，以及重复的次数。也可以指定是否倒放动画。倒放可以使动画正向反向反复播放，直到达到次数。</li>
+<li>动画集合：可以将动画分组为逻辑集合，或一同播放，或按次序播放，或在一定延时后播放。</li>
+<li>帧刷新延迟：可以指定动画刷新帧的频率。默认设置是每10ms刷新一次，但实际的刷新率是由系统的繁忙程度和响应计时器的速度决定的。</li>
+</ul>
+<h2 id="属性动画如何工作"><a href="#属性动画如何工作" class="headerlink" title="属性动画如何工作"></a>属性动画如何工作</h2><p>假如一个对象以<code>x</code>属性进行动画，在屏幕中横向移动。动画的时长为40ms，移动的距离为40px。每10ms（默认的刷新率），对象横向移动10px。在40ms的最后，动画停止，对象停留在40px的位置。这个动画使用的是线性插值，也就是说，对象匀速移动。<br>可以指定动画使用非线性插值。比如在开始时加速，在结束时减速。对象仍然在40ms中移动40px，但是非线性的。开始，动画加速到一半的距离，然后减速到终点。前一段时间和最后一段时间移动的距离比中间部分要短一些。  </p>
+<p><code>ValueAnimator</code>封装了定义动画插值的<code>TimeInterpolator</code>和定义如何计算属性值的<code>TypeEvaluator</code>。例如上面的第二个例子中，使用<code>AccelerateDecelerateInterpolator</code>来插值，使用<code>IntEvaluator</code>来计算属性值。<br>要启动一段动画，首先创建一个<code>ValueAnimator</code>，给它动画起止的属性值，与动画的时长。调用<code>start()</code>后动画开始。整个过程中，<code>ValueAnimator</code>根据整个时长和已过去的时间，计算流逝比例（0和1之间）。流逝比例代表动画完成的百分比。比如上面的例子中，10ms时的流逝比例为0.25。<br><code>ValueAnimator</code>计算完流逝比例后，调用当前设置 的<code>TimeInterpolator</code>计算插值比例。插值比例将流逝比例映射到一个考虑了时间插值的新的比例。例如，在变速运动的的例子中，因为动画开始缓慢加速，在10ms处，插值比例大概为0.15，小于流逝比例0.25.而匀速运动时，二者一直相等。<br>插值比例计算过后，<code>ValueAnimator</code>调用合适的<code>TypeEvaluator</code>，根据插值比例，起始值，终止值来计算属性值。在变速运动的例子中，10ms处的插值比例为0.15，所以属性值为0.15*(40-0)=6.  </p>
+<h2 id="属性动画与视图动画的不同"><a href="#属性动画与视图动画的不同" class="headerlink" title="属性动画与视图动画的不同"></a>属性动画与视图动画的不同</h2><p>视图动画系统仅仅支持<code>View</code>对象，如果要动画其他对象，必须用自己的代码实现。视图动画系统另外的局限是，它仅仅暴露了<code>View</code>对象的几个方面，比如尺寸和旋转，但不支持背景颜色。<br>视图动画系统的另一个缺点是它仅仅改变了View绘制的位置，而非其本身。例如，移动一个按钮时，绘制的位置改变了，但实际点击时的位置却没有变，必须自己实现逻辑来处理这个问题。<br>属性动画系统不被这些限制束缚。动画可以应用到任何对象，而且对象本身被真正地修改。属性动画执行时也更加健壮。在更高的层次上，给想要动画的属性分配animator，比如颜色，位置，尺寸，并且可以定义插值方式和多个animator的同步。<br>然而，视图动画系统配置更简单，需要更少的代码。如果视图动画足够完成工作，或者现存的代码已经够用，将不需要用属性动画系统。</p>
+<h2 id="API-Overview"><a href="#API-Overview" class="headerlink" title="API Overview"></a>API Overview</h2><p>在<code>android.animation</code>中可以找到大多数的属性动画。而视图动画系统在<code>android.view.animaion</code>中已经定义了许多插值器，在属性动画系统中也可以使用。<br><code>Animator</code>类提供了创建动画的基本结构。一般不会直接使用这个类，因为它仅仅提供了支持属性动画的最小限度的功能。下面是它的一些子类：  </p>
+<ul>
+<li><code>ValueAnimator</code>：属性动画的主要计时引擎，也计算了动画的属性值。它也含有计算动画值的所有核心功能，以及动画计时的细节，是否重复，接收更新事件的侦听器，设置自定义类型来求值的能力。属性动画有两个部分：一是计算属性值，二是将属性值设置到对象上。<code>ValueAnimator</code>不包含第二个部分，所以必须侦听<code>ValueAnimator</code>计算得到属性值的更新，并且实现自己的逻辑来修改对象。</li>
+<li><code>ObjectAnimator</code>：<code>ValueAnimator</code>的子类，允许设置一个目标对象和目标属性来进行动画。在动画中计算出新的值后会更新属性值。这个类更加常用一些，因为改变目标对象的属性值更加容易一些。但它也有一些限制，比如要求目标对象必须存在指定的访问方法。</li>
+<li><code>AnimatorSet</code>：提供了将一些动画组合使用的机理，使动画可以根据其他动画相对运行。</li>
+</ul>
+<p>Evaluator告诉属性动画系统如何计算属性值。它从<code>Animator</code>类中得到计时数据，动画的起始值和终止值，计算属性值。</p>
+<ul>
+<li><code>IntEvaluator</code>：计算<code>int</code>属性的默认求值器。</li>
+<li><code>FloatEvaluator</code>：计算<code>float</code>属性的默认求值器。</li>
+<li><code>ArgbEvaluator</code>：计算十六进制颜色属性的默认求值器。</li>
+<li><code>TypeEvaluator</code>：可以创建自定义求值器的接口。如果动画的属性不是<code>int</code>, <code>float</code>或者颜色，就必须实现这个接口来指定如何计算属性值。也可以为上面提到的类型实现自定义的<code>TypeEvaluator</code>接口。</li>
+</ul>
+<p>时间插值器定义动画中指定的值如何随时间变化。</p>
+<ul>
+<li><code>AccelerateDecelerateInterpolator</code>：开始和结束时速率较慢，在中间加速。</li>
+<li><code>AccelerateInterpolator</code>：开始速度较慢，然后加速。</li>
+<li><code>AnticipateInterpolator</code>：开始反向变化，然后迅速回到正向。</li>
+<li><code>AnticipateOvershootInterpolator</code>：开始反向变化，然后迅速回到正向，接着超过目标值，在返回到目标值。</li>
+<li><code>BounceInterpolator</code>：变化在最后反弹。</li>
+<li><code>CycleInterpolator</code>：动画重复指定次数。</li>
+<li><code>DecelerateInterpolator</code>：开始快速变化，然后减速。</li>
+<li><code>LinearInterpolator</code>：变化率恒定。</li>
+<li><code>OvershootInterpolator</code>：迅速正向变化，超越最终值，然后返回。</li>
+<li><code>TimeInterpolator</code>：实现自定义插值的接口。</li>
+</ul>
+<h2 id="使用ValueAnimator"><a href="#使用ValueAnimator" class="headerlink" title="使用ValueAnimator"></a>使用ValueAnimator</h2><p>使用工厂方法<code>ofInt()</code>, <code>ofFloat()</code>, <code>ofObject()</code>可以获得<code>valueAnimator</code>实例。比如：</p>
+<pre><code>ValueAnimator animation = ValueAnimator.ofFloat(0f, 1f);
+animation.setDuration(1000);
+animation.start();
+</code></pre><p>上面的代码运行后，<code>ValueAnimator</code>开始计算动画的值，在0与1之间，长度为1000ms。<br>也可以提供自定义类型：</p>
+<pre><code>ValueAnimator animation = ValueAnimator.ofObject(new MyTypeEvaluator(), startPropertyValue, endPropertyValue);
+animation.setDuration(1000);
+animation.start();
+</code></pre><p>上面的两段代码没有实际的作用，因为<code>ValueAnimator</code>并不直接操作对象或属性。一般需要根据得到的值来修改想要动画的对象。在<code>ValueAnimator</code>中定义侦听器可以在动画期间合适地处理重要事件，比如帧的更新。实现侦听器时，可以调用<code>getAnimatedValue()</code>来获取计算结果。</p>
+<h2 id="使用ObjectAnimator"><a href="#使用ObjectAnimator" class="headerlink" title="使用ObjectAnimator"></a>使用ObjectAnimator</h2><p><code>ObjectAnimator</code>是<code>ValueAnimator</code>的子类，把父类的计时引擎，求值计算与改变目标对象的具体属性的能力相结合。使得具体对象的动画更加容易，无需实现<code>ValueAnimator.AnimatorUpdateListener</code>接口，变动的属性会自动更新。<br>创建其实例与父类相似，但也可以指定目标对象及其属性的名字（作为字符串）：</p>
+<pre><code>ObjectAnimator anim = ObjectAnimator.ofFloat(foo, &quot;alpha&quot;, 0f, 1f);
+anim.setDuration(1000);
+anim.start();
+</code></pre><p>为了让<code>ObjectAnimator</code>能够正确更新属性，必须：</p>
+<ul>
+<li>属性必须有一个<code>set&lt;propertyName&gt;</code>形式的setter函数（驼峰命名）。因为<code>ObjectAnimator</code>在动画过程中会自动更新属性，所以必须能够通过setter方法访问到属性。如果不存在的话：<ul>
+<li>如果拥有权限的话，可以添加一个setter方法。</li>
+<li>创建一个wrapper类，用它的setter方法接收值，并转发给原来的对象。</li>
+<li>使用<code>ValueAnimator</code>代替。</li>
+</ul>
+</li>
+<li>如果只为工厂方法指定<code>values...</code>中的一个值，那个值会被认为是最终值。因此，对象属性必须提供一个getter函数来获取其起始值。</li>
+<li>getter（如果需要）和setter方法必须操作同样的类型来作为起始值和终止值。</li>
+<li>根据运行动画的属性或者对象，有时可能需要调用View的<code>invalidate()</code>方法来使屏幕强制重绘，更新动画。这些操作在<code>onAnimationUpdate()</code>回调中进行。比如改变一个<code>Drawable</code>对象的颜色属性只在对象重绘时更新在屏幕上。View中所有属性的setter，都会适时地让View无效，所以无需手动更新。</li>
+</ul>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Animation/" rel="tag">#Animation</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/13/Using-ViewPager-for-Screen-Slides/" rel="next" title="安卓动画学习笔记（二） 自定义ViewPager动画">
+                <i class="fa fa-chevron-left"></i> 安卓动画学习笔记（二） 自定义ViewPager动画
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/13/Animating-with-ValueAnimator/" rel="prev" title="安卓动画学习笔记（四） 属性动画（续）">
+                安卓动画学习笔记（四） 属性动画（续） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">82</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#属性动画如何工作"><span class="nav-number">1.</span> <span class="nav-text">属性动画如何工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#属性动画与视图动画的不同"><span class="nav-number">2.</span> <span class="nav-text">属性动画与视图动画的不同</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API-Overview"><span class="nav-number">3.</span> <span class="nav-text">API Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用ValueAnimator"><span class="nav-number">4.</span> <span class="nav-text">使用ValueAnimator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用ObjectAnimator"><span class="nav-number">5.</span> <span class="nav-text">使用ObjectAnimator</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

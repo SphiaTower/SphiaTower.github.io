@@ -1,0 +1,780 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="本文探讨安卓中长期任务引发的Context泄露问题，文章主要翻译和总结自http://www.androiddesignpatterns.com/2013/04/activitys-threads-memory-leaks.html   
+将长时间运行的任务与activity的生命周期相协调，同时避免隐含的内存泄露，是开发中的一大难点。先来看下面的例子，在activity创建时启动并循环一个新线程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓内存泄露问题（二） Thread">
+<meta property="og:url" content="http://yoursite.com/2015/09/07/threads-leak/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="本文探讨安卓中长期任务引发的Context泄露问题，文章主要翻译和总结自http://www.androiddesignpatterns.com/2013/04/activitys-threads-memory-leaks.html   
+将长时间运行的任务与activity的生命周期相协调，同时避免隐含的内存泄露，是开发中的一大难点。先来看下面的例子，在activity创建时启动并循环一个新线程">
+<meta property="og:image" content="http://www.androiddesignpatterns.com/assets/images/posts/2013/04/15/activity-leak.png">
+<meta property="og:updated_time" content="2015-09-07T15:07:43.470Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="安卓内存泄露问题（二） Thread">
+<meta name="twitter:description" content="本文探讨安卓中长期任务引发的Context泄露问题，文章主要翻译和总结自http://www.androiddesignpatterns.com/2013/04/activitys-threads-memory-leaks.html   
+将长时间运行的任务与activity的生命周期相协调，同时避免隐含的内存泄露，是开发中的一大难点。先来看下面的例子，在activity创建时启动并循环一个新线程">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 安卓内存泄露问题（二） Thread | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                安卓内存泄露问题（二） Thread
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-07T22:19:34+08:00" content="2015-09-07">
+              2015-09-07
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文探讨安卓中长期任务引发的Context泄露问题，文章主要翻译和总结自<br><a href="http://www.androiddesignpatterns.com/2013/04/activitys-threads-memory-leaks.html" target="_blank" rel="external">http://www.androiddesignpatterns.com/2013/04/activitys-threads-memory-leaks.html</a>   </p>
+<p>将长时间运行的任务与activity的生命周期相协调，同时避免隐含的内存泄露，是开发中的一大难点。先来看下面的例子，在activity创建时启动并循环一个新线程：<br><a id="more"></a> </p>
+<pre><code>/**
+ * 这个例子展示了线程在发生配置变更（activity被销毁）后，仍然存活。
+ * 同时Activity的context也因为线程作为匿名内部类持有外部引用而泄露，阻止了gc的回收。
+ */
+public class MainActivity extends Activity {
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    exampleOne();
+  }
+
+  private void exampleOne() {
+    new Thread() {
+      @Override
+      public void run() {
+        while (true) {
+          SystemClock.sleep(1000);
+        }
+      }
+    }.start();
+  }
+}
+</code></pre><p>发生配置变更时，整个activity被摧毁重建。很容易想当然地认为安卓会自动做一些清理工作，回收利用activity和其中线程的内存。实际上，二者都会被泄露掉而非回收利用，可能显著影响程序的性能。  </p>
+<h2 id="什么时候会泄露activity？"><a href="#什么时候会泄露activity？" class="headerlink" title="什么时候会泄露activity？"></a>什么时候会泄露activity？</h2><p>上一次的文章探讨了handler和内部类相关的内存泄露问题。Java中，匿名内部类隐式持有外部类的引用。一不小心，就会造成本应被gc回收的activity保留在内存中。而Activity对象持有其整个view层级与相关资源的引用。一旦泄露，会造成大量的内存泄露。<br>发生配置变更时，问题更加严重。例如，还是上面的代码，在十次旋转屏幕过后，可以看到因为隐式引用造成了每个Activity都保留了一部分内存：<br><img src="http://www.androiddesignpatterns.com/assets/images/posts/2013/04/15/activity-leak.png" alt="activity leak"><br>每次配置变更后，安卓会新建一个<code>Activity</code>，并将旧的<code>Activity</code>交给gc处理。然而，隐式持有旧Activity引用的线程阻止了回收。结果，每一个新的Activity都被泄露，所有相关的资源也永远无法被回收。<br>解决方法其实很容易：把线程声明为私有的静态内部类即可：</p>
+<pre><code>/**
+ * 本例通过把线程生命为私有的静态内部类，避免了Activity的泄露
+ * 然而，配置变更后，线程仍然会继续运行 
+ * DVM持有所有运行的线程的引用，它们是否被gc回收与activity的生命周期无关
+ * 活跃的线程会一直运行到内核销毁应用所在的进程
+ */
+public class MainActivity extends Activity {
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    exampleTwo();
+  }
+
+  private void exampleTwo() {
+    new MyThread().start();
+  }
+
+  private static class MyThread extends Thread {
+    @Override
+    public void run() {
+      while (true) {
+        SystemClock.sleep(1000);
+      }
+    }
+  }
+}
+</code></pre><p>新的线程不持有Activity的引用，配置变更后，activity可以被gc回收。</p>
+<h2 id="什么时候会泄露线程？"><a href="#什么时候会泄露线程？" class="headerlink" title="什么时候会泄露线程？"></a>什么时候会泄露线程？</h2><p>上面的例子还没有完全解决问题：每次创建Activity，都会泄露一个线程，无法回收。Java中线程是”GC roots”；也就是说，在runtime系统中，DVM保持着所有活跃线程的hard引用，造成运行中的线程永远不会被GC回收。因此，一定要为后台线程实现取消策略。如下：  </p>
+<pre><code>/**
+ * 这次线程实现了取消策略，保证不被泄漏。
+ * onDestroy() 是退出activity之前关闭活跃线程的最好地方
+ */
+public class MainActivity extends Activity {
+  private MyThread mThread;
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    exampleThree();
+  }
+
+  private void exampleThree() {
+    mThread = new MyThread();
+    mThread.start();
+  }
+
+  /**
+   * Static inner classes don&apos;t hold implicit references to their
+   * enclosing class, so the Activity instance won&apos;t be leaked across
+   * configuration changes.
+   */
+  private static class MyThread extends Thread {
+    private boolean mRunning = false;
+
+    @Override
+    public void run() {
+      mRunning = true;
+      while (mRunning) {
+        SystemClock.sleep(1000);
+      }
+    }
+
+    public void close() {
+      mRunning = false;
+    }
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    mThread.close();
+  }
+}
+</code></pre><p>在<code>onDestroy()</code>中关闭线程确保了线程不会以外被泄露。如果想在配置变更后保持同一个线程，可以使用一个无UI的保留工作fragment来实现长期任务。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>以下是协调长期后台任务和Activity生命周期的几个方法：  </p>
+<ul>
+<li><strong>优先使用静态内部类。</strong>每一个非静态内部类的实例都会持有对外部Activity的额外引用，存储引用导致了Activity无法回收。如果需要外部Activity的引用，可以使用弱引用来确保不被泄露。</li>
+<li><strong>不要假定Java会清理掉运行中的线程。</strong>除非线程被显式关闭或者整个进程被杀掉，线程都会一直保留。所以，为后台线程实现取消策略非常重要，Activity的生命周期事件发生后，应该采取合适的方法。</li>
+<li><strong>考虑是否使用Thread。</strong>安卓提供了很多更加简单的后台线程工具。使用Loader来执行短期执行的异步后台查询可以与activity的生命周期相协调。如果后台线程与具体某个Activity无关，可以考虑使用service，并使用BroadcastReceiver来把结果通知给UI。另外，本文中所有线程相关的问题同样对AsyncTask适用（AsyncTask使用ExecutorService来执行任务）。然而，根据文档的建议，AsyncTask只应用于短期操作（最多数秒），所以一般不会泄露Activity或线程。</li>
+</ul>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/07/creating-a-bound-service-2/" rel="next" title="Service学习笔记（七） 绑定Service（续）">
+                <i class="fa fa-chevron-left"></i> Service学习笔记（七） 绑定Service（续）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/08/viewpager/" rel="prev" title="ViewPager使用总结">
+                ViewPager使用总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">82</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么时候会泄露activity？"><span class="nav-number">1.</span> <span class="nav-text">什么时候会泄露activity？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么时候会泄露线程？"><span class="nav-number">2.</span> <span class="nav-text">什么时候会泄露线程？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">3.</span> <span class="nav-text">结论</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

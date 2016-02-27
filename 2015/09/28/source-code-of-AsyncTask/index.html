@@ -1,0 +1,836 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Source Code," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="AsyncTask是安卓中非常常用的一个类，它避免了每次都手动通过Handler与UI线程通讯。但也有很多人认为应该尽量避免使用AsyncTask，那么这个类到底该不该用呢？接下来就从源码层面上来看一看。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="源码解析 - AsyncTask">
+<meta property="og:url" content="http://yoursite.com/2015/09/28/source-code-of-AsyncTask/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="AsyncTask是安卓中非常常用的一个类，它避免了每次都手动通过Handler与UI线程通讯。但也有很多人认为应该尽量避免使用AsyncTask，那么这个类到底该不该用呢？接下来就从源码层面上来看一看。">
+<meta property="og:updated_time" content="2015-09-28T13:42:35.567Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="源码解析 - AsyncTask">
+<meta name="twitter:description" content="AsyncTask是安卓中非常常用的一个类，它避免了每次都手动通过Handler与UI线程通讯。但也有很多人认为应该尽量避免使用AsyncTask，那么这个类到底该不该用呢？接下来就从源码层面上来看一看。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 源码解析 - AsyncTask | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                源码解析 - AsyncTask
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-28T19:50:12+08:00" content="2015-09-28">
+              2015-09-28
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><code>AsyncTask</code>是安卓中非常常用的一个类，它避免了每次都手动通过<code>Handler</code>与UI线程通讯。但也有很多人认为应该尽量避免使用<code>AsyncTask</code>，那么这个类到底该不该用呢？接下来就从源码层面上来看一看。<br><a id="more"></a></p>
+<h2 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h2><pre><code>public AsyncTask() {
+    mWorker = new WorkerRunnable&lt;Params, Result&gt;() {
+        public Result call() throws Exception {
+            mTaskInvoked.set(true);
+
+            Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+            //noinspection unchecked
+            return postResult(doInBackground(mParams));
+        }
+    };
+
+    mFuture = new FutureTask&lt;Result&gt;(mWorker) {
+        @Override
+        protected void done() {
+            try {
+                postResultIfNotInvoked(get());
+            } catch (InterruptedException e) {
+                android.util.Log.w(LOG_TAG, e);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(&quot;An error occured while executing doInBackground()&quot;,
+                        e.getCause());
+            } catch (CancellationException e) {
+                postResultIfNotInvoked(null);
+            }
+        }
+    };
+}
+</code></pre><p>首先，文档上明确地说明了，构造器必须在UI线程中调用。接下来看代码，构造过程中只做了两件事：创建<code>WorkerRunnable</code>和<code>FutureTask</code>两个field。</p>
+<h2 id="WorkerRunnable"><a href="#WorkerRunnable" class="headerlink" title="WorkerRunnable"></a>WorkerRunnable<params, result=""></params,></h2><pre><code>private static abstract class WorkerRunnable&lt;Params, Result&gt; implements Callable&lt;Result&gt; {
+    Params[] mParams;
+}
+</code></pre><p>首先来看这个类，它是AysncTask的抽象的一个静态内部类，持有一个<code>Params[]</code>泛型数组作为field，并实现了<code>Callable&lt;Result&gt;</code>接口。而这个接口已经很熟悉了，相比<code>Runnable</code>接口，它可以抛出异常并返回结果。</p>
+<p>而构造器中创造的匿名类中设置了一个<code>mTaskInvoked</code>状态信息，设置了后台优先级，并返回<code>postResult(doInBackground(mParams))</code>.</p>
+<h2 id="FutureTask"><a href="#FutureTask" class="headerlink" title="FutureTask"></a>FutureTask<result></result></h2><p><code>FutureTask</code>是一个可取消的异步计算任务。这个类提供了<code>Future</code>接口的基本实现。可以启动和取消计算，查询是否完成，完成后取回结果。<code>get</code>方法将会阻塞计算直到结果完成。总而言之，就是<code>Future</code>接口的一个实现。</p>
+<p>构造器的匿名类中，重写了<code>done()</code>方法，其中做的就是<code>postResultIfNotInvoked()</code>，也就是post运算结果的方法，那么什么是<code>IfNotInvoked()</code>呢，待会再看。</p>
+<h2 id="execute"><a href="#execute" class="headerlink" title="execute()"></a>execute()</h2><p>创建完毕，就该执行了。在<code>execute()</code>方法中，只调用了<code>executeOnExecutor(sDefaultExecutor, params)</code>方法，<code>params</code>显然是传入的参数，<code>sDefaultExecutor</code>则应该是相关的线程池，这里先不去管他。再看这个方法的内部：</p>
+<pre><code>mStatus = Status.RUNNING;
+
+onPreExecute();
+
+mWorker.mParams = params;
+exec.execute(mFuture);
+
+return this;
+</code></pre><p>首先，最开始有一段判断是否已经在运行或运行过的代码，这里略过。然后做的先是调用<code>onPreExecute()</code>回调，来做执行之前的准备，然后将参数传给<code>WorkerRunnable</code>，最后让线程池执行<code>FutureTask</code>。这时，流程又跳转到了<code>SerialExecutor</code>类中。</p>
+<h2 id="SerialExecutor"><a href="#SerialExecutor" class="headerlink" title="SerialExecutor"></a>SerialExecutor</h2><p>执行操作调用时，传入了一个静态线程池</p>
+<pre><code>private static volatile Executor sDefaultExecutor = SERIAL_EXECUTOR;
+public static final Executor SERIAL_EXECUTOR = new SerialExecutor();
+</code></pre><p>这个线程池确保了每次只执行一个任务，也就是序列化执行。</p>
+<pre><code>private static class SerialExecutor implements Executor {
+    final ArrayDeque&lt;Runnable&gt; mTasks = new ArrayDeque&lt;Runnable&gt;();
+    Runnable mActive;
+
+    public synchronized void execute(final Runnable r) {
+        mTasks.offer(new Runnable() {
+            public void run() {
+                try {
+                    r.run();
+                } finally {
+                    scheduleNext();
+                }
+            }
+        });
+        if (mActive == null) {
+            scheduleNext();
+        }
+    }
+...
+
+}
+</code></pre><p>在线程池中，首先创建了一个<code>ArrayDeque&lt;Runnable&gt;</code>两端队列来存储任务。在调用<code>execute(Runnable)</code>时，向队列末端插入一个新的<code>Runnable</code>对象。这个新的对象在<code>run()</code>方法中调用传入为方法参数的<code>Runnable</code>的<code>run()</code>，并在执行后调用<code>scheduleNext()</code>。插入之后，如果没有活跃线程，调用<code>scheduleNext()</code>。</p>
+<pre><code>protected synchronized void scheduleNext() {
+    if ((mActive = mTasks.poll()) != null) {
+        THREAD_POOL_EXECUTOR.execute(mActive);
+    }
+}
+</code></pre><p><code>scheduleNext()</code>所做的事情是：</p>
+<ol>
+<li>令队列中第一个任务出队；</li>
+<li>将出队的任务赋值给<code>mActive</code>；</li>
+<li>如果所得非null，令<code>THREAD_POOL_EXECUTOR</code>执行这个活跃任务。</li>
+</ol>
+<p>而这里的<code>THREAD_POOL_EXECUTOR</code>是一个新的静态线程池，以<code>sPoolWorkQueue</code>作为队列支持，可以并行执行任务。</p>
+<p>也就是说<code>SerialExecutor</code>虽然实现了<code>Executor</code>的接口，但是没有真正提供线程池和阻塞队列的支持。它所做的是，每次接收到<code>execute</code>命令后，将任务添加到任务队列中。如果没有当前正在活跃的任务，就进行一次调度。所谓调度，就是从队列中取出任务，交由背后的<code>ThreadPoolExecutor</code>进行执行。而在每个任务执行完毕后，同样也会做一次这样的调度，处理排队中的任务。</p>
+<p>总而言之，这个类是处理任务的方式是同步的，每次仅仅处理一个任务。一旦任务执行，流程就跳转回到了<code>FutureTask.run()</code>中。</p>
+<h2 id="Message-gt-Handler"><a href="#Message-gt-Handler" class="headerlink" title="Message -&gt; Handler"></a>Message -&gt; Handler</h2><p><code>run()</code>执行的结果，经过一系列传递后，来到了在构造器中曾经重写的<code>done()</code>方法，最终又传递到了<code>postResult()</code>方法中。</p>
+<pre><code>private Result postResult(Result result) {
+    @SuppressWarnings(&quot;unchecked&quot;)
+    Message message = getHandler().obtainMessage(MESSAGE_POST_RESULT,
+            new AsyncTaskResult&lt;Result&gt;(this, result));
+    message.sendToTarget();
+    return result;
+}
+</code></pre><p>在这里创建了一个<code>Message</code>并发送给静态的<code>Handler</code>。这个<code>Message</code>包含了<code>FutureTask</code>所返回的结果，并使用<code>AsyncTaskResult&lt;Result&gt;</code>进行了包装。这个包装类很简单，只包含了<code>AsyncTask</code>本身以及泛型数组<code>Result[]</code>的引用。</p>
+<h2 id="IntenalHandler"><a href="#IntenalHandler" class="headerlink" title="IntenalHandler"></a>IntenalHandler</h2><p><code>AsyncTask</code>类中存有一个静态的<code>InternalHandler</code>对象。这个静态内部类是这样的：</p>
+<pre><code>private static class InternalHandler extends Handler {
+    public InternalHandler() {
+        super(Looper.getMainLooper());
+    }
+
+    @SuppressWarnings({&quot;unchecked&quot;, &quot;RawUseOfParameterizedType&quot;})
+    @Override
+    public void handleMessage(Message msg) {
+        AsyncTaskResult&lt;?&gt; result = (AsyncTaskResult&lt;?&gt;) msg.obj;
+        switch (msg.what) {
+            case MESSAGE_POST_RESULT:
+                // There is only one result
+                result.mTask.finish(result.mData[0]);
+                break;
+            case MESSAGE_POST_PROGRESS:
+                result.mTask.onProgressUpdate(result.mData);
+                break;
+        }
+    }
+}
+</code></pre><p>在构造器中，首先获得了UI线程的<code>Looper</code>，使<code>Handler</code>与UI线程进行通信。在<code>handleMessage()</code>方法中，针对发布结果和发布进度两种情况进行了处理。首先通过<code>msg.obj</code>获取了<code>AsyncTaskResult</code>对象，然后取出其中的泛型数组，获得结果或者进度。并取出其中的<code>AsyncTask</code>，分别调用<code>finish()</code>和<code>onProgressUpdate()</code>方法。后者不必多说，来看下前者：</p>
+<pre><code>private void finish(Result result) {
+    if (isCancelled()) {
+        onCancelled(result);
+    } else {
+        onPostExecute(result);
+    }
+    mStatus = Status.FINISHED;
+}
+</code></pre><p>首先判断是被取消还是成功执行，然后标志状态即可。</p>
+<p>看到这里，创建<code>AsyncTask</code>，<code>execute()</code>到<code>onPostExecute()</code>的过程都分析过了。接下来回过头来看看<code>doInBackground()</code>是在何时被调用的。</p>
+<h2 id="doInBackground"><a href="#doInBackground" class="headerlink" title="doInBackground()"></a>doInBackground()</h2><p>在整个代码中，它只被调用了一次：</p>
+<pre><code>mWorker = new WorkerRunnable&lt;Params, Result&gt;() {
+    public Result call() throws Exception {
+        mTaskInvoked.set(true);
+
+        Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+        //noinspection unchecked
+        return postResult(doInBackground(mParams));
+    }
+};
+</code></pre><p>就是在<code>WorkerRunnable</code>子类的实现中。当<code>WorkerRunnable</code>被<code>call()</code>之后，调用了<code>doInBackground()</code>的逻辑，返回得到一个<code>Result</code>，这个结果又被传送给<code>postResult()</code>，发送到UI线程，也作为<code>call()</code>方法本身的返回值。那么这个<code>call()</code>方法是在何处被调用的呢？</p>
+<p>答案是在<code>FutureTask</code>的<code>run()</code>方法中。在这个方法中，通过调用<code>WorkerRunnable.call()</code>获取了<code>Result</code>，通过类内部的存储和传递，最终使得<code>done()</code>方法获得结果。但现在问题又出现了，就是<code>postResult()</code>方法被调用了两次！</p>
+<h2 id="postResult"><a href="#postResult" class="headerlink" title="postResult()"></a>postResult()</h2><p>在<code>WorkerRunnable.call()</code>的结束和<code>FutureTask.done()</code>中，都调用了<code>postResult()</code>方法，区别是后者在调用前进行了一步检查：</p>
+<pre><code>private void postResultIfNotInvoked(Result result) {
+    final boolean wasTaskInvoked = mTaskInvoked.get();
+    if (!wasTaskInvoked) {
+        postResult(result);
+    }
+}
+</code></pre><p><code>mTaskInvoked</code>是一个原子变量。在<code>call()</code>方法的一开始就被设置为<code>true</code>，对它的写入操作也仅仅只有此处。而在<code>postResultIfNotInvoked()</code>中，需要检查这个布尔值，如果为否，就<code>postResult()</code>。可见，<code>postResult()</code>的操作主要应该还是由<code>WorkerRunnable()</code>完成。也就是在<code>don()</code>执行前，结果可能已经被发送到UI线程了。</p>
+<p>那么为什么要再检查一次是否发送过呢？应该是因为<code>call()</code>方法会抛出异常，所以可能无法执行<code>postResult()</code>。值得一提的是，可能抛出异常的只有</p>
+<pre><code>Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+</code></pre><p>而非想象中的<code>doInBackground()</code>方法，后者不抛出异常。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><code>AsyncTask</code>类的核心由这四个元素组成：<code>WorkerRunnable</code>，<code>FutureTask</code>，<code>SerialExecutor</code>，<code>InternalHandler</code>。其中：</p>
+<ul>
+<li><code>WorkerRunnable</code>：负责将<code>doInBackground()</code>中的任务包裹在<code>Callable</code>中。并将结果post给<code>Handler</code>。</li>
+<li><code>FutureTask</code>：负责<code>call()</code>这个<code>WorkerRunnable</code>，也就是在新线程中执行任务。</li>
+<li><code>SerialExecutor</code>：提供线程池，并通过同步队列来确保每次只执行一个任务，为<code>FutureTask</code>分配线程。</li>
+<li><code>InternalHandler</code>：将结果或者进度发送到UI线程中，也是整个<code>Async</code>过程的关键。</li>
+</ul>
+<h2 id="静态变量"><a href="#静态变量" class="headerlink" title="静态变量"></a>静态变量</h2><p>到这里其实还没有完，前面的总结中提到了，<code>AsyncTask</code>使用同步队列确保每次只执行一个任务。可奇怪的是<code>AsyncTask</code>本身不就只有一个任务吗？问题出在忽视了一些变量是静态的变量。接下来列出这些静态变量：</p>
+<ul>
+<li>SerialExecutor</li>
+<li>InternalHandler</li>
+<li>ThreadPoolExecutor</li>
+<li>BlockingQueue</li>
+<li>ThreadFactory</li>
+</ul>
+<p>也就是说，在<code>AsyncTask</code>的工作环境中，这个线程池的支持全部是静态的，自然任务队列和<code>Handler</code>也只有一个。所以，每次创建<code>AsyncTask</code>并<code>execute()</code>时，结果都会将任务提交到同一个线程池进行排队和调度。</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Source-Code/" rel="tag">#Source Code</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/27/phototask-summary/" rel="next" title="安卓多线程（五） PhotoTask例子的总结">
+                <i class="fa fa-chevron-left"></i> 安卓多线程（五） PhotoTask例子的总结
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/28/singleton-in-android/" rel="prev" title="安卓中使用Singleton的问题">
+                安卓中使用Singleton的问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">82</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#构造器"><span class="nav-number">1.</span> <span class="nav-text">构造器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WorkerRunnable"><span class="nav-number">2.</span> <span class="nav-text">WorkerRunnable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FutureTask"><span class="nav-number">3.</span> <span class="nav-text">FutureTask</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#execute"><span class="nav-number">4.</span> <span class="nav-text">execute()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SerialExecutor"><span class="nav-number">5.</span> <span class="nav-text">SerialExecutor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Message-gt-Handler"><span class="nav-number">6.</span> <span class="nav-text">Message -> Handler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IntenalHandler"><span class="nav-number">7.</span> <span class="nav-text">IntenalHandler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#doInBackground"><span class="nav-number">8.</span> <span class="nav-text">doInBackground()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#postResult"><span class="nav-number">9.</span> <span class="nav-text">postResult()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">10.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态变量"><span class="nav-number">11.</span> <span class="nav-text">静态变量</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

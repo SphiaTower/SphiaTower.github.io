@@ -1,0 +1,786 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Multiple Threads,Service," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="在上一篇的最后，官网的通过继承Service类来实现类似IntentService行为的例子中，出现了Looper和HandlerThread这两个以前没有用过的类。所以在此研究一下两个类的基本用法。
+HandlerThread官网的概括是这么写的：一个用来创建含有looper的新线程的工具类。其中的looper可以用来创建handler类。start()方法必须被调用。看到这里还是一头雾水。查看">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Service学习笔记（三） Looper, Handler and HandlerThread">
+<meta property="og:url" content="http://yoursite.com/2015/09/05/Looper-and-HandlerThread/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="在上一篇的最后，官网的通过继承Service类来实现类似IntentService行为的例子中，出现了Looper和HandlerThread这两个以前没有用过的类。所以在此研究一下两个类的基本用法。
+HandlerThread官网的概括是这么写的：一个用来创建含有looper的新线程的工具类。其中的looper可以用来创建handler类。start()方法必须被调用。看到这里还是一头雾水。查看">
+<meta property="og:updated_time" content="2015-10-01T06:23:18.039Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Service学习笔记（三） Looper, Handler and HandlerThread">
+<meta name="twitter:description" content="在上一篇的最后，官网的通过继承Service类来实现类似IntentService行为的例子中，出现了Looper和HandlerThread这两个以前没有用过的类。所以在此研究一下两个类的基本用法。
+HandlerThread官网的概括是这么写的：一个用来创建含有looper的新线程的工具类。其中的looper可以用来创建handler类。start()方法必须被调用。看到这里还是一头雾水。查看">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Service学习笔记（三） Looper, Handler and HandlerThread | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Service学习笔记（三） Looper, Handler and HandlerThread
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-05T12:39:41+08:00" content="2015-09-05">
+              2015-09-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在上一篇的最后，官网的通过继承Service类来实现类似IntentService行为的例子中，出现了Looper和HandlerThread这两个以前没有用过的类。所以在此研究一下两个类的基本用法。</p>
+<h2 id="HandlerThread"><a href="#HandlerThread" class="headerlink" title="HandlerThread"></a>HandlerThread</h2><p>官网的概括是这么写的：一个用来创建含有looper的新线程的工具类。其中的looper可以用来创建handler类。start()方法必须被调用。<br>看到这里还是一头雾水。查看了一下它的方法列表，发现其主要功能还是与looper进行互动，所以关键的问题就是looper类的作用。  </p>
+<h2 id="Looper"><a href="#Looper" class="headerlink" title="Looper"></a>Looper</h2><p>Looper类用来为一个线程运行消息循环。默认情况下，线程没有与之关联的消息循环；在线程中调用<code>prepare()</code>方法可以创建一个消息循环，然后调用<code>loop()</code>方法来处理消息直到循环终止。<br>大多数与消息循环的互动式通过<code>Handler</code>类进行的。<br>下面是一个Looper线程的典型实现，创建了一个Handler来与Looper进行通讯：<br><a id="more"></a>  </p>
+<pre><code>class LooperThread extends Thread {
+    public Handler mHandler;
+
+    public void run() {
+        Looper.prepare();
+
+        mHandler = new Handler() {
+            public void handleMessage(Message msg) {
+                // process incoming messages here
+            }
+        };
+
+        Looper.loop();
+    }
+}
+</code></pre><p>看到这里发现，以前对Handler的理解也不够全面。所知道的Handler的用法仅仅是，继承Handler重写handleMsg(Message)方法，在主线程处理收到的消息，通过sendMsg(Message)在后台线程中发送消息。  所以接下来还要深入学习一下Handler类。</p>
+<h2 id="Handler"><a href="#Handler" class="headerlink" title="Handler"></a>Handler</h2><p>Handler可以发送和处理与线程的消息队列相关联的<code>Message</code>和Runnable对象。每一个Handler实例都和一个单独的线程及其<code>MessageQueue</code>相关联。新的Handler在创建时，被绑定到创建它的线程或其消息队列。Hanlder将message和runnable发送到消息队列中，并在它们出队的时候执行。<br>Handler主要用在：</p>
+<ul>
+<li>规划msg和runnable使其在未来某个时点执行</li>
+<li>将一个即将执行的操作加入至其他线程的消息队列</li>
+</ul>
+<p>Handler的几个post方法可以将Runnable对象添加到消息队列并在收到时调用；而sendMessage方法可以将持有Bundle数据的Message对象添加到消息队列，并由handleMessage(Message)方法处理。<br>调用post或者sendMessage时，可以选择是否在消息队列准备就绪后立即处理，也可以延迟一段时间或在某个绝对时间进行处理。<br>当应用所在的进程被创建后，其主线程将负责运行一个消息队列来管理顶层的应用组件（如activity，broadcast receiver等）和他们所创建的任何窗口。可以创建新线程，使用Handler与主线程进行通讯。</p>
+<p>可以看到，这里最重要的一点就是消息队列了。Handler的构造方法中，无参数的方法将把Handler与当前线程的<code>Looper</code>进行关联，如不存在将出现异常。而另外的构造方法则可以自己指定<code>Looper</code>。可见，这里的<code>Looper</code>与线程的消息队列紧密关联。<strong>再结合上一节的内容，我们可以整理出来以下几点：</strong>  </p>
+<ol>
+<li><code>Looper</code>为消息队列提供委托代理（详见下一小节）；</li>
+<li>默认情况下，线程没有关联的消息队列，也不持有<code>Looper</code>引用；</li>
+<li>Handler子类在创建时必须获得<code>Looper</code>,而默认情况下将获得当前线程的<code>Looper</code>；</li>
+<li>主线程存在<code>Looper</code>，所以在主线程创建Handler的时候，无需为其手动指定<code>Looper</code>；</li>
+<li>而在其他线程中创建Handler的时候，可以通过调用<code>Looper.prepare()</code>，<code>Looper.loop()</code>的方法创建一个消息队列并执行处理工作，也可以通过其他方式获取<code>Looper</code>；</li>
+<li>Handler通过post或sendMsg将Runnable或者Message发送到消息队列中，并在取出时进行处理；</li>
+<li><code>HandlerThread</code>类简化了为线程创建<code>Looper</code>的过程。</li>
+</ol>
+<h2 id="MessageQueue"><a href="#MessageQueue" class="headerlink" title="MessageQueue"></a>MessageQueue</h2><p>在上一节中，基本上明白了<code>Looper</code>，<code>Handler</code>和线程互相之间的关系。稍微有些疑惑的是，究竟<code>Looper</code>和消息队列之间是什么关系？<br><code>MessageQueue</code>是一个low-level的类，持有将被<code>Looper</code>分发的消息的列表。消息并非直接添加到消息队列当中，而是通过与<code>Looper</code>相关联的<code>Handler</code>对象。可以通过<code>Looper.myQueue</code>方法获得当前线程的消息队列。<br>通过查看源码很容易发现，<code>Looper</code>对象持有<code>MessageQueue</code>对象的引用。基本可以认为<code>Looper</code>类作用的一部分是为底层的<code>MessageQueue</code>类提供delegation。</p>
+<h2 id="启动直接继承自Service类的子类"><a href="#启动直接继承自Service类的子类" class="headerlink" title="启动直接继承自Service类的子类"></a>启动直接继承自Service类的子类</h2><p>回过头来看上一节留下的代码就很容易了。现在把它重新贴上来，并加上一些注释。</p>
+<pre><code>public class HelloService extends Service {
+    private Looper mServiceLooper;
+    private ServiceHandler mServiceHandler;
+
+    // Handler that receives messages from the thread
+    private final class ServiceHandler extends Handler {
+        // Handler创建时必须获取Looper
+        public ServiceHandler(Looper looper) {
+            super(looper);
+        }
+        // 处理消息队列中出队的消息
+        @Override
+        public void handleMessage(Message msg) {
+            // Normally we would do some work here, like download a file.
+            // For our sample, we just sleep for 5 seconds.
+            long endTime = System.currentTimeMillis() + 5*1000;
+            while (System.currentTimeMillis() &lt; endTime) {
+                synchronized (this) {
+                    try {
+                        wait(endTime - System.currentTimeMillis());
+                    } catch (Exception e) {
+                    }
+                }
+            }
+            // Stop the service using the startId, so that we don&apos;t stop
+            // the service in the middle of handling another job
+            stopSelf(msg.arg1);
+        }
+    }
+
+    @Override
+    public void onCreate() {
+        // Start up the thread running the service.  Note that we create a
+        // separate thread because the service normally runs in the process&apos;s
+        // main thread, which we don&apos;t want to block.  We also make it
+        // background priority so CPU-intensive work will not disrupt our UI.
+        HandlerThread thread = new HandlerThread(&quot;ServiceStartArguments&quot;,
+                Process.THREAD_PRIORITY_BACKGROUND);
+        thread.start();
+
+        // Get the HandlerThread&apos;s Looper and use it for our Handler
+        mServiceLooper = thread.getLooper();
+        mServiceHandler = new ServiceHandler(mServiceLooper);
+        // 因为handleMsg的过程将阻塞主线程，所以利用HandlerThread类创建一个新的后台线程来处理消息。这个HandlerThread
+        // 简化了Looper的准备工作。ServiceHandler可以获取新后台线程的Looper来发送和处理消息。
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Toast.makeText(this, &quot;service starting&quot;, Toast.LENGTH_SHORT).show();
+
+        // For each start request, send a message to start a job and deliver the
+        // start ID so we know which request we&apos;re stopping when we finish the job
+        Message msg = mServiceHandler.obtainMessage();
+        msg.arg1 = startId;
+        // 消息被发送至后台的HandlerThread的消息队列中，而非主线程
+        mServiceHandler.sendMessage(msg);
+
+        // If we get killed, after returning from here, restart
+        return START_STICKY;
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        // We don&apos;t provide binding, so return null
+        return null;
+    }
+
+    @Override
+    public void onDestroy() {
+        Toast.makeText(this, &quot;service done&quot;, Toast.LENGTH_SHORT).show();
+    }
+}
+</code></pre><p>通过查看<code>IntentService</code>的源码可以发现，其实现与上面的代码非常接近。基本原理就是，<strong><code>onStartCommand()</code>中得到的<code>Intent</code>被赋给一个Message对象，经由Handler发送到后台HandlerThread线程的消息队列中，处理这些消息的过程<code>onHandleIntent()</code>被放在了后台线程中避免阻塞，并通过消息队列解决了多线程的安全问题。</strong></p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Multiple-Threads/" rel="tag">#Multiple Threads</a>
+          
+            <a href="/tags/Service/" rel="tag">#Service</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/05/creating-a-started-service/" rel="next" title="Service学习笔记（二） 启动Service">
+                <i class="fa fa-chevron-left"></i> Service学习笔记（二） 启动Service
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/05/creating-a-started-service-2/" rel="prev" title="Service学习笔记（四） 启动Service（续）">
+                Service学习笔记（四） 启动Service（续） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">82</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HandlerThread"><span class="nav-number">1.</span> <span class="nav-text">HandlerThread</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Looper"><span class="nav-number">2.</span> <span class="nav-text">Looper</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Handler"><span class="nav-number">3.</span> <span class="nav-text">Handler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MessageQueue"><span class="nav-number">4.</span> <span class="nav-text">MessageQueue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动直接继承自Service类的子类"><span class="nav-number">5.</span> <span class="nav-text">启动直接继承自Service类的子类</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

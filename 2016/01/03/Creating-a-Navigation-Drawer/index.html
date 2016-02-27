@@ -1,0 +1,888 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Navigation," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="导航抽屉式一个屏幕左侧展示应用主要导航选项的面板。它一般隐藏起来，当用户从左侧滑动屏幕或在应用最顶级层面上点击应用图标时会出现。
+创建DrawerLayout要添加导航抽屉，首先在布局的根视图上添加一个DrawerLayout。在DrawerLayout中添加显示一个屏幕主要内容的view，和一个显示抽屉内容的view。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓导航 - 创建导航抽屉">
+<meta property="og:url" content="http://yoursite.com/2016/01/03/Creating-a-Navigation-Drawer/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="导航抽屉式一个屏幕左侧展示应用主要导航选项的面板。它一般隐藏起来，当用户从左侧滑动屏幕或在应用最顶级层面上点击应用图标时会出现。
+创建DrawerLayout要添加导航抽屉，首先在布局的根视图上添加一个DrawerLayout。在DrawerLayout中添加显示一个屏幕主要内容的view，和一个显示抽屉内容的view。">
+<meta property="og:updated_time" content="2016-01-03T11:37:14.891Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="安卓导航 - 创建导航抽屉">
+<meta name="twitter:description" content="导航抽屉式一个屏幕左侧展示应用主要导航选项的面板。它一般隐藏起来，当用户从左侧滑动屏幕或在应用最顶级层面上点击应用图标时会出现。
+创建DrawerLayout要添加导航抽屉，首先在布局的根视图上添加一个DrawerLayout。在DrawerLayout中添加显示一个屏幕主要内容的view，和一个显示抽屉内容的view。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 安卓导航 - 创建导航抽屉 | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                安卓导航 - 创建导航抽屉
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-01-03T14:46:01+08:00" content="2016-01-03">
+              2016-01-03
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>导航抽屉式一个屏幕左侧展示应用主要导航选项的面板。它一般隐藏起来，当用户从左侧滑动屏幕或在应用最顶级层面上点击应用图标时会出现。</p>
+<h1 id="创建DrawerLayout"><a href="#创建DrawerLayout" class="headerlink" title="创建DrawerLayout"></a>创建DrawerLayout</h1><p>要添加导航抽屉，首先在布局的根视图上添加一个<code>DrawerLayout</code>。在<code>DrawerLayout</code>中添加显示一个屏幕主要内容的view，和一个显示抽屉内容的view。</p>
+<a id="more"></a>
+<p>例如，下面的布局使用了一个有两个子view的<code>DrawerLayout</code>：一个包含主要内容（由<code>Fragment</code>填充）的<code>FrameLayout</code>和一个作为导航抽屉的<code>ListView</code>。</p>
+<pre><code>&lt;android.support.v4.widget.DrawerLayout
+    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:id=&quot;@+id/drawer_layout&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;&gt;
+    &lt;!-- The main content view --&gt;
+    &lt;FrameLayout
+        android:id=&quot;@+id/content_frame&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;match_parent&quot; /&gt;
+    &lt;!-- The navigation drawer --&gt;
+    &lt;ListView android:id=&quot;@+id/left_drawer&quot;
+        android:layout_width=&quot;240dp&quot;
+        android:layout_height=&quot;match_parent&quot;
+        android:layout_gravity=&quot;start&quot;
+        android:choiceMode=&quot;singleChoice&quot;
+        android:divider=&quot;@android:color/transparent&quot;
+        android:dividerHeight=&quot;0dp&quot;
+        android:background=&quot;#111&quot;/&gt;
+&lt;/android.support.v4.widget.DrawerLayout&gt;
+</code></pre><p>这个布局展示了一些重要的布局特性：</p>
+<ul>
+<li>主内容view必须是<code>DrawerLayout</code>的<strong>第一个子view</strong>，因为XML的顺序暗含着Z-ordering，抽屉必须在内容的顶上。</li>
+<li>主内容view应该匹配父视图的宽和高，因为当抽屉隐藏时，它代表了整个UI。</li>
+<li>抽屉view必须用<code>android:layout_gravity</code>指明水平的重力方向。为了支持一些从右到左的语言，可以使用”start”代替”left”。</li>
+<li>抽屉view的宽度用<code>dp</code>单位指明，高度匹配父视图。抽屉的宽度应该不超过320dp，这样用户可以总能看到主内容的一部分。</li>
+</ul>
+<h1 id="初始化抽屉列表"><a href="#初始化抽屉列表" class="headerlink" title="初始化抽屉列表"></a>初始化抽屉列表</h1><p>在activity中，初始化导航抽屉的列表是最开始要做的事情之一。具体如何实现取决于应用的内容，但导航抽屉一般都包含一个<code>ListView</code>，所以列表应该由一个<code>Adapter</code>来填充。</p>
+<p>下面是使用字符串数组来初始化导航列表的例子：</p>
+<pre><code>public class MainActivity extends Activity {
+    private String[] mPlanetTitles;
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    ...
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        mPlanetTitles = getResources().getStringArray(R.array.planets_array);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+        // Set the adapter for the list view
+        mDrawerList.setAdapter(new ArrayAdapter&lt;String&gt;(this,
+                R.layout.drawer_list_item, mPlanetTitles));
+        // Set the list&apos;s click listener
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+        ...
+    }
+}
+</code></pre><p>上面的代码调用了<code>setOnItemClickListener()</code>来接收列表中的点击事件。下面的部分将展示如何实现这个接口，并在用户选择时改变内容视图。</p>
+<h1 id="处理导航点击事件"><a href="#处理导航点击事件" class="headerlink" title="处理导航点击事件"></a>处理导航点击事件</h1><p>当用户选择了抽屉列表中的一个项目时，系统调用<code>onItemClick()</code>方法。</p>
+<p>在这个方法中所做的事情取决于如何实现应用的结构。下面的例子中，选择列表中的每个项目会往主内容视图中插入一个不同的<code>Fragment</code>。</p>
+<pre><code>private class DrawerItemClickListener implements ListView.OnItemClickListener {
+    @Override
+    public void onItemClick(AdapterView parent, View view, int position, long id) {
+        selectItem(position);
+    }
+}
+
+/** Swaps fragments in the main content view */
+private void selectItem(int position) {
+    // Create a new fragment and specify the planet to show based on position
+    Fragment fragment = new PlanetFragment();
+    Bundle args = new Bundle();
+    args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
+    fragment.setArguments(args);
+
+    // Insert the fragment by replacing any existing fragment
+    FragmentManager fragmentManager = getFragmentManager();
+    fragmentManager.beginTransaction()
+                   .replace(R.id.content_frame, fragment)
+                   .commit();
+
+    // Highlight the selected item, update the title, and close the drawer
+    mDrawerList.setItemChecked(position, true);
+    setTitle(mPlanetTitles[position]);
+    mDrawerLayout.closeDrawer(mDrawerList);
+}
+
+@Override
+public void setTitle(CharSequence title) {
+    mTitle = title;
+    getActionBar().setTitle(mTitle);
+}
+</code></pre><h1 id="侦听打开和关闭事件"><a href="#侦听打开和关闭事件" class="headerlink" title="侦听打开和关闭事件"></a>侦听打开和关闭事件</h1><p>要侦听抽屉的打开和关闭的事件，调用<code>DrawerLayout</code>的<code>setDrawerListener()</code>方法，并传入自己的实现。这个接口提供了抽屉打开和关闭的事件回调。</p>
+<p>然而，如果activity包含了action bar,那么可以选择继承<code>ActionBarDrawerToggle</code>类来替代。后者也实现了相同的接口，所以仍然可以重写这些回调。而且它使action bar图标与导航抽屉的互动更加便利。</p>
+<p>当抽屉变得可见时，首先应该修改action bar的内容，比如改变标题，移除主内容相关的一些项目。</p>
+<pre><code>public class MainActivity extends Activity {
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private CharSequence mDrawerTitle;
+    private CharSequence mTitle;
+    ...
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        ...
+
+        mTitle = mDrawerTitle = getTitle();
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getActionBar().setTitle(mTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getActionBar().setTitle(mDrawerTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+
+        // Set the drawer toggle as the DrawerListener
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+    }
+
+    /* Called whenever we call invalidateOptionsMenu() */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content view
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+        return super.onPrepareOptionsMenu(menu);
+    }
+}
+</code></pre><h1 id="打开和关闭时的App图标"><a href="#打开和关闭时的App图标" class="headerlink" title="打开和关闭时的App图标"></a>打开和关闭时的App图标</h1><p>如果使用了action bar，那么应该允许用户通过点击应用图标来打开或关闭抽屉。而且应用应该通过一个特殊的图标来展示导航抽屉的存在。这可以通过<code>ActionBarDrawerToggle</code>来实现。</p>
+<p>为了使其工作，使用其构造方法创建一个实例，要求下面的参数：</p>
+<ul>
+<li>drawer所在的<code>Activity</code></li>
+<li><code>DrawerLayout</code></li>
+<li>作为抽屉标识的drawable资源。</li>
+<li>一个描述打开抽屉动作的字符串资源（为了无障碍使用）</li>
+<li>一个描述关闭抽屉动作的字符串资源（为了无障碍使用）</li>
+</ul>
+<p>然后，无论是否创建一个<code>ActionBarDrawerToggle</code>子类作为抽屉的侦听器，都需要在贯穿activity的生命周期中的一些地方调用它。</p>
+<pre><code>public class MainActivity extends Activity {
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+    ...
+
+    public void onCreate(Bundle savedInstanceState) {
+        ...
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,                  /* host Activity */
+                mDrawerLayout,         /* DrawerLayout object */
+                R.drawable.ic_drawer,  /* nav drawer icon to replace &apos;Up&apos; caret */
+                R.string.drawer_open,  /* &quot;open drawer&quot; description */
+                R.string.drawer_close  /* &quot;close drawer&quot; description */
+                ) {
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getActionBar().setTitle(mTitle);
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getActionBar().setTitle(mDrawerTitle);
+            }
+        };
+
+        // Set the drawer toggle as the DrawerListener
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Pass the event to ActionBarDrawerToggle, if it returns
+        // true, then it has handled the app icon touch event
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+          return true;
+        }
+        // Handle your other action bar items...
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    ...
+}
+</code></pre>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Navigation/" rel="tag">#Navigation</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/03/Glide-image-size/" rel="next" title="A Glide Sizing Problem">
+                <i class="fa fa-chevron-left"></i> A Glide Sizing Problem
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/01/03/Providing-Up-Navigation/" rel="prev" title="安卓导航 - 提供Up导航">
+                安卓导航 - 提供Up导航 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">82</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#创建DrawerLayout"><span class="nav-number">1.</span> <span class="nav-text">创建DrawerLayout</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#初始化抽屉列表"><span class="nav-number">2.</span> <span class="nav-text">初始化抽屉列表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#处理导航点击事件"><span class="nav-number">3.</span> <span class="nav-text">处理导航点击事件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#侦听打开和关闭事件"><span class="nav-number">4.</span> <span class="nav-text">侦听打开和关闭事件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#打开和关闭时的App图标"><span class="nav-number">5.</span> <span class="nav-text">打开和关闭时的App图标</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

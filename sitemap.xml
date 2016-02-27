@@ -16,9 +16,597 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2016/02/27/hello-world/</loc>
+    <loc>http://yoursite.com/2016/01/03/Providing-Up-Navigation/</loc>
     
-    <lastmod>2016-02-27T02:36:29.772Z</lastmod>
+    <lastmod>2016-02-26T13:00:24.495Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/15/visitor-double-dispatch/</loc>
+    
+    <lastmod>2016-02-21T14:42:49.617Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/11/18/How-Android-Draws-Views/</loc>
+    
+    <lastmod>2016-02-17T04:08:19.934Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/10/21/include-local-library-using-gradle/</loc>
+    
+    <lastmod>2016-02-16T11:54:09.007Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/10/07/notifyDataSetChanged/</loc>
+    
+    <lastmod>2016-02-16T11:53:23.456Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/12/16/jcenter-peer-not-authenticated/</loc>
+    
+    <lastmod>2016-02-16T11:42:21.674Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/categories/index.html</loc>
+    
+    <lastmod>2016-02-16T11:35:35.097Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/index.html</loc>
+    
+    <lastmod>2016-02-16T11:34:06.542Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/16/layout-behavior-bug/</loc>
+    
+    <lastmod>2016-02-16T11:30:56.181Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/01/03/Glide-image-size/</loc>
+    
+    <lastmod>2016-02-16T11:30:11.820Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/11/11/clion-encoding/</loc>
+    
+    <lastmod>2016-02-16T11:29:45.153Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/10/11/Saving-Data-in-SQL-Databases/</loc>
+    
+    <lastmod>2016-02-16T11:29:14.989Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/11/16/notes-about-ContentProviders/</loc>
+    
+    <lastmod>2016-02-16T11:27:07.717Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/11/16/notes-about-ContentProviders-2/</loc>
+    
+    <lastmod>2016-02-16T11:13:24.135Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/11/16/notes-about-the-activity-lifecycle/</loc>
+    
+    <lastmod>2016-02-16T10:04:38.975Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/all-categories/index.html</loc>
+    
+    <lastmod>2016-02-15T09:28:34.635Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/all-tags/index.html</loc>
+    
+    <lastmod>2016-02-15T09:15:20.096Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/all-archives/index.html</loc>
+    
+    <lastmod>2016-02-15T09:14:06.980Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/12/20/loader-compares-reference/</loc>
+    
+    <lastmod>2016-02-15T02:03:29.976Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/13/review-loaders/</loc>
+    
+    <lastmod>2016-02-14T17:11:12.388Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/13/review-loaders-2/</loc>
+    
+    <lastmod>2016-02-14T17:10:42.419Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/05/learning-preferences-2/</loc>
+    
+    <lastmod>2016-02-05T10:49:44.623Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/05/learning-preferences/</loc>
+    
+    <lastmod>2016-02-05T10:48:46.616Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/01/04/Bug-of-TabLayout/</loc>
+    
+    <lastmod>2016-01-03T16:31:16.972Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/01/03/Creating-a-Navigation-Drawer/</loc>
+    
+    <lastmod>2016-01-03T11:37:14.891Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/01/03/Providing-Proper-Back-Navigation/</loc>
+    
+    <lastmod>2016-01-03T11:37:13.407Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/10/21/top-bottom-toolbar/</loc>
+    
+    <lastmod>2015-10-21T15:05:53.869Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/10/15/EmptyView-in-ViewPager/</loc>
+    
+    <lastmod>2015-10-15T15:43:34.959Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/08/viewpager/</loc>
+    
+    <lastmod>2015-10-15T15:43:28.030Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/10/10/ImageGetter-with-Picasso/</loc>
+    
+    <lastmod>2015-10-10T14:26:17.220Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/10/08/Requesting-Permissions-at-Run-Time/</loc>
+    
+    <lastmod>2015-10-08T15:12:57.940Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/10/07/Auto-Pager-Recycler/</loc>
+    
+    <lastmod>2015-10-07T04:52:33.183Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/10/03/SaxParser/</loc>
+    
+    <lastmod>2015-10-03T07:51:28.824Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/10/03/Volley-UTF-8/</loc>
+    
+    <lastmod>2015-10-03T07:13:51.372Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/30/Scheduling-Repeating-Alarms/</loc>
+    
+    <lastmod>2015-10-01T11:35:10.512Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/29/source-code-of-volley/</loc>
+    
+    <lastmod>2015-10-01T06:28:38.130Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/06/python-builder-pattern/</loc>
+    
+    <lastmod>2015-10-01T06:26:27.671Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/07/creating-a-bound-service-2/</loc>
+    
+    <lastmod>2015-10-01T06:23:52.895Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/06/creating-a-bound-service/</loc>
+    
+    <lastmod>2015-10-01T06:23:46.530Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/05/PendingIntent/</loc>
+    
+    <lastmod>2015-10-01T06:23:40.519Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/05/creating-a-started-service-2/</loc>
+    
+    <lastmod>2015-10-01T06:23:28.531Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/05/Looper-and-HandlerThread/</loc>
+    
+    <lastmod>2015-10-01T06:23:18.039Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/04/learning-services/</loc>
+    
+    <lastmod>2015-10-01T06:22:36.232Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/05/creating-a-started-service/</loc>
+    
+    <lastmod>2015-10-01T06:22:08.388Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/10/01/IntentService-Reporting-Work-Status/</loc>
+    
+    <lastmod>2015-10-01T06:21:15.127Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/10/01/Keeping-the-Device-Awake/</loc>
+    
+    <lastmod>2015-10-01T04:30:55.104Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/28/singleton-in-android/</loc>
+    
+    <lastmod>2015-09-28T14:41:15.160Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/28/source-code-of-AsyncTask/</loc>
+    
+    <lastmod>2015-09-28T13:42:35.567Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/27/phototask-summary/</loc>
+    
+    <lastmod>2015-09-27T13:38:18.307Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/26/Creating-a-Manager-for-Multiple-Threads/</loc>
+    
+    <lastmod>2015-09-27T10:28:17.692Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/27/popupwindows/</loc>
+    
+    <lastmod>2015-09-27T10:27:56.853Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/27/Communicating-with-the-UI-Thread/</loc>
+    
+    <lastmod>2015-09-27T02:25:57.427Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/27/Running-Code-on-a-Thread-Pool-Thread/</loc>
+    
+    <lastmod>2015-09-27T01:50:15.898Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/26/Specifying-the-Code-to-Run-on-a-Thread/</loc>
+    
+    <lastmod>2015-09-26T16:07:26.589Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/23/Generalized-Target-Type-Inference/</loc>
+    
+    <lastmod>2015-09-23T13:59:18.993Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/23/Taking-Photos-Simply/</loc>
+    
+    <lastmod>2015-09-23T13:19:49.144Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/23/wrong-use-of-application/</loc>
+    
+    <lastmod>2015-09-23T11:52:10.578Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/22/currying/</loc>
+    
+    <lastmod>2015-09-22T14:48:30.790Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/22/higher-order-functions/</loc>
+    
+    <lastmod>2015-09-22T12:12:11.742Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/19/spinners/</loc>
+    
+    <lastmod>2015-09-21T11:34:08.125Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/20/Creating-a-View-Class/</loc>
+    
+    <lastmod>2015-09-21T11:33:50.501Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/19/Animating-Layout-Changes/</loc>
+    
+    <lastmod>2015-09-19T02:59:53.804Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/14/Intent-Filters/</loc>
+    
+    <lastmod>2015-09-15T16:08:06.524Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/15/Intent-Filter-Match-URL/</loc>
+    
+    <lastmod>2015-09-15T13:31:02.322Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/12/picasso-performance/</loc>
+    
+    <lastmod>2015-09-15T06:00:11.567Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/14/GridView/</loc>
+    
+    <lastmod>2015-09-14T13:09:53.866Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/13/Animation-Resources/</loc>
+    
+    <lastmod>2015-09-14T05:49:32.589Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/13/View-Animation/</loc>
+    
+    <lastmod>2015-09-13T13:02:02.039Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/13/Property-Animation/</loc>
+    
+    <lastmod>2015-09-13T12:35:36.376Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/13/Animating-with-ValueAnimator/</loc>
+    
+    <lastmod>2015-09-13T12:35:35.030Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/13/Using-ViewPager-for-Screen-Slides/</loc>
+    
+    <lastmod>2015-09-13T06:28:41.378Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/13/Crossfading-Two-Views/</loc>
+    
+    <lastmod>2015-09-13T05:27:29.636Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/13/pull-to-refresh-recyler/</loc>
+    
+    <lastmod>2015-09-13T03:00:42.956Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/12/photoview/</loc>
+    
+    <lastmod>2015-09-12T06:04:38.896Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/12/Dragging-and-Scaling/</loc>
+    
+    <lastmod>2015-09-12T04:32:52.615Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/12/Handling-Multi-Touch-Gestures/</loc>
+    
+    <lastmod>2015-09-12T04:17:08.620Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/12/tracking-movement/</loc>
+    
+    <lastmod>2015-09-12T02:03:19.654Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/11/Detecting-Common-Gestures/</loc>
+    
+    <lastmod>2015-09-12T01:40:58.300Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/10/RecyclerView-divider/</loc>
+    
+    <lastmod>2015-09-11T14:20:01.738Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/09/my-bug-picasso/</loc>
+    
+    <lastmod>2015-09-09T15:18:08.706Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/08/ni-scope-bugs/</loc>
+    
+    <lastmod>2015-09-08T15:45:15.210Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/07/threads-leak/</loc>
+    
+    <lastmod>2015-09-07T15:07:43.470Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/06/context-leak/</loc>
+    
+    <lastmod>2015-09-07T15:05:53.286Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/06/java-passing-value/</loc>
+    
+    <lastmod>2015-09-06T11:09:22.259Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/04/hello-world/</loc>
+    
+    <lastmod>2015-09-04T15:48:35.981Z</lastmod>
     
   </url>
   

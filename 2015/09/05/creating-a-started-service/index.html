@@ -1,0 +1,789 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Service," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="继续上一篇总结service的用法，本篇文章主要总结start方法启动的service。内容还是主要来自官网，但也并不全是翻译。  
+创建可启动的service其他组件通过调用startService()来启动service，并传送给它一个指定service和提供数据的Intent。被启动后service的onStartCommand()方法被调用，并接收到所传送的Intent。service被启">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Service学习笔记（二） 启动Service">
+<meta property="og:url" content="http://yoursite.com/2015/09/05/creating-a-started-service/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="继续上一篇总结service的用法，本篇文章主要总结start方法启动的service。内容还是主要来自官网，但也并不全是翻译。  
+创建可启动的service其他组件通过调用startService()来启动service，并传送给它一个指定service和提供数据的Intent。被启动后service的onStartCommand()方法被调用，并接收到所传送的Intent。service被启">
+<meta property="og:updated_time" content="2015-10-01T06:22:08.388Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Service学习笔记（二） 启动Service">
+<meta name="twitter:description" content="继续上一篇总结service的用法，本篇文章主要总结start方法启动的service。内容还是主要来自官网，但也并不全是翻译。  
+创建可启动的service其他组件通过调用startService()来启动service，并传送给它一个指定service和提供数据的Intent。被启动后service的onStartCommand()方法被调用，并接收到所传送的Intent。service被启">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Service学习笔记（二） 启动Service | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Service学习笔记（二） 启动Service
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-05T11:42:33+08:00" content="2015-09-05">
+              2015-09-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>继续上一篇总结service的用法，本篇文章主要总结start方法启动的service。内容还是主要来自官网，但也并不全是翻译。  </p>
+<h2 id="创建可启动的service"><a href="#创建可启动的service" class="headerlink" title="创建可启动的service"></a>创建可启动的service</h2><p>其他组件通过调用<code>startService()</code>来启动service，并传送给它一个指定service和提供数据的<code>Intent</code>。被启动后service的<code>onStartCommand()</code>方法被调用，并接收到所传送的<code>Intent</code>。<br>service被启动后，其生命周期与启动它的组件无关，在后台无限期运行。当任务完成后，应当通过调用<code>stopSelf</code>或由其他组件调用<code>stopService()</code>的方式终止运行。<br>有两个父类可以用来被继承来创造一个可以被启动的service。<br><a id="more"></a></p>
+<ul>
+<li><code>Service</code><br>所有service的基类。继承此父类时，要注意手动创建一个新的线程来防止阻塞。  </li>
+<li><code>IntentService</code><br><code>Service</code>的一个子类，使用一个工作线程来处理  所有请求，每次仅处理一个。不需要同时处理多个请求时，继承该父类是最好的选择。需要做的只是实现<code>onHandleIntent()</code>方法来接收每个启动请求的intent。  </li>
+</ul>
+<h2 id="继承IntentService"><a href="#继承IntentService" class="headerlink" title="继承IntentService"></a>继承IntentService</h2><p>大多数被启动的service不需要同时处理多个请求（可能造成危险的多线程问题），所以最好继承自<code>IntentService</code>。它自动处理了以下工作：  </p>
+<ul>
+<li>创建一个默认的工作线程来处理<code>onStartCommand()</code>中收到的所有intent。</li>
+<li>创建一个工作队列，每次向<code>onHandleIntent()</code>传送一个intent，避免了多线程问题。</li>
+<li>所有启动请求被处理后停止service，不再需要手动调用<code>stopSelf()</code>.</li>
+<li>为<code>onBind()</code>方法提供一个返回null的默认实现</li>
+<li>为<code>onStartCommand()</code>提供一个默认实现，将intent发送到工作队列，然后交由<code>onHandleIntent()</code>处理。</li>
+</ul>
+<p>代码示例：  </p>
+<pre><code>public class HelloIntentService extends IntentService {
+
+  /**
+   * A constructor is required, and must call the super IntentService(String)
+   * constructor with a name for the worker thread.
+   */
+  public HelloIntentService() {
+      super(&quot;HelloIntentService&quot;);
+  }
+
+  /**
+   * The IntentService calls this method from the default worker thread with
+   * the intent that started the service. When this method returns, IntentService
+   * stops the service, as appropriate.
+   */
+  @Override
+  protected void onHandleIntent(Intent intent) {
+      // Normally we would do some work here, like download a file.
+      // For our sample, we just sleep for 5 seconds.
+      long endTime = System.currentTimeMillis() + 5*1000;
+      while (System.currentTimeMillis() &lt; endTime) {
+          synchronized (this) {
+              try {
+                  wait(endTime - System.currentTimeMillis());
+              } catch (Exception e) {
+              }
+          }
+      }
+  }
+}
+</code></pre><p>注意：实现除<code>onBind()</code>以外的其他回调方法时也一定要调用其父类实现。  </p>
+<h2 id="继承Service"><a href="#继承Service" class="headerlink" title="继承Service"></a>继承Service</h2><p>需要实现多线程操作而非使用队列实现时，可以通过继承<code>Service</code>类来实现。下面是一个与上面的例子功能完全相同的例子。  </p>
+<pre><code>public class HelloService extends Service {
+  private Looper mServiceLooper;
+  private ServiceHandler mServiceHandler;
+
+  // Handler that receives messages from the thread
+  private final class ServiceHandler extends Handler {
+      public ServiceHandler(Looper looper) {
+          super(looper);
+      }
+      @Override
+      public void handleMessage(Message msg) {
+          // Normally we would do some work here, like download a file.
+          // For our sample, we just sleep for 5 seconds.
+          long endTime = System.currentTimeMillis() + 5*1000;
+          while (System.currentTimeMillis() &lt; endTime) {
+              synchronized (this) {
+                  try {
+                      wait(endTime - System.currentTimeMillis());
+                  } catch (Exception e) {
+                  }
+              }
+          }
+          // Stop the service using the startId, so that we don&apos;t stop
+          // the service in the middle of handling another job
+          stopSelf(msg.arg1);
+      }
+  }
+
+  @Override
+  public void onCreate() {
+    // Start up the thread running the service.  Note that we create a
+    // separate thread because the service normally runs in the process&apos;s
+    // main thread, which we don&apos;t want to block.  We also make it
+    // background priority so CPU-intensive work will not disrupt our UI.
+    HandlerThread thread = new HandlerThread(&quot;ServiceStartArguments&quot;,
+            Process.THREAD_PRIORITY_BACKGROUND);
+    thread.start();
+
+    // Get the HandlerThread&apos;s Looper and use it for our Handler
+    mServiceLooper = thread.getLooper();
+    mServiceHandler = new ServiceHandler(mServiceLooper);
+  }
+
+  @Override
+  public int onStartCommand(Intent intent, int flags, int startId) {
+      Toast.makeText(this, &quot;service starting&quot;, Toast.LENGTH_SHORT).show();
+
+      // For each start request, send a message to start a job and deliver the
+      // start ID so we know which request we&apos;re stopping when we finish the job
+      Message msg = mServiceHandler.obtainMessage();
+      msg.arg1 = startId;
+      mServiceHandler.sendMessage(msg);
+
+      // If we get killed, after returning from here, restart
+      return START_STICKY;
+  }
+
+  @Override
+  public IBinder onBind(Intent intent) {
+      // We don&apos;t provide binding, so return null
+      return null;
+  }
+
+  @Override
+  public void onDestroy() {
+    Toast.makeText(this, &quot;service done&quot;, Toast.LENGTH_SHORT).show();
+  }
+}
+</code></pre><p><strong>这一段的代码中出现了几个以前没有用过的类，<code>Looper</code>, <code>HandlerThread</code>。导致这部分的代码暂时还看不明白，所以，下一篇文章将研究一下这两个类以及<code>Handler</code>类的使用方法。</strong></p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Service/" rel="tag">#Service</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/04/learning-services/" rel="next" title="Service学习笔记（一） Service基础">
+                <i class="fa fa-chevron-left"></i> Service学习笔记（一） Service基础
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/05/Looper-and-HandlerThread/" rel="prev" title="Service学习笔记（三） Looper, Handler and HandlerThread">
+                Service学习笔记（三） Looper, Handler and HandlerThread <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">82</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建可启动的service"><span class="nav-number">1.</span> <span class="nav-text">创建可启动的service</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#继承IntentService"><span class="nav-number">2.</span> <span class="nav-text">继承IntentService</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#继承Service"><span class="nav-number">3.</span> <span class="nav-text">继承Service</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

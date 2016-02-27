@@ -1,0 +1,873 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Loader," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="前言Loader是安卓中非常好用的一个pattern，也是我个人非常喜欢用的一个。Loader最方便之处，就是免除了手动保存数据之苦。但在长期的使用之中，总觉得对loader的理解还是存在一些偏差。所以，这里重新复习一下loader的基本知识。
+Loader自安卓3.0引入，它的出现使得在activity或fragment中异步载入数据更加容易，有以下特性：
+
+每个activity或fragmen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重探Loader（一）">
+<meta property="og:url" content="http://yoursite.com/2016/02/13/review-loaders/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="前言Loader是安卓中非常好用的一个pattern，也是我个人非常喜欢用的一个。Loader最方便之处，就是免除了手动保存数据之苦。但在长期的使用之中，总觉得对loader的理解还是存在一些偏差。所以，这里重新复习一下loader的基本知识。
+Loader自安卓3.0引入，它的出现使得在activity或fragment中异步载入数据更加容易，有以下特性：
+
+每个activity或fragmen">
+<meta property="og:updated_time" content="2016-02-14T17:11:12.388Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="重探Loader（一）">
+<meta name="twitter:description" content="前言Loader是安卓中非常好用的一个pattern，也是我个人非常喜欢用的一个。Loader最方便之处，就是免除了手动保存数据之苦。但在长期的使用之中，总觉得对loader的理解还是存在一些偏差。所以，这里重新复习一下loader的基本知识。
+Loader自安卓3.0引入，它的出现使得在activity或fragment中异步载入数据更加容易，有以下特性：
+
+每个activity或fragmen">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 重探Loader（一） | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                重探Loader（一）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-02-13T20:52:41+08:00" content="2016-02-13">
+              2016-02-13
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Loader是安卓中非常好用的一个pattern，也是我个人非常喜欢用的一个。Loader最方便之处，就是免除了手动保存数据之苦。但在长期的使用之中，总觉得对loader的理解还是存在一些偏差。所以，这里重新复习一下loader的基本知识。</p>
+<p>Loader自安卓3.0引入，它的出现使得在activity或fragment中异步载入数据更加容易，有以下特性：</p>
+<ul>
+<li>每个activity或fragment都可使用</li>
+<li>异步载入数据</li>
+<li>监视数据源的变化，并获取新的数据</li>
+<li>配置变更后自动重连之前的loader cursor。无需重新获取数据<a id="more"></a>
+<h1 id="Loader-API-总结"><a href="#Loader-API-总结" class="headerlink" title="Loader API 总结"></a>Loader API 总结</h1>LoaderMangager: activity或fragment关联的抽象类，可管理一个或多个Loader。使应用管理与生命周期相关的长期操作，最常用的是<code>CursorLoader</code>，不过应用可以任意创建载入其他类型的Loader。</li>
+</ul>
+<p>LoaderManager.LoaderCallbacks: 与LoaderManager交互的回调接口。</p>
+<p>Loader: 执行异步加载数据的抽象类。是Loader的基类。一般使用CursorLoader，但也可以实现自己的子类。当loader活动时，应该监视数据源的变化并获取新的结果。</p>
+<p>AsyncTaskLoader: 提供了<code>AsyncTask</code>来执行任务的抽象Loader。</p>
+<p>CursorLoader: <code>AsyncTaskLoader</code>的子类，查询<code>ContentResolver</code>，返回<code>Cursor</code>。这个类以标准的方式实现了Loader协议以查询cursor，继承<code>AsyncTaskLoader</code>以在后台线程执行查询，避免阻碍应用UI。使用这个Loader是从Content Provider中异步载入数据的最好方式，而非通过fragment或activity的API来执行查询。</p>
+<h1 id="在应用中使用Loader"><a href="#在应用中使用Loader" class="headerlink" title="在应用中使用Loader"></a>在应用中使用Loader</h1><h2 id="启动Loader"><a href="#启动Loader" class="headerlink" title="启动Loader"></a>启动Loader</h2><p>在activity或fragment中LoaderManager管理着一个或多个Loader实例，每个activity或fragment中只有一个LoaderManager。</p>
+<p>一般在activity的<code>onCreate()</code>或fragment的<code>onactivityCreated()</code>方法初始化Loader。</p>
+<pre><code>// Prepare the loader.  Either re-connect with an existing one,
+// or start a new one.
+getLoaderManager().initLoader(0, null, this);
+</code></pre><p><code>initLoader()</code>方法需要以下参数：</p>
+<ul>
+<li>一个独特的ID，如0.</li>
+<li>提供给Loader用以创建的额外参数，如null。</li>
+<li>一个<code>LoaderManager.LoaderCallbacks</code>实现，LoaderManager调用其以报告Loader事件。</li>
+</ul>
+<p>调用<code>initLoader()</code>方法保证一个loader被初始化并且活跃，它有两个可能的结果：</p>
+<ul>
+<li>如果该ID已经存在，重用上次创建的Loader。</li>
+<li>否则，调用回调接口中的<code>onCreateLoader()</code>。在这里实现初始化新loader的代码。</li>
+</ul>
+<p>注意，<code>initLoader()</code>方法返回创建的Loader，但是你不必去保存其引用。LoaderManager自动管理Loader的生命。LoaderManager在需要时启动和终止载入，并维护Loader的状态和关联的内容。这意味着，一般不需要与Loader直接交互。一般使用回调方法在特定事件发生时干预加载进程。</p>
+<h2 id="重启Loader"><a href="#重启Loader" class="headerlink" title="重启Loader"></a>重启Loader</h2><p>有时我们需要丢弃旧数据，重新启动Loader。要丢弃旧数据，调用<code>restartLoader()</code>方法。例如，<code>SearchView.OnQueryTextListener</code>的实现在用户改变查询时重启Loader。</p>
+<pre><code>public boolean onQueryTextChanged(String newText) {
+    // Called when the ACTION bar search text has changed.  Update
+    // the search filter, and restart the loader to do a new query
+    // with this filter.
+    mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
+    getLoaderManager().restartLoader(0, null, this);
+    return true;
+}
+</code></pre><h2 id="使用LoaderManager回调"><a href="#使用LoaderManager回调" class="headerlink" title="使用LoaderManager回调"></a>使用LoaderManager回调</h2><p>Loader，尤其是CursorLoader，一般会在停止后保留数据。这使得应用可以跨越activity或fragment的<code>onStop()</code>和<code>onStart()</code>方法保留数据。当用户返回应用时，无需等待数据重新载入。</p>
+<h3 id="onCreateLoader"><a href="#onCreateLoader" class="headerlink" title="onCreateLoader"></a>onCreateLoader</h3><p>访问loader时，首先检查该id是否存在。如果不存在，调用<code>onCreateLoader()</code>方法，在这里创建新的Loader。</p>
+<pre><code> // If non-null, this is the current filter the user has provided.
+String mCurFilter;
+...
+public Loader&lt;Cursor&gt; onCreateLoader(int id, Bundle args) {
+    // This is called when a new Loader needs to be created.  This
+    // sample only has one Loader, so we don&apos;t care about the ID.
+    // First, pick the base URI to use depending on whether we are
+    // currently filtering.
+    Uri baseUri;
+    if (mCurFilter != null) {
+        baseUri = Uri.withAppendedPath(Contactivitys.CONTENT_FILTER_URI,
+                  Uri.encode(mCurFilter));
+    } else {
+        baseUri = Contactivitys.CONTENT_URI;
+    }
+
+    // Now create and return a CursorLoader that will take care of
+    // creating a Cursor for the data being displayed.
+    String select = &quot;((&quot; + Contactivitys.DISPLAY_NAME + &quot; NOTNULL) AND (&quot;
+            + Contactivitys.HAS_PHONE_NUMBER + &quot;=1) AND (&quot;
+            + Contactivitys.DISPLAY_NAME + &quot; != &apos;&apos; ))&quot;;
+    return new CursorLoader(getactivity(), baseUri,
+            CONTactivityS_SUMMARY_PROJECTION, select, null,
+            Contactivitys.DISPLAY_NAME + &quot; COLLATE LOCALIZED ASC&quot;);
+}
+</code></pre><h3 id="onLoadFinished"><a href="#onLoadFinished" class="headerlink" title="onLoadFinished"></a>onLoadFinished</h3><p>当Loader完成一次加载后调用该方法。这个方法保证了在旧数据被释放前调用。在这一点，应该移除所有旧数据的使用（因为马上会被释放），但是不应该自己释放数据，因为Loader拥有并管理它。</p>
+<p>一旦获知应用不再使用数据，Loader就会将其释放。例如，如果数据是CursorLoader中获取的cursor，不要手动调用<code>CursorLoaderose()</code>。如果cursor被放置在一个<code>CursorAdapter</code>中，应该使用<code>swapCursor()</code>方法，而旧<code>Cursor</code>不被关闭。</p>
+<pre><code>// This is the Adapter being used to display the list&apos;s data.
+SimpleCursorAdapter mAdapter;
+...
+
+public void onLoadFinished(Loader&lt;Cursor&gt; loader, Cursor data) {
+    // Swap the new cursor in.  (The framework will take care of CursorLoaderosing the
+    // oLoader cursor once we return.)
+    mAdapter.swapCursor(data);
+}
+</code></pre><h3 id="onLoaderReset"><a href="#onLoaderReset" class="headerlink" title="onLoaderReset"></a>onLoaderReset</h3><p>当复位原来创建的Loader时调用，使原数据无效。这个回调告知你数据将被释放，所以可以在此时移除对其的引用。</p>
+<pre><code>// This is the Adapter being used to display the list&apos;s data.
+SimpleCursorAdapter mAdapter;
+...
+
+public void onLoaderReset(Loader&lt;Cursor&gt; loader) {
+    // This is called when the last Cursor provided to onLoadFinished()
+    // above is about to be CursorLoaderosed.  We need to make sure we are no
+    // longer using it.
+    mAdapter.swapCursor(null);
+}
+</code></pre><h1 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h1><p>下面是一个fragment的完整实现，它展示了一个<code>ListView</code>，包含着联系人的查询结果。</p>
+<pre><code>public static class CursorLoaderListFragment extends ListFragment
+        implements OnQueryTextListener, LoaderManager.LoaderCallbacks&lt;Cursor&gt; {
+
+    // This is the Adapter being used to display the list&apos;s data.
+    SimpleCursorAdapter mAdapter;
+
+    // If non-null, this is the current filter the user has provided.
+    String mCurFilter;
+
+    @Override public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // Give some text to display if there is no data.  In a real
+        // application this would come from a resource.
+        setEmptyText(&quot;No phone numbers&quot;);
+
+        // We have a menu item to show in action bar.
+        setHasOptionsMenu(true);
+
+        // Create an empty adapter we will use to display the loaded data.
+        mAdapter = new SimpleCursorAdapter(getActivity(),
+                android.R.layout.simple_list_item_2, null,
+                new String[] { Contacts.DISPLAY_NAME, Contacts.CONTACT_STATUS },
+                new int[] { android.R.id.text1, android.R.id.text2 }, 0);
+        setListAdapter(mAdapter);
+
+        // Prepare the loader.  Either re-connect with an existing one,
+        // or start a new one.
+        getLoaderManager().initLoader(0, null, this);
+    }
+
+    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Place an action bar item for searching.
+        MenuItem item = menu.add(&quot;Search&quot;);
+        item.setIcon(android.R.drawable.ic_menu_search);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        SearchView sv = new SearchView(getActivity());
+        sv.setOnQueryTextListener(this);
+        item.setActionView(sv);
+    }
+
+    public boolean onQueryTextChange(String newText) {
+        // Called when the action bar search text has changed.  Update
+        // the search filter, and restart the loader to do a new query
+        // with this filter.
+        mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
+        getLoaderManager().restartLoader(0, null, this);
+        return true;
+    }
+
+    @Override public boolean onQueryTextSubmit(String query) {
+        // Don&apos;t care about this.
+        return true;
+    }
+
+    @Override public void onListItemClick(ListView l, View v, int position, long id) {
+        // Insert desired behavior here.
+        Log.i(&quot;FragmentComplexList&quot;, &quot;Item clicked: &quot; + id);
+    }
+
+    // These are the Contacts rows that we will retrieve.
+    static final String[] CONTACTS_SUMMARY_PROJECTION = new String[] {
+        Contacts._ID,
+        Contacts.DISPLAY_NAME,
+        Contacts.CONTACT_STATUS,
+        Contacts.CONTACT_PRESENCE,
+        Contacts.PHOTO_ID,
+        Contacts.LOOKUP_KEY,
+    };
+    public Loader&lt;Cursor&gt; onCreateLoader(int id, Bundle args) {
+        // This is called when a new Loader needs to be created.  This
+        // sample only has one Loader, so we don&apos;t care about the ID.
+        // First, pick the base URI to use depending on whether we are
+        // currently filtering.
+        Uri baseUri;
+        if (mCurFilter != null) {
+            baseUri = Uri.withAppendedPath(Contacts.CONTENT_FILTER_URI,
+                    Uri.encode(mCurFilter));
+        } else {
+            baseUri = Contacts.CONTENT_URI;
+        }
+
+        // Now create and return a CursorLoader that will take care of
+        // creating a Cursor for the data being displayed.
+        String select = &quot;((&quot; + Contacts.DISPLAY_NAME + &quot; NOTNULL) AND (&quot;
+                + Contacts.HAS_PHONE_NUMBER + &quot;=1) AND (&quot;
+                + Contacts.DISPLAY_NAME + &quot; != &apos;&apos; ))&quot;;
+        return new CursorLoader(getActivity(), baseUri,
+                CONTACTS_SUMMARY_PROJECTION, select, null,
+                Contacts.DISPLAY_NAME + &quot; COLLATE LOCALIZED ASC&quot;);
+    }
+
+    public void onLoadFinished(Loader&lt;Cursor&gt; loader, Cursor data) {
+        // Swap the new cursor in.  (The framework will take care of closing the
+        // old cursor once we return.)
+        mAdapter.swapCursor(data);
+    }
+
+    public void onLoaderReset(Loader&lt;Cursor&gt; loader) {
+        // This is called when the last Cursor provided to onLoadFinished()
+        // above is about to be closed.  We need to make sure we are no
+        // longer using it.
+        mAdapter.swapCursor(null);
+    }
+}
+</code></pre>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Loader/" rel="tag">#Loader</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/05/learning-preferences-2/" rel="next" title="使用Preferences API（二）">
+                <i class="fa fa-chevron-left"></i> 使用Preferences API（二）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/13/review-loaders-2/" rel="prev" title="重探Loader（二）">
+                重探Loader（二） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">82</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Loader-API-总结"><span class="nav-number">2.</span> <span class="nav-text">Loader API 总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在应用中使用Loader"><span class="nav-number">3.</span> <span class="nav-text">在应用中使用Loader</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#启动Loader"><span class="nav-number">3.1.</span> <span class="nav-text">启动Loader</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重启Loader"><span class="nav-number">3.2.</span> <span class="nav-text">重启Loader</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用LoaderManager回调"><span class="nav-number">3.3.</span> <span class="nav-text">使用LoaderManager回调</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#onCreateLoader"><span class="nav-number">3.3.1.</span> <span class="nav-text">onCreateLoader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#onLoadFinished"><span class="nav-number">3.3.2.</span> <span class="nav-text">onLoadFinished</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#onLoaderReset"><span class="nav-number">3.3.3.</span> <span class="nav-text">onLoaderReset</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#例子"><span class="nav-number">4.</span> <span class="nav-text">例子</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

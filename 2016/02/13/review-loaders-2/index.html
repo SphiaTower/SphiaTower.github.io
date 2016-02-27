@@ -1,0 +1,832 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Loader," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="过去在安卓3.0前，很多应用经常出现无法响应的bug。最主要的原因，便是在UI线程执行查询或加载数据。虽然文档一直强调即使回馈的重要性，之前的API并不鼓励这样的行为。过去通常使用activity的方法以管理Cursor。而且这些方法在UI线程中操作，并不跨越配置变更。
+理解LoaderManagerLoaderManager的一些事件会有activity或fragment的生命周期事件触发。比如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重探Loader（二）">
+<meta property="og:url" content="http://yoursite.com/2016/02/13/review-loaders-2/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="过去在安卓3.0前，很多应用经常出现无法响应的bug。最主要的原因，便是在UI线程执行查询或加载数据。虽然文档一直强调即使回馈的重要性，之前的API并不鼓励这样的行为。过去通常使用activity的方法以管理Cursor。而且这些方法在UI线程中操作，并不跨越配置变更。
+理解LoaderManagerLoaderManager的一些事件会有activity或fragment的生命周期事件触发。比如">
+<meta property="og:updated_time" content="2016-02-14T17:10:42.419Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="重探Loader（二）">
+<meta name="twitter:description" content="过去在安卓3.0前，很多应用经常出现无法响应的bug。最主要的原因，便是在UI线程执行查询或加载数据。虽然文档一直强调即使回馈的重要性，之前的API并不鼓励这样的行为。过去通常使用activity的方法以管理Cursor。而且这些方法在UI线程中操作，并不跨越配置变更。
+理解LoaderManagerLoaderManager的一些事件会有activity或fragment的生命周期事件触发。比如">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 重探Loader（二） | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                重探Loader（二）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-02-13T21:58:48+08:00" content="2016-02-13">
+              2016-02-13
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="过去"><a href="#过去" class="headerlink" title="过去"></a>过去</h1><p>在安卓3.0前，很多应用经常出现无法响应的bug。最主要的原因，便是在UI线程执行查询或加载数据。虽然文档一直强调即使回馈的重要性，之前的API并不鼓励这样的行为。过去通常使用activity的方法以管理Cursor。而且这些方法在UI线程中操作，并不跨越配置变更。</p>
+<h1 id="理解LoaderManager"><a href="#理解LoaderManager" class="headerlink" title="理解LoaderManager"></a>理解LoaderManager</h1><p>LoaderManager的一些事件会有activity或fragment的生命周期事件触发。比如activity销毁时，会通知LoaderManager销毁并关闭所有所有Loader。</p>
+<p>LoaderManager不知道也不需要知道数据如何载入。它只是告诉Loader何时开始、结束或复位加载，保持状态通过配置变更，并提供简单的接口为客户端传送结果。<br><a id="more"></a></p>
+<h1 id="Loader基础"><a href="#Loader基础" class="headerlink" title="Loader基础"></a>Loader基础</h1><p>Loader负责在单独的线程中执行查询，监视数据源的变化，并且发送新的结果到注册的侦听器（一般是LoaderManager）。这使得Loader非常强大，因为：</p>
+<ul>
+<li>Loader封装了数据加载的过程。activity或fragment不再需要知道如何加载数据，他们将任务委托给了Loader，后者在幕后执行请求并发回数据。</li>
+<li>他们将线程剥离出客户端。activity或fragment不需要担心新线程中执行操作的问题，因为Loader会自动处理。这减少了代码的复杂性和可能的线程相关的bug。</li>
+<li>他们是事件驱动的。Loader监视着数据源并在变化发生时自动执行新的加载。这使得使用Loader工作非常容易，因为客户端可以简单地信任Loader会自动更新数据。所有activity或fragment要做的只是初始化Loader并且根据可能获取的数据进行响应。这之间所有的事物都由Loader完成。</li>
+</ul>
+<h1 id="什么组成了Loader"><a href="#什么组成了Loader" class="headerlink" title="什么组成了Loader"></a>什么组成了Loader</h1><p>下面四个特性最终决定了Loader的行为：</p>
+<ol>
+<li>一个执行异步加载的任务。为了保证载入过程在单独线程中执行，子类应该继承<code>AsyncTaskLoader</code>而非<code>Loader</code>类。<code>AsyncTaskLoader</code>类提供了一个<code>AsyncTask</code>来执行任务。被继承后，只需要实现抽象的<code>loadInBackground()</code>方法来实现异步任务。该方法将在一个工作线程中被调用以执行数据加载。</li>
+<li>一个注册的监听器，用以接收载入的结果。对每个Loader，LoaderManager会注册一个<code>OnLoadCompleteListener</code>来将Loader传送的结果通过调用<code>onLoadFinished()</code>转发到客户端。Loader应该调用<code>deliverResult()</code>方法将结果发送给注册的侦听器。</li>
+<li>三种状态中的一个。每个Loader只有启动、停止或复位三种状态。</li>
+</ol>
+<ul>
+<li>只有启动状态下，<code>onLoadFinished()</code>方法会被调用。</li>
+<li>停止状态下，Loader继续监视变化，但不会返回结果。可以被启动或复位。</li>
+<li>复位状态下，不应该执行新的加载，也不应传送新的结果，不应该监视变化。进入复位状态后，应该释放并无效化所有关联的数据，使之可以被gc回收（同样，客户端应该保证移除数据的所有引用，应该会无法使用）。一般，复位的Loader不会被再次调用，然而一些情况下，可能会被再次启动。</li>
+</ul>
+<ol>
+<li>一个接收数据变化通知的观测者。Loader应该实现某种观测者，比如<code>BroadcastReceiver</code>等等，来监视数据源的变化。一旦侦测到变化，观测者应该调用<code>Loader#onContentChanged()</code>方法，如果Loader处在启动状态，强制进行一次新的加载；否则产生一个flag来表示有新的变化，这样一旦Loader再次启动就会重新载入数据。</li>
+</ol>
+<h1 id="实现Loader"><a href="#实现Loader" class="headerlink" title="实现Loader"></a>实现Loader</h1><p>在实现自己的Loader时，有很多问题必须谨记。子类必须实现<code>loadInBackground()</code>方法并重写<code>onStartLoading()</code>, <code>onStopLoading()</code>, <code>onReset()</code>, <code>onCanceled()</code>, and <code>deliverResult(D results)</code>来实现一个完全工作的Loader。重写这些方法非常重要，因为LoaderManager会根据activity或fragment的状态来调用他们。比如，启动activity后，会在<code>activity#onStart()</code>方法中告知LoaderManager启动所有Loader。如果Loader未被启动，LoaderManager调用<code>startLoading()</code>，使得Loader进入启动状态，并立即调用其<code>onStartLoading()</code>方法。</p>
+<pre><code>public CursorLoaderass SampleLoader extends AsyncTaskLoader&lt;List&lt;SampleItem&gt;&gt; {
+
+  // 在这里保持Loader数据的引用
+  private List&lt;SampleItem&gt; mData;
+
+  public SampleLoader(Context ctx) {
+    // Loader可以跨越多个activity使用（假如没有绑定到LoaderManager），所以不要直接保持context的引用。
+    // 这会导致泄露整个activity的context。父类的构造器会存储一个Application Context的引用
+    // 可以通过getContext()方法获取
+    super(ctx);
+  }
+
+  /****************************************************/
+  /** (1) 执行异步加载的任务 **/
+  /****************************************************/
+
+  @Override
+  public List&lt;SampleItem&gt; loadInBackground() {
+    // 该方法在后台线程创建并产生新的数据的集合，传送给客户端
+    List&lt;SampleItem&gt; data = new ArrayList&lt;SampleItem&gt;();
+
+    // TODO: 在这里执行查询，并将结果添加至data
+
+    return data;
+  }
+
+  /********************************************************/
+  /** (2) 将结果传送给注册的侦听器 **/
+  /********************************************************/
+
+  @Override
+  public void deliverResult(List&lt;SampleItem&gt; data) {
+    if (isReset()) {
+      // Loader已被复位; 无视结果，并将数据无效化.
+      releaseResources(data);
+      return;
+    }
+
+    // 保持旧数据的引用，使之不被gc回收。
+    // 保护它直到新数据被送达.
+    List&lt;SampleItem&gt; oLoaderData = mData;
+    mData = data;
+
+    if (isStarted()) {
+      // 若Loader已启动，传送结果至客户端。父类方法会实现具体的操作。
+      super.deliverResult(data);
+    }
+
+    // 将已经不需要的旧数据无效化.
+    if (oLoaderData != null &amp;&amp; oLoaderData != data) {
+      releaseResources(oLoaderData);
+    }
+  }
+
+  /*********************************************************/
+  /** (3) 实现Loader状态依赖的行为 **/
+  /*********************************************************/
+
+  @Override
+  protected void onStartLoading() {
+    if (mData != null) {
+      // 立即传送先前载入的数据.
+      deliverResult(mData);
+    }
+
+    // 监视数据源.
+    if (mObserver == null) {
+      mObserver = new SampleObserver();
+      // TODO: 注册观测者
+    }
+
+    if (takeContentChanged() || mData == null) {
+      // 观测者发现变化后，应调用loader的onContentChanged()
+      // 后者会造成下次调用takeContentChanged()返回true
+      // 这种情况下（或当前数据为null），会强制一次新的加载
+      forceLoad();
+    }
+  }
+
+  @Override
+  protected void onStopLoading() {
+    // 在停止状态下，应该试着取消当前的载入（如果有的话）
+    cancelLoad();
+
+    // 注意我们没有变更观测者. 停止状态下的Loaders仍然应该监视数据源的变化
+    // 这样Loader再次启动后会知道是否需要强制进行新的加载
+  }
+
+  @Override
+  protected void onReset() {
+    // 确保loader已被停止.
+    onStopLoading();
+
+    // 这里我们可以释放与&apos;mData&apos;关联的资源.
+    if (mData != null) {
+      releaseResources(mData);
+      mData = null;
+    }
+
+    // 如果loader正在被复位，应该停止监视数据变化.
+    if (mObserver != null) {
+      // TODO: 注销观测者
+      mObserver = null;
+    }
+  }
+
+  @Override
+  public void onCanceled(List&lt;SampleItem&gt; data) {
+    // 试着取消当前的异步加载.
+    super.onCanceled(data);
+
+    // 加载已取消，应该释放&apos;data&apos;相关的资源
+    releaseResources(data);
+  }
+
+  private void releaseResources(List&lt;SampleItem&gt; data) {
+    // 对简单的列表，不需要做任何事。对Cursor，应该在这里进行关闭。所有Loader相关的资源
+    // 应该在这里释放
+  }
+
+  /*********************************************************************/
+  /** (4) 接收数据变化通知的观测者 **/
+  /*********************************************************************/
+
+  // NOTE: Implementing an observer is outside the scope of this post (this example
+  // uses a made-up &quot;SampleObserver&quot; to illustrate when/where the observer shouLoader 
+  // be initialized). 
+
+  // 观测者只需要能够探测到数据源的变化并通过调用onContentChanged()报告给Loader
+  // 如果在写载入设备上所有应用的列表的Loader的话，观测者应该是一个侦听
+  // ACTION_PACKAGE_ADDED intent的BroadcastReceiver，并且探测到新应用安装时，
+  // 调用特定Loader的onContentChanged() 方法
+
+  private SampleObserver mObserver;
+}
+</code></pre>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Loader/" rel="tag">#Loader</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/13/review-loaders/" rel="next" title="重探Loader（一）">
+                <i class="fa fa-chevron-left"></i> 重探Loader（一）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/15/visitor-double-dispatch/" rel="prev" title="Understanding the Visitor Pattern - Double Dispatch">
+                Understanding the Visitor Pattern - Double Dispatch <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">82</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#过去"><span class="nav-number">1.</span> <span class="nav-text">过去</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#理解LoaderManager"><span class="nav-number">2.</span> <span class="nav-text">理解LoaderManager</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Loader基础"><span class="nav-number">3.</span> <span class="nav-text">Loader基础</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#什么组成了Loader"><span class="nav-number">4.</span> <span class="nav-text">什么组成了Loader</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现Loader"><span class="nav-number">5.</span> <span class="nav-text">实现Loader</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

@@ -1,0 +1,809 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Content Provider,database," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="重复性或结构化的数据时候存入数据库中，比如联系人信息。
+定义Schema和ContractSchema是SQL数据库的主要原则之一：数据库如何组织的正式声明。Schema表现在创建数据库时使用的SQL语句。它可以帮助创建一个contract类，后者用一种系统的，自记录的方式显式地指明schema的布局。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓SQL数据库总结">
+<meta property="og:url" content="http://yoursite.com/2015/10/11/Saving-Data-in-SQL-Databases/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="重复性或结构化的数据时候存入数据库中，比如联系人信息。
+定义Schema和ContractSchema是SQL数据库的主要原则之一：数据库如何组织的正式声明。Schema表现在创建数据库时使用的SQL语句。它可以帮助创建一个contract类，后者用一种系统的，自记录的方式显式地指明schema的布局。">
+<meta property="og:updated_time" content="2016-02-16T11:29:14.989Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="安卓SQL数据库总结">
+<meta name="twitter:description" content="重复性或结构化的数据时候存入数据库中，比如联系人信息。
+定义Schema和ContractSchema是SQL数据库的主要原则之一：数据库如何组织的正式声明。Schema表现在创建数据库时使用的SQL语句。它可以帮助创建一个contract类，后者用一种系统的，自记录的方式显式地指明schema的布局。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 安卓SQL数据库总结 | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                安卓SQL数据库总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-11T19:49:20+08:00" content="2015-10-11">
+              2015-10-11
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>重复性或结构化的数据时候存入数据库中，比如联系人信息。</p>
+<h2 id="定义Schema和Contract"><a href="#定义Schema和Contract" class="headerlink" title="定义Schema和Contract"></a>定义Schema和Contract</h2><p>Schema是SQL数据库的主要原则之一：数据库如何组织的正式声明。Schema表现在创建数据库时使用的SQL语句。它可以帮助创建一个contract类，后者用一种系统的，自记录的方式显式地指明schema的布局。<br><a id="more"></a><br>Contract类是一个常量的容器，用来定义URI，数据表，栏的名称。它允许你在同一个包内的所有类中使用同样的常量。这样可以在某处地方改变栏名称后，自动传播到整个代码。</p>
+<p>将数据库的全局定义放在根层次的类中是一种组织contract类的好方式。然后为每个table创建一个内部类来枚举它的栏。</p>
+<blockquote>
+<p><strong>注意：</strong>通过实现<code>BaseColumns</code>接口，内部类将继承一个主键域<code>_ID</code>，一些安卓类如cursor adaptor会需要这个主键。它并非必需的，但可以帮助数据库与安卓框架协同工作。</p>
+</blockquote>
+<p>下面的片段定义了一张表的表名和列名：</p>
+<pre><code>public final class FeedReaderContract {
+    // To prevent someone from accidentally instantiating the contract class,
+    // give it an empty constructor.
+    public FeedReaderContract() {}
+
+    /* Inner class that defines the table contents */
+    public static abstract class FeedEntry implements BaseColumns {
+        public static final String TABLE_NAME = &quot;entry&quot;;
+        public static final String COLUMN_NAME_ENTRY_ID = &quot;entryid&quot;;
+        public static final String COLUMN_NAME_TITLE = &quot;title&quot;;
+        public static final String COLUMN_NAME_SUBTITLE = &quot;subtitle&quot;;
+        ...
+    }
+}
+</code></pre><h2 id="用SQL-Helper创建数据库"><a href="#用SQL-Helper创建数据库" class="headerlink" title="用SQL Helper创建数据库"></a>用SQL Helper创建数据库</h2><p>一旦定义了自己数据库的外观，接下来应该实现创造和维护数据库及表的方法。下面使一些创建和删除表的典型语句：</p>
+<pre><code>private static final String TEXT_TYPE = &quot; TEXT&quot;;
+private static final String COMMA_SEP = &quot;,&quot;;
+private static final String SQL_CREATE_ENTRIES =
+    &quot;CREATE TABLE &quot; + FeedEntry.TABLE_NAME + &quot; (&quot; +
+    FeedEntry._ID + &quot; INTEGER PRIMARY KEY,&quot; +
+    FeedEntry.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
+    FeedEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
+    ... // Any other options for the CREATE command
+    &quot; )&quot;;
+
+private static final String SQL_DELETE_ENTRIES =
+    &quot;DROP TABLE IF EXISTS &quot; + FeedEntry.TABLE_NAME;
+</code></pre><p>正如在设备的内部存储中保存的文件一样，安卓将数据库存储在应用的私有硬盘空间中。这些数据是安全的，因为默认不能被其他应用访问。</p>
+<p><code>SQLiteOpenHelper</code>中有一套有用的API。使用这个类来获得数据库的引用时，系统只在需要时执行创建和更新数据库的（可能长时间执行的）操作，而非在应用启动时。需要做的仅仅是调用<code>getWritableDatabase()</code>或者<code>getReadableDatabase()</code>。</p>
+<blockquote>
+<p><strong>注意：</strong>因为可能会长期执行，所以确保<code>getWritableDatabase()</code>或者<code>getReadableDatabase()</code>在后台线程中调用，如使用<code>AsyncTask()</code>或者<code>IntentService</code>。</p>
+</blockquote>
+<p>要使用<code>SQLiteOpenHelper</code>，创建一个子类，重写<code>onCreate()</code>, <code>onUpgrade()</code>, <code>onOpen()</code>回调方法。也可以重新<code>onDowngrade()</code>但并非必需的。</p>
+<pre><code>public class FeedReaderDbHelper extends SQLiteOpenHelper {
+    // If you change the database schema, you must increment the database version.
+    public static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = &quot;FeedReader.db&quot;;
+
+    public FeedReaderDbHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(SQL_CREATE_ENTRIES);
+    }
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // This database is only a cache for online data, so its upgrade policy is
+        // to simply to discard the data and start over
+        db.execSQL(SQL_DELETE_ENTRIES);
+        onCreate(db);
+    }
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        onUpgrade(db, oldVersion, newVersion);
+    }
+}
+</code></pre><p>要访问数据库，实例化其子类：</p>
+<pre><code>FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getContext());
+</code></pre><h2 id="向数据库中添加信息"><a href="#向数据库中添加信息" class="headerlink" title="向数据库中添加信息"></a>向数据库中添加信息</h2><p>通过传送<code>ContentValues</code>到<code>insert()</code>方法向数据库中插入数据：</p>
+<pre><code>// Gets the data repository in write mode
+SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+// Create a new map of values, where column names are the keys
+ContentValues values = new ContentValues();
+values.put(FeedEntry.COLUMN_NAME_ENTRY_ID, id);
+values.put(FeedEntry.COLUMN_NAME_TITLE, title);
+values.put(FeedEntry.COLUMN_NAME_CONTENT, content);
+
+// Insert the new row, returning the primary key value of the new row
+long newRowId;
+newRowId = db.insert(
+         FeedEntry.TABLE_NAME,
+         FeedEntry.COLUMN_NAME_NULLABLE,
+         values);
+</code></pre><p><code>insert()</code>方法的第一个参数是表名。第二个参数提供一个列的名字，当<code>ContentValues</code>为空时，框架可以插入NULL进入这个列中。如果设置为<code>&quot;null&quot;</code>，框架将不会在没有值时插入新行。</p>
+<h2 id="从数据库中读取信息"><a href="#从数据库中读取信息" class="headerlink" title="从数据库中读取信息"></a>从数据库中读取信息</h2><p>要从数据库中读取数据，使用<code>query()</code>方法，传送给你的选择标准和想要的栏。这个方法结合了<code>insert()</code>和<code>update()</code>的元素，除了将要插入的数据改为想要取回的栏。查询的结果通过一个<code>Cursor</code>对象来返回。</p>
+<pre><code>SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+// Define a projection that specifies which columns from the database
+// you will actually use after this query.
+String[] projection = {
+    FeedEntry._ID,
+    FeedEntry.COLUMN_NAME_TITLE,
+    FeedEntry.COLUMN_NAME_UPDATED,
+    ...
+    };
+
+// How you want the results sorted in the resulting Cursor
+String sortOrder =
+    FeedEntry.COLUMN_NAME_UPDATED + &quot; DESC&quot;;
+
+Cursor c = db.query(
+    FeedEntry.TABLE_NAME,  // The table to query
+    projection,                               // The columns to return
+    selection,                                // The columns for the WHERE clause
+    selectionArgs,                            // The values for the WHERE clause
+    null,                                     // don&apos;t group the rows
+    null,                                     // don&apos;t filter by row groups
+    sortOrder                                 // The sort order
+    );
+</code></pre><p>使用<code>Cursor</code>中的移动方法来查看其中的行，在读取数据之前也必须调用它。一般，应该首先调用<code>moveToFirst()</code>，它将“读取位置”设置在结果中的第一个条目。对每个行而言，可以通过调用<code>Cursor</code>中的get方法来获取某一列的值，比如<code>getString</code>或<code>getLong()</code>。调用其中每个get方法，都必须传送想要的栏的索引位置。这些位置可以通过<code>getColumnIndex()</code>或者<code>getColumnIndexOrThrow()</code>来获得。</p>
+<pre><code>cursor.moveToFirst();
+long itemId = cursor.getLong(
+    cursor.getColumnIndexOrThrow(FeedEntry._ID)
+);
+</code></pre><h2 id="从数据库中删除信息"><a href="#从数据库中删除信息" class="headerlink" title="从数据库中删除信息"></a>从数据库中删除信息</h2><p>要从表中删除行，需要提供识别行的选择标准。数据库的API提供了一套创建选择标准的机理来防止SQL注入。这套机理将选择指定的过程分为选择条款和选择参数两部分。选择条款定义了要查看的栏，也允许合并栏测试。选择参数是绑定到选择条款中的值。因为结果的处理与通常的SQL语句不同，所以对SQL注入免疫。</p>
+<pre><code>// Define &apos;where&apos; part of query.
+String selection = FeedEntry.COLUMN_NAME_ENTRY_ID + &quot; LIKE ?&quot;;
+// Specify arguments in placeholder order.
+String[] selectionArgs = { String.valueOf(rowId) };
+// Issue SQL statement.
+db.delete(table_name, selection, selectionArgs);
+</code></pre><h2 id="更新数据库"><a href="#更新数据库" class="headerlink" title="更新数据库"></a>更新数据库</h2><p>需要修改数据库的一个子集时，使用<code>update()</code>方法。</p>
+<p>更新数据库结合了<code>insert()</code>语法和<code>delete()</code>的<code>where</code>语法。</p>
+<pre><code>SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+// New value for one column
+ContentValues values = new ContentValues();
+values.put(FeedEntry.COLUMN_NAME_TITLE, title);
+
+// Which row to update, based on the ID
+String selection = FeedEntry.COLUMN_NAME_ENTRY_ID + &quot; LIKE ?&quot;;
+String[] selectionArgs = { String.valueOf(rowId) };
+
+int count = db.update(
+    FeedReaderDbHelper.FeedEntry.TABLE_NAME,
+    values,
+    selection,
+    selectionArgs);
+</code></pre>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Content-Provider/" rel="tag">#Content Provider</a>
+          
+            <a href="/tags/database/" rel="tag">#database</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/10/ImageGetter-with-Picasso/" rel="next" title="A Failed Attempt to Implement Html.ImageGetter with Picasso">
+                <i class="fa fa-chevron-left"></i> A Failed Attempt to Implement Html.ImageGetter with Picasso
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/10/15/EmptyView-in-ViewPager/" rel="prev" title="EmptyView in ViewPager">
+                EmptyView in ViewPager <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">82</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义Schema和Contract"><span class="nav-number">1.</span> <span class="nav-text">定义Schema和Contract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用SQL-Helper创建数据库"><span class="nav-number">2.</span> <span class="nav-text">用SQL Helper创建数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#向数据库中添加信息"><span class="nav-number">3.</span> <span class="nav-text">向数据库中添加信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从数据库中读取信息"><span class="nav-number">4.</span> <span class="nav-text">从数据库中读取信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从数据库中删除信息"><span class="nav-number">5.</span> <span class="nav-text">从数据库中删除信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新数据库"><span class="nav-number">6.</span> <span class="nav-text">更新数据库</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

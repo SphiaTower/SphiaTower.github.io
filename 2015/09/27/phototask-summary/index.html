@@ -1,0 +1,710 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Multiple Threads," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="接下来，总结一下前几篇中的PhotoTask的例子，例子的源代码可以在官网下载。  
+PhotoDecodeRunnable这个类是照片解码的任务，创建时获得PhotoTask的引用，并在执行时调用mPhotoTask.setImageDecodeThread(Thread.currentThread());来让PhotoTask获得解码线程的引用。
+在解码工作完成后，调用PhotoTask.se">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓多线程（五） PhotoTask例子的总结">
+<meta property="og:url" content="http://yoursite.com/2015/09/27/phototask-summary/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="接下来，总结一下前几篇中的PhotoTask的例子，例子的源代码可以在官网下载。  
+PhotoDecodeRunnable这个类是照片解码的任务，创建时获得PhotoTask的引用，并在执行时调用mPhotoTask.setImageDecodeThread(Thread.currentThread());来让PhotoTask获得解码线程的引用。
+在解码工作完成后，调用PhotoTask.se">
+<meta property="og:updated_time" content="2015-09-27T13:38:18.307Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="安卓多线程（五） PhotoTask例子的总结">
+<meta name="twitter:description" content="接下来，总结一下前几篇中的PhotoTask的例子，例子的源代码可以在官网下载。  
+PhotoDecodeRunnable这个类是照片解码的任务，创建时获得PhotoTask的引用，并在执行时调用mPhotoTask.setImageDecodeThread(Thread.currentThread());来让PhotoTask获得解码线程的引用。
+在解码工作完成后，调用PhotoTask.se">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 安卓多线程（五） PhotoTask例子的总结 | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                安卓多线程（五） PhotoTask例子的总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-27T18:43:48+08:00" content="2015-09-27">
+              2015-09-27
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>接下来，总结一下前几篇中的PhotoTask的例子，例子的源代码可以在官网下载。  </p>
+<h2 id="PhotoDecodeRunnable"><a href="#PhotoDecodeRunnable" class="headerlink" title="PhotoDecodeRunnable"></a>PhotoDecodeRunnable</h2><p>这个类是照片解码的任务，创建时获得<code>PhotoTask</code>的引用，并在执行时调用<code>mPhotoTask.setImageDecodeThread(Thread.currentThread());</code>来让<code>PhotoTask</code>获得解码线程的引用。</p>
+<p>在解码工作完成后，调用<code>PhotoTask.setImage()</code>方法传递<code>Bitmap</code>的引用，调用<code>PhotoTask.handleDecodeState()</code>方法来报告状态。<br><a id="more"></a></p>
+<p>总结：这个类在解码线程池中获取线程进行解码，并将结果报告给<code>PhotoTask</code>。</p>
+<h2 id="PhotoManager"><a href="#PhotoManager" class="headerlink" title="PhotoManager"></a>PhotoManager</h2><p>这是一个单例类，持有线程池，创建了一个UI线程的<code>Handler</code>，在它的<code>handleMessage()</code>方法中可以处理UI事件。在方法中通过<code>msg.obj</code>获得<code>PhotoTask</code>。</p>
+<p>在这个类中创建了解码工作的工作队列<code>BlockingQueue&lt;Runnable&gt;</code>和线程池。创建线程池时需要传入阻塞队列。</p>
+<p>在这个类中，通过<code>handleState(PhotoTask photoTask, int state)</code>方法判断下载任务是否完成。如果下载完成，调用<code>PhotoTask.getPhotoDecodeRunnable()</code>方法获取解码任务，交由解码线程池处理。如果解码完成，用<code>Handler</code>的<code>obtainMessage(state, photoTask)</code>方法创建消息，再调用<code>sendToTarget()</code>方法来将消息发送给<code>Handler</code>。</p>
+<p>在UI线程的<code>handleMessage()</code>中，通过<code>msg.obj</code>获得<code>PhotoTask</code>，然后获取其中的<code>ImageView</code>和<code>Bitmap</code>，在UI线程中进行设置操作。</p>
+<p>总结：这个类的工作就是创建线程池，并提供全局的引用。同时这个类是所有消息的最终处理者，并通过UI线程的<code>Handler</code>来处理UI事件。</p>
+<h2 id="PhotoTask"><a href="#PhotoTask" class="headerlink" title="PhotoTask"></a>PhotoTask</h2><p>这个类并没有继承<code>Runnable</code>或是其他的实体类。它通过<code>PhotoManager</code>的静态方法获取单例的引用。在<code>handleDecodeState</code>方法中处理<code>PhotoDecodeRunnable</code>的结果状态，然后生成新的结果状态交由<code>handleState()</code>处理，在这个方法中，再将自己本身和生成的状态交由<code>PhotoManager</code>的单例进行处理。</p>
+<p>总结：这个类是一个中间类，主要用来处理一些状态信息。</p>
+<h2 id="时间轴"><a href="#时间轴" class="headerlink" title="时间轴"></a>时间轴</h2><p>接下来以时间顺序来研究一下这几部分代码。</p>
+<ol>
+<li><code>PhotoManager</code>创建静态单例，初始化阻塞队列，以此为基础创建解码线程池。这个线程池处理所有的解码工作。创建<code>Handler</code>与UI线程交互。</li>
+<li>创建<code>PhotoTask</code>，通过静态方法获得<code>PhotoManager</code>的引用。</li>
+<li>某个下载任务完成后，<code>PhotoManager.handleState()</code>方法被调用，如果成功，线程池将执行一个解码任务，这个任务的<code>PhotoDecodeRunnable</code>由<code>PhotoTask</code>类获得。</li>
+<li><code>PhotoDecodeRunnable</code>执行后，将所在的线程告知<code>PhotoTask</code>以便将来处理。在任务结束时，将<code>Bitmap</code>传递给<code>PhotoTask</code>存储，将状态码交由<code>PhotoTask</code>进行<code>handleDecodeState()</code>。至此这个类的工作全部结束。</li>
+<li><code>PhotoTask</code>处理解码任务的状态码，并生成新的状态码交由<code>handleState()</code>处理，在这个方法中，又将状态码和自身都交由<code>PhotoManager.handleState(this,state)</code>处理，这是因为，最后的工作都要在UI线程中完成，而通过<code>PhotoManager</code>中的<code>Handler</code>可以将消息发送到UI线程。</li>
+<li><code>PhotoManager</code>在<code>handleState()</code>方法中将获取的<code>PhotoTask</code>和状态码打包至一个<code>Message</code>中，将之发送到UI线程的<code>Handler</code>。</li>
+<li><code>Handler(Looper.getMainLooper())</code>接收到消息，提取出<code>PhotoTask</code>和状态码。如果成功，从<code>PhotoTask</code>中获取<code>Bitmap</code>和<code>ImageView</code>，在UI线程中进行set工作。</li>
+</ol>
+<h2 id="总结：分层与模块化"><a href="#总结：分层与模块化" class="headerlink" title="总结：分层与模块化"></a>总结：分层与模块化</h2><p>这个例子做的事情其实非常简单，就是下载图片（这部分内容被省略了）后，在别的线程中解码图片，并将解码的结果最终传递给UI线程进行操作。但最后的实现可以说非常复杂，归根结底就是尽量将代码分层和模块化。</p>
+<ul>
+<li><code>PhotoDecodeRunnable</code>只与<code>PhotoTask</code>进行通信，获得的结果即返回的状态都交由<code>PhotoTask</code>进行处理。通信的方式是在创建时存储引用，然后直接处理。</li>
+<li><code>PhotoTask</code>得到下载任务和解码任务返回的结果和状态码。它能够通过静态单例直接调用<code>PhotoManager</code>，可以根据返回的结果直接操作<code>PhotoManager</code>中的线程池发起新的任务。它将自己的引用和状态码交由<code>PhotoManager</code>进行处理。</li>
+<li><code>PhotoManager</code>管理线程池，必须通过它来发起任务。它创建<code>Handler</code>来负责与发送信息给UI线程。<code>PhotoManager</code>将<code>PhotoTask</code>和状态码发送给UI线程。UI线程在<code>handleMessage()</code>中，通过<code>PhotoTask()</code>获取图片和view的引用，进行set操作。</li>
+<li><code>PhotoDecodeRunnable</code>的结果被传送给<code>PhotoTask</code>进行保存和初步处理，然后信息又被传送给了<code>PhotoManager</code>进行处理，处理后又被发送到了UI线程的<code>Handler</code>进行最后的处理。</li>
+</ul>
+<p>分层方式：</p>
+<ol>
+<li><code>PhotoDecodeRunnable</code>：具体解码任务的执行</li>
+<li><code>PhotoTask</code>：代表整个照片任务的总体</li>
+<li><code>PhotoManager</code>：负责总体的调度以及与UI线程的通信</li>
+</ol>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Multiple-Threads/" rel="tag">#Multiple Threads</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/27/popupwindows/" rel="next" title="DialogFragmnet与PopupWindow">
+                <i class="fa fa-chevron-left"></i> DialogFragmnet与PopupWindow
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/28/source-code-of-AsyncTask/" rel="prev" title="源码解析 - AsyncTask">
+                源码解析 - AsyncTask <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">82</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#PhotoDecodeRunnable"><span class="nav-number">1.</span> <span class="nav-text">PhotoDecodeRunnable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PhotoManager"><span class="nav-number">2.</span> <span class="nav-text">PhotoManager</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PhotoTask"><span class="nav-number">3.</span> <span class="nav-text">PhotoTask</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#时间轴"><span class="nav-number">4.</span> <span class="nav-text">时间轴</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结：分层与模块化"><span class="nav-number">5.</span> <span class="nav-text">总结：分层与模块化</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

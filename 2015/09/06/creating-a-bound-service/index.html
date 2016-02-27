@@ -1,0 +1,806 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Service," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="创建绑定的Service绑定的服务是指允许应用组件通过调用bindService()来绑定的服务，可以创建一个长期维持的连接（通常不允许调用startService()启动。当需要使用Activity或者其他组件与服务进行互动的时候，或者是通过IPC将应用的一部分功能暴露给其他应用的时候，适合创建绑定的服务。创建绑定的服务时，必须实现onBind()回调方法以返回一个定义了与服务通讯接口的IBin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Service学习笔记（六） 绑定Service">
+<meta property="og:url" content="http://yoursite.com/2015/09/06/creating-a-bound-service/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="创建绑定的Service绑定的服务是指允许应用组件通过调用bindService()来绑定的服务，可以创建一个长期维持的连接（通常不允许调用startService()启动。当需要使用Activity或者其他组件与服务进行互动的时候，或者是通过IPC将应用的一部分功能暴露给其他应用的时候，适合创建绑定的服务。创建绑定的服务时，必须实现onBind()回调方法以返回一个定义了与服务通讯接口的IBin">
+<meta property="og:updated_time" content="2015-10-01T06:23:46.530Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Service学习笔记（六） 绑定Service">
+<meta name="twitter:description" content="创建绑定的Service绑定的服务是指允许应用组件通过调用bindService()来绑定的服务，可以创建一个长期维持的连接（通常不允许调用startService()启动。当需要使用Activity或者其他组件与服务进行互动的时候，或者是通过IPC将应用的一部分功能暴露给其他应用的时候，适合创建绑定的服务。创建绑定的服务时，必须实现onBind()回调方法以返回一个定义了与服务通讯接口的IBin">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Service学习笔记（六） 绑定Service | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Service学习笔记（六） 绑定Service
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-06T21:37:07+08:00" content="2015-09-06">
+              2015-09-06
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="创建绑定的Service"><a href="#创建绑定的Service" class="headerlink" title="创建绑定的Service"></a>创建绑定的Service</h2><p>绑定的服务是指允许应用组件通过调用<code>bindService()</code>来绑定的服务，可以创建一个长期维持的连接（通常不允许调用<code>startService()</code>启动。<br>当需要使用Activity或者其他组件与服务进行互动的时候，或者是通过IPC将应用的一部分功能暴露给其他应用的时候，适合创建绑定的服务。<br>创建绑定的服务时，必须实现<code>onBind()</code>回调方法以返回一个定义了与服务通讯接口的<code>IBinder</code>。其他应用可以通过调用<code>bindService()</code>方法来获取这个接口，并调用服务中的方法。这种service仅仅为了绑定的控件而服务，所以一旦没有控件绑定，系统会立即将其销毁（无需像在启动模式一样手动停止服务）。<br><a id="more"></a><br>创建绑定的服务，首先要定义接口，明确客户端应该如何与服务进行通信。这个通信的接口必须实现<code>IBinder</code>，也是服务在<code>onBind()</code>方法中必须返回的值。客户一旦收到<code>IBinder</code>，就可以通过这个接口与服务进行通信。<br>多个客户端可以绑定在同一个service上。当其中一个不再与service发生交互时，可以调用<code>unbindService()</code>来解除绑定。</p>
+<h2 id="绑定Service"><a href="#绑定Service" class="headerlink" title="绑定Service"></a>绑定Service</h2><p>绑定的service起着cs模型中服务器的作用。绑定的服务可以允许组件（如Activity）进行绑定，发送请求，接收响应甚至跨进程通讯。</p>
+<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p>客户端通过<code>bindService()</code>绑定服务时，必须要提供一个<code>ServiceConnection</code>的实现来监视与服务的连接状况。<code>bindService()</code>方法在调用后立即结束不返回任何值，而当安卓系统创造客户端和服务的连接时，会调用<code>ServiceConnection</code>的<code>onServiceConnected()</code>方法，传给客户端用来与服务通讯的<code>IBinder</code>。<br>多个客户端的情况，系统只在第一次绑定时调用服务的<code>onBind()</code>方法来获取<code>IBinder</code>。系统随后将相同的<code>IBinder</code>传给其他绑定的客户端。<br>所有客户端解绑之后，系统将销毁服务（除非服务曾被<code>startService()</code>启动）。<br>实现绑定的服务时，最重要的是定义<code>onBind()</code>方法返回的接口。下面将探讨其中的几种方法。  </p>
+<h2 id="创建一个绑定的服务"><a href="#创建一个绑定的服务" class="headerlink" title="创建一个绑定的服务"></a>创建一个绑定的服务</h2><p>有三种方法可以定义服务与客户端交互的接口：  </p>
+<h3 id="继承Binder类"><a href="#继承Binder类" class="headerlink" title="继承Binder类"></a>继承Binder类</h3><p>如果服务为应用所私有，并且与客户端运行在同一个进程中，应该通过继承<code>Binder</code>类的方式创建接口，并在<code>onBind()</code>方法中返回其实例。接收到<code>Binder</code>的客户端可以用它直接访问<code>Binder</code>实现，甚至是<code>Service</code>的公共方法。</p>
+<h3 id="使用Messenger"><a href="#使用Messenger" class="headerlink" title="使用Messenger"></a>使用Messenger</h3><p>如果需要接口能跨进程工作，可以用<code>Messenger</code>来创建为服务创建接口。服务必须定义一个<code>Handler</code>来响应不同类型的<code>Message</code>对象。<code>Handler</code>是<code>Mesenger</code>的基础，后者可以与客户端共享<code>IBinder</code>，允许客户端使用<code>Message</code>向服务发送命令。客户端也可以定义自己的<code>Messenger</code>让服务可以发回消息。<br>这时实现跨进程通讯IPC最简单的方法，因为<code>Messenger</code>将所有请求排队到单个线程中，所以不必考虑设计服务时的线程安全问题。</p>
+<h3 id="使用AIDL"><a href="#使用AIDL" class="headerlink" title="使用AIDL"></a>使用AIDL</h3><p>最好不要使用这种方式，可能会造成复杂的多线程问题。</p>
+<h2 id="继承Binder类-1"><a href="#继承Binder类-1" class="headerlink" title="继承Binder类"></a>继承Binder类</h2><p>客户端和服务在同一应用同一进程的时候使用。可以使客户端直接访问服务的公共方法。<br>实现方法：</p>
+<ol>
+<li><p>在服务中创建一个<code>Binder</code>的实例，并且满足以下几个条件之一：  </p>
+<ul>
+<li>包含客户端可以调用的公共方法</li>
+<li>返回当前的<code>Service</code>实例，它包含了客户端可以调用的公共方法</li>
+<li>返回service所host的含有客户端可调用的公共方法的类的实例</li>
+</ul>
+</li>
+<li><p>在<code>onBind()</code>回调中返回<code>Binder</code>的实例。</p>
+</li>
+<li>在客户端，从<code>onServiceConnected()</code>方法中接收<code>Binder</code>，用其提供的方法调用绑定的service。  </li>
+</ol>
+<p>下面是通过<code>Binder</code>允许客户端调用服务中的方法的例子：  </p>
+<pre><code>public class LocalService extends Service {
+    // Binder given to clients
+    private final IBinder mBinder = new LocalBinder();
+    // Random number generator
+    private final Random mGenerator = new Random();
+
+    /**
+     * Class used for the client Binder.  Because we know this service always
+     * runs in the same process as its clients, we don&apos;t need to deal with IPC.
+     */
+    public class LocalBinder extends Binder {
+        LocalService getService() {
+            // Return this instance of LocalService so clients can call public methods
+            return LocalService.this;
+        }
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return mBinder;
+    }
+
+    /** method for clients */
+    public int getRandomNumber() {
+      return mGenerator.nextInt(100);
+    }
+}
+</code></pre><p><code>LocalBinder</code>提供的<code>getService()</code>方法可以使客户端获取<code>LocalService</code>的当前实例，以调用服务中的公共方法。下面是在activity中调用<code>getRandomNumber()</code>方法的例子：  </p>
+<pre><code>public class BindingActivity extends Activity {
+    LocalService mService;
+    boolean mBound = false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Bind to LocalService
+        Intent intent = new Intent(this, LocalService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Unbind from the service
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
+    }
+
+    /** Called when a button is clicked (the button in the layout file attaches to
+      * this method with the android:onClick attribute) */
+    public void onButtonClick(View v) {
+        if (mBound) {
+            // Call a method from the LocalService.
+            // However, if this call were something that might hang, then this request should
+            // occur in a separate thread to avoid slowing down the activity performance.
+            int num = mService.getRandomNumber();
+            Toast.makeText(this, &quot;number: &quot; + num, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /** Defines callbacks for service binding, passed to bindService() */
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                IBinder service) {
+            // We&apos;ve bound to LocalService, cast the IBinder and get LocalService instance
+            LocalBinder binder = (LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
+}
+</code></pre><p><strong>再来总结一下：</strong></p>
+<ol>
+<li>在activity中调用<code>bindService()</code>方法没有返回值且立即完成，所以需要从其他地方调用服务的公共方法;</li>
+<li>service的<code>onBind()</code>方法返回一个<code>IBinder</code>接口给activity，activity可以通过这个接口的实现来调用服务的公共方法；</li>
+<li>通过继承自<code>Binder</code>类，可以实现<code>IBinder</code>接口，并在类中提供自定义的方法返回service的实例或者以其他形式获取service公共方法的调用权；</li>
+<li>这个<code>Binder</code>类被返回给activity，activity只要获取这个<code>Binder</code>的引用就可以完成调用服务的任务了；</li>
+<li>因为第一条所说的原因，activity必须实现一个<code>ServiceConnection</code>。在<code>ServiceConnection</code>的回调方法<code>onServiceConnected()</code>中可以获取service传回的<code>IBinder</code>，将它转型成自定义的<code>Binder</code>子类，就可以调用服务的方法；</li>
+<li>调用<code>bindService()</code>方法时需要将<code>ServiceConnection</code>的实例传入，这样在绑定完成后，回调方法<code>onServiceConnected()</code>就会被调用。</li>
+</ol>
+<p><strong>以上是我自己的总结，接下来再来看一下官网教程的总结：</strong><br>应用组件（客户端）通过调用<code>bindService()</code>绑定服务。安卓系统随后调用服务的<code>onBind()</code>方法，返回一个<code>IBinder</code>来与服务交互。<br>绑定是一个异步过程，<code>bindService()</code>方法立即结束，并且<strong>不会</strong>把<code>IBinder</code>返回给客户端。客户端为了接收<code>IBinder</code>，必须创建一个<code>ServiceConnection</code>的实例，并把它传给<code>bindService()</code>。系统通过调用它的回调方法来传送<code>IBinder</code>。<br><strong>注意</strong>：只有activity，service，content provider可以绑定服务（broadcast receiver不可以）。<br>所以绑定服务必须经过一下几步：</p>
+<ol>
+<li><p>实现<code>ServiceConnection</code>。<br>必须覆盖两个回调方法：</p>
+<ul>
+<li><code>onServiceConnected()</code>：系统调用它来交付服务的<code>onBind()</code>方法返回的<code>IBinder</code>。</li>
+<li><code>onServiceDisconnected()</code>：当服务意外断开连接时调用，比如服务崩溃或被杀死时。客户端解绑时，不会调用。</li>
+</ul>
+</li>
+<li><p>调用<code>bindService()</code>，传送<code>ServiceConnection</code>实现。</p>
+</li>
+<li>系统调用了<code>onServiceConnected()</code>之后，便可以通过接口中定义的方法调用服务。</li>
+<li>调用<code>unbindService()</code>来解除服务的连接。<br>客户端被销毁后，会解绑服务。然而，完成与服务的交互之后或者activity暂停之后应该主动去解绑，以在服务不被使用时关闭服务。</li>
+</ol>
+<p>接下来研究一下<code>bindService()</code>方法的参数：</p>
+<pre><code>public abstract boolean bindService (Intent service, ServiceConnection conn, int flags)
+</code></pre><ul>
+<li>第一个参数是一个<code>Intent</code>，显式地表示要绑定的service（虽然也可以隐式）。</li>
+<li>第二个参数是<code>ServiceConnection</code>对象。</li>
+<li>第三个参数是一个绑定选项的flag。一般用<code>BIND_AUTO_CREATE</code>在服务未存活的情况下创建服务。  </li>
+</ul>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Service/" rel="tag">#Service</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/06/python-builder-pattern/" rel="next" title="Python的默认参数陷阱与Builder模式">
+                <i class="fa fa-chevron-left"></i> Python的默认参数陷阱与Builder模式
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/07/creating-a-bound-service-2/" rel="prev" title="Service学习笔记（七） 绑定Service（续）">
+                Service学习笔记（七） 绑定Service（续） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">82</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建绑定的Service"><span class="nav-number">1.</span> <span class="nav-text">创建绑定的Service</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#绑定Service"><span class="nav-number">2.</span> <span class="nav-text">绑定Service</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础"><span class="nav-number">3.</span> <span class="nav-text">基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个绑定的服务"><span class="nav-number">4.</span> <span class="nav-text">创建一个绑定的服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#继承Binder类"><span class="nav-number">4.1.</span> <span class="nav-text">继承Binder类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Messenger"><span class="nav-number">4.2.</span> <span class="nav-text">使用Messenger</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用AIDL"><span class="nav-number">4.3.</span> <span class="nav-text">使用AIDL</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#继承Binder类-1"><span class="nav-number">5.</span> <span class="nav-text">继承Binder类</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

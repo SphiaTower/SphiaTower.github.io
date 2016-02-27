@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Hexo</title>
+  <title>Welcome to SPHIA</title>
   
   <link href="/atom.xml" rel="self"/>
   
@@ -9,7 +9,7 @@
   <id>http://yoursite.com/</id>
   
   <author>
-    <name>John Doe</name>
+    <name>SphiaTower</name>
     
   </author>
   
@@ -48,29 +48,1829 @@
   </entry>
   
   <entry>
-    <title>Hello World</title>
-    <link href="http://yoursite.com/2016/02/27/hello-world/"/>
-    <id>http://yoursite.com/2016/02/27/hello-world/</id>
-    <published>2016-02-27T02:36:29.772Z</published>
-    <updated>2016-02-27T02:36:29.772Z</updated>
+    <title>Understanding the Visitor Pattern - Double Dispatch</title>
+    <link href="http://yoursite.com/2016/02/15/visitor-double-dispatch/"/>
+    <id>http://yoursite.com/2016/02/15/visitor-double-dispatch/</id>
+    <published>2016-02-15T13:28:29.000Z</published>
+    <updated>2016-02-21T14:42:49.617Z</updated>
     
-    <content type="html">&lt;p&gt;Welcome to &lt;a href=&quot;http://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;http://hexo.io/docs/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&quot;http://hexo.io/docs/troubleshooting.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&quot;https://github.com/hexojs/hexo/issues&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&quot;Quick-Start&quot;&gt;&lt;a href=&quot;#Quick-Start&quot; class=&quot;headerlink&quot; title=&quot;Quick Start&quot;&gt;&lt;/a&gt;Quick Start&lt;/h2&gt;&lt;h3 id=&quot;Create-a-new-post&quot;&gt;&lt;a href=&quot;#Create-a-new-post&quot; class=&quot;headerlink&quot; title=&quot;Create a new post&quot;&gt;&lt;/a&gt;Create a new post&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo new &lt;span class=&quot;string&quot;&gt;&quot;My New Post&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;http://hexo.io/docs/writing.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Writing&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Run-server&quot;&gt;&lt;a href=&quot;#Run-server&quot; class=&quot;headerlink&quot; title=&quot;Run server&quot;&gt;&lt;/a&gt;Run server&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo server&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;http://hexo.io/docs/server.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Server&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Generate-static-files&quot;&gt;&lt;a href=&quot;#Generate-static-files&quot; class=&quot;headerlink&quot; title=&quot;Generate static files&quot;&gt;&lt;/a&gt;Generate static files&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo generate&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;http://hexo.io/docs/generating.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Generating&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Deploy-to-remote-sites&quot;&gt;&lt;a href=&quot;#Deploy-to-remote-sites&quot; class=&quot;headerlink&quot; title=&quot;Deploy to remote sites&quot;&gt;&lt;/a&gt;Deploy to remote sites&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo deploy&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;http://hexo.io/docs/deployment.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Deployment&lt;/a&gt;&lt;/p&gt;
+    <content type="html">&lt;p&gt;For the visitor pattern, it’s not difficult to remember its syntax or use it. But why we must use a visitor pattern instead of a static method (a function) or other workarounds?&lt;/p&gt;
+&lt;h1 id=&quot;Static-methods&quot;&gt;&lt;a href=&quot;#Static-methods&quot; class=&quot;headerlink&quot; title=&quot;Static methods&quot;&gt;&lt;/a&gt;Static methods&lt;/h1&gt;&lt;p&gt;For a specified class hierarchy, when it comes to adding a method for every class without modifying themselves, what comes into my mind at first is to create a set of functions, i.e. a static method in java, each taking an instance of that class.&lt;/p&gt;
+&lt;p&gt;For example, if I want to add a method to &lt;code&gt;ICarElement&lt;/code&gt; and its implementations, &lt;code&gt;Wheel&lt;/code&gt;, &lt;code&gt;Engine&lt;/code&gt; and &lt;code&gt;Body&lt;/code&gt;, I could write such a class as a set of functions:&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;CarElementFuncs&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;visit&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Wheel wheel)&lt;/span&gt; &lt;/span&gt;&amp;#123;...&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;visit&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Engine engine)&lt;/span&gt; &lt;/span&gt;&amp;#123;...&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;visit&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Body body)&lt;/span&gt; &lt;/span&gt;&amp;#123;...&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;If I need a different implementation, I could write another class like &lt;code&gt;CarElementFuncs2&lt;/code&gt;. And if I want to make it more flexible at runtime, I could even make these classes singletons or use strategy pattern. But what is lacked?&lt;/p&gt;
+&lt;h1 id=&quot;Java-reflect&quot;&gt;&lt;a href=&quot;#Java-reflect&quot; class=&quot;headerlink&quot; title=&quot;Java reflect&quot;&gt;&lt;/a&gt;Java reflect&lt;/h1&gt;&lt;p&gt;The key of visitor pattern is the double dispatch. Even if it’s possible to change the behavior of &lt;code&gt;visit()&lt;/code&gt; function at runtime, the key shortcoming is that you cannot apply these functions on an &lt;code&gt;ICarElement&lt;/code&gt; at compile time. If you add a function to your function set like:&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;CarElementFuncs&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;comment&quot;&gt;// ......&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;visit&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(ICarElement element)&lt;/span&gt; &lt;/span&gt;&amp;#123;...&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;br&gt;There’s no way for the &lt;code&gt;visit(ICarElement)&lt;/code&gt; to know the runtime type of &lt;code&gt;ICarElement&lt;/code&gt;, except using reflect like &lt;code&gt;instanceof&lt;/code&gt;. If so the code becomes:&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;CarElementFuncs&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;visit&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(ICarElement element)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (element &lt;span class=&quot;keyword&quot;&gt;instanceof&lt;/span&gt; Wheel) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&lt;span class=&quot;comment&quot;&gt;//...&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;#125; &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (element &lt;span class=&quot;keyword&quot;&gt;instanceof&lt;/span&gt; Engine) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&lt;span class=&quot;comment&quot;&gt;//...&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;#125; &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&lt;span class=&quot;comment&quot;&gt;//...&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;br&gt;Then the code becomes an iteration through all possible classes in the hierarchy every time. It’s obviously not a good solution. Because when it comes to java reflect, there’s always a sense of code smell.&lt;/p&gt;
+&lt;h1 id=&quot;Double-dispatch&quot;&gt;&lt;a href=&quot;#Double-dispatch&quot; class=&quot;headerlink&quot; title=&quot;Double dispatch&quot;&gt;&lt;/a&gt;Double dispatch&lt;/h1&gt;&lt;p&gt;So here comes the visitor pattern.&lt;/p&gt;
+&lt;p&gt;Given a instance of a parent type like &lt;code&gt;ICarElement&lt;/code&gt;, you have no idea of what its runtime type is without using reflect. So, if you want to add a behavior to all subtypes of &lt;code&gt;ICarElement&lt;/code&gt;, taking their instances as arguments will not work. You must modify the class themselves. Only within the class scope, you can know the type of a specified instance by &lt;code&gt;this&lt;/code&gt;. So the code should be like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;ICarElement&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;accept&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(ICarElementVisitor visitor)&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;ICarElementVisitor&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;visit&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Wheel wheel)&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;visit&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Engine engine)&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;visit&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Body body)&lt;/span&gt;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Wheel&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;ICarElement&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;accept&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(ICarElementVisitor visitor)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		visitor.visit(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;When an &lt;code&gt;ICarElement&lt;/code&gt; instance accepts a visitor, the runtime type is passed to the &lt;code&gt;visit()&lt;/code&gt; method by &lt;code&gt;this&lt;/code&gt;. And the behavior of &lt;code&gt;ICarElementVisitor&lt;/code&gt; is also decided at runtime. Therefore, with the visitor pattern, only given two abstract interface &lt;code&gt;ICarElement&lt;/code&gt; and &lt;code&gt;ICarElementVisitor&lt;/code&gt; at compile time, you can output a variety of different possibilities of implementations at runtime, without largely modifying the code of the class hierarchy. This is the true power of the visitor pattern.&lt;/p&gt;
+&lt;h1 id=&quot;A-debate-on-performance&quot;&gt;&lt;a href=&quot;#A-debate-on-performance&quot; class=&quot;headerlink&quot; title=&quot;A debate on performance&quot;&gt;&lt;/a&gt;A debate on performance&lt;/h1&gt;&lt;p&gt;I found &lt;a href=&quot;http://stackoverflow.com/questions/3930808/how-to-avoid-large-if-statements-and-instanceof/16423712#16423712&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;an interesting debate&lt;/a&gt; when searching questions on the visitor pattern. Some people found that using &lt;code&gt;instanceof&lt;/code&gt; is even faster than the visitor pattern under some circumstances. But here’s a piece of argument on the side of visitor pattern:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I think it’s fair to bring this up. However in the vast majority cases, ease of maintenance will far outweigh a modest performance gain. With the visitor pattern, adding a new type of animal will expose immediately any places that need to be updated, as any previously existing visitors will now fail to compile. If-else chains using instanceof will happily compile and there is a good chance that you will not discover you have effected the foreign module until the incorrect behavior is noticed. &lt;/p&gt;
+&lt;/blockquote&gt;
 </content>
     
     <summary type="html">
     
-      &lt;p&gt;Welcome to &lt;a href=&quot;http://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;http://hexo.io
+      &lt;p&gt;For the visitor pattern, it’s not difficult to remember its syntax or use it. But why we must use a visitor pattern instead of a static method (a function) or other workarounds?&lt;/p&gt;
+&lt;h1 id=&quot;Static-methods&quot;&gt;&lt;a href=&quot;#Static-methods&quot; class=&quot;headerlink&quot; title=&quot;Static methods&quot;&gt;&lt;/a&gt;Static methods&lt;/h1&gt;&lt;p&gt;For a specified class hierarchy, when it comes to adding a method for every class without modifying themselves, what comes into my mind at first is to create a set of functions, i.e. a static method in java, each taking an instance of that class.&lt;/p&gt;
+&lt;p&gt;For example, if I want to add a method to &lt;code&gt;ICarElement&lt;/code&gt; and its implementations, &lt;code&gt;Wheel&lt;/code&gt;, &lt;code&gt;Engine&lt;/code&gt; and &lt;code&gt;Body&lt;/code&gt;, I could write such a class as a set of functions:&lt;br&gt;
     
     </summary>
     
+    
+      <category term="Design Patterns" scheme="http://yoursite.com/tags/Design-Patterns/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>重探Loader（二）</title>
+    <link href="http://yoursite.com/2016/02/13/review-loaders-2/"/>
+    <id>http://yoursite.com/2016/02/13/review-loaders-2/</id>
+    <published>2016-02-13T13:58:48.000Z</published>
+    <updated>2016-02-14T17:10:42.419Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;过去&quot;&gt;&lt;a href=&quot;#过去&quot; class=&quot;headerlink&quot; title=&quot;过去&quot;&gt;&lt;/a&gt;过去&lt;/h1&gt;&lt;p&gt;在安卓3.0前，很多应用经常出现无法响应的bug。最主要的原因，便是在UI线程执行查询或加载数据。虽然文档一直强调即使回馈的重要性，之前的API并不鼓励这样的行为。过去通常使用activity的方法以管理Cursor。而且这些方法在UI线程中操作，并不跨越配置变更。&lt;/p&gt;
+&lt;h1 id=&quot;理解LoaderManager&quot;&gt;&lt;a href=&quot;#理解LoaderManager&quot; class=&quot;headerlink&quot; title=&quot;理解LoaderManager&quot;&gt;&lt;/a&gt;理解LoaderManager&lt;/h1&gt;&lt;p&gt;LoaderManager的一些事件会有activity或fragment的生命周期事件触发。比如activity销毁时，会通知LoaderManager销毁并关闭所有所有Loader。&lt;/p&gt;
+&lt;p&gt;LoaderManager不知道也不需要知道数据如何载入。它只是告诉Loader何时开始、结束或复位加载，保持状态通过配置变更，并提供简单的接口为客户端传送结果。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;Loader基础&quot;&gt;&lt;a href=&quot;#Loader基础&quot; class=&quot;headerlink&quot; title=&quot;Loader基础&quot;&gt;&lt;/a&gt;Loader基础&lt;/h1&gt;&lt;p&gt;Loader负责在单独的线程中执行查询，监视数据源的变化，并且发送新的结果到注册的侦听器（一般是LoaderManager）。这使得Loader非常强大，因为：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Loader封装了数据加载的过程。activity或fragment不再需要知道如何加载数据，他们将任务委托给了Loader，后者在幕后执行请求并发回数据。&lt;/li&gt;
+&lt;li&gt;他们将线程剥离出客户端。activity或fragment不需要担心新线程中执行操作的问题，因为Loader会自动处理。这减少了代码的复杂性和可能的线程相关的bug。&lt;/li&gt;
+&lt;li&gt;他们是事件驱动的。Loader监视着数据源并在变化发生时自动执行新的加载。这使得使用Loader工作非常容易，因为客户端可以简单地信任Loader会自动更新数据。所有activity或fragment要做的只是初始化Loader并且根据可能获取的数据进行响应。这之间所有的事物都由Loader完成。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;什么组成了Loader&quot;&gt;&lt;a href=&quot;#什么组成了Loader&quot; class=&quot;headerlink&quot; title=&quot;什么组成了Loader&quot;&gt;&lt;/a&gt;什么组成了Loader&lt;/h1&gt;&lt;p&gt;下面四个特性最终决定了Loader的行为：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;一个执行异步加载的任务。为了保证载入过程在单独线程中执行，子类应该继承&lt;code&gt;AsyncTaskLoader&lt;/code&gt;而非&lt;code&gt;Loader&lt;/code&gt;类。&lt;code&gt;AsyncTaskLoader&lt;/code&gt;类提供了一个&lt;code&gt;AsyncTask&lt;/code&gt;来执行任务。被继承后，只需要实现抽象的&lt;code&gt;loadInBackground()&lt;/code&gt;方法来实现异步任务。该方法将在一个工作线程中被调用以执行数据加载。&lt;/li&gt;
+&lt;li&gt;一个注册的监听器，用以接收载入的结果。对每个Loader，LoaderManager会注册一个&lt;code&gt;OnLoadCompleteListener&lt;/code&gt;来将Loader传送的结果通过调用&lt;code&gt;onLoadFinished()&lt;/code&gt;转发到客户端。Loader应该调用&lt;code&gt;deliverResult()&lt;/code&gt;方法将结果发送给注册的侦听器。&lt;/li&gt;
+&lt;li&gt;三种状态中的一个。每个Loader只有启动、停止或复位三种状态。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;只有启动状态下，&lt;code&gt;onLoadFinished()&lt;/code&gt;方法会被调用。&lt;/li&gt;
+&lt;li&gt;停止状态下，Loader继续监视变化，但不会返回结果。可以被启动或复位。&lt;/li&gt;
+&lt;li&gt;复位状态下，不应该执行新的加载，也不应传送新的结果，不应该监视变化。进入复位状态后，应该释放并无效化所有关联的数据，使之可以被gc回收（同样，客户端应该保证移除数据的所有引用，应该会无法使用）。一般，复位的Loader不会被再次调用，然而一些情况下，可能会被再次启动。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;一个接收数据变化通知的观测者。Loader应该实现某种观测者，比如&lt;code&gt;BroadcastReceiver&lt;/code&gt;等等，来监视数据源的变化。一旦侦测到变化，观测者应该调用&lt;code&gt;Loader#onContentChanged()&lt;/code&gt;方法，如果Loader处在启动状态，强制进行一次新的加载；否则产生一个flag来表示有新的变化，这样一旦Loader再次启动就会重新载入数据。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&quot;实现Loader&quot;&gt;&lt;a href=&quot;#实现Loader&quot; class=&quot;headerlink&quot; title=&quot;实现Loader&quot;&gt;&lt;/a&gt;实现Loader&lt;/h1&gt;&lt;p&gt;在实现自己的Loader时，有很多问题必须谨记。子类必须实现&lt;code&gt;loadInBackground()&lt;/code&gt;方法并重写&lt;code&gt;onStartLoading()&lt;/code&gt;, &lt;code&gt;onStopLoading()&lt;/code&gt;, &lt;code&gt;onReset()&lt;/code&gt;, &lt;code&gt;onCanceled()&lt;/code&gt;, and &lt;code&gt;deliverResult(D results)&lt;/code&gt;来实现一个完全工作的Loader。重写这些方法非常重要，因为LoaderManager会根据activity或fragment的状态来调用他们。比如，启动activity后，会在&lt;code&gt;activity#onStart()&lt;/code&gt;方法中告知LoaderManager启动所有Loader。如果Loader未被启动，LoaderManager调用&lt;code&gt;startLoading()&lt;/code&gt;，使得Loader进入启动状态，并立即调用其&lt;code&gt;onStartLoading()&lt;/code&gt;方法。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public CursorLoaderass SampleLoader extends AsyncTaskLoader&amp;lt;List&amp;lt;SampleItem&amp;gt;&amp;gt; {
+
+  // 在这里保持Loader数据的引用
+  private List&amp;lt;SampleItem&amp;gt; mData;
+
+  public SampleLoader(Context ctx) {
+    // Loader可以跨越多个activity使用（假如没有绑定到LoaderManager），所以不要直接保持context的引用。
+    // 这会导致泄露整个activity的context。父类的构造器会存储一个Application Context的引用
+    // 可以通过getContext()方法获取
+    super(ctx);
+  }
+
+  /****************************************************/
+  /** (1) 执行异步加载的任务 **/
+  /****************************************************/
+
+  @Override
+  public List&amp;lt;SampleItem&amp;gt; loadInBackground() {
+    // 该方法在后台线程创建并产生新的数据的集合，传送给客户端
+    List&amp;lt;SampleItem&amp;gt; data = new ArrayList&amp;lt;SampleItem&amp;gt;();
+
+    // TODO: 在这里执行查询，并将结果添加至data
+
+    return data;
+  }
+
+  /********************************************************/
+  /** (2) 将结果传送给注册的侦听器 **/
+  /********************************************************/
+
+  @Override
+  public void deliverResult(List&amp;lt;SampleItem&amp;gt; data) {
+    if (isReset()) {
+      // Loader已被复位; 无视结果，并将数据无效化.
+      releaseResources(data);
+      return;
+    }
+
+    // 保持旧数据的引用，使之不被gc回收。
+    // 保护它直到新数据被送达.
+    List&amp;lt;SampleItem&amp;gt; oLoaderData = mData;
+    mData = data;
+
+    if (isStarted()) {
+      // 若Loader已启动，传送结果至客户端。父类方法会实现具体的操作。
+      super.deliverResult(data);
+    }
+
+    // 将已经不需要的旧数据无效化.
+    if (oLoaderData != null &amp;amp;&amp;amp; oLoaderData != data) {
+      releaseResources(oLoaderData);
+    }
+  }
+
+  /*********************************************************/
+  /** (3) 实现Loader状态依赖的行为 **/
+  /*********************************************************/
+
+  @Override
+  protected void onStartLoading() {
+    if (mData != null) {
+      // 立即传送先前载入的数据.
+      deliverResult(mData);
+    }
+
+    // 监视数据源.
+    if (mObserver == null) {
+      mObserver = new SampleObserver();
+      // TODO: 注册观测者
+    }
+
+    if (takeContentChanged() || mData == null) {
+      // 观测者发现变化后，应调用loader的onContentChanged()
+      // 后者会造成下次调用takeContentChanged()返回true
+      // 这种情况下（或当前数据为null），会强制一次新的加载
+      forceLoad();
+    }
+  }
+
+  @Override
+  protected void onStopLoading() {
+    // 在停止状态下，应该试着取消当前的载入（如果有的话）
+    cancelLoad();
+
+    // 注意我们没有变更观测者. 停止状态下的Loaders仍然应该监视数据源的变化
+    // 这样Loader再次启动后会知道是否需要强制进行新的加载
+  }
+
+  @Override
+  protected void onReset() {
+    // 确保loader已被停止.
+    onStopLoading();
+
+    // 这里我们可以释放与&amp;apos;mData&amp;apos;关联的资源.
+    if (mData != null) {
+      releaseResources(mData);
+      mData = null;
+    }
+
+    // 如果loader正在被复位，应该停止监视数据变化.
+    if (mObserver != null) {
+      // TODO: 注销观测者
+      mObserver = null;
+    }
+  }
+
+  @Override
+  public void onCanceled(List&amp;lt;SampleItem&amp;gt; data) {
+    // 试着取消当前的异步加载.
+    super.onCanceled(data);
+
+    // 加载已取消，应该释放&amp;apos;data&amp;apos;相关的资源
+    releaseResources(data);
+  }
+
+  private void releaseResources(List&amp;lt;SampleItem&amp;gt; data) {
+    // 对简单的列表，不需要做任何事。对Cursor，应该在这里进行关闭。所有Loader相关的资源
+    // 应该在这里释放
+  }
+
+  /*********************************************************************/
+  /** (4) 接收数据变化通知的观测者 **/
+  /*********************************************************************/
+
+  // NOTE: Implementing an observer is outside the scope of this post (this example
+  // uses a made-up &amp;quot;SampleObserver&amp;quot; to illustrate when/where the observer shouLoader 
+  // be initialized). 
+
+  // 观测者只需要能够探测到数据源的变化并通过调用onContentChanged()报告给Loader
+  // 如果在写载入设备上所有应用的列表的Loader的话，观测者应该是一个侦听
+  // ACTION_PACKAGE_ADDED intent的BroadcastReceiver，并且探测到新应用安装时，
+  // 调用特定Loader的onContentChanged() 方法
+
+  private SampleObserver mObserver;
+}
+&lt;/code&gt;&lt;/pre&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;过去&quot;&gt;&lt;a href=&quot;#过去&quot; class=&quot;headerlink&quot; title=&quot;过去&quot;&gt;&lt;/a&gt;过去&lt;/h1&gt;&lt;p&gt;在安卓3.0前，很多应用经常出现无法响应的bug。最主要的原因，便是在UI线程执行查询或加载数据。虽然文档一直强调即使回馈的重要性，之前的API并不鼓励这样的行为。过去通常使用activity的方法以管理Cursor。而且这些方法在UI线程中操作，并不跨越配置变更。&lt;/p&gt;
+&lt;h1 id=&quot;理解LoaderManager&quot;&gt;&lt;a href=&quot;#理解LoaderManager&quot; class=&quot;headerlink&quot; title=&quot;理解LoaderManager&quot;&gt;&lt;/a&gt;理解LoaderManager&lt;/h1&gt;&lt;p&gt;LoaderManager的一些事件会有activity或fragment的生命周期事件触发。比如activity销毁时，会通知LoaderManager销毁并关闭所有所有Loader。&lt;/p&gt;
+&lt;p&gt;LoaderManager不知道也不需要知道数据如何载入。它只是告诉Loader何时开始、结束或复位加载，保持状态通过配置变更，并提供简单的接口为客户端传送结果。&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="Loader" scheme="http://yoursite.com/tags/Loader/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>重探Loader（一）</title>
+    <link href="http://yoursite.com/2016/02/13/review-loaders/"/>
+    <id>http://yoursite.com/2016/02/13/review-loaders/</id>
+    <published>2016-02-13T12:52:41.000Z</published>
+    <updated>2016-02-14T17:11:12.388Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;Loader是安卓中非常好用的一个pattern，也是我个人非常喜欢用的一个。Loader最方便之处，就是免除了手动保存数据之苦。但在长期的使用之中，总觉得对loader的理解还是存在一些偏差。所以，这里重新复习一下loader的基本知识。&lt;/p&gt;
+&lt;p&gt;Loader自安卓3.0引入，它的出现使得在activity或fragment中异步载入数据更加容易，有以下特性：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每个activity或fragment都可使用&lt;/li&gt;
+&lt;li&gt;异步载入数据&lt;/li&gt;
+&lt;li&gt;监视数据源的变化，并获取新的数据&lt;/li&gt;
+&lt;li&gt;配置变更后自动重连之前的loader cursor。无需重新获取数据&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h1 id=&quot;Loader-API-总结&quot;&gt;&lt;a href=&quot;#Loader-API-总结&quot; class=&quot;headerlink&quot; title=&quot;Loader API 总结&quot;&gt;&lt;/a&gt;Loader API 总结&lt;/h1&gt;LoaderMangager: activity或fragment关联的抽象类，可管理一个或多个Loader。使应用管理与生命周期相关的长期操作，最常用的是&lt;code&gt;CursorLoader&lt;/code&gt;，不过应用可以任意创建载入其他类型的Loader。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;LoaderManager.LoaderCallbacks: 与LoaderManager交互的回调接口。&lt;/p&gt;
+&lt;p&gt;Loader: 执行异步加载数据的抽象类。是Loader的基类。一般使用CursorLoader，但也可以实现自己的子类。当loader活动时，应该监视数据源的变化并获取新的结果。&lt;/p&gt;
+&lt;p&gt;AsyncTaskLoader: 提供了&lt;code&gt;AsyncTask&lt;/code&gt;来执行任务的抽象Loader。&lt;/p&gt;
+&lt;p&gt;CursorLoader: &lt;code&gt;AsyncTaskLoader&lt;/code&gt;的子类，查询&lt;code&gt;ContentResolver&lt;/code&gt;，返回&lt;code&gt;Cursor&lt;/code&gt;。这个类以标准的方式实现了Loader协议以查询cursor，继承&lt;code&gt;AsyncTaskLoader&lt;/code&gt;以在后台线程执行查询，避免阻碍应用UI。使用这个Loader是从Content Provider中异步载入数据的最好方式，而非通过fragment或activity的API来执行查询。&lt;/p&gt;
+&lt;h1 id=&quot;在应用中使用Loader&quot;&gt;&lt;a href=&quot;#在应用中使用Loader&quot; class=&quot;headerlink&quot; title=&quot;在应用中使用Loader&quot;&gt;&lt;/a&gt;在应用中使用Loader&lt;/h1&gt;&lt;h2 id=&quot;启动Loader&quot;&gt;&lt;a href=&quot;#启动Loader&quot; class=&quot;headerlink&quot; title=&quot;启动Loader&quot;&gt;&lt;/a&gt;启动Loader&lt;/h2&gt;&lt;p&gt;在activity或fragment中LoaderManager管理着一个或多个Loader实例，每个activity或fragment中只有一个LoaderManager。&lt;/p&gt;
+&lt;p&gt;一般在activity的&lt;code&gt;onCreate()&lt;/code&gt;或fragment的&lt;code&gt;onactivityCreated()&lt;/code&gt;方法初始化Loader。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// Prepare the loader.  Either re-connect with an existing one,
+// or start a new one.
+getLoaderManager().initLoader(0, null, this);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;initLoader()&lt;/code&gt;方法需要以下参数：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一个独特的ID，如0.&lt;/li&gt;
+&lt;li&gt;提供给Loader用以创建的额外参数，如null。&lt;/li&gt;
+&lt;li&gt;一个&lt;code&gt;LoaderManager.LoaderCallbacks&lt;/code&gt;实现，LoaderManager调用其以报告Loader事件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;调用&lt;code&gt;initLoader()&lt;/code&gt;方法保证一个loader被初始化并且活跃，它有两个可能的结果：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果该ID已经存在，重用上次创建的Loader。&lt;/li&gt;
+&lt;li&gt;否则，调用回调接口中的&lt;code&gt;onCreateLoader()&lt;/code&gt;。在这里实现初始化新loader的代码。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;注意，&lt;code&gt;initLoader()&lt;/code&gt;方法返回创建的Loader，但是你不必去保存其引用。LoaderManager自动管理Loader的生命。LoaderManager在需要时启动和终止载入，并维护Loader的状态和关联的内容。这意味着，一般不需要与Loader直接交互。一般使用回调方法在特定事件发生时干预加载进程。&lt;/p&gt;
+&lt;h2 id=&quot;重启Loader&quot;&gt;&lt;a href=&quot;#重启Loader&quot; class=&quot;headerlink&quot; title=&quot;重启Loader&quot;&gt;&lt;/a&gt;重启Loader&lt;/h2&gt;&lt;p&gt;有时我们需要丢弃旧数据，重新启动Loader。要丢弃旧数据，调用&lt;code&gt;restartLoader()&lt;/code&gt;方法。例如，&lt;code&gt;SearchView.OnQueryTextListener&lt;/code&gt;的实现在用户改变查询时重启Loader。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public boolean onQueryTextChanged(String newText) {
+    // Called when the ACTION bar search text has changed.  Update
+    // the search filter, and restart the loader to do a new query
+    // with this filter.
+    mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
+    getLoaderManager().restartLoader(0, null, this);
+    return true;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&quot;使用LoaderManager回调&quot;&gt;&lt;a href=&quot;#使用LoaderManager回调&quot; class=&quot;headerlink&quot; title=&quot;使用LoaderManager回调&quot;&gt;&lt;/a&gt;使用LoaderManager回调&lt;/h2&gt;&lt;p&gt;Loader，尤其是CursorLoader，一般会在停止后保留数据。这使得应用可以跨越activity或fragment的&lt;code&gt;onStop()&lt;/code&gt;和&lt;code&gt;onStart()&lt;/code&gt;方法保留数据。当用户返回应用时，无需等待数据重新载入。&lt;/p&gt;
+&lt;h3 id=&quot;onCreateLoader&quot;&gt;&lt;a href=&quot;#onCreateLoader&quot; class=&quot;headerlink&quot; title=&quot;onCreateLoader&quot;&gt;&lt;/a&gt;onCreateLoader&lt;/h3&gt;&lt;p&gt;访问loader时，首先检查该id是否存在。如果不存在，调用&lt;code&gt;onCreateLoader()&lt;/code&gt;方法，在这里创建新的Loader。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; // If non-null, this is the current filter the user has provided.
+String mCurFilter;
+...
+public Loader&amp;lt;Cursor&amp;gt; onCreateLoader(int id, Bundle args) {
+    // This is called when a new Loader needs to be created.  This
+    // sample only has one Loader, so we don&amp;apos;t care about the ID.
+    // First, pick the base URI to use depending on whether we are
+    // currently filtering.
+    Uri baseUri;
+    if (mCurFilter != null) {
+        baseUri = Uri.withAppendedPath(Contactivitys.CONTENT_FILTER_URI,
+                  Uri.encode(mCurFilter));
+    } else {
+        baseUri = Contactivitys.CONTENT_URI;
+    }
+
+    // Now create and return a CursorLoader that will take care of
+    // creating a Cursor for the data being displayed.
+    String select = &amp;quot;((&amp;quot; + Contactivitys.DISPLAY_NAME + &amp;quot; NOTNULL) AND (&amp;quot;
+            + Contactivitys.HAS_PHONE_NUMBER + &amp;quot;=1) AND (&amp;quot;
+            + Contactivitys.DISPLAY_NAME + &amp;quot; != &amp;apos;&amp;apos; ))&amp;quot;;
+    return new CursorLoader(getactivity(), baseUri,
+            CONTactivityS_SUMMARY_PROJECTION, select, null,
+            Contactivitys.DISPLAY_NAME + &amp;quot; COLLATE LOCALIZED ASC&amp;quot;);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&quot;onLoadFinished&quot;&gt;&lt;a href=&quot;#onLoadFinished&quot; class=&quot;headerlink&quot; title=&quot;onLoadFinished&quot;&gt;&lt;/a&gt;onLoadFinished&lt;/h3&gt;&lt;p&gt;当Loader完成一次加载后调用该方法。这个方法保证了在旧数据被释放前调用。在这一点，应该移除所有旧数据的使用（因为马上会被释放），但是不应该自己释放数据，因为Loader拥有并管理它。&lt;/p&gt;
+&lt;p&gt;一旦获知应用不再使用数据，Loader就会将其释放。例如，如果数据是CursorLoader中获取的cursor，不要手动调用&lt;code&gt;CursorLoaderose()&lt;/code&gt;。如果cursor被放置在一个&lt;code&gt;CursorAdapter&lt;/code&gt;中，应该使用&lt;code&gt;swapCursor()&lt;/code&gt;方法，而旧&lt;code&gt;Cursor&lt;/code&gt;不被关闭。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// This is the Adapter being used to display the list&amp;apos;s data.
+SimpleCursorAdapter mAdapter;
+...
+
+public void onLoadFinished(Loader&amp;lt;Cursor&amp;gt; loader, Cursor data) {
+    // Swap the new cursor in.  (The framework will take care of CursorLoaderosing the
+    // oLoader cursor once we return.)
+    mAdapter.swapCursor(data);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&quot;onLoaderReset&quot;&gt;&lt;a href=&quot;#onLoaderReset&quot; class=&quot;headerlink&quot; title=&quot;onLoaderReset&quot;&gt;&lt;/a&gt;onLoaderReset&lt;/h3&gt;&lt;p&gt;当复位原来创建的Loader时调用，使原数据无效。这个回调告知你数据将被释放，所以可以在此时移除对其的引用。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// This is the Adapter being used to display the list&amp;apos;s data.
+SimpleCursorAdapter mAdapter;
+...
+
+public void onLoaderReset(Loader&amp;lt;Cursor&amp;gt; loader) {
+    // This is called when the last Cursor provided to onLoadFinished()
+    // above is about to be CursorLoaderosed.  We need to make sure we are no
+    // longer using it.
+    mAdapter.swapCursor(null);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&quot;例子&quot;&gt;&lt;a href=&quot;#例子&quot; class=&quot;headerlink&quot; title=&quot;例子&quot;&gt;&lt;/a&gt;例子&lt;/h1&gt;&lt;p&gt;下面是一个fragment的完整实现，它展示了一个&lt;code&gt;ListView&lt;/code&gt;，包含着联系人的查询结果。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public static class CursorLoaderListFragment extends ListFragment
+        implements OnQueryTextListener, LoaderManager.LoaderCallbacks&amp;lt;Cursor&amp;gt; {
+
+    // This is the Adapter being used to display the list&amp;apos;s data.
+    SimpleCursorAdapter mAdapter;
+
+    // If non-null, this is the current filter the user has provided.
+    String mCurFilter;
+
+    @Override public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // Give some text to display if there is no data.  In a real
+        // application this would come from a resource.
+        setEmptyText(&amp;quot;No phone numbers&amp;quot;);
+
+        // We have a menu item to show in action bar.
+        setHasOptionsMenu(true);
+
+        // Create an empty adapter we will use to display the loaded data.
+        mAdapter = new SimpleCursorAdapter(getActivity(),
+                android.R.layout.simple_list_item_2, null,
+                new String[] { Contacts.DISPLAY_NAME, Contacts.CONTACT_STATUS },
+                new int[] { android.R.id.text1, android.R.id.text2 }, 0);
+        setListAdapter(mAdapter);
+
+        // Prepare the loader.  Either re-connect with an existing one,
+        // or start a new one.
+        getLoaderManager().initLoader(0, null, this);
+    }
+
+    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Place an action bar item for searching.
+        MenuItem item = menu.add(&amp;quot;Search&amp;quot;);
+        item.setIcon(android.R.drawable.ic_menu_search);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        SearchView sv = new SearchView(getActivity());
+        sv.setOnQueryTextListener(this);
+        item.setActionView(sv);
+    }
+
+    public boolean onQueryTextChange(String newText) {
+        // Called when the action bar search text has changed.  Update
+        // the search filter, and restart the loader to do a new query
+        // with this filter.
+        mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
+        getLoaderManager().restartLoader(0, null, this);
+        return true;
+    }
+
+    @Override public boolean onQueryTextSubmit(String query) {
+        // Don&amp;apos;t care about this.
+        return true;
+    }
+
+    @Override public void onListItemClick(ListView l, View v, int position, long id) {
+        // Insert desired behavior here.
+        Log.i(&amp;quot;FragmentComplexList&amp;quot;, &amp;quot;Item clicked: &amp;quot; + id);
+    }
+
+    // These are the Contacts rows that we will retrieve.
+    static final String[] CONTACTS_SUMMARY_PROJECTION = new String[] {
+        Contacts._ID,
+        Contacts.DISPLAY_NAME,
+        Contacts.CONTACT_STATUS,
+        Contacts.CONTACT_PRESENCE,
+        Contacts.PHOTO_ID,
+        Contacts.LOOKUP_KEY,
+    };
+    public Loader&amp;lt;Cursor&amp;gt; onCreateLoader(int id, Bundle args) {
+        // This is called when a new Loader needs to be created.  This
+        // sample only has one Loader, so we don&amp;apos;t care about the ID.
+        // First, pick the base URI to use depending on whether we are
+        // currently filtering.
+        Uri baseUri;
+        if (mCurFilter != null) {
+            baseUri = Uri.withAppendedPath(Contacts.CONTENT_FILTER_URI,
+                    Uri.encode(mCurFilter));
+        } else {
+            baseUri = Contacts.CONTENT_URI;
+        }
+
+        // Now create and return a CursorLoader that will take care of
+        // creating a Cursor for the data being displayed.
+        String select = &amp;quot;((&amp;quot; + Contacts.DISPLAY_NAME + &amp;quot; NOTNULL) AND (&amp;quot;
+                + Contacts.HAS_PHONE_NUMBER + &amp;quot;=1) AND (&amp;quot;
+                + Contacts.DISPLAY_NAME + &amp;quot; != &amp;apos;&amp;apos; ))&amp;quot;;
+        return new CursorLoader(getActivity(), baseUri,
+                CONTACTS_SUMMARY_PROJECTION, select, null,
+                Contacts.DISPLAY_NAME + &amp;quot; COLLATE LOCALIZED ASC&amp;quot;);
+    }
+
+    public void onLoadFinished(Loader&amp;lt;Cursor&amp;gt; loader, Cursor data) {
+        // Swap the new cursor in.  (The framework will take care of closing the
+        // old cursor once we return.)
+        mAdapter.swapCursor(data);
+    }
+
+    public void onLoaderReset(Loader&amp;lt;Cursor&amp;gt; loader) {
+        // This is called when the last Cursor provided to onLoadFinished()
+        // above is about to be closed.  We need to make sure we are no
+        // longer using it.
+        mAdapter.swapCursor(null);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;Loader是安卓中非常好用的一个pattern，也是我个人非常喜欢用的一个。Loader最方便之处，就是免除了手动保存数据之苦。但在长期的使用之中，总觉得对loader的理解还是存在一些偏差。所以，这里重新复习一下loader的基本知识。&lt;/p&gt;
+&lt;p&gt;Loader自安卓3.0引入，它的出现使得在activity或fragment中异步载入数据更加容易，有以下特性：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每个activity或fragment都可使用&lt;/li&gt;
+&lt;li&gt;异步载入数据&lt;/li&gt;
+&lt;li&gt;监视数据源的变化，并获取新的数据&lt;/li&gt;
+&lt;li&gt;配置变更后自动重连之前的loader cursor。无需重新获取数据
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="Loader" scheme="http://yoursite.com/tags/Loader/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用Preferences API（二）</title>
+    <link href="http://yoursite.com/2016/02/05/learning-preferences-2/"/>
+    <id>http://yoursite.com/2016/02/05/learning-preferences-2/</id>
+    <published>2016-02-05T10:48:59.000Z</published>
+    <updated>2016-02-05T10:49:44.623Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;使用pref-header&quot;&gt;&lt;a href=&quot;#使用pref-header&quot; class=&quot;headerlink&quot; title=&quot;使用pref header&quot;&gt;&lt;/a&gt;使用pref header&lt;/h1&gt;&lt;p&gt;某些情况下，可能需要设计设置页面来使第一个屏幕展示一列子屏幕。在3.0以上版本中，应该使用新的header特性，而非使用嵌套的&lt;code&gt;PreferenceScreen&lt;/code&gt;元素。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;分离各组设置至不同的PF实例。每组设置需要单独的XML文件。&lt;/li&gt;
+&lt;li&gt;创建XML header文件，列出每个设置组，声明含有对应设置列表的fragment。&lt;/li&gt;
+&lt;li&gt;继承PA类来持有设置。&lt;/li&gt;
+&lt;li&gt;实现&lt;code&gt;onBuildHeaderes()&lt;/code&gt;回调来指定header文件。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这样做的一个好处是，PA可以自动在大屏幕中使用双面板布局呈现设定。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;创建header文件&quot;&gt;&lt;a href=&quot;#创建header文件&quot; class=&quot;headerlink&quot; title=&quot;创建header文件&quot;&gt;&lt;/a&gt;创建header文件&lt;/h2&gt;&lt;p&gt;在header列表中，各组设定由根&lt;code&gt;&amp;lt;preference-headers&amp;gt;&lt;/code&gt;中单个&lt;code&gt;&amp;lt;header&amp;gt;&lt;/code&gt;元素指定。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt;
+&amp;lt;preference-headers xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;&amp;gt;
+    &amp;lt;header 
+        android:fragment=&amp;quot;com.example.prefs.SettingsActivity$SettingsFragmentOne&amp;quot;
+        android:title=&amp;quot;@string/prefs_category_one&amp;quot;
+        android:summary=&amp;quot;@string/prefs_summ_category_one&amp;quot; /&amp;gt;
+    &amp;lt;header 
+        android:fragment=&amp;quot;com.example.prefs.SettingsActivity$SettingsFragmentTwo&amp;quot;
+        android:title=&amp;quot;@string/prefs_category_two&amp;quot;
+        android:summary=&amp;quot;@string/prefs_summ_category_two&amp;quot; &amp;gt;
+        &amp;lt;!-- key/value pairs can be included as arguments for the fragment. --&amp;gt;
+        &amp;lt;extra android:name=&amp;quot;someKey&amp;quot; android:value=&amp;quot;someHeaderValue&amp;quot; /&amp;gt;
+    &amp;lt;/header&amp;gt;
+&amp;lt;/preference-headers&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;通过&lt;code&gt;android:fragment&lt;/code&gt;属性，每个header声明一个用户选择时应该打开的PF实例。&lt;/p&gt;
+&lt;p&gt;&lt;extras&gt;元素可以用&lt;code&gt;Bundle&lt;/code&gt;将键值对传入fragment中。Fragment可以调用&lt;code&gt;getArguments()&lt;/code&gt;方法来获取参数。将参数传入fragment可能有很多原因，但其中比较好的一个原因是，可以使每一组设定重用同样的PF子类，并使用参数来指定应该加载的pref XML。&lt;/extras&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public static class SettingsFragment extends PreferenceFragment {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        String settings = getArguments().getString(&amp;quot;settings&amp;quot;);
+        if (&amp;quot;notifications&amp;quot;.equals(settings)) {
+            addPreferencesFromResource(R.xml.settings_wifi);
+        } else if (&amp;quot;sync&amp;quot;.equals(settings)) {
+            addPreferencesFromResource(R.xml.settings_sync);
+        }
+    }
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&quot;显示header&quot;&gt;&lt;a href=&quot;#显示header&quot; class=&quot;headerlink&quot; title=&quot;显示header&quot;&gt;&lt;/a&gt;显示header&lt;/h2&gt;&lt;p&gt;要显示pref header，必须实现&lt;code&gt;onBuildHeader()&lt;/code&gt;回调，并调用&lt;code&gt;loadHeadersFromResources()&lt;/code&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public class SettingsActivity extends PreferenceActivity {
+    @Override
+    public void onBuildHeaders(List&amp;lt;Header&amp;gt; target) {
+        loadHeadersFromResource(R.xml.preference_headers, target);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当用户选择一个列表中的一个子项时，系统打开相应的PF。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;使用pref header时，PA的子类无需实现&lt;code&gt;onCreate()&lt;/code&gt;方法，因为ACT唯一需要的任务只是加载header。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;读取Pref&quot;&gt;&lt;a href=&quot;#读取Pref&quot; class=&quot;headerlink&quot; title=&quot;读取Pref&quot;&gt;&lt;/a&gt;读取Pref&lt;/h1&gt;&lt;p&gt;默认情况下，应用的所有pref都存在一个文件中，它可以在应用的任何地方通过调用静态方法&lt;code&gt;PreferenceManager.getDefaultSharedPreferences()&lt;/code&gt;来访问，并返回包含PA中所有pref对象相应的键值对的SP对象。&lt;/p&gt;
+&lt;p&gt;例如，下面是在某个ACT中读取一条pref值的代码：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+String syncConnPref = sharedPref.getString(SettingsActivity.KEY_PREF_SYNC_CONN, &amp;quot;&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&quot;侦听pref变化&quot;&gt;&lt;a href=&quot;#侦听pref变化&quot; class=&quot;headerlink&quot; title=&quot;侦听pref变化&quot;&gt;&lt;/a&gt;侦听pref变化&lt;/h2&gt;&lt;p&gt;有时候需要在用户改变pref时马上得到通知。为了获取一个pref发生变化的回调，实现&lt;code&gt;SharedPreference.OnSharedPreferenceChangeListener&lt;/code&gt;接口，并且通过&lt;code&gt;registerOnSharedPreferenceChangeListener()&lt;/code&gt;注册到SP对象中。&lt;/p&gt;
+&lt;p&gt;接口仅仅拥有一个回调方法，&lt;code&gt;onSharedPreferenceChanged()&lt;/code&gt;，最简单的是将其实现成为ACT的一部分：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public class SettingsActivity extends PreferenceActivity
+                              implements OnSharedPreferenceChangeListener {
+    public static final String KEY_PREF_SYNC_CONN = &amp;quot;pref_syncConnectionType&amp;quot;;
+    ...
+
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+        String key) {
+        if (key.equals(KEY_PREF_SYNC_CONN)) {
+            Preference connectionPref = findPreference(key);
+            // Set summary to be the user-description for the selected value
+            connectionPref.setSummary(sharedPreferences.getString(key, &amp;quot;&amp;quot;));
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在这个例子中这个方法检查变化的设定是否为某个pref key。它调用&lt;code&gt;findPreference()&lt;/code&gt;方法来获取改变的&lt;code&gt;Preference&lt;/code&gt;对象，并可以将其summary替换成用户的选择。就是说，当设定是&lt;code&gt;ListPreference&lt;/code&gt;或其他多选设定时，应该调用&lt;code&gt;setSummary()&lt;/code&gt;方法来展示当前的状态。&lt;/p&gt;
+&lt;p&gt;为了ACT中合适的生命周期管理，建议在&lt;code&gt;onResume()&lt;/code&gt;和&lt;code&gt;onPause()&lt;/code&gt;回调中注册和注销&lt;code&gt;SharedPreferences.OnSharedPreferenceChangeListener&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;@Override
+protected void onResume() {
+    super.onResume();
+    getPreferenceScreen().getSharedPreferences()
+            .registerOnSharedPreferenceChangeListener(this);
+}
+
+@Override
+protected void onPause() {
+    super.onPause();
+    getPreferenceScreen().getSharedPreferences()
+            .unregisterOnSharedPreferenceChangeListener(this);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;p&gt;注意：调用注册方法时，pref manager不会储存一个侦听器的强引用。必须手动储存一个侦听器的强引用，否则将可能被gc回收。建议在一个存活时间与侦听器相同的某个实例中保持侦听器的引用。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;例如在下面的代码中，调用者不持有侦听器的引用。这会导致侦听器可能被gc回收，并在未来某个时候导致崩溃。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;prefs.registerOnSharedPreferenceChangeListener(
+  // Bad! The listener is subject to garbage collection!
+  new SharedPreferences.OnSharedPreferenceChangeListener() {
+  public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+    // listener implementation
+  }
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在实例的field中存储侦听器的引用可以保持侦听器的实例：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;SharedPreferences.OnSharedPreferenceChangeListener listener =
+    new SharedPreferences.OnSharedPreferenceChangeListener() {
+  public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+    // listener implementation
+  }
+};
+prefs.registerOnSharedPreferenceChangeListener(listener);
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&quot;管理网络使用&quot;&gt;&lt;a href=&quot;#管理网络使用&quot; class=&quot;headerlink&quot; title=&quot;管理网络使用&quot;&gt;&lt;/a&gt;管理网络使用&lt;/h1&gt;&lt;p&gt;安卓4.0以后，系统的设置应用可以允许用户查看应用在前台和后台使用的数据流量大小。用户可以禁止应用的后台数据。为了避免用户禁止后台的数据访问，应该允许用户在设定中修订应用的数据使用方式。&lt;/p&gt;
+&lt;p&gt;例如，可以允许用户控制应用同步数据的周期，是否仅在wifi下上传下载数据，是否在漫游时使用数据。如果可以控制这些设定，用户可能不会再系统设定中关闭数据访问。&lt;/p&gt;
+&lt;p&gt;在PA中添加了这些控制数据行为的pref后，应该在manifest中添加一个&lt;code&gt;ACTION_MANAGE_NETWORK_USAGE&lt;/code&gt;的intent filter.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;activity android:name=&amp;quot;SettingsActivity&amp;quot; ... &amp;gt;
+    &amp;lt;intent-filter&amp;gt;
+       &amp;lt;action android:name=&amp;quot;android.intent.action.MANAGE_NETWORK_USAGE&amp;quot; /&amp;gt;
+       &amp;lt;category android:name=&amp;quot;android.intent.category.DEFAULT&amp;quot; /&amp;gt;
+    &amp;lt;/intent-filter&amp;gt;
+&amp;lt;/activity&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这个intent filter告诉系统这个ACT可以控制应用的数据使用。因而，用户在系统设定应用中查看应用的数据流量时，可以通过一个按钮打开该PA，具体设定使用方式。&lt;/p&gt;
+&lt;h1 id=&quot;创建自定义pref&quot;&gt;&lt;a href=&quot;#创建自定义pref&quot; class=&quot;headerlink&quot; title=&quot;创建自定义pref&quot;&gt;&lt;/a&gt;创建自定义pref&lt;/h1&gt;&lt;p&gt;略&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;使用pref-header&quot;&gt;&lt;a href=&quot;#使用pref-header&quot; class=&quot;headerlink&quot; title=&quot;使用pref header&quot;&gt;&lt;/a&gt;使用pref header&lt;/h1&gt;&lt;p&gt;某些情况下，可能需要设计设置页面来使第一个屏幕展示一列子屏幕。在3.0以上版本中，应该使用新的header特性，而非使用嵌套的&lt;code&gt;PreferenceScreen&lt;/code&gt;元素。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;分离各组设置至不同的PF实例。每组设置需要单独的XML文件。&lt;/li&gt;
+&lt;li&gt;创建XML header文件，列出每个设置组，声明含有对应设置列表的fragment。&lt;/li&gt;
+&lt;li&gt;继承PA类来持有设置。&lt;/li&gt;
+&lt;li&gt;实现&lt;code&gt;onBuildHeaderes()&lt;/code&gt;回调来指定header文件。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这样做的一个好处是，PA可以自动在大屏幕中使用双面板布局呈现设定。&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用Preferences API（一）</title>
+    <link href="http://yoursite.com/2016/02/05/learning-preferences/"/>
+    <id>http://yoursite.com/2016/02/05/learning-preferences/</id>
+    <published>2016-02-05T07:43:43.000Z</published>
+    <updated>2016-02-05T10:48:46.616Z</updated>
+    
+    <content type="html">&lt;p&gt;应用一般都包含一些用户可以自定义的设置，比如是否推送通知，更新数据的频率等等。&lt;/p&gt;
+&lt;p&gt;如果想要为应用提供设置，应该使用安卓的&lt;code&gt;Preference&lt;/code&gt;API来创建一致的用户体验。&lt;/p&gt;
+&lt;h1 id=&quot;概览&quot;&gt;&lt;a href=&quot;#概览&quot; class=&quot;headerlink&quot; title=&quot;概览&quot;&gt;&lt;/a&gt;概览&lt;/h1&gt;&lt;p&gt;与使用&lt;code&gt;View&lt;/code&gt;创造界面不同，设置是由xml文件中声明的各种&lt;code&gt;Preference&lt;/code&gt;的子类组成。&lt;/p&gt;
+&lt;p&gt;一个&lt;code&gt;Preference&lt;/code&gt;对象构成一个设置。每个&lt;code&gt;Preference&lt;/code&gt;显示为列表中的一个子项，并提供合适的UI供用户交互。例如，&lt;code&gt;CheckBoxPreference&lt;/code&gt;创造一个勾选框子项，&lt;code&gt;ListPreference&lt;/code&gt;创造一个弹出选择列表对话框的子项。&lt;/p&gt;
+&lt;p&gt;每个&lt;code&gt;Preference&lt;/code&gt;在系统使用的默认的&lt;code&gt;SharedPreferences&lt;/code&gt;文件中存在一个对应的键值对。用户更改设置后，系统在SP文件中更新相应的值。只有当需要从SP中读取值以决定应用行为时，才需要直接与SP相交互。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;存在SP中的值包含以下几种类型：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Boolean&lt;/li&gt;
+&lt;li&gt;Float&lt;/li&gt;
+&lt;li&gt;Int&lt;/li&gt;
+&lt;li&gt;Long&lt;/li&gt;
+&lt;li&gt;String&lt;/li&gt;
+&lt;li&gt;String &lt;code&gt;Set&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因为用户的设置UI是通过&lt;code&gt;Preference&lt;/code&gt;而非&lt;code&gt;View&lt;/code&gt;构成的，所以需要使用特殊的&lt;code&gt;Activity&lt;/code&gt;或&lt;code&gt;Fragment&lt;/code&gt;子类来展示设置：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果应用支持安卓3.0以前的设备，需要继承&lt;code&gt;PreferenceActivity&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;在3.0以上版本，应该使用一个传统&lt;code&gt;Activity&lt;/code&gt;来加载&lt;code&gt;PreferenceFragment&lt;/code&gt;。当有多组设定时，也可以使用&lt;code&gt;PreferenceActivity&lt;/code&gt;来为大屏幕创建一个双面板的布局。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;Preference&quot;&gt;&lt;a href=&quot;#Preference&quot; class=&quot;headerlink&quot; title=&quot;Preference&quot;&gt;&lt;/a&gt;Preference&lt;/h1&gt;&lt;p&gt;应用的每个设定都由一个特定的&lt;code&gt;Pref&lt;/code&gt;子类来表示。每个子类包含一套核心属性，可以指定设定的标题和默认值等等。每个子类也提供自己特殊的属性和UI。&lt;/p&gt;
+&lt;h1 id=&quot;在XML中定义属性&quot;&gt;&lt;a href=&quot;#在XML中定义属性&quot; class=&quot;headerlink&quot; title=&quot;在XML中定义属性&quot;&gt;&lt;/a&gt;在XML中定义属性&lt;/h1&gt;&lt;p&gt;虽然可以在运行时创建新的&lt;code&gt;Pref&lt;/code&gt;，但是应该在XML中定义设定的列表。使用XML的方法更好，因为文件可以提供易读的结构，也容易更新。而且，应用的设定一般都是预先设定好的，虽然可以在运行时进行修改。&lt;/p&gt;
+&lt;p&gt;每个&lt;code&gt;Pref&lt;/code&gt;子类可以用一个匹配类名的XML元素声明，比如&lt;code&gt;&amp;lt;CheckBoxPreference&amp;gt;&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;必须在&lt;code&gt;res/xml/&lt;/code&gt;目录下保存XML文件。虽然可以随便命名文件，但是一般都取名为&lt;code&gt;preferences.xml&lt;/code&gt;。一般只需要一个文件，因为阶层中的分支一般使用嵌套的&lt;code&gt;PreferenceScreen&lt;/code&gt;来声明。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意：如果想要创建多面板布局，则需要为每个fragment创建相应的XML文件。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;XML文件的根节点必须是一个&lt;code&gt;&amp;lt;PreferenceScreen&amp;gt;&lt;/code&gt;元素。在元素内可以添加&lt;code&gt;Pref&lt;/code&gt;。元素内每个添加的子元素都显示为设定列表的一个子项。比如：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt;
+&amp;lt;PreferenceScreen xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;&amp;gt;
+    &amp;lt;CheckBoxPreference
+        android:key=&amp;quot;pref_sync&amp;quot;
+        android:title=&amp;quot;@string/pref_sync&amp;quot;
+        android:summary=&amp;quot;@string/pref_sync_summ&amp;quot;
+        android:defaultValue=&amp;quot;true&amp;quot; /&amp;gt;
+    &amp;lt;ListPreference
+        android:dependency=&amp;quot;pref_sync&amp;quot;
+        android:key=&amp;quot;pref_syncConnectionType&amp;quot;
+        android:title=&amp;quot;@string/pref_syncConnectionType&amp;quot;
+        android:dialogTitle=&amp;quot;@string/pref_syncConnectionType&amp;quot;
+        android:entries=&amp;quot;@array/pref_syncConnectionTypes_entries&amp;quot;
+        android:entryValues=&amp;quot;@array/pref_syncConnectionTypes_values&amp;quot;
+        android:defaultValue=&amp;quot;@string/pref_syncConnectionTypes_default&amp;quot; /&amp;gt;
+&amp;lt;/PreferenceScreen&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;每个子项都包含了三个特性：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;android:key&lt;/code&gt;：每个持有数据的pref都需要包含该特性。它为系统指明了一个独特的key字符串，以将设置存储至SP中。只有&lt;code&gt;PrefrenceCategory&lt;/code&gt;和&lt;code&gt;PreferenceScreen&lt;/code&gt;元素以及指明调用的&lt;code&gt;Intent&lt;/code&gt;或显示的&lt;code&gt;Fragment&lt;/code&gt;的元素不需要该属性。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;android:title&lt;/code&gt;：提供用户可见的设定名称。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;android:defaultValue&lt;/code&gt;：系统应在SP中设定的初始值。应该为每个设定都提供一个初始值。&lt;/p&gt;
+&lt;h1 id=&quot;创建设定组&quot;&gt;&lt;a href=&quot;#创建设定组&quot; class=&quot;headerlink&quot; title=&quot;创建设定组&quot;&gt;&lt;/a&gt;创建设定组&lt;/h1&gt;&lt;p&gt;如果设定的列表超过10项，可能对用户很不友好。这时可以将他们分成几组。一组相关的设定可以用两种方式呈现出来：使用标题或使用子屏幕。&lt;/p&gt;
+&lt;h2 id=&quot;使用标题&quot;&gt;&lt;a href=&quot;#使用标题&quot; class=&quot;headerlink&quot; title=&quot;使用标题&quot;&gt;&lt;/a&gt;使用标题&lt;/h2&gt;&lt;p&gt;如果想要为设定组之间提供带有标题的分隔线，可以将各组&lt;code&gt;Pref&lt;/code&gt;对象放置在&lt;code&gt;PreferenceCategory&lt;/code&gt;中。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;PreferenceScreen xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;&amp;gt;
+    &amp;lt;PreferenceCategory 
+        android:title=&amp;quot;@string/pref_sms_storage_title&amp;quot;
+        android:key=&amp;quot;pref_key_storage_settings&amp;quot;&amp;gt;
+        &amp;lt;CheckBoxPreference
+            android:key=&amp;quot;pref_key_auto_delete&amp;quot;
+            android:summary=&amp;quot;@string/pref_summary_auto_delete&amp;quot;
+            android:title=&amp;quot;@string/pref_title_auto_delete&amp;quot;
+            android:defaultValue=&amp;quot;false&amp;quot;... /&amp;gt;
+        &amp;lt;Preference 
+            android:key=&amp;quot;pref_key_sms_delete_limit&amp;quot;
+            android:dependency=&amp;quot;pref_key_auto_delete&amp;quot;
+            android:summary=&amp;quot;@string/pref_summary_delete_limit&amp;quot;
+            android:title=&amp;quot;@string/pref_title_sms_delete&amp;quot;... /&amp;gt;
+        &amp;lt;Preference 
+            android:key=&amp;quot;pref_key_mms_delete_limit&amp;quot;
+            android:dependency=&amp;quot;pref_key_auto_delete&amp;quot;
+            android:summary=&amp;quot;@string/pref_summary_delete_limit&amp;quot;
+            android:title=&amp;quot;@string/pref_title_mms_delete&amp;quot; ... /&amp;gt;
+    &amp;lt;/PreferenceCategory&amp;gt;
+    ...
+&amp;lt;/PreferenceScreen&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&quot;使用子屏幕&quot;&gt;&lt;a href=&quot;#使用子屏幕&quot; class=&quot;headerlink&quot; title=&quot;使用子屏幕&quot;&gt;&lt;/a&gt;使用子屏幕&lt;/h2&gt;&lt;p&gt;如果想要将设定组防止在子屏幕中，可以将各组&lt;code&gt;Pref&lt;/code&gt;对象放置在&lt;code&gt;PreferenceScreen&lt;/code&gt;中。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;PreferenceScreen  xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;&amp;gt;
+    &amp;lt;!-- opens a subscreen of settings --&amp;gt;
+    &amp;lt;PreferenceScreen
+        android:key=&amp;quot;button_voicemail_category_key&amp;quot;
+        android:title=&amp;quot;@string/voicemail&amp;quot;
+        android:persistent=&amp;quot;false&amp;quot;&amp;gt;
+        &amp;lt;ListPreference
+            android:key=&amp;quot;button_voicemail_provider_key&amp;quot;
+            android:title=&amp;quot;@string/voicemail_provider&amp;quot; ... /&amp;gt;
+        &amp;lt;!-- opens another nested subscreen --&amp;gt;
+        &amp;lt;PreferenceScreen
+            android:key=&amp;quot;button_voicemail_setting_key&amp;quot;
+            android:title=&amp;quot;@string/voicemail_settings&amp;quot;
+            android:persistent=&amp;quot;false&amp;quot;&amp;gt;
+            ...
+        &amp;lt;/PreferenceScreen&amp;gt;
+        &amp;lt;RingtonePreference
+            android:key=&amp;quot;button_voicemail_ringtone_key&amp;quot;
+            android:title=&amp;quot;@string/voicemail_ringtone_title&amp;quot;
+            android:ringtoneType=&amp;quot;notification&amp;quot; ... /&amp;gt;
+        ...
+    &amp;lt;/PreferenceScreen&amp;gt;
+    ...
+&amp;lt;/PreferenceScreen&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&quot;使用intents&quot;&gt;&lt;a href=&quot;#使用intents&quot; class=&quot;headerlink&quot; title=&quot;使用intents&quot;&gt;&lt;/a&gt;使用intents&lt;/h2&gt;&lt;p&gt;一些情况下，可能需要使用pref子项打开一个不同的activity而非设置屏幕，比如使用浏览器来浏览网页。要在用户选中pref子项时调用&lt;code&gt;Intent&lt;/code&gt;，可以添加一个&lt;code&gt;&amp;lt;intent&amp;gt;&lt;/code&gt;元素作为相应&lt;code&gt;&amp;lt;Preference&amp;gt;&lt;/code&gt;元素的子项。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;Preference android:title=&amp;quot;@string/prefs_web_page&amp;quot; &amp;gt;
+    &amp;lt;intent android:action=&amp;quot;android.intent.action.VIEW&amp;quot;
+            android:data=&amp;quot;http://www.example.com&amp;quot; /&amp;gt;
+&amp;lt;/Preference&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;可以通过下面的属性来创建显式或隐式的intent。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;android:action&lt;/code&gt;: The action to assign, as per the setAction() method.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;android:data&lt;/code&gt;: The data to assign, as per the setData() method.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;android:mimeType&lt;/code&gt;: The MIME type to assign, as per the setType() method.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;android:targetClass&lt;/code&gt;: The class part of the component name, as per the setComponent() method.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;android:targetPackage&lt;/code&gt;: The package part of the component name, as per the setComponent() method. &lt;/p&gt;
+&lt;h1 id=&quot;创建Pref-Activity&quot;&gt;&lt;a href=&quot;#创建Pref-Activity&quot; class=&quot;headerlink&quot; title=&quot;创建Pref Activity&quot;&gt;&lt;/a&gt;创建Pref Activity&lt;/h1&gt;&lt;p&gt;要在activity中展示设定，可以继承&lt;code&gt;PA&lt;/code&gt;类。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;3.0以上版本应该使用&lt;code&gt;PreferenceFragment&lt;/code&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;最重要的是记住，在&lt;code&gt;onCreate()&lt;/code&gt;回调中，并不载入布局视图。而是调用&lt;code&gt;addPreferencesFromResource()&lt;/code&gt;来添加XML中声明的pref。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public class SettingsActivity extends PreferenceActivity {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.preferences);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;上面的代码已经足够供一些应用使用了。因为一旦用户修改某项pref，系统就将改变存储到默认的SP中，并供应用的其他组件读取。还有很多应用，需要额外的一些代码来侦听pref发生的变化。&lt;/p&gt;
+&lt;h1 id=&quot;使用Pref-Fragments&quot;&gt;&lt;a href=&quot;#使用Pref-Fragments&quot; class=&quot;headerlink&quot; title=&quot;使用Pref Fragments&quot;&gt;&lt;/a&gt;使用Pref Fragments&lt;/h1&gt;&lt;p&gt;&lt;code&gt;Fragments&lt;/code&gt;为应用提供了更加灵活的结构。所以，尽可能使用PF来展示设定而非PA。&lt;/p&gt;
+&lt;p&gt;PF的实现非常简单，只需要定义&lt;code&gt;onCreate()&lt;/code&gt;方法来加载pref文件。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public static class SettingsFragment extends PreferenceFragment {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Load the preferences from an XML resource
+        addPreferencesFromResource(R.xml.preferences);
+    }
+    ...
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;可以像添加其他&lt;code&gt;Fragment&lt;/code&gt;一样将PF添加到&lt;code&gt;Activity&lt;/code&gt;中。如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public class SettingsActivity extends Activity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Display the fragment as the main content.
+        getFragmentManager().beginTransaction()
+                .replace(android.R.id.content, new SettingsFragment())
+                .commit();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;p&gt;注意：PF本身不具有&lt;code&gt;Context&lt;/code&gt;对象。如果需要&lt;code&gt;Context&lt;/code&gt;，可以调用&lt;code&gt;getActivity()&lt;/code&gt;。然而，调用该方法的时候需要注意，仅仅在fragment连接到activity上时调用。如果没有，或者被解除连接，将会返回null。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;设置默认值&quot;&gt;&lt;a href=&quot;#设置默认值&quot; class=&quot;headerlink&quot; title=&quot;设置默认值&quot;&gt;&lt;/a&gt;设置默认值&lt;/h1&gt;&lt;p&gt;创建的pref很可能决定着应用的一些重要行为，所以有必要在用户第一次打开应用时，创建每个pref都拥有默认值的关联SP文件。&lt;/p&gt;
+&lt;p&gt;首先要做的是在XML中文件中为每个pref使用&lt;code&gt;android:defaultValue&lt;/code&gt;来指明默认值。这个值可以为适合相应&lt;code&gt;Preference&lt;/code&gt;对象的任意数据类型。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;!-- default value is a boolean --&amp;gt;
+&amp;lt;CheckBoxPreference
+    android:defaultValue=&amp;quot;true&amp;quot;
+    ... /&amp;gt;
+
+&amp;lt;!-- default value is a string --&amp;gt;
+&amp;lt;ListPreference
+    android:defaultValue=&amp;quot;@string/pref_syncConnectionTypes_default&amp;quot;
+    ... /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后，在应用的主ACT的&lt;code&gt;onCreate()&lt;/code&gt;方法，以及任何可能的首次入口activity中调用&lt;code&gt;setDefaultValues()&lt;/code&gt;：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;PreferenceManager.setDefaultValues(this, R.xml.advanced_preferences, false);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在&lt;code&gt;onCreate()&lt;/code&gt;中调用保证了应用以默认设置初始化。这个方法有三个参数：应用的&lt;code&gt;Context&lt;/code&gt;，pref XML的资源ID，指示是否覆盖的布尔变量。&lt;/p&gt;
+&lt;p&gt;只要将第三个参数设置为&lt;code&gt;false&lt;/code&gt;，便可以安全地在每次ACT启动时调用该方法，无需担心覆盖pref。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;应用一般都包含一些用户可以自定义的设置，比如是否推送通知，更新数据的频率等等。&lt;/p&gt;
+&lt;p&gt;如果想要为应用提供设置，应该使用安卓的&lt;code&gt;Preference&lt;/code&gt;API来创建一致的用户体验。&lt;/p&gt;
+&lt;h1 id=&quot;概览&quot;&gt;&lt;a href=&quot;#概览&quot; class=&quot;headerlink&quot; title=&quot;概览&quot;&gt;&lt;/a&gt;概览&lt;/h1&gt;&lt;p&gt;与使用&lt;code&gt;View&lt;/code&gt;创造界面不同，设置是由xml文件中声明的各种&lt;code&gt;Preference&lt;/code&gt;的子类组成。&lt;/p&gt;
+&lt;p&gt;一个&lt;code&gt;Preference&lt;/code&gt;对象构成一个设置。每个&lt;code&gt;Preference&lt;/code&gt;显示为列表中的一个子项，并提供合适的UI供用户交互。例如，&lt;code&gt;CheckBoxPreference&lt;/code&gt;创造一个勾选框子项，&lt;code&gt;ListPreference&lt;/code&gt;创造一个弹出选择列表对话框的子项。&lt;/p&gt;
+&lt;p&gt;每个&lt;code&gt;Preference&lt;/code&gt;在系统使用的默认的&lt;code&gt;SharedPreferences&lt;/code&gt;文件中存在一个对应的键值对。用户更改设置后，系统在SP文件中更新相应的值。只有当需要从SP中读取值以决定应用行为时，才需要直接与SP相交互。&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>A Bug of TabLayout</title>
+    <link href="http://yoursite.com/2016/01/04/Bug-of-TabLayout/"/>
+    <id>http://yoursite.com/2016/01/04/Bug-of-TabLayout/</id>
+    <published>2016-01-03T16:26:01.000Z</published>
+    <updated>2016-01-03T16:31:16.972Z</updated>
+    
+    <content type="html">&lt;p&gt;In Google’s design support library, there is a bug for version 22.2.1 that the &lt;code&gt;TabLayout&lt;/code&gt; in &lt;code&gt;Toolbar&lt;/code&gt; may not display. I spent neary an hour debugging for this problem. There is a work-around for this bug:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;tabLayout.post(new Runnable() {
+    @Override
+    public void run() {
+        tabLayout.setupWithViewPager(viewPager);
+    }
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;But the easiest way is to upgrade the design library to version 23.&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;In Google’s design support library, there is a bug for version 22.2.1 that the &lt;code&gt;TabLayout&lt;/code&gt; in &lt;code&gt;Toolbar&lt;/code&gt; may not dis
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="Material Design" scheme="http://yoursite.com/tags/Material-Design/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>安卓导航 - 提供合适的后退导航</title>
+    <link href="http://yoursite.com/2016/01/03/Providing-Proper-Back-Navigation/"/>
+    <id>http://yoursite.com/2016/01/03/Providing-Proper-Back-Navigation/</id>
+    <published>2016-01-03T10:50:14.000Z</published>
+    <updated>2016-01-03T11:37:13.407Z</updated>
+    
+    <content type="html">&lt;p&gt;后退导航是指用户如何从访问过的屏幕中向后移动。所有的安卓设备都提供有一个后退键，所以&lt;strong&gt;你的应用不应该再增加一个后退按钮。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在大多数的情况中，系统在用户导航时维持着一个后退栈。这使得系统能够再用户按下后退键之后合适地向后导航。然而，有一些情况下，你需要手动指明后退行为，以提供更好的用户体验。&lt;/p&gt;
+&lt;p&gt;需要手动指明后退行为的导航模式有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;用户通过一条通知、一个桌面挂件或导航抽屉直接进入到一个深层次的activity时。&lt;/li&gt;
+&lt;li&gt;用户在fragment见导航的某些情况。&lt;/li&gt;
+&lt;li&gt;用户在&lt;code&gt;WebView&lt;/code&gt;的网页中导航时。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h1 id=&quot;为深链接合成新的后退栈&quot;&gt;&lt;a href=&quot;#为深链接合成新的后退栈&quot; class=&quot;headerlink&quot; title=&quot;为深链接合成新的后退栈&quot;&gt;&lt;/a&gt;为深链接合成新的后退栈&lt;/h1&gt;&lt;p&gt;一般，系统在用户不断导航的过程中逐步地构建起后退栈。然而，当用户通过一个深层链接直接进入应用时，有必要去合成一个新的后退栈，因为activity处在一个新的任务中，根本没有任何后退栈。&lt;/p&gt;
+&lt;h2 id=&quot;在manifest中明确父activity&quot;&gt;&lt;a href=&quot;#在manifest中明确父activity&quot; class=&quot;headerlink&quot; title=&quot;在manifest中明确父activity&quot;&gt;&lt;/a&gt;在manifest中明确父activity&lt;/h2&gt;&lt;p&gt;// 见上一篇文章&lt;/p&gt;
+&lt;h2 id=&quot;启动activity时创造后退栈&quot;&gt;&lt;a href=&quot;#启动activity时创造后退栈&quot; class=&quot;headerlink&quot; title=&quot;启动activity时创造后退栈&quot;&gt;&lt;/a&gt;启动activity时创造后退栈&lt;/h2&gt;&lt;p&gt;向后退栈中添加activity发生在将用户带入应用的事件的一开始。也就是说，使用&lt;code&gt;TaskStackBuilder&lt;/code&gt;API而非&lt;code&gt;startActivity()&lt;/code&gt;来定义应该放入新后退栈的每个activity。然后，通过调用&lt;code&gt;startActivities()&lt;/code&gt;来启动目标activity，或者创建调用&lt;code&gt;getPendingIntent()&lt;/code&gt;合适的&lt;code&gt;PendingIntent&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;例如，当某个通知将用户带入至应用阶层中的一个深层activity时，可以使用下面的代码来创建一个&lt;code&gt;PendingIntent&lt;/code&gt;来启动activity，并为目标任务插入一个新的后退栈。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// Intent for the activity to open when user selects the notification
+Intent detailsIntent = new Intent(this, DetailsActivity.class);
+
+// Use TaskStackBuilder to build the back stack and get the PendingIntent
+PendingIntent pendingIntent =
+        TaskStackBuilder.create(this)
+                        // add all of DetailsActivity&amp;apos;s parents to the stack,
+                        // followed by DetailsActivity itself
+                        .addNextIntentWithParentStack(upIntent)
+                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+builder.setContentIntent(pendingIntent);
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;获得的&lt;code&gt;PendingIntent&lt;/code&gt;不仅指明了将要启动的activity（在&lt;code&gt;detailsIntent&lt;/code&gt;中定义），而且指明了应该插入至任务重的后退栈（&lt;code&gt;DetailsActivity&lt;/code&gt;的所有父亲）。所以当该activity启动后，按下后退键会在其父activity中向后导航。&lt;/p&gt;
+&lt;h1 id=&quot;为Fragment实现向后导航&quot;&gt;&lt;a href=&quot;#为Fragment实现向后导航&quot; class=&quot;headerlink&quot; title=&quot;为Fragment实现向后导航&quot;&gt;&lt;/a&gt;为Fragment实现向后导航&lt;/h1&gt;&lt;p&gt;在应用中使用fragment时，独立的&lt;code&gt;FragmentTransaction&lt;/code&gt;对象可能代表了应该添加至后退栈的上下文变化。例如，通过交换fragment实现master/detail flow时，应该确保在detail屏幕按下后退键时能够回到master屏幕。要实现的话，在commit之前调用&lt;code&gt;addToBackStack()&lt;/code&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// Works with either the framework FragmentManager or the
+// support package FragmentManager (getSupportFragmentManager).
+getSupportFragmentManager().beginTransaction()
+                           .add(detailFragment, &amp;quot;detail&amp;quot;)
+                           // Add this transaction to the back stack
+                           .addToBackStack()
+                           .commit();
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当后退栈中存在&lt;code&gt;FragmentTransaction&lt;/code&gt;对象时，用户按下后退键后，&lt;code&gt;FragmentManager&lt;/code&gt;将会弹出后退栈中最近的一次transaction，并执行相反的操作（比如移除某个fragment，如果该transaction增添了它）。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意：当transaction是水平导航（如切换tab）时，或者修改内容表现（如调整过滤器）时，不应该将其添加至后退栈。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;如果应用更新更新了其他用户界面元素，以反应fragment的当前状态，比如action bar，记得在commit的时候更新UI。当通过后退栈返回的时候，同样应该更新UI。可以通过设置&lt;code&gt;FragmentManager.OnBackStackChangedListener&lt;/code&gt;来侦听&lt;code&gt;FragmentTransaction&lt;/code&gt;被反转的事件。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;getSupportFragmentManager().addOnBackStackChangedListener(
+        new FragmentManager.OnBackStackChangedListener() {
+            public void onBackStackChanged() {
+                // Update your UI here.
+            }
+        });
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&quot;为WebView实现后退栈&quot;&gt;&lt;a href=&quot;#为WebView实现后退栈&quot; class=&quot;headerlink&quot; title=&quot;为WebView实现后退栈&quot;&gt;&lt;/a&gt;为WebView实现后退栈&lt;/h1&gt;&lt;p&gt;如果应用的一部分包含在&lt;code&gt;WebView&lt;/code&gt;之中，可能适合使用后退键来遍历浏览历史。可以覆盖&lt;code&gt;onBackPressed()&lt;/code&gt;方法，来代理&lt;code&gt;WebView&lt;/code&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;@Override
+public void onBackPressed() {
+    if (mWebView.canGoBack()) {
+        mWebView.goBack();
+        return;
+    }
+
+    // Otherwise defer to system default behavior.
+    super.onBackPressed();
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;注意，当网页高度动态的时候可能产生大量的历史记录。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;后退导航是指用户如何从访问过的屏幕中向后移动。所有的安卓设备都提供有一个后退键，所以&lt;strong&gt;你的应用不应该再增加一个后退按钮。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在大多数的情况中，系统在用户导航时维持着一个后退栈。这使得系统能够再用户按下后退键之后合适地向后导航。然而，有一些情况下，你需要手动指明后退行为，以提供更好的用户体验。&lt;/p&gt;
+&lt;p&gt;需要手动指明后退行为的导航模式有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;用户通过一条通知、一个桌面挂件或导航抽屉直接进入到一个深层次的activity时。&lt;/li&gt;
+&lt;li&gt;用户在fragment见导航的某些情况。&lt;/li&gt;
+&lt;li&gt;用户在&lt;code&gt;WebView&lt;/code&gt;的网页中导航时。&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="Navigation" scheme="http://yoursite.com/tags/Navigation/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>安卓导航 - 提供Up导航</title>
+    <link href="http://yoursite.com/2016/01/03/Providing-Up-Navigation/"/>
+    <id>http://yoursite.com/2016/01/03/Providing-Up-Navigation/</id>
+    <published>2016-01-03T10:21:31.000Z</published>
+    <updated>2016-02-26T13:00:24.495Z</updated>
+    
+    <content type="html">&lt;p&gt;所有不是主入口的屏幕都应该为用户提供一个通过action bar的Up按钮导航至逻辑父屏幕的方式。&lt;/p&gt;
+&lt;h1 id=&quot;明确父Activity&quot;&gt;&lt;a href=&quot;#明确父Activity&quot; class=&quot;headerlink&quot; title=&quot;明确父Activity&quot;&gt;&lt;/a&gt;明确父Activity&lt;/h1&gt;&lt;p&gt;要实现Up导航，第一步是为每个activity声明合适的父activity。这样系统就可以在manifest中获得activity的逻辑父页面，方便实现导航模式。&lt;/p&gt;
+&lt;p&gt;从安卓4.1开始，可以通过在&lt;code&gt;&amp;lt;activity&amp;gt;&lt;/code&gt;中指明&lt;code&gt;android:parentActivityName&lt;/code&gt;属性来声明逻辑父activity。 4.0以下的版本这里略去。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;application ... &amp;gt;
+    ...
+    &amp;lt;!-- The main/home activity (it has no parent activity) --&amp;gt;
+    &amp;lt;activity
+        android:name=&amp;quot;com.example.myfirstapp.MainActivity&amp;quot; ...&amp;gt;
+        ...
+    &amp;lt;/activity&amp;gt;
+    &amp;lt;!-- A child of the main activity --&amp;gt;
+    &amp;lt;activity
+        android:name=&amp;quot;com.example.myfirstapp.DisplayMessageActivity&amp;quot;
+        android:label=&amp;quot;@string/title_activity_display_message&amp;quot;
+        android:parentActivityName=&amp;quot;com.example.myfirstapp.MainActivity&amp;quot; &amp;gt;
+        &amp;lt;!-- Parent activity meta-data to support 4.0 and lower --&amp;gt;
+        &amp;lt;meta-data
+            android:name=&amp;quot;android.support.PARENT_ACTIVITY&amp;quot;
+            android:value=&amp;quot;com.example.myfirstapp.MainActivity&amp;quot; /&amp;gt;
+    &amp;lt;/activity&amp;gt;
+&amp;lt;/application&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这样声明之后，就可以使用&lt;code&gt;NavUtils&lt;/code&gt;API来进行合适的Up导航。&lt;/p&gt;
+&lt;h1 id=&quot;添加Up动作&quot;&gt;&lt;a href=&quot;#添加Up动作&quot; class=&quot;headerlink&quot; title=&quot;添加Up动作&quot;&gt;&lt;/a&gt;添加Up动作&lt;/h1&gt;&lt;p&gt;调用&lt;code&gt;setDisplayHomeAsUpEnabled()&lt;/code&gt;方法可以启用action bar的Up导航：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Bundle savedInstanceState)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    getActionBar().setDisplayHomeAsUpEnabled(&lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这样可以在应用图标旁边添加一个向左的箭头，当用户点击之后，activity就会收到一个&lt;code&gt;onOptionsItemSelected()&lt;/code&gt;调用。动作的ID为&lt;code&gt;android.R.id.home&lt;/code&gt;。&lt;/p&gt;
+&lt;h1 id=&quot;Up导航至父Activity&quot;&gt;&lt;a href=&quot;#Up导航至父Activity&quot; class=&quot;headerlink&quot; title=&quot;Up导航至父Activity&quot;&gt;&lt;/a&gt;Up导航至父Activity&lt;/h1&gt;&lt;p&gt;要想在用户点击应用图标后向上导航，可以使用&lt;code&gt;NavUtils&lt;/code&gt;类的静态方法，&lt;code&gt;navigateUpFromSameTask()&lt;/code&gt;。调用这个方法时，它终结当前的activity并启动或继续一个合适的父activity。如果目标父activity在任务的后退栈中，它将被取出到最前。取出的方法取决于父activity是否能够处理&lt;code&gt;onNewIntent()&lt;/code&gt;调用。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果父activity启用了&lt;code&gt;&amp;lt;singleTop&amp;gt;&lt;/code&gt;模式，或者&lt;code&gt;up&lt;/code&gt;intent包含了&lt;code&gt;FLAG_ACTIVITY_CLEAR_TOP&lt;/code&gt;,父activity将被带到栈顶，并且通过&lt;code&gt;onNewIntent()&lt;/code&gt;方法接收intent。&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;如果父activity启动了&lt;code&gt;&amp;lt;standard&amp;gt;&lt;/code&gt;模式，并且&lt;code&gt;up&lt;/code&gt;intent不包含&lt;code&gt;FLAG_ACTIVITY_CLEAR_TOP&lt;/code&gt;,父activity将从栈中移除，并在栈顶创建一个该activity的新实例来接收intent。&lt;/p&gt;
+  &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onOptionsItemSelected&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(MenuItem item)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;switch&lt;/span&gt; (item.getItemId()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	    &lt;span class=&quot;comment&quot;&gt;// Respond to the action bar&#39;s Up/Home button&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	    &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; android.R.id.home:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	        NavUtils.navigateUpFromSameTask(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onOptionsItemSelected(item);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;然而，&lt;strong&gt;仅仅当应用是当前任务的所有者&lt;/strong&gt;时使用&lt;code&gt;navigateUpFromSameTask()&lt;/code&gt;才合适（就是说，用户从该应用开始任务）。否则，如果activity由其他应用的任务启动，Up导航应该创建一个属于自己应用的新的任务，着需要创建一个新的后退栈。&lt;/p&gt;
+&lt;h2 id=&quot;以新的后退栈向上导航&quot;&gt;&lt;a href=&quot;#以新的后退栈向上导航&quot; class=&quot;headerlink&quot; title=&quot;以新的后退栈向上导航&quot;&gt;&lt;/a&gt;以新的后退栈向上导航&lt;/h2&gt;&lt;p&gt;如果activity提供了intent filter来允许其他应用启动activity，那么实现&lt;code&gt;onOptionsItemSelected()&lt;/code&gt;回调时，当用户由其他应用进入activity并点击Up按钮后，应用应该在向上导航之前，启动一个有合适的后退栈的新的任务。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onOptionsItemSelected&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(MenuItem item)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;switch&lt;/span&gt; (item.getItemId()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// Respond to the action bar&#39;s Up/Home button&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; android.R.id.home:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Intent upIntent = NavUtils.getParentActivityIntent(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (NavUtils.shouldUpRecreateTask(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, upIntent)) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// This activity is NOT part of this app&#39;s task, so create a new task&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// when navigating up, with a synthesized back stack.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            TaskStackBuilder.create(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &lt;span class=&quot;comment&quot;&gt;// Add all of this activity&#39;s parents to the back stack&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    .addNextIntentWithParentStack(upIntent)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &lt;span class=&quot;comment&quot;&gt;// Navigate up to the closest parent&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    .startActivities();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125; &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// This activity is part of this app&#39;s task, so simply&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// navigate up to the logical parent activity.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            NavUtils.navigateUpTo(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, upIntent);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onOptionsItemSelected(item);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/code&gt;&lt;/pre&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;所有不是主入口的屏幕都应该为用户提供一个通过action bar的Up按钮导航至逻辑父屏幕的方式。&lt;/p&gt;
+&lt;h1 id=&quot;明确父Activity&quot;&gt;&lt;a href=&quot;#明确父Activity&quot; class=&quot;headerlink&quot; title=&quot;明确父Activity&quot;&gt;&lt;/a&gt;明确父Activity&lt;/h1&gt;&lt;p&gt;要实现Up导航，第一步是为每个activity声明合适的父activity。这样系统就可以在manifest中获得activity的逻辑父页面，方便实现导航模式。&lt;/p&gt;
+&lt;p&gt;从安卓4.1开始，可以通过在&lt;code&gt;&amp;lt;activity&amp;gt;&lt;/code&gt;中指明&lt;code&gt;android:parentActivityName&lt;/code&gt;属性来声明逻辑父activity。 4.0以下的版本这里略去。&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="Navigation" scheme="http://yoursite.com/tags/Navigation/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>安卓导航 - 创建导航抽屉</title>
+    <link href="http://yoursite.com/2016/01/03/Creating-a-Navigation-Drawer/"/>
+    <id>http://yoursite.com/2016/01/03/Creating-a-Navigation-Drawer/</id>
+    <published>2016-01-03T06:46:01.000Z</published>
+    <updated>2016-01-03T11:37:14.891Z</updated>
+    
+    <content type="html">&lt;p&gt;导航抽屉式一个屏幕左侧展示应用主要导航选项的面板。它一般隐藏起来，当用户从左侧滑动屏幕或在应用最顶级层面上点击应用图标时会出现。&lt;/p&gt;
+&lt;h1 id=&quot;创建DrawerLayout&quot;&gt;&lt;a href=&quot;#创建DrawerLayout&quot; class=&quot;headerlink&quot; title=&quot;创建DrawerLayout&quot;&gt;&lt;/a&gt;创建DrawerLayout&lt;/h1&gt;&lt;p&gt;要添加导航抽屉，首先在布局的根视图上添加一个&lt;code&gt;DrawerLayout&lt;/code&gt;。在&lt;code&gt;DrawerLayout&lt;/code&gt;中添加显示一个屏幕主要内容的view，和一个显示抽屉内容的view。&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;例如，下面的布局使用了一个有两个子view的&lt;code&gt;DrawerLayout&lt;/code&gt;：一个包含主要内容（由&lt;code&gt;Fragment&lt;/code&gt;填充）的&lt;code&gt;FrameLayout&lt;/code&gt;和一个作为导航抽屉的&lt;code&gt;ListView&lt;/code&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;android.support.v4.widget.DrawerLayout
+    xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;
+    android:id=&amp;quot;@+id/drawer_layout&amp;quot;
+    android:layout_width=&amp;quot;match_parent&amp;quot;
+    android:layout_height=&amp;quot;match_parent&amp;quot;&amp;gt;
+    &amp;lt;!-- The main content view --&amp;gt;
+    &amp;lt;FrameLayout
+        android:id=&amp;quot;@+id/content_frame&amp;quot;
+        android:layout_width=&amp;quot;match_parent&amp;quot;
+        android:layout_height=&amp;quot;match_parent&amp;quot; /&amp;gt;
+    &amp;lt;!-- The navigation drawer --&amp;gt;
+    &amp;lt;ListView android:id=&amp;quot;@+id/left_drawer&amp;quot;
+        android:layout_width=&amp;quot;240dp&amp;quot;
+        android:layout_height=&amp;quot;match_parent&amp;quot;
+        android:layout_gravity=&amp;quot;start&amp;quot;
+        android:choiceMode=&amp;quot;singleChoice&amp;quot;
+        android:divider=&amp;quot;@android:color/transparent&amp;quot;
+        android:dividerHeight=&amp;quot;0dp&amp;quot;
+        android:background=&amp;quot;#111&amp;quot;/&amp;gt;
+&amp;lt;/android.support.v4.widget.DrawerLayout&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这个布局展示了一些重要的布局特性：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;主内容view必须是&lt;code&gt;DrawerLayout&lt;/code&gt;的&lt;strong&gt;第一个子view&lt;/strong&gt;，因为XML的顺序暗含着Z-ordering，抽屉必须在内容的顶上。&lt;/li&gt;
+&lt;li&gt;主内容view应该匹配父视图的宽和高，因为当抽屉隐藏时，它代表了整个UI。&lt;/li&gt;
+&lt;li&gt;抽屉view必须用&lt;code&gt;android:layout_gravity&lt;/code&gt;指明水平的重力方向。为了支持一些从右到左的语言，可以使用”start”代替”left”。&lt;/li&gt;
+&lt;li&gt;抽屉view的宽度用&lt;code&gt;dp&lt;/code&gt;单位指明，高度匹配父视图。抽屉的宽度应该不超过320dp，这样用户可以总能看到主内容的一部分。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;初始化抽屉列表&quot;&gt;&lt;a href=&quot;#初始化抽屉列表&quot; class=&quot;headerlink&quot; title=&quot;初始化抽屉列表&quot;&gt;&lt;/a&gt;初始化抽屉列表&lt;/h1&gt;&lt;p&gt;在activity中，初始化导航抽屉的列表是最开始要做的事情之一。具体如何实现取决于应用的内容，但导航抽屉一般都包含一个&lt;code&gt;ListView&lt;/code&gt;，所以列表应该由一个&lt;code&gt;Adapter&lt;/code&gt;来填充。&lt;/p&gt;
+&lt;p&gt;下面是使用字符串数组来初始化导航列表的例子：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public class MainActivity extends Activity {
+    private String[] mPlanetTitles;
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    ...
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        mPlanetTitles = getResources().getStringArray(R.array.planets_array);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+        // Set the adapter for the list view
+        mDrawerList.setAdapter(new ArrayAdapter&amp;lt;String&amp;gt;(this,
+                R.layout.drawer_list_item, mPlanetTitles));
+        // Set the list&amp;apos;s click listener
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+        ...
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;上面的代码调用了&lt;code&gt;setOnItemClickListener()&lt;/code&gt;来接收列表中的点击事件。下面的部分将展示如何实现这个接口，并在用户选择时改变内容视图。&lt;/p&gt;
+&lt;h1 id=&quot;处理导航点击事件&quot;&gt;&lt;a href=&quot;#处理导航点击事件&quot; class=&quot;headerlink&quot; title=&quot;处理导航点击事件&quot;&gt;&lt;/a&gt;处理导航点击事件&lt;/h1&gt;&lt;p&gt;当用户选择了抽屉列表中的一个项目时，系统调用&lt;code&gt;onItemClick()&lt;/code&gt;方法。&lt;/p&gt;
+&lt;p&gt;在这个方法中所做的事情取决于如何实现应用的结构。下面的例子中，选择列表中的每个项目会往主内容视图中插入一个不同的&lt;code&gt;Fragment&lt;/code&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;private class DrawerItemClickListener implements ListView.OnItemClickListener {
+    @Override
+    public void onItemClick(AdapterView parent, View view, int position, long id) {
+        selectItem(position);
+    }
+}
+
+/** Swaps fragments in the main content view */
+private void selectItem(int position) {
+    // Create a new fragment and specify the planet to show based on position
+    Fragment fragment = new PlanetFragment();
+    Bundle args = new Bundle();
+    args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
+    fragment.setArguments(args);
+
+    // Insert the fragment by replacing any existing fragment
+    FragmentManager fragmentManager = getFragmentManager();
+    fragmentManager.beginTransaction()
+                   .replace(R.id.content_frame, fragment)
+                   .commit();
+
+    // Highlight the selected item, update the title, and close the drawer
+    mDrawerList.setItemChecked(position, true);
+    setTitle(mPlanetTitles[position]);
+    mDrawerLayout.closeDrawer(mDrawerList);
+}
+
+@Override
+public void setTitle(CharSequence title) {
+    mTitle = title;
+    getActionBar().setTitle(mTitle);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&quot;侦听打开和关闭事件&quot;&gt;&lt;a href=&quot;#侦听打开和关闭事件&quot; class=&quot;headerlink&quot; title=&quot;侦听打开和关闭事件&quot;&gt;&lt;/a&gt;侦听打开和关闭事件&lt;/h1&gt;&lt;p&gt;要侦听抽屉的打开和关闭的事件，调用&lt;code&gt;DrawerLayout&lt;/code&gt;的&lt;code&gt;setDrawerListener()&lt;/code&gt;方法，并传入自己的实现。这个接口提供了抽屉打开和关闭的事件回调。&lt;/p&gt;
+&lt;p&gt;然而，如果activity包含了action bar,那么可以选择继承&lt;code&gt;ActionBarDrawerToggle&lt;/code&gt;类来替代。后者也实现了相同的接口，所以仍然可以重写这些回调。而且它使action bar图标与导航抽屉的互动更加便利。&lt;/p&gt;
+&lt;p&gt;当抽屉变得可见时，首先应该修改action bar的内容，比如改变标题，移除主内容相关的一些项目。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public class MainActivity extends Activity {
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private CharSequence mDrawerTitle;
+    private CharSequence mTitle;
+    ...
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        ...
+
+        mTitle = mDrawerTitle = getTitle();
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getActionBar().setTitle(mTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getActionBar().setTitle(mDrawerTitle);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+
+        // Set the drawer toggle as the DrawerListener
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+    }
+
+    /* Called whenever we call invalidateOptionsMenu() */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content view
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+        return super.onPrepareOptionsMenu(menu);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&quot;打开和关闭时的App图标&quot;&gt;&lt;a href=&quot;#打开和关闭时的App图标&quot; class=&quot;headerlink&quot; title=&quot;打开和关闭时的App图标&quot;&gt;&lt;/a&gt;打开和关闭时的App图标&lt;/h1&gt;&lt;p&gt;如果使用了action bar，那么应该允许用户通过点击应用图标来打开或关闭抽屉。而且应用应该通过一个特殊的图标来展示导航抽屉的存在。这可以通过&lt;code&gt;ActionBarDrawerToggle&lt;/code&gt;来实现。&lt;/p&gt;
+&lt;p&gt;为了使其工作，使用其构造方法创建一个实例，要求下面的参数：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;drawer所在的&lt;code&gt;Activity&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;DrawerLayout&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;作为抽屉标识的drawable资源。&lt;/li&gt;
+&lt;li&gt;一个描述打开抽屉动作的字符串资源（为了无障碍使用）&lt;/li&gt;
+&lt;li&gt;一个描述关闭抽屉动作的字符串资源（为了无障碍使用）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;然后，无论是否创建一个&lt;code&gt;ActionBarDrawerToggle&lt;/code&gt;子类作为抽屉的侦听器，都需要在贯穿activity的生命周期中的一些地方调用它。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public class MainActivity extends Activity {
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+    ...
+
+    public void onCreate(Bundle savedInstanceState) {
+        ...
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,                  /* host Activity */
+                mDrawerLayout,         /* DrawerLayout object */
+                R.drawable.ic_drawer,  /* nav drawer icon to replace &amp;apos;Up&amp;apos; caret */
+                R.string.drawer_open,  /* &amp;quot;open drawer&amp;quot; description */
+                R.string.drawer_close  /* &amp;quot;close drawer&amp;quot; description */
+                ) {
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getActionBar().setTitle(mTitle);
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getActionBar().setTitle(mDrawerTitle);
+            }
+        };
+
+        // Set the drawer toggle as the DrawerListener
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Pass the event to ActionBarDrawerToggle, if it returns
+        // true, then it has handled the app icon touch event
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+          return true;
+        }
+        // Handle your other action bar items...
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    ...
+}
+&lt;/code&gt;&lt;/pre&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;导航抽屉式一个屏幕左侧展示应用主要导航选项的面板。它一般隐藏起来，当用户从左侧滑动屏幕或在应用最顶级层面上点击应用图标时会出现。&lt;/p&gt;
+&lt;h1 id=&quot;创建DrawerLayout&quot;&gt;&lt;a href=&quot;#创建DrawerLayout&quot; class=&quot;headerlink&quot; title=&quot;创建DrawerLayout&quot;&gt;&lt;/a&gt;创建DrawerLayout&lt;/h1&gt;&lt;p&gt;要添加导航抽屉，首先在布局的根视图上添加一个&lt;code&gt;DrawerLayout&lt;/code&gt;。在&lt;code&gt;DrawerLayout&lt;/code&gt;中添加显示一个屏幕主要内容的view，和一个显示抽屉内容的view。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="Navigation" scheme="http://yoursite.com/tags/Navigation/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>A Glide Sizing Problem</title>
+    <link href="http://yoursite.com/2016/01/03/Glide-image-size/"/>
+    <id>http://yoursite.com/2016/01/03/Glide-image-size/</id>
+    <published>2016-01-02T16:02:01.000Z</published>
+    <updated>2016-02-16T11:30:11.820Z</updated>
+    
+    <content type="html">&lt;p&gt;Months ago, I encountered a very frustrating bug of Glide. I was using Glide to display images in a &lt;code&gt;RecyclerView&lt;/code&gt;. The image was wrapped in a custom layout, and it was added dynamically. No matter how I adjust the code, images can’t be displayed  with its width matching parent. Sometimes it was even scaled into a pixel point!&lt;/p&gt;
+&lt;p&gt;Until today, I found that the problem was because that Glide figured out the wrong dimensions, as is described here - “&lt;a href=&quot;https://github.com/bumptech/glide/wiki/Transformations&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/bumptech/glide/wiki/Transformations&lt;/a&gt;“.&lt;/p&gt;
+&lt;p&gt;I’m not sure about why Glide get the wrong dimension. But the solution is pretty easy: just call &lt;code&gt;.override(int,int)&lt;/code&gt; to set the dimension by yourself. And a &lt;code&gt;.fitCenter()&lt;/code&gt; call can then make sure that the scaling of width and height is not changed.&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Months ago, I encountered a very frustrating bug of Glide. I was using Glide to display images in a &lt;code&gt;RecyclerView&lt;/code&gt;. The image 
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="Glide" scheme="http://yoursite.com/tags/Glide/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>LoaderManager Compares References</title>
+    <link href="http://yoursite.com/2015/12/20/loader-compares-reference/"/>
+    <id>http://yoursite.com/2015/12/20/loader-compares-reference/</id>
+    <published>2015-12-19T16:02:58.000Z</published>
+    <updated>2016-02-15T02:03:29.976Z</updated>
+    
+    <content type="html">&lt;p&gt;Today, one of my &lt;code&gt;Loader&lt;/code&gt; implementations behaved totally weird after I modified its code. The &lt;code&gt;Loader&lt;/code&gt; loaded successfully at the 1st time, but failed on all following attempts. The &lt;code&gt;loadInBackground()&lt;/code&gt; method returned, but &lt;code&gt;onLoadFinished()&lt;/code&gt; was not called.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;LoaderManager&lt;/code&gt; class compares the new loaded data and old retained data by code like &lt;code&gt;if(oldData!=newData)&lt;/code&gt; to decide whether to update the data or not. Note that it uses &lt;code&gt;==&lt;/code&gt; operator to compare them. In my case, my &lt;code&gt;Loader&lt;/code&gt; retains a same &lt;code&gt;TreeMap&lt;/code&gt; object and add/update entries into it, resulting that they’re identified as the same reference, so the loader won’t deliver the new result.&lt;/p&gt;
+&lt;p&gt;To solve this problem, you have to create a new &lt;code&gt;TreeMap&lt;/code&gt; and add back all the old data.&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Today, one of my &lt;code&gt;Loader&lt;/code&gt; implementations behaved totally weird after I modified its code. The &lt;code&gt;Loader&lt;/code&gt; loaded succ
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="Loader" scheme="http://yoursite.com/tags/Loader/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Jcenter peer not authenticated</title>
+    <link href="http://yoursite.com/2015/12/16/jcenter-peer-not-authenticated/"/>
+    <id>http://yoursite.com/2015/12/16/jcenter-peer-not-authenticated/</id>
+    <published>2015-12-15T16:27:34.000Z</published>
+    <updated>2016-02-16T11:42:21.674Z</updated>
+    
+    <content type="html">&lt;p&gt;Today my gradle failed to sync because the following error:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Error: peer not authenticated
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I found lots of solutions but none of them take effects, only to know it is caused by the problem of certificate of &lt;code&gt;jCenter()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Finally, it was fixed by replacing all the &lt;code&gt;jCenter()&lt;/code&gt; into &lt;code&gt;mavenCentral()&lt;/code&gt; in all &lt;code&gt;build.gradle&lt;/code&gt; files. Surprisingly, the local gradle repos work without modification.&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Today my gradle failed to sync because the following error:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Error: peer not authenticated
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I found lots of 
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="Gradle" scheme="http://yoursite.com/tags/Gradle/"/>
+    
+      <category term="IDEA15" scheme="http://yoursite.com/tags/IDEA15/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>安卓绘制View的过程</title>
+    <link href="http://yoursite.com/2015/11/18/How-Android-Draws-Views/"/>
+    <id>http://yoursite.com/2015/11/18/How-Android-Draws-Views/</id>
+    <published>2015-11-18T11:58:13.000Z</published>
+    <updated>2016-02-17T04:08:19.934Z</updated>
+    
+    <content type="html">&lt;p&gt;一个&lt;code&gt;Activity&lt;/code&gt;获得焦点时，会被请求绘制其布局。安卓框架会处理绘制的过程，但&lt;code&gt;Activity&lt;/code&gt;必须提供布局阶层的根节点。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;figcaption&gt;&lt;span&gt;View.java&lt;/span&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;draw&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Canvas canvas)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;       &lt;span class=&quot;comment&quot;&gt;// ........&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;       &lt;span class=&quot;comment&quot;&gt;/*&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        * Draw traversal performs several drawing steps which must be executed&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        * in the appropriate order:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        *&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        *      1. Draw the background&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        *      2. If necessary, save the canvas&#39; layers to prepare for fading&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        *      3. Draw view&#39;s content&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        *      4. Draw children&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        *      5. If necessary, draw the fading edges and restore layers&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        *      6. Draw decorations (scrollbars for instance)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;comment&quot;&gt;// ......&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;    
+&lt;p&gt;绘制从布局的根节点处开始。它被请求测量和绘制布局树。每个&lt;code&gt;ViewGroup&lt;/code&gt;都负责请求其子节点进行绘制（使用&lt;code&gt;draw()&lt;/code&gt;方法）并且每个&lt;code&gt;View&lt;/code&gt;都负责绘制自己。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;figcaption&gt;&lt;span&gt;View.java&lt;/span&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;draw&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Canvas canvas)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;       &lt;span class=&quot;comment&quot;&gt;// ........&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;       &lt;span class=&quot;comment&quot;&gt;// Step 3, draw the content&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;       &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (!dirtyOpaque) onDraw(canvas);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;       &lt;span class=&quot;comment&quot;&gt;// Step 4, draw the children&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;       dispatchDraw(canvas);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;comment&quot;&gt;// ......&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;绘制布局是一个two pass过程：一次measure pass和一次layout pass。Measure pass在&lt;code&gt;measure(int, int)&lt;/code&gt;中实现，是一次自上而下的&lt;code&gt;View&lt;/code&gt;树的遍历。每个&lt;code&gt;View&lt;/code&gt;将尺寸指示在递归过程中沿着树向下推进。在measure pass的最后，每个&lt;code&gt;View&lt;/code&gt;都存储着自己的测量结果。第二个pass在&lt;code&gt;layout(int, int, int, int)&lt;/code&gt;中发生，同样是自上而下的。在这一次的pass过程中，每个父节点都通过measure pass中计算得到的尺寸来放置所有的孩子。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;View&lt;/code&gt;的&lt;code&gt;measure()&lt;/code&gt;方法返回后，&lt;code&gt;getMeasuredWidth()&lt;/code&gt;和&lt;code&gt;getMeasuredHeight()&lt;/code&gt;的值一定会被设定，该&lt;code&gt;View&lt;/code&gt;的所有后代也同样。一个&lt;code&gt;View&lt;/code&gt;对象的测量宽度和测量高度必须遵从其各个父节点的约束。这保证了在measure pass结束后，所有父节点能够接受所有孩子的测量。一个父&lt;code&gt;View&lt;/code&gt;可能对其孩子多次调用&lt;code&gt;measure()&lt;/code&gt;。比如，父节点可能以不明确的尺寸去测量每个孩子，来得到他们想要的大小，然后如果所有子节点的自由尺寸之和太大或太小，再以实际的数字来调用&lt;code&gt;measure()&lt;/code&gt;（即子节点之间不能确定各自占有的空间时，再有父节点进行干涉，通过第二次pass设立规则）。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;figcaption&gt;&lt;span&gt;View.java&lt;/span&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onMeasure&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; widthMeasureSpec, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; heightMeasureSpec)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Measure pass使用两个类来沟通尺寸。&lt;code&gt;View&lt;/code&gt;对象使用&lt;code&gt;ViewGroup.LayoutParams&lt;/code&gt;类来告诉其父节点他们想如何被测量和放置。基础的&lt;code&gt;ViewGroup.LayoutParams&lt;/code&gt;类仅仅描述了&lt;code&gt;View&lt;/code&gt;想要的宽度和高度。对每个维度，都可以指定为下列几项之一：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一个确定的数字&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;MATCH_PARENT&lt;/code&gt;，表示&lt;code&gt;View&lt;/code&gt;希望尽可能大（不超过父节点）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;WRAP_CONTENT&lt;/code&gt;，表示&lt;code&gt;View&lt;/code&gt;希望足够大以包括其内容&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;ViewGroup&lt;/code&gt;的不同子类有着不同的&lt;code&gt;Vie    wGroup.LayoutParams&lt;/code&gt;。例如&lt;code&gt;RelativeLayout&lt;/code&gt;相应的子类可以将子&lt;code&gt;View&lt;/code&gt;放置在水平或数值中心。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;MeasureSpec&lt;/code&gt;对象用来将需求沿着树从父节点推向孩子。它可以有三种模式：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;UNSPECIFIED&lt;/code&gt;：父节点确定子&lt;code&gt;View&lt;/code&gt;所希望的尺寸时使用。例如&lt;code&gt;LinearLayout&lt;/code&gt;可以对孩子调用&lt;code&gt;measure()&lt;/code&gt;方法，高度设为&lt;code&gt;UNSPECIFIED&lt;/code&gt;，宽度设为&lt;code&gt;EXACTLY&lt;/code&gt; 240，来确定子&lt;code&gt;View&lt;/code&gt;在240像素宽的情况下，需要多少高度。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;EXACTLY&lt;/code&gt;：父节点要向孩子施加具体大小时使用。子节点必须使用这个大小，并且保证所有后代在这个尺寸内进行适应。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;AT MOST&lt;/code&gt;：父节点向孩子要求最大尺寸时使用。子节点必须保证他和所有后代都在这个尺寸内进行使用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;figcaption&gt;&lt;span&gt;View.java&lt;/span&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * Utility to return a default size. Uses the supplied size if the&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * MeasureSpec imposed no constraints. Will get larger if allowed&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * by the MeasureSpec.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; *&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * &lt;span class=&quot;doctag&quot;&gt;@param&lt;/span&gt; size Default size for this view&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * &lt;span class=&quot;doctag&quot;&gt;@param&lt;/span&gt; measureSpec Constraints imposed by the parent&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * &lt;span class=&quot;doctag&quot;&gt;@return&lt;/span&gt; The size this view should be.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;getDefaultSize&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; size, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; measureSpec)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; result = size;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; specMode = MeasureSpec.getMode(measureSpec);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; specSize = MeasureSpec.getSize(measureSpec);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;switch&lt;/span&gt; (specMode) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MeasureSpec.UNSPECIFIED:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        result = size;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MeasureSpec.AT_MOST:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; MeasureSpec.EXACTLY:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        result = specSize;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; result;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/code&gt;&lt;/pre&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;一个&lt;code&gt;Activity&lt;/code&gt;获得焦点时，会被请求绘制其布局。安卓框架会处理绘制的过程，但&lt;code&gt;Activity&lt;/code&gt;必须提供布局阶层的根节点。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;figcaption&gt;&lt;span&gt;View.java&lt;/span&gt;&lt;/figcaption&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;draw&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Canvas canvas)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;       &lt;span class=&quot;comment&quot;&gt;// ........&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;       &lt;span class=&quot;comment&quot;&gt;/*&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        * Draw traversal performs several drawing steps which must be executed&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        * in the appropriate order:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        *&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        *      1. Draw the background&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        *      2. If necessary, save the canvas&#39; layers to prepare for fading&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        *      3. Draw view&#39;s content&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        *      4. Draw children&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        *      5. If necessary, draw the fading edges and restore layers&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        *      6. Draw decorations (scrollbars for instance)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;comment&quot;&gt;// ......&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Notes on Content Providers (II) Creating a Content Provider</title>
+    <link href="http://yoursite.com/2015/11/16/notes-about-ContentProviders-2/"/>
+    <id>http://yoursite.com/2015/11/16/notes-about-ContentProviders-2/</id>
+    <published>2015-11-16T15:12:32.000Z</published>
+    <updated>2016-02-16T11:13:24.135Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;Before-You-Start-Building&quot;&gt;&lt;a href=&quot;#Before-You-Start-Building&quot; class=&quot;headerlink&quot; title=&quot;Before You Start Building&quot;&gt;&lt;/a&gt;Before You Start Building&lt;/h1&gt;&lt;p&gt;You need to build a content provider if you want to provide one or more of the following features:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;You want to offer complex data or files to other applications.&lt;/li&gt;
+&lt;li&gt;You want to allow users to copy complex data from your app into other apps.&lt;/li&gt;
+&lt;li&gt;You want to provide custom search suggestions using the search framework.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Follow these steps to build your provider:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Design the raw storage for your data. A content provider offers data in two ways:  File data or  “Structured” data.&lt;/li&gt;
+&lt;li&gt;Define a concrete implementation of the ContentProvider class and its required methods. &lt;/li&gt;
+&lt;li&gt;Define the provider’s authority string, its content URIs, and column names. If you want the provider’s application to handle intents, also define intent actions, extras data, and flags. Also define the permissions that you will require for applications that want to access your data. You should consider defining all of these values as constants in a separate contract class; later, you can expose this class to other developers.&lt;/li&gt;
+&lt;li&gt;Add other optional pieces, such as sample data or an implementation of &lt;code&gt;AbstractThreadedSyncAdapter&lt;/code&gt; that can synchronize data between the provider and cloud-based data.  &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h1 id=&quot;Designing-Data-Storage&quot;&gt;&lt;a href=&quot;#Designing-Data-Storage&quot; class=&quot;headerlink&quot; title=&quot;Designing Data Storage&quot;&gt;&lt;/a&gt;Designing Data Storage&lt;/h1&gt;For working with network-based data, use classes in &lt;code&gt;java.net&lt;/code&gt; and &lt;code&gt;android.net&lt;/code&gt;. You can also synchronize network-based data to a local data store such as a database, and then offer the data as tables or files.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;Data-design-considerations&quot;&gt;&lt;a href=&quot;#Data-design-considerations&quot; class=&quot;headerlink&quot; title=&quot;Data design considerations&quot;&gt;&lt;/a&gt;Data design considerations&lt;/h2&gt;&lt;p&gt;Table data should always have a “primary key” column that the provider maintains as a unique numeric value for each row. You can use this value to link the row to related rows in other tables (using it as a “foreign key”). Although you can use any name for this column, using &lt;code&gt;BaseColumns._ID&lt;/code&gt; is the best choice, because linking the results of a provider query to a &lt;code&gt;ListView&lt;/code&gt; requires one of the retrieved columns to have the name _ID&lt;code&gt;.&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;If you want to provide bitmap images or other very large pieces of file-oriented data, store the data in a file and then provide it indirectly rather than storing it directly in a table. If you do this, you need to tell users of your provider that they need to use a &lt;code&gt;ContentResolver&lt;/code&gt; file method to access the data.&lt;/p&gt;
+&lt;p&gt;Use the Binary Large OBject (BLOB) data type to store data that varies in size or has a varying structure. For example, you can use a BLOB column to store a protocol buffer or JSON structure. &lt;/p&gt;
+&lt;h1 id=&quot;Designing-Content-URIs&quot;&gt;&lt;a href=&quot;#Designing-Content-URIs&quot; class=&quot;headerlink&quot; title=&quot;Designing Content URIs&quot;&gt;&lt;/a&gt;Designing Content URIs&lt;/h1&gt;&lt;p&gt;Content URIs include the symbolic name of the entire provider (its authority) and a name that points to a table or file (a path). The optional id part points to an individual row in a table. &lt;/p&gt;
+&lt;h2 id=&quot;Designing-an-authority&quot;&gt;&lt;a href=&quot;#Designing-an-authority&quot; class=&quot;headerlink&quot; title=&quot;Designing an authority&quot;&gt;&lt;/a&gt;Designing an authority&lt;/h2&gt;&lt;p&gt;A provider usually has a single authority, which serves as its Android-internal name. To avoid conflicts with other providers, you should use Internet domain ownership (in reverse) as the basis of your provider authority. For example, if your Android package name is &lt;code&gt;com.example.&amp;lt;appname&amp;gt;&lt;/code&gt;, you should give your provider the authority &lt;code&gt;com.example.&amp;lt;appname&amp;gt;.provider&lt;/code&gt;. &lt;/p&gt;
+&lt;h2 id=&quot;Content-URI-patterns&quot;&gt;&lt;a href=&quot;#Content-URI-patterns&quot; class=&quot;headerlink&quot; title=&quot;Content URI patterns&quot;&gt;&lt;/a&gt;Content URI patterns&lt;/h2&gt;&lt;p&gt;To help you choose which action to take for an incoming content URI, the provider API includes the convenience class &lt;code&gt;UriMatcher&lt;/code&gt;, which maps content URI “patterns” to integer values. You can use the integer values in a switch statement that chooses the desired action for the content URI or URIs that match a particular pattern. &lt;/p&gt;
+&lt;p&gt;A content URI pattern matches content URIs using wildcard characters:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;*: Matches a string of any valid characters of any length.&lt;/li&gt;
+&lt;li&gt;#: Matches a string of numeric characters of any length.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The method &lt;code&gt;addURI()&lt;/code&gt; maps an authority and path to an integer value. The method &lt;code&gt;match()&lt;/code&gt; returns the integer value for a URI. A switch statement chooses between querying the entire table, and querying for a single record&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public class ExampleProvider extends ContentProvider {
+...
+    // Creates a UriMatcher object.
+    private static final UriMatcher sUriMatcher;
+...
+    /*
+     * The calls to addURI() go here, for all of the content URI patterns that the provider
+     * should recognize. For this snippet, only the calls for table 3 are shown.
+     */
+...
+    /*
+     * Sets the integer value for multiple rows in table 3 to 1. Notice that no wildcard is used
+     * in the path
+     */
+    sUriMatcher.addURI(&amp;quot;com.example.app.provider&amp;quot;, &amp;quot;table3&amp;quot;, 1);
+
+    /*
+     * Sets the code for a single row to 2. In this case, the &amp;quot;#&amp;quot; wildcard is
+     * used. &amp;quot;content://com.example.app.provider/table3/3&amp;quot; matches, but
+     * &amp;quot;content://com.example.app.provider/table3 doesn&amp;apos;t.
+     */
+    sUriMatcher.addURI(&amp;quot;com.example.app.provider&amp;quot;, &amp;quot;table3/#&amp;quot;, 2);
+...
+    // Implements ContentProvider.query()
+    public Cursor query(
+        Uri uri,
+        String[] projection,
+        String selection,
+        String[] selectionArgs,
+        String sortOrder) {
+...
+        /*
+         * Choose the table to query and a sort order based on the code returned for the incoming
+         * URI. Here, too, only the statements for table 3 are shown.
+         */
+        switch (sUriMatcher.match(uri)) {
+
+
+            // If the incoming URI was for all of table3
+            case 1:
+
+                if (TextUtils.isEmpty(sortOrder)) sortOrder = &amp;quot;_ID ASC&amp;quot;;
+                break;
+
+            // If the incoming URI was for a single row
+            case 2:
+
+                /*
+                 * Because this URI was for a single row, the _ID value part is
+                 * present. Get the last path segment from the URI; this is the _ID value.
+                 * Then, append the value to the WHERE clause for the query
+                 */
+                selection = selection + &amp;quot;_ID = &amp;quot; uri.getLastPathSegment();
+                break;
+
+            default:
+            ...
+                // If the URI is not recognized, you should do some error handling here.
+        }
+        // call the code to actually do the query
+    }
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&quot;Implementing-the-ContentProvider-Class&quot;&gt;&lt;a href=&quot;#Implementing-the-ContentProvider-Class&quot; class=&quot;headerlink&quot; title=&quot;Implementing the ContentProvider Class&quot;&gt;&lt;/a&gt;Implementing the ContentProvider Class&lt;/h1&gt;&lt;p&gt;All forms of access eventually call &lt;code&gt;ContentResolver&lt;/code&gt;, which then calls a concrete method of &lt;code&gt;ContentProvider&lt;/code&gt; to get access. &lt;/p&gt;
+&lt;h2 id=&quot;Required-methods&quot;&gt;&lt;a href=&quot;#Required-methods&quot; class=&quot;headerlink&quot; title=&quot;Required methods&quot;&gt;&lt;/a&gt;Required methods&lt;/h2&gt;&lt;p&gt;The abstract class &lt;code&gt;ContentProvider&lt;/code&gt; defines six abstract methods that you must implement as part of your own concrete subclass. All of these methods except &lt;code&gt;onCreate()&lt;/code&gt; are called by a client application that is attempting to access your content provider. Notice that these methods have the same signature as the identically-named &lt;code&gt;ContentResolver&lt;/code&gt; methods. &lt;/p&gt;
+&lt;p&gt;Your implementation of these methods should account for the following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;All of these methods except &lt;code&gt;onCreate()&lt;/code&gt; can be called by multiple threads at once, so they must be thread-safe.&lt;/li&gt;
+&lt;li&gt;Avoid doing lengthy operations in &lt;code&gt;onCreate()&lt;/code&gt;. Defer initialization tasks until they are actually needed. The section Implementing the &lt;code&gt;onCreate()&lt;/code&gt; method discusses this in more detail.&lt;/li&gt;
+&lt;li&gt;Although you must implement these methods, your code does not have to do anything except return the expected data type. For example, you may want to prevent other applications from inserting data into some tables. To do this, you can ignore the call to &lt;code&gt;insert()&lt;/code&gt; and return 0.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;Implementing-the-query-method&quot;&gt;&lt;a href=&quot;#Implementing-the-query-method&quot; class=&quot;headerlink&quot; title=&quot;Implementing the query() method&quot;&gt;&lt;/a&gt;Implementing the query() method&lt;/h2&gt;&lt;p&gt;If you aren’t using an SQLite database as your data storage, use one of the concrete subclasses of &lt;code&gt;Cursor&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;Remember that the Android system must be able to communicate the Exception across process boundaries. Android can do this for the following exceptions that may be useful in handling query errors:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;IllegalArgumentException&lt;/code&gt; (You may choose to throw this if your provider receives an invalid content URI)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;NullPointerException&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;Implementing-the-onCreate-method&quot;&gt;&lt;a href=&quot;#Implementing-the-onCreate-method&quot; class=&quot;headerlink&quot; title=&quot;Implementing the onCreate() method&quot;&gt;&lt;/a&gt;Implementing the onCreate() method&lt;/h2&gt;&lt;p&gt;You should perform only fast-running initialization tasks in this method, and defer database creation and data loading until the provider actually receives a request for the data.&lt;/p&gt;
+&lt;p&gt;For example, if you are using an SQLite database you can create a new &lt;code&gt;SQLiteOpenHelper&lt;/code&gt; object in &lt;code&gt;ContentProvider.onCreate()&lt;/code&gt;, and then create the SQL tables the first time you open the database. To facilitate this, the first time you call &lt;code&gt;getWritableDatabase()&lt;/code&gt;, it automatically calls the &lt;code&gt;SQLiteOpenHelper.onCreate()&lt;/code&gt; method. &lt;/p&gt;
+&lt;h1 id=&quot;Implementing-a-Contract-Class&quot;&gt;&lt;a href=&quot;#Implementing-a-Contract-Class&quot; class=&quot;headerlink&quot; title=&quot;Implementing a Contract Class&quot;&gt;&lt;/a&gt;Implementing a Contract Class&lt;/h1&gt;&lt;p&gt;A contract class is a public final class that contains constant definitions for the URIs, column names, MIME types, and other meta-data that pertain to the provider. &lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Before-You-Start-Building&quot;&gt;&lt;a href=&quot;#Before-You-Start-Building&quot; class=&quot;headerlink&quot; title=&quot;Before You Start Building&quot;&gt;&lt;/a&gt;Before You Start Building&lt;/h1&gt;&lt;p&gt;You need to build a content provider if you want to provide one or more of the following features:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;You want to offer complex data or files to other applications.&lt;/li&gt;
+&lt;li&gt;You want to allow users to copy complex data from your app into other apps.&lt;/li&gt;
+&lt;li&gt;You want to provide custom search suggestions using the search framework.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Follow these steps to build your provider:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Design the raw storage for your data. A content provider offers data in two ways:  File data or  “Structured” data.&lt;/li&gt;
+&lt;li&gt;Define a concrete implementation of the ContentProvider class and its required methods. &lt;/li&gt;
+&lt;li&gt;Define the provider’s authority string, its content URIs, and column names. If you want the provider’s application to handle intents, also define intent actions, extras data, and flags. Also define the permissions that you will require for applications that want to access your data. You should consider defining all of these values as constants in a separate contract class; later, you can expose this class to other developers.&lt;/li&gt;
+&lt;li&gt;Add other optional pieces, such as sample data or an implementation of &lt;code&gt;AbstractThreadedSyncAdapter&lt;/code&gt; that can synchronize data between the provider and cloud-based data.
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="Content Provider" scheme="http://yoursite.com/tags/Content-Provider/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Notes on Content Providers (I) Content Provider Basics</title>
+    <link href="http://yoursite.com/2015/11/16/notes-about-ContentProviders/"/>
+    <id>http://yoursite.com/2015/11/16/notes-about-ContentProviders/</id>
+    <published>2015-11-16T14:03:55.000Z</published>
+    <updated>2016-02-16T11:27:07.717Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;Content-Provider-Basics&quot;&gt;&lt;a href=&quot;#Content-Provider-Basics&quot; class=&quot;headerlink&quot; title=&quot;Content Provider Basics&quot;&gt;&lt;/a&gt;Content Provider Basics&lt;/h1&gt;&lt;p&gt;A provider isn’t required to have a primary key, and it isn’t required to use &lt;code&gt;_ID&lt;/code&gt; as the column name of a primary key if one is present. However, if you want to bind data from a provider to a &lt;code&gt;ListView&lt;/code&gt;, one of the column names has to be &lt;code&gt;_ID&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;ContentResolver&lt;/code&gt; object in the client application’s process and the &lt;code&gt;ContentProvider&lt;/code&gt; object in the application that owns the provider automatically handle inter-process communication. &lt;code&gt;ContentProvider&lt;/code&gt; also acts as an abstraction layer between its repository of data and the external appearance of data as tables.&lt;/p&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;A content URI is a URI that identifies data in a provider. Content URIs include the symbolic name of the entire provider (its authority) and a name that points to a table (a path). When you call a client method to access a table in a provider, the content URI for the table is one of the arguments.  &lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;content://user_dictionary/words
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;where the &lt;code&gt;user_dictionary&lt;/code&gt; string is the provider’s authority, and the words string is the table’s path. The string content:// (the scheme) is always present, and identifies this as a content URI. &lt;/p&gt;
+&lt;p&gt;Many providers allow you to access a single row in a table by appending an &lt;code&gt;ID&lt;/code&gt; value to the end of the URI. For example, to retrieve a row whose &lt;code&gt;_ID&lt;/code&gt; is 4 from user dictionary, you can use this content URI:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Uri singleUri = ContentUris.withAppendedId(UserDictionary.Words.CONTENT_URI,4);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The &lt;code&gt;Uri&lt;/code&gt; and &lt;code&gt;Uri.Builder&lt;/code&gt; classes contain convenience methods for constructing well-formed URI objects from strings. The &lt;code&gt;ContentUris&lt;/code&gt; class contains convenience methods for appending id values to a URI. &lt;/p&gt;
+&lt;p&gt;In actual code, however, you should do queries asynchronously on a separate thread. One way to do this is to use the &lt;code&gt;CursorLoader&lt;/code&gt; class.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// A &amp;quot;projection&amp;quot; defines the columns that will be returned for each row
+String[] mProjection =
+{
+    UserDictionary.Words._ID,    // Contract class constant for the _ID column name
+    UserDictionary.Words.WORD,   // Contract class constant for the word column name
+    UserDictionary.Words.LOCALE  // Contract class constant for the locale column name
+};
+
+// Defines a string to contain the selection clause
+String mSelectionClause = null;
+
+// Initializes an array to contain selection arguments
+String[] mSelectionArgs = {&amp;quot;&amp;quot;};
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The set of columns that the query should return is called a projection (the variable &lt;code&gt;mProjection&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;The expression that specifies the rows to retrieve is split into a selection clause and selection arguments. The selection clause is a combination of logical and &lt;code&gt;Boolean&lt;/code&gt; expressions, column names, and values (the variable &lt;code&gt;mSelectionClause&lt;/code&gt;). If you specify the replaceable parameter ? instead of a value, the query method retrieves the value from the selection arguments array (the variable &lt;code&gt;mSelectionArgs&lt;/code&gt;). &lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;/*
+ * This defines a one-element String array to contain the selection argument.
+ */
+String[] mSelectionArgs = {&amp;quot;&amp;quot;};
+
+// Gets a word from the UI
+mSearchString = mSearchWord.getText().toString();
+
+// Remember to insert code here to check for invalid or malicious input.
+
+// If the word is the empty string, gets everything
+if (TextUtils.isEmpty(mSearchString)) {
+    // Setting the selection clause to null will return all words
+    mSelectionClause = null;
+    mSelectionArgs[0] = &amp;quot;&amp;quot;;
+
+} else {
+    // Constructs a selection clause that matches the word that the user entered.
+    mSelectionClause = UserDictionary.Words.WORD + &amp;quot; = ?&amp;quot;;
+
+    // Moves the user&amp;apos;s input string to the selection arguments.
+    mSelectionArgs[0] = mSearchString;
+
+}
+
+// Does a query against the table and returns a Cursor object
+mCursor = getContentResolver().query(
+    UserDictionary.Words.CONTENT_URI,  // The content URI of the words table
+    mProjection,                       // The columns to return for each row
+    mSelectionClause                   // Either null, or the word the user entered
+    mSelectionArgs,                    // Either empty, or the string the user entered
+    mSortOrder);                       // The sort order for the returned rows
+
+// Some providers return null if an error occurs, others throw an exception
+if (null == mCursor) {
+    /*
+     * Insert code here to handle the error. Be sure not to use the cursor! You may want to
+     * call android.util.Log.e() to log this error.
+     *
+     */
+// If the Cursor is empty, the provider found no matches
+} else if (mCursor.getCount() &amp;lt; 1) {
+
+    /*
+     * Insert code here to notify the user that the search was unsuccessful. This isn&amp;apos;t necessarily
+     * an error. You may want to offer the user the option to insert a new row, or re-type the
+     * search term.
+     */
+
+} else {
+    // Insert code here to do something with the results
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This query is analogous to the SQL statement:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;SELECT _ID, word, locale FROM words WHERE word = &amp;lt;userinput&amp;gt; ORDER BY word ASC;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;In this SQL statement, the actual column names are used instead of contract class constants. &lt;/p&gt;
+&lt;p&gt;Use a selection clause that uses &lt;code&gt;?&lt;/code&gt; as a replaceable parameter and a separate array of selection arguments. When you do this, the user input is bound directly to the query rather than being interpreted as part of an SQL statement. Because it’s not treated as SQL, the user input can’t inject malicious SQL.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// Constructs a selection clause with a replaceable parameter
+String mSelectionClause =  &amp;quot;var = ?&amp;quot;;
+
+// Defines an array to contain the selection arguments
+String[] selectionArgs = {&amp;quot;&amp;quot;};
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;A selection clause that uses ? as a replaceable parameter and an array of selection arguments array are preferred way to specify a selection, even if the provider isn’t based on an SQL database. &lt;/p&gt;
+&lt;h2 id=&quot;Displaying-query-results&quot;&gt;&lt;a href=&quot;#Displaying-query-results&quot; class=&quot;headerlink&quot; title=&quot;Displaying query results&quot;&gt;&lt;/a&gt;Displaying query results&lt;/h2&gt;&lt;p&gt;If no rows match the selection criteria, the provider returns a &lt;code&gt;Cursor&lt;/code&gt; object for which &lt;code&gt;Cursor.getCount()&lt;/code&gt; is 0 (an empty cursor). &lt;/p&gt;
+&lt;p&gt;Since a &lt;code&gt;Cursor&lt;/code&gt; is a “list” of rows, a good way to display the contents of a &lt;code&gt;Cursor&lt;/code&gt; is to link it to a &lt;code&gt;ListView&lt;/code&gt; via a &lt;code&gt;SimpleCursorAdapter&lt;/code&gt;. &lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// Defines a list of columns to retrieve from the Cursor and load into an output row
+String[] mWordListColumns =
+{
+    UserDictionary.Words.WORD,   // Contract class constant containing the word column name
+    UserDictionary.Words.LOCALE  // Contract class constant containing the locale column name
+};
+
+// Defines a list of View IDs that will receive the Cursor columns for each row
+int[] mWordListItems = { R.id.dictWord, R.id.locale};
+
+// Creates a new SimpleCursorAdapter
+mCursorAdapter = new SimpleCursorAdapter(
+    getApplicationContext(),               // The application&amp;apos;s Context object
+    R.layout.wordlistrow,                  // A layout in XML for one row in the ListView
+    mCursor,                               // The result from the query
+    mWordListColumns,                      // A string array of column names in the cursor
+    mWordListItems,                        // An integer array of view IDs in the row layout
+    0);                                    // Flags (usually none are needed)
+
+// Sets the adapter for the ListView
+mWordList.setAdapter(mCursorAdapter);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Note: To back a &lt;code&gt;ListView&lt;/code&gt; with a &lt;code&gt;Cursor&lt;/code&gt;, the cursor must contain a column named _ID. Because of this, the query shown previously retrieves the &lt;code&gt;_ID&lt;/code&gt; column for the “words” table, even though the &lt;code&gt;ListView&lt;/code&gt; doesn’t display it. This restriction also explains why most providers have a _ID column for each of their tables. &lt;/p&gt;
+&lt;h2 id=&quot;Getting-data-from-query-results&quot;&gt;&lt;a href=&quot;#Getting-data-from-query-results&quot; class=&quot;headerlink&quot; title=&quot;Getting data from query results&quot;&gt;&lt;/a&gt;Getting data from query results&lt;/h2&gt;&lt;p&gt;Cursor implementations contain several “get” methods for retrieving different types of data from the object. For example, the previous snippet uses &lt;code&gt;getString()&lt;/code&gt;. They also have a &lt;code&gt;getType()&lt;/code&gt; method that returns a value indicating the data type of the column. &lt;/p&gt;
+&lt;h1 id=&quot;Inserting-Updating-and-Deleting-Data&quot;&gt;&lt;a href=&quot;#Inserting-Updating-and-Deleting-Data&quot; class=&quot;headerlink&quot; title=&quot;Inserting, Updating, and Deleting Data&quot;&gt;&lt;/a&gt;Inserting, Updating, and Deleting Data&lt;/h1&gt;&lt;h2 id=&quot;Inserting-data&quot;&gt;&lt;a href=&quot;#Inserting-data&quot; class=&quot;headerlink&quot; title=&quot;Inserting data&quot;&gt;&lt;/a&gt;Inserting data&lt;/h2&gt;&lt;p&gt;To insert data into a provider, you call the &lt;code&gt;ContentResolver.insert()&lt;/code&gt; method. This method inserts a new row into the provider and returns a content URI for that row. &lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// Defines a new Uri object that receives the result of the insertion
+Uri mNewUri;
+
+...
+
+// Defines an object to contain the new values to insert
+ContentValues mNewValues = new ContentValues();
+
+/*
+ * Sets the values of each column and inserts the word. The arguments to the &amp;quot;put&amp;quot;
+ * method are &amp;quot;column name&amp;quot; and &amp;quot;value&amp;quot;
+ */
+mNewValues.put(UserDictionary.Words.APP_ID, &amp;quot;example.user&amp;quot;);
+mNewValues.put(UserDictionary.Words.LOCALE, &amp;quot;en_US&amp;quot;);
+mNewValues.put(UserDictionary.Words.WORD, &amp;quot;insert&amp;quot;);
+mNewValues.put(UserDictionary.Words.FREQUENCY, &amp;quot;100&amp;quot;);
+
+mNewUri = getContentResolver().insert(
+    UserDictionary.Word.CONTENT_URI,   // the user dictionary content URI
+    mNewValues                          // the values to insert
+);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The data for the new row goes into a single &lt;code&gt;ContentValues&lt;/code&gt; object, which is similar in form to a one-row cursor. The columns in this object don’t need to have the same data type, and if you don’t want to specify a value at all, you can set a column to null using &lt;code&gt;ContentValues.putNull()&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;The snippet doesn’t add the _ID column, because this column is maintained automatically. The provider assigns a unique value of _ID to every row that is added. Providers usually use this value as the table’s primary key. &lt;/p&gt;
+&lt;p&gt;To get the value of _ID from the returned Uri, call &lt;code&gt;ContentUris.parseId()&lt;/code&gt;. &lt;/p&gt;
+&lt;h2 id=&quot;Updating-data&quot;&gt;&lt;a href=&quot;#Updating-data&quot; class=&quot;headerlink&quot; title=&quot;Updating data&quot;&gt;&lt;/a&gt;Updating data&lt;/h2&gt;&lt;p&gt;To update a row, you use a &lt;code&gt;ContentValues&lt;/code&gt; object with the updated values just as you do with an insertion, and selection criteria just as you do with a query. The client method you use is &lt;code&gt;ContentResolver.update()&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;Deleting-data&quot;&gt;&lt;a href=&quot;#Deleting-data&quot; class=&quot;headerlink&quot; title=&quot;Deleting data&quot;&gt;&lt;/a&gt;Deleting data&lt;/h2&gt;&lt;p&gt;Deleting rows is similar to retrieving row data: you specify selection criteria for the rows you want to delete and the client method returns the number of deleted rows. &lt;/p&gt;
+&lt;h1 id=&quot;Provider-Data-Types&quot;&gt;&lt;a href=&quot;#Provider-Data-Types&quot; class=&quot;headerlink&quot; title=&quot;Provider Data Types&quot;&gt;&lt;/a&gt;Provider Data Types&lt;/h1&gt;&lt;p&gt;Providers also maintain MIME data type information for each content URI they define. You can use the MIME type information to find out if your application can handle data that the provider offers, or to choose a type of handling based on the MIME type. You usually need the MIME type when you are working with a provider that contains complex data structures or files.&lt;/p&gt;
+&lt;p&gt;To get the MIME type corresponding to a content URI, call &lt;code&gt;ContentResolver.getType()&lt;/code&gt;. &lt;/p&gt;
+&lt;h1 id=&quot;Alternative-Forms-of-Provider-Access&quot;&gt;&lt;a href=&quot;#Alternative-Forms-of-Provider-Access&quot; class=&quot;headerlink&quot; title=&quot;Alternative Forms of Provider Access&quot;&gt;&lt;/a&gt;Alternative Forms of Provider Access&lt;/h1&gt;&lt;p&gt;Three alternative forms of provider access are important in application development:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Batch access: You can create a batch of access calls with methods in the &lt;code&gt;ContentProviderOperation&lt;/code&gt; class, and then apply them with &lt;code&gt;ContentResolver.applyBatch()&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Asynchronous queries: You should do queries in a separate thread. One way to do this is to use a &lt;code&gt;CursorLoader&lt;/code&gt; object. The examples in the Loaders guide demonstrate how to do this.&lt;/li&gt;
+&lt;li&gt;Data access via intents: Although you can’t send an intent directly to a provider, you can send an intent to the provider’s application, which is usually the best-equipped to modify the provider’s data.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;Contract-Classes&quot;&gt;&lt;a href=&quot;#Contract-Classes&quot; class=&quot;headerlink&quot; title=&quot;Contract Classes&quot;&gt;&lt;/a&gt;Contract Classes&lt;/h1&gt;&lt;p&gt;A contract class defines constants that help applications work with the content URIs, column names, intent actions, and other features of a content provider. Contract classes are not included automatically with a provider; the provider’s developer has to define them and then make them available to other developers. &lt;/p&gt;
+&lt;h1 id=&quot;MIME-Type-Reference&quot;&gt;&lt;a href=&quot;#MIME-Type-Reference&quot; class=&quot;headerlink&quot; title=&quot;MIME Type Reference&quot;&gt;&lt;/a&gt;MIME Type Reference&lt;/h1&gt;&lt;p&gt;Content providers can return standard MIME media types, or custom MIME type strings, or both.&lt;/p&gt;
+&lt;p&gt;MIME types have the format&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;type/subtype
+&lt;/code&gt;&lt;/pre&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Content-Provider-Basics&quot;&gt;&lt;a href=&quot;#Content-Provider-Basics&quot; class=&quot;headerlink&quot; title=&quot;Content Provider Basics&quot;&gt;&lt;/a&gt;Content Provider Basics&lt;/h1&gt;&lt;p&gt;A provider isn’t required to have a primary key, and it isn’t required to use &lt;code&gt;_ID&lt;/code&gt; as the column name of a primary key if one is present. However, if you want to bind data from a provider to a &lt;code&gt;ListView&lt;/code&gt;, one of the column names has to be &lt;code&gt;_ID&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;ContentResolver&lt;/code&gt; object in the client application’s process and the &lt;code&gt;ContentProvider&lt;/code&gt; object in the application that owns the provider automatically handle inter-process communication. &lt;code&gt;ContentProvider&lt;/code&gt; also acts as an abstraction layer between its repository of data and the external appearance of data as tables.&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="Content Provider" scheme="http://yoursite.com/tags/Content-Provider/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Notes on the Activity Lifecycle</title>
+    <link href="http://yoursite.com/2015/11/16/notes-about-the-activity-lifecycle/"/>
+    <id>http://yoursite.com/2015/11/16/notes-about-the-activity-lifecycle/</id>
+    <published>2015-11-16T12:52:33.000Z</published>
+    <updated>2016-02-16T10:04:38.975Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;Starting-an-Activity&quot;&gt;&lt;a href=&quot;#Starting-an-Activity&quot; class=&quot;headerlink&quot; title=&quot;Starting an Activity&quot;&gt;&lt;/a&gt;Starting an Activity&lt;/h1&gt;&lt;p&gt;Technically, the activity becomes visible to the user when &lt;code&gt;onStart()&lt;/code&gt; is called, but &lt;code&gt;onResume()&lt;/code&gt; quickly follows and the activity remains in the Resumed state until something occurs to change that, such as when a phone call is received, the user navigates to another activity, or the device screen turns off.&lt;/p&gt;
+&lt;p&gt;Most apps don’t need to implement this method because local class references are destroyed with the activity and your activity should perform most cleanup during &lt;code&gt;onPause()&lt;/code&gt; and &lt;code&gt;onStop()&lt;/code&gt;. However, if your activity includes background threads that you created during &lt;code&gt;onCreate()&lt;/code&gt; or other long-running resources that could potentially leak memory if not properly closed, you should kill them during &lt;code&gt;onDestroy()&lt;/code&gt;.&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;The system calls &lt;code&gt;onDestroy()&lt;/code&gt; after it has already called &lt;code&gt;onPause()&lt;/code&gt; and &lt;code&gt;onStop()&lt;/code&gt; in all situations except one: when you call &lt;code&gt;finish()&lt;/code&gt; from within the &lt;code&gt;onCreate()&lt;/code&gt; method. In some cases, such as when your activity operates as a temporary decision maker to launch another activity, you might call &lt;code&gt;finish()&lt;/code&gt; from within &lt;code&gt;onCreate()&lt;/code&gt; to destroy the activity. In this case, the system immediately calls &lt;code&gt;onDestroy()&lt;/code&gt; without calling any of the other lifecycle methods.&lt;/p&gt;
+&lt;h1 id=&quot;Pausing-and-Resuming-an-Activity&quot;&gt;&lt;a href=&quot;#Pausing-and-Resuming-an-Activity&quot; class=&quot;headerlink&quot; title=&quot;Pausing and Resuming an Activity&quot;&gt;&lt;/a&gt;Pausing and Resuming an Activity&lt;/h1&gt;&lt;p&gt;When the system calls &lt;code&gt;onPause()&lt;/code&gt; for your activity, it technically means your activity is still partially visible, but most often is an indication that the user is leaving the activity and it will soon enter the Stopped state. You should usually use the &lt;code&gt;onPause()&lt;/code&gt; callback to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Stop animations or other ongoing actions that could consume CPU.&lt;/li&gt;
+&lt;li&gt;Commit unsaved changes, but only if users expect such changes to be permanently saved when they leave (such as a draft email).&lt;/li&gt;
+&lt;li&gt;Release system resources, such as broadcast receivers, handles to sensors (like GPS), or any resources that may affect battery life while your activity is paused and the user does not need them.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Notice that no matter what scenario causes the activity to stop, the system always calls &lt;code&gt;onPause()&lt;/code&gt; before calling &lt;code&gt;onStop()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;However, you should avoid performing CPU-intensive work during &lt;code&gt;onPause()&lt;/code&gt;, such as writing to a database, because it can slow the visible transition to the next activity (you should instead perform heavy-load shutdown operations during &lt;code&gt;onStop()&lt;/code&gt;).&lt;/p&gt;
+&lt;h1 id=&quot;Stopping-and-Restarting-an-Activity&quot;&gt;&lt;a href=&quot;#Stopping-and-Restarting-an-Activity&quot; class=&quot;headerlink&quot; title=&quot;Stopping and Restarting an Activity&quot;&gt;&lt;/a&gt;Stopping and Restarting an Activity&lt;/h1&gt;&lt;p&gt;When your activity receives a call to the &lt;code&gt;onStop()&lt;/code&gt; method, it’s no longer visible and should release almost all resources that aren’t needed while the user is not using it. Once your activity is stopped, the system might destroy the instance if it needs to recover system memory. In extreme cases, the system might simply kill your app process without calling the activity’s final &lt;code&gt;onDestroy()&lt;/code&gt; callback, so it’s important you use &lt;code&gt;onStop()&lt;/code&gt; to release resources that might leak memory.&lt;/p&gt;
+&lt;p&gt;When your activity is stopped, the Activity object is kept resident in memory and is recalled when the activity resumes. You don’t need to re-initialize components that were created during any of the callback methods leading up to the Resumed state. The system also keeps track of the current state for each View in the layout, so if the user entered text into an &lt;code&gt;EditText&lt;/code&gt; widget, that content is retained so you don’t need to save and restore it.&lt;/p&gt;
+&lt;p&gt;For this reason, you should usually use the &lt;code&gt;onStart()&lt;/code&gt; callback method as the counterpart to the &lt;code&gt;onStop()&lt;/code&gt; method, because the system calls &lt;code&gt;onStart()&lt;/code&gt;both when it creates your activity and when it restarts the activity from the stopped state.&lt;/p&gt;
+&lt;h1 id=&quot;Recreating-an-Activity&quot;&gt;&lt;a href=&quot;#Recreating-an-Activity&quot; class=&quot;headerlink&quot; title=&quot;Recreating an Activity&quot;&gt;&lt;/a&gt;Recreating an Activity&lt;/h1&gt;&lt;p&gt;However, if the system destroys the activity due to system constraints (rather than normal app behavior), then although the actual Activity instance is gone, the system remembers that it existed such that if the user navigates back to it, the system creates a new instance of the activity using a set of saved data that describes the state of the activity when it was destroyed. The saved data that the system uses to restore the previous state is called the “instance state” and is a collection of key-value pairs stored in a Bundle object.&lt;/p&gt;
+&lt;p&gt;So, if your activity instance is destroyed and recreated, the state of the layout is restored to its previous state with no code required by you. However, your activity might have more state information that you’d like to restore, such as member variables that track the user’s progress in the activity.&lt;/p&gt;
+&lt;p&gt;If the system must recreate the activity instance later, it passes the same &lt;code&gt;Bundle&lt;/code&gt; object to both the &lt;code&gt;onRestoreInstanceState()&lt;/code&gt; and &lt;code&gt;onCreate()&lt;/code&gt; methods.&lt;/p&gt;
+&lt;p&gt;The default implementation of this method saves information about the state of the activity’s view hierarchy, such as the text in an &lt;code&gt;EditText&lt;/code&gt; widget or the scroll position of a &lt;code&gt;ListView&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Instead of restoring the state during &lt;code&gt;onCreate()&lt;/code&gt; you may choose to implement &lt;code&gt;onRestoreInstanceState()&lt;/code&gt;, which the system calls after the &lt;code&gt;onStart()&lt;/code&gt; method. The system calls &lt;code&gt;onRestoreInstanceState()&lt;/code&gt; only if there is a saved state to restore, so you do not need to check whether the &lt;code&gt;Bundle&lt;/code&gt; is null.&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Starting-an-Activity&quot;&gt;&lt;a href=&quot;#Starting-an-Activity&quot; class=&quot;headerlink&quot; title=&quot;Starting an Activity&quot;&gt;&lt;/a&gt;Starting an Activity&lt;/h1&gt;&lt;p&gt;Technically, the activity becomes visible to the user when &lt;code&gt;onStart()&lt;/code&gt; is called, but &lt;code&gt;onResume()&lt;/code&gt; quickly follows and the activity remains in the Resumed state until something occurs to change that, such as when a phone call is received, the user navigates to another activity, or the device screen turns off.&lt;/p&gt;
+&lt;p&gt;Most apps don’t need to implement this method because local class references are destroyed with the activity and your activity should perform most cleanup during &lt;code&gt;onPause()&lt;/code&gt; and &lt;code&gt;onStop()&lt;/code&gt;. However, if your activity includes background threads that you created during &lt;code&gt;onCreate()&lt;/code&gt; or other long-running resources that could potentially leak memory if not properly closed, you should kill them during &lt;code&gt;onDestroy()&lt;/code&gt;.&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>An Encoding Problem in Clion</title>
+    <link href="http://yoursite.com/2015/11/11/clion-encoding/"/>
+    <id>http://yoursite.com/2015/11/11/clion-encoding/</id>
+    <published>2015-11-11T15:52:20.000Z</published>
+    <updated>2016-02-16T11:29:45.153Z</updated>
+    
+    <content type="html">&lt;p&gt;Clion is a great IDE of C/C++, made by JetBrain. But I found a problem that when the output of console is Chinese, it can’t be displayed correctly.&lt;/p&gt;
+&lt;p&gt;I tried to use the same method as Intellij IDEA, changing the encoding from GBK to UTF-8 at the right bottom corner. However, it didn’t work like IDEA 14.&lt;/p&gt;
+&lt;p&gt;After a lot of attempts modifying different settings, I have found the solution: In &lt;code&gt;File &amp;gt; Settings &amp;gt; Editor &amp;gt; File Encoding&lt;/code&gt;, modify both &lt;code&gt;IDE Encoding&lt;/code&gt; and &lt;code&gt;Project Encoding&lt;/code&gt; into UTF-8. After applied, click the console dock and then change the right bottom corner from UTF-8 to GBK. Then the console can output Chinese now.&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Clion is a great IDE of C/C++, made by JetBrain. But I found a problem that when the output of console is Chinese, it can’t be displayed 
+    
+    </summary>
+    
+    
+      <category term="Clion" scheme="http://yoursite.com/tags/Clion/"/>
+    
+      <category term="Encoding" scheme="http://yoursite.com/tags/Encoding/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Layout and Animation with Both Top &amp; Bottom Bars</title>
+    <link href="http://yoursite.com/2015/10/21/top-bottom-toolbar/"/>
+    <id>http://yoursite.com/2015/10/21/top-bottom-toolbar/</id>
+    <published>2015-10-21T14:10:58.000Z</published>
+    <updated>2015-10-21T15:05:53.869Z</updated>
+    
+    <content type="html">&lt;p&gt;Some apps have a layout containing both a top Toolbar/Actionbar and a bottom toolbar-like view. And when you scroll a &lt;code&gt;RecyclerView&lt;/code&gt;, both the top and bottom toolbar will enter/exit the screen with animation.&lt;/p&gt;
+&lt;p&gt;It’s not difficult for the top toolbar. The solution is using &lt;code&gt;CoordinatorLayout&lt;/code&gt; in the android material design library with a &lt;code&gt;Toolbar&lt;/code&gt; and a &lt;code&gt;RecyclerView&lt;/code&gt;. If the &lt;code&gt;RecyclerView&lt;/code&gt; is added dynamically at runtime, you can add a &lt;code&gt;FrameLayout&lt;/code&gt; as the container, and set scroll flags on it.&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;br&gt;For the bottom bar, the same approach of the top one does not work correctly. There may be lots of bugs. The solution is to use a custom layout like a &lt;code&gt;LinearLayout&lt;/code&gt;, and set &lt;code&gt;CoordinatorLayout.Behavior&lt;/code&gt; on it, which will make the layout cooperates with the &lt;code&gt;CoordinatorLayout&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The activity xml:&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;android.support.design.widget.CoordinatorLayout
+    android:layout_width=&amp;quot;match_parent&amp;quot;
+    android:layout_height=&amp;quot;match_parent&amp;quot;
+    xmlns:app=&amp;quot;http://schemas.android.com/apk/res-auto&amp;quot;
+    xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;&amp;gt;
+
+    &amp;lt;android.support.design.widget.AppBarLayout
+        android:layout_width=&amp;quot;match_parent&amp;quot;
+        android:layout_height=&amp;quot;wrap_content&amp;quot;&amp;gt;
+
+        &amp;lt;android.support.v7.widget.Toolbar
+            android:id=&amp;quot;@+id/top_toolbar&amp;quot;
+            android:layout_width=&amp;quot;fill_parent&amp;quot;
+            android:layout_height=&amp;quot;wrap_content&amp;quot;
+            app:layout_scrollFlags=&amp;quot;scroll|enterAlways&amp;quot; /&amp;gt;
+
+    &amp;lt;/android.support.design.widget.AppBarLayout&amp;gt;
+
+    &amp;lt;FrameLayout
+        android:layout_width=&amp;quot;fill_parent&amp;quot;
+        android:orientation=&amp;quot;vertical&amp;quot;
+        app:layout_behavior=&amp;quot;@string/appbar_scrolling_view_behavior&amp;quot;
+        android:id=&amp;quot;@+id/recycler_view_container&amp;quot;
+        android:layout_height=&amp;quot;fill_parent&amp;quot;/&amp;gt;
+
+    &amp;lt;LinearLayout
+        android:id=&amp;quot;@+id/bottom_bar&amp;quot;
+        android:layout_width=&amp;quot;match_parent&amp;quot;
+        android:orientation=&amp;quot;horizontal&amp;quot;
+        android:layout_height=&amp;quot;wrap_content&amp;quot;
+        android:layout_gravity=&amp;quot;bottom&amp;quot;
+        app:layout_behavior=&amp;quot;*THE_FULL_PACKAGE_NAME*.LinearLayoutBehavior &amp;quot;&amp;gt;
+        &amp;lt;!-- child views --&amp;gt;
+    &amp;lt;/LinearLayout&amp;gt;
+
+&amp;lt;/android.support.design.widget.CoordinatorLayout&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;The &lt;code&gt;Behavior&lt;/code&gt; class:&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public class LinearLayoutBehavior extends CoordinatorLayout.Behavior&amp;lt;LinearLayout&amp;gt; {
+    private static final Interpolator INTERPOLATOR = new FastOutSlowInInterpolator();
+    private boolean mIsAnimatingOut = false;
+
+    public LinearLayoutBehavior(Context context, AttributeSet attrs) {
+        super();
+    }
+
+    @Override
+    public boolean onStartNestedScroll(final CoordinatorLayout coordinatorLayout, final LinearLayout child,
+                                       final View directTargetChild, final View target, final int nestedScrollAxes) {
+        return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL
+                || super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target, nestedScrollAxes);
+    }
+
+    @Override
+    public void onNestedScroll(final CoordinatorLayout coordinatorLayout, final LinearLayout child,
+                               final View target, final int dxConsumed, final int dyConsumed,
+                               final int dxUnconsumed, final int dyUnconsumed) {
+        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
+        if (dyConsumed &amp;gt; 0 &amp;amp;&amp;amp; !this.mIsAnimatingOut &amp;amp;&amp;amp; child.getVisibility() == View.VISIBLE) {
+            // User scrolled down and the FAB is currently visible -&amp;gt; hide the FAB
+            animateOut(child);
+        } else if (dyConsumed &amp;lt; 0 &amp;amp;&amp;amp; child.getVisibility() != View.VISIBLE) {
+            // User scrolled up and the FAB is currently not visible -&amp;gt; show the FAB
+            animateIn(child);
+        }
+    }
+
+    private void animateOut(final LinearLayout linearLayout) {
+        if (Build.VERSION.SDK_INT &amp;gt;= 14) {
+            ViewCompat.animate(linearLayout).translationY(168F).alpha(0.0F).setInterpolator(INTERPOLATOR).withLayer()
+                    .setListener(new ViewPropertyAnimatorListener() {
+                        public void onAnimationStart(View view) {
+                            LinearLayoutBehavior.this.mIsAnimatingOut = true;
+                        }
+
+                        public void onAnimationCancel(View view) {
+                            LinearLayoutBehavior.this.mIsAnimatingOut = false;
+                        }
+
+                        public void onAnimationEnd(View view) {
+                            LinearLayoutBehavior.this.mIsAnimatingOut = false;
+                            view.setVisibility(View.GONE);
+                        }
+                    }).start();
+        } else {
+            Animation anim = AnimationUtils.loadAnimation(linearLayout.getContext(), R.anim.fab_out);
+            anim.setInterpolator(INTERPOLATOR);
+            anim.setDuration(200L);
+            anim.setAnimationListener(new Animation.AnimationListener() {
+                public void onAnimationStart(Animation animation) {
+                    LinearLayoutBehavior.this.mIsAnimatingOut = true;
+                }
+
+                public void onAnimationEnd(Animation animation) {
+                    LinearLayoutBehavior.this.mIsAnimatingOut = false;
+                    linearLayout.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAnimationRepeat(final Animation animation) {
+                }
+            });
+            linearLayout.startAnimation(anim);
+        }
+    }
+
+    private void animateIn(LinearLayout linearLayout) {
+        linearLayout.setVisibility(View.VISIBLE);
+        if (Build.VERSION.SDK_INT &amp;gt;= 14) {
+            ViewCompat.animate(linearLayout).translationY(0).scaleX(1.0F).scaleY(1.0F).alpha(1.0F)
+                    .setInterpolator(INTERPOLATOR).withLayer().setListener(null)
+                    .start();
+        } else {
+            Animation anim = AnimationUtils.loadAnimation(linearLayout.getContext(), R.anim.fab_in);
+            anim.setDuration(200L);
+            anim.setInterpolator(INTERPOLATOR);
+            linearLayout.startAnimation(anim);
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Some apps have a layout containing both a top Toolbar/Actionbar and a bottom toolbar-like view. And when you scroll a &lt;code&gt;RecyclerView&lt;/code&gt;, both the top and bottom toolbar will enter/exit the screen with animation.&lt;/p&gt;
+&lt;p&gt;It’s not difficult for the top toolbar. The solution is using &lt;code&gt;CoordinatorLayout&lt;/code&gt; in the android material design library with a &lt;code&gt;Toolbar&lt;/code&gt; and a &lt;code&gt;RecyclerView&lt;/code&gt;. If the &lt;code&gt;RecyclerView&lt;/code&gt; is added dynamically at runtime, you can add a &lt;code&gt;FrameLayout&lt;/code&gt; as the container, and set scroll flags on it.&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="Material Design" scheme="http://yoursite.com/tags/Material-Design/"/>
     
   </entry>
   

@@ -1,0 +1,783 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Content Provider," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="Before You Start BuildingYou need to build a content provider if you want to provide one or more of the following features:
+
+You want to offer complex data or files to other applications.
+You want to">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Notes on Content Providers (II) Creating a Content Provider">
+<meta property="og:url" content="http://yoursite.com/2015/11/16/notes-about-ContentProviders-2/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="Before You Start BuildingYou need to build a content provider if you want to provide one or more of the following features:
+
+You want to offer complex data or files to other applications.
+You want to">
+<meta property="og:updated_time" content="2016-02-16T11:13:24.135Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Notes on Content Providers (II) Creating a Content Provider">
+<meta name="twitter:description" content="Before You Start BuildingYou need to build a content provider if you want to provide one or more of the following features:
+
+You want to offer complex data or files to other applications.
+You want to">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Notes on Content Providers (II) Creating a Content Provider | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Notes on Content Providers (II) Creating a Content Provider
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-11-16T23:12:32+08:00" content="2015-11-16">
+              2015-11-16
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Before-You-Start-Building"><a href="#Before-You-Start-Building" class="headerlink" title="Before You Start Building"></a>Before You Start Building</h1><p>You need to build a content provider if you want to provide one or more of the following features:</p>
+<ul>
+<li>You want to offer complex data or files to other applications.</li>
+<li>You want to allow users to copy complex data from your app into other apps.</li>
+<li>You want to provide custom search suggestions using the search framework.</li>
+</ul>
+<p>Follow these steps to build your provider:</p>
+<ol>
+<li>Design the raw storage for your data. A content provider offers data in two ways:  File data or  “Structured” data.</li>
+<li>Define a concrete implementation of the ContentProvider class and its required methods. </li>
+<li>Define the provider’s authority string, its content URIs, and column names. If you want the provider’s application to handle intents, also define intent actions, extras data, and flags. Also define the permissions that you will require for applications that want to access your data. You should consider defining all of these values as constants in a separate contract class; later, you can expose this class to other developers.</li>
+<li>Add other optional pieces, such as sample data or an implementation of <code>AbstractThreadedSyncAdapter</code> that can synchronize data between the provider and cloud-based data.  <a id="more"></a>
+<h1 id="Designing-Data-Storage"><a href="#Designing-Data-Storage" class="headerlink" title="Designing Data Storage"></a>Designing Data Storage</h1>For working with network-based data, use classes in <code>java.net</code> and <code>android.net</code>. You can also synchronize network-based data to a local data store such as a database, and then offer the data as tables or files.</li>
+</ol>
+<h2 id="Data-design-considerations"><a href="#Data-design-considerations" class="headerlink" title="Data design considerations"></a>Data design considerations</h2><p>Table data should always have a “primary key” column that the provider maintains as a unique numeric value for each row. You can use this value to link the row to related rows in other tables (using it as a “foreign key”). Although you can use any name for this column, using <code>BaseColumns._ID</code> is the best choice, because linking the results of a provider query to a <code>ListView</code> requires one of the retrieved columns to have the name _ID<code>.</code></p>
+<p>If you want to provide bitmap images or other very large pieces of file-oriented data, store the data in a file and then provide it indirectly rather than storing it directly in a table. If you do this, you need to tell users of your provider that they need to use a <code>ContentResolver</code> file method to access the data.</p>
+<p>Use the Binary Large OBject (BLOB) data type to store data that varies in size or has a varying structure. For example, you can use a BLOB column to store a protocol buffer or JSON structure. </p>
+<h1 id="Designing-Content-URIs"><a href="#Designing-Content-URIs" class="headerlink" title="Designing Content URIs"></a>Designing Content URIs</h1><p>Content URIs include the symbolic name of the entire provider (its authority) and a name that points to a table or file (a path). The optional id part points to an individual row in a table. </p>
+<h2 id="Designing-an-authority"><a href="#Designing-an-authority" class="headerlink" title="Designing an authority"></a>Designing an authority</h2><p>A provider usually has a single authority, which serves as its Android-internal name. To avoid conflicts with other providers, you should use Internet domain ownership (in reverse) as the basis of your provider authority. For example, if your Android package name is <code>com.example.&lt;appname&gt;</code>, you should give your provider the authority <code>com.example.&lt;appname&gt;.provider</code>. </p>
+<h2 id="Content-URI-patterns"><a href="#Content-URI-patterns" class="headerlink" title="Content URI patterns"></a>Content URI patterns</h2><p>To help you choose which action to take for an incoming content URI, the provider API includes the convenience class <code>UriMatcher</code>, which maps content URI “patterns” to integer values. You can use the integer values in a switch statement that chooses the desired action for the content URI or URIs that match a particular pattern. </p>
+<p>A content URI pattern matches content URIs using wildcard characters:</p>
+<ul>
+<li>*: Matches a string of any valid characters of any length.</li>
+<li>#: Matches a string of numeric characters of any length.</li>
+</ul>
+<p>The method <code>addURI()</code> maps an authority and path to an integer value. The method <code>match()</code> returns the integer value for a URI. A switch statement chooses between querying the entire table, and querying for a single record</p>
+<pre><code>public class ExampleProvider extends ContentProvider {
+...
+    // Creates a UriMatcher object.
+    private static final UriMatcher sUriMatcher;
+...
+    /*
+     * The calls to addURI() go here, for all of the content URI patterns that the provider
+     * should recognize. For this snippet, only the calls for table 3 are shown.
+     */
+...
+    /*
+     * Sets the integer value for multiple rows in table 3 to 1. Notice that no wildcard is used
+     * in the path
+     */
+    sUriMatcher.addURI(&quot;com.example.app.provider&quot;, &quot;table3&quot;, 1);
+
+    /*
+     * Sets the code for a single row to 2. In this case, the &quot;#&quot; wildcard is
+     * used. &quot;content://com.example.app.provider/table3/3&quot; matches, but
+     * &quot;content://com.example.app.provider/table3 doesn&apos;t.
+     */
+    sUriMatcher.addURI(&quot;com.example.app.provider&quot;, &quot;table3/#&quot;, 2);
+...
+    // Implements ContentProvider.query()
+    public Cursor query(
+        Uri uri,
+        String[] projection,
+        String selection,
+        String[] selectionArgs,
+        String sortOrder) {
+...
+        /*
+         * Choose the table to query and a sort order based on the code returned for the incoming
+         * URI. Here, too, only the statements for table 3 are shown.
+         */
+        switch (sUriMatcher.match(uri)) {
+
+
+            // If the incoming URI was for all of table3
+            case 1:
+
+                if (TextUtils.isEmpty(sortOrder)) sortOrder = &quot;_ID ASC&quot;;
+                break;
+
+            // If the incoming URI was for a single row
+            case 2:
+
+                /*
+                 * Because this URI was for a single row, the _ID value part is
+                 * present. Get the last path segment from the URI; this is the _ID value.
+                 * Then, append the value to the WHERE clause for the query
+                 */
+                selection = selection + &quot;_ID = &quot; uri.getLastPathSegment();
+                break;
+
+            default:
+            ...
+                // If the URI is not recognized, you should do some error handling here.
+        }
+        // call the code to actually do the query
+    }
+</code></pre><h1 id="Implementing-the-ContentProvider-Class"><a href="#Implementing-the-ContentProvider-Class" class="headerlink" title="Implementing the ContentProvider Class"></a>Implementing the ContentProvider Class</h1><p>All forms of access eventually call <code>ContentResolver</code>, which then calls a concrete method of <code>ContentProvider</code> to get access. </p>
+<h2 id="Required-methods"><a href="#Required-methods" class="headerlink" title="Required methods"></a>Required methods</h2><p>The abstract class <code>ContentProvider</code> defines six abstract methods that you must implement as part of your own concrete subclass. All of these methods except <code>onCreate()</code> are called by a client application that is attempting to access your content provider. Notice that these methods have the same signature as the identically-named <code>ContentResolver</code> methods. </p>
+<p>Your implementation of these methods should account for the following:</p>
+<ul>
+<li>All of these methods except <code>onCreate()</code> can be called by multiple threads at once, so they must be thread-safe.</li>
+<li>Avoid doing lengthy operations in <code>onCreate()</code>. Defer initialization tasks until they are actually needed. The section Implementing the <code>onCreate()</code> method discusses this in more detail.</li>
+<li>Although you must implement these methods, your code does not have to do anything except return the expected data type. For example, you may want to prevent other applications from inserting data into some tables. To do this, you can ignore the call to <code>insert()</code> and return 0.</li>
+</ul>
+<h2 id="Implementing-the-query-method"><a href="#Implementing-the-query-method" class="headerlink" title="Implementing the query() method"></a>Implementing the query() method</h2><p>If you aren’t using an SQLite database as your data storage, use one of the concrete subclasses of <code>Cursor</code>. </p>
+<p>Remember that the Android system must be able to communicate the Exception across process boundaries. Android can do this for the following exceptions that may be useful in handling query errors:</p>
+<ul>
+<li><code>IllegalArgumentException</code> (You may choose to throw this if your provider receives an invalid content URI)</li>
+<li><code>NullPointerException</code></li>
+</ul>
+<h2 id="Implementing-the-onCreate-method"><a href="#Implementing-the-onCreate-method" class="headerlink" title="Implementing the onCreate() method"></a>Implementing the onCreate() method</h2><p>You should perform only fast-running initialization tasks in this method, and defer database creation and data loading until the provider actually receives a request for the data.</p>
+<p>For example, if you are using an SQLite database you can create a new <code>SQLiteOpenHelper</code> object in <code>ContentProvider.onCreate()</code>, and then create the SQL tables the first time you open the database. To facilitate this, the first time you call <code>getWritableDatabase()</code>, it automatically calls the <code>SQLiteOpenHelper.onCreate()</code> method. </p>
+<h1 id="Implementing-a-Contract-Class"><a href="#Implementing-a-Contract-Class" class="headerlink" title="Implementing a Contract Class"></a>Implementing a Contract Class</h1><p>A contract class is a public final class that contains constant definitions for the URIs, column names, MIME types, and other meta-data that pertain to the provider. </p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Content-Provider/" rel="tag">#Content Provider</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/11/16/notes-about-ContentProviders/" rel="next" title="Notes on Content Providers (I) Content Provider Basics">
+                <i class="fa fa-chevron-left"></i> Notes on Content Providers (I) Content Provider Basics
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/11/18/How-Android-Draws-Views/" rel="prev" title="安卓绘制View的过程">
+                安卓绘制View的过程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">82</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Before-You-Start-Building"><span class="nav-number">1.</span> <span class="nav-text">Before You Start Building</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Designing-Data-Storage"><span class="nav-number">2.</span> <span class="nav-text">Designing Data Storage</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Data-design-considerations"><span class="nav-number">2.1.</span> <span class="nav-text">Data design considerations</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Designing-Content-URIs"><span class="nav-number">3.</span> <span class="nav-text">Designing Content URIs</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Designing-an-authority"><span class="nav-number">3.1.</span> <span class="nav-text">Designing an authority</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Content-URI-patterns"><span class="nav-number">3.2.</span> <span class="nav-text">Content URI patterns</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Implementing-the-ContentProvider-Class"><span class="nav-number">4.</span> <span class="nav-text">Implementing the ContentProvider Class</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Required-methods"><span class="nav-number">4.1.</span> <span class="nav-text">Required methods</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Implementing-the-query-method"><span class="nav-number">4.2.</span> <span class="nav-text">Implementing the query() method</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Implementing-the-onCreate-method"><span class="nav-number">4.3.</span> <span class="nav-text">Implementing the onCreate() method</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Implementing-a-Contract-Class"><span class="nav-number">5.</span> <span class="nav-text">Implementing a Contract Class</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

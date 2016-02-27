@@ -1,0 +1,765 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="好的自定义view应该将功能封装为方便的接口，高效使用CPU和内存。另外还要做到：
+
+适应安卓标准
+提供自定义的风格属性，兼容安卓的XML布局
+发送无障碍事件
+兼容多个安卓平台">
+<meta property="og:type" content="article">
+<meta property="og:title" content="创造自定义View并在XML中使用自定义特性">
+<meta property="og:url" content="http://yoursite.com/2015/09/20/Creating-a-View-Class/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="好的自定义view应该将功能封装为方便的接口，高效使用CPU和内存。另外还要做到：
+
+适应安卓标准
+提供自定义的风格属性，兼容安卓的XML布局
+发送无障碍事件
+兼容多个安卓平台">
+<meta property="og:updated_time" content="2015-09-21T11:33:50.501Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="创造自定义View并在XML中使用自定义特性">
+<meta name="twitter:description" content="好的自定义view应该将功能封装为方便的接口，高效使用CPU和内存。另外还要做到：
+
+适应安卓标准
+提供自定义的风格属性，兼容安卓的XML布局
+发送无障碍事件
+兼容多个安卓平台">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 创造自定义View并在XML中使用自定义特性 | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                创造自定义View并在XML中使用自定义特性
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-20T19:58:44+08:00" content="2015-09-20">
+              2015-09-20
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>好的自定义view应该将功能封装为方便的接口，高效使用CPU和内存。另外还要做到：</p>
+<ul>
+<li>适应安卓标准</li>
+<li>提供自定义的风格属性，兼容安卓的XML布局</li>
+<li>发送无障碍事件</li>
+<li>兼容多个安卓平台</li>
+</ul>
+<a id="more"></a>
+<h2 id="继承View"><a href="#继承View" class="headerlink" title="继承View"></a>继承View</h2><p>安卓框架中，所有view都继承自<code>View</code>类。<br>为了允许安卓开发者工具与view交互，至少需要提供一个接收<code>Context</code>和<code>AttributeSet</code>对象的构造器。这样布局编辑器就可以创造和编辑这个view了。</p>
+<pre><code>class PieChart extends View {
+    public PieChart(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+}
+</code></pre><h2 id="定义自定义特性"><a href="#定义自定义特性" class="headerlink" title="定义自定义特性"></a>定义自定义特性</h2><p>要想让自定义view能够在XML中添加和编辑，需要：</p>
+<ul>
+<li>在<code>&lt;declare-styleable&gt;</code>资源元素中定义自定义特性。</li>
+<li>在XML布局中指定这些特性的值</li>
+<li>在运行时取回这些特性的值</li>
+<li>为自定义view应用这些值</li>
+</ul>
+<p>这一小节首先来看如果定义和指定自定义特性及其值，下一小节来看如果在运行时取回和应用这些值。<br>定义自定义特性，需要在<code>res/values/attrs.xml</code>中添加<code>&lt;declare-styleable&gt;</code>资源。</p>
+<pre><code>&lt;resources&gt;
+   &lt;declare-styleable name=&quot;PieChart&quot;&gt;
+       &lt;attr name=&quot;showText&quot; format=&quot;boolean&quot; /&gt;
+       &lt;attr name=&quot;labelPosition&quot; format=&quot;enum&quot;&gt;
+           &lt;enum name=&quot;left&quot; value=&quot;0&quot;/&gt;
+           &lt;enum name=&quot;right&quot; value=&quot;1&quot;/&gt;
+       &lt;/attr&gt;
+   &lt;/declare-styleable&gt;
+&lt;/resources&gt;
+</code></pre><p>上面的代码声明了<code>Piechart</code>条目中的两个自定义特性<code>showText</code>和<code>labelPosition</code>，风格条目的名字一般与自定义类的名字相同。<br>定义之后，就可以在XML中像内置特性一样使用了。自定义特性的命名空间与内置的不同，它们属于<code>http://schemas.android.com/apk/res/[your package name]</code>而非<code>http://schemas.android.com/apk/res/android</code>，请看下面的例子：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+   xmlns:custom=&quot;http://schemas.android.com/apk/res/com.example.customviews&quot;&gt;
+ &lt;com.example.customviews.charting.PieChart
+     custom:showText=&quot;true&quot;
+     custom:labelPosition=&quot;left&quot; /&gt;
+&lt;/LinearLayout&gt;
+</code></pre><p>为了避免重复冗长的命名空间URI，这个例子使用<code>xmlns</code>指令。这个指定为命名空间<code>http://schemas.android.com/apk/res-auto</code>分配了<code>custom</code>别名。</p>
+<blockquote>
+<p>注意：如果没有使用gradle，<code>xlmns</code>URI不能包含<code>res-auto</code>，必须包含项目的全名。如<code>http://schemas.android.com/apk/res/com.example.customviews.</code></p>
+</blockquote>
+<p>注意layout中自定义view的XML标签的名字是自定义view的全名。如果该类是内部类，必须提供外部类的名字。例如，<code>PieChart</code>类是<code>PieView</code>的内部类的话，就需要使用<code>com.example.customviews.charting.PieChart$PieView</code>作为标签。  </p>
+<h2 id="应用自定义特性"><a href="#应用自定义特性" class="headerlink" title="应用自定义特性"></a>应用自定义特性</h2><p>当一个view通过XML布局创建时，所有XML标签中的特性从资源bundle中读取，并作为<code>AttributeSet</code>参数传递给view的构造器。虽然可以直接从<code>AttributeSet</code>中读取，但这样有一些缺点：</p>
+<ul>
+<li>特性值中的资源引用未能解析</li>
+<li>风格没能应用</li>
+</ul>
+<p>最好传递<code>AttributeSet</code>给<code>obtainStyledAttributes()</code>。这个方法传回一个解除引用和风格化的<code>TypedArray</code>。<br>安卓资源编译器为了使调用<code>obtainStyledAttributes()</code>更加简单做了很多工作。为每个<code>&lt;declare-styleable&gt;</code>资源，生成的R.java都定义了一列特性id和每个特性的索引的常数集合。可以使用这些预先定义的常数来从<code>TypedArray</code>中读取常数。</p>
+<pre><code>public PieChart(Context context, AttributeSet attrs) {
+   super(context, attrs);
+   TypedArray a = context.getTheme().obtainStyledAttributes(
+        attrs,
+        R.styleable.PieChart,
+        0, 0);
+
+   try {
+       mShowText = a.getBoolean(R.styleable.PieChart_showText, false);
+       mTextPos = a.getInteger(R.styleable.PieChart_labelPosition, 0);
+   } finally {
+       a.recycle();
+   }
+}
+</code></pre><p>注意<code>TypedArray</code>对象是共享资源，必须在使用后回收。</p>
+<h2 id="添加属性和事件"><a href="#添加属性和事件" class="headerlink" title="添加属性和事件"></a>添加属性和事件</h2><p>特性是一种控制view行为和外观的强大工具，但只能在view创建时读取。为了提供动态的行为，可以为每个自定义特性暴露getter和setter。</p>
+<pre><code>public boolean isShowText() {
+   return mShowText;
+}
+
+public void setShowText(boolean showText) {
+   mShowText = showText;
+   invalidate();
+   requestLayout();
+}
+</code></pre><p>注意<code>setShowText</code>调用了<code>invalidate()</code>和<code>requestLayout()</code>。这些调用时view正确行为的关键。在改变了任何可能影响外观的属性后，都必须invalidate这个view，这样系统就知道它需要被重绘。如果一个属性变化可能影响view的大小和形状，则需要请求一个新的布局。<br>自定义view应该支持事件侦听器来与重要的事件进行通讯。例如，<code>PieChart</code>暴露了一个自定义事件<code>OnCurrentItemChanged</code>来通知侦听器，用户旋转了饼状图，以将焦点转移到新的pie片段。<br>很容易忘记暴露属性和时间，尤其是这个view只有你自己使用的时候。花一些时间来仔细定义view的接口可以减少未来维护的消耗。一个好的原则是：总是暴露影响行为或外观的属性。</p>
+<h2 id="无障碍设计"><a href="#无障碍设计" class="headerlink" title="无障碍设计"></a>无障碍设计</h2><p>自定义view应该支持更多的人群，包括残疾人士。要做到这一点应该：</p>
+<ul>
+<li>通过<code>android:contentDescription</code>特性为输入的控件注明标签</li>
+<li>合适的时候通过<code>sendAccessibilityEvent()</code>发送无障碍事件</li>
+<li>支持一些替代的控制器，比如D-pad和trackball.</li>
+</ul>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/19/spinners/" rel="next" title="使用Spinner下拉列表">
+                <i class="fa fa-chevron-left"></i> 使用Spinner下拉列表
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/22/higher-order-functions/" rel="prev" title="函数式编程 - 高阶函数">
+                函数式编程 - 高阶函数 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">82</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#继承View"><span class="nav-number">1.</span> <span class="nav-text">继承View</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义自定义特性"><span class="nav-number">2.</span> <span class="nav-text">定义自定义特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用自定义特性"><span class="nav-number">3.</span> <span class="nav-text">应用自定义特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加属性和事件"><span class="nav-number">4.</span> <span class="nav-text">添加属性和事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无障碍设计"><span class="nav-number">5.</span> <span class="nav-text">无障碍设计</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

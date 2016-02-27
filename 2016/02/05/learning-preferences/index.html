@@ -1,0 +1,839 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="应用一般都包含一些用户可以自定义的设置，比如是否推送通知，更新数据的频率等等。
+如果想要为应用提供设置，应该使用安卓的PreferenceAPI来创建一致的用户体验。
+概览与使用View创造界面不同，设置是由xml文件中声明的各种Preference的子类组成。
+一个Preference对象构成一个设置。每个Preference显示为列表中的一个子项，并提供合适的UI供用户交互。例如，CheckB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Preferences API（一）">
+<meta property="og:url" content="http://yoursite.com/2016/02/05/learning-preferences/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="应用一般都包含一些用户可以自定义的设置，比如是否推送通知，更新数据的频率等等。
+如果想要为应用提供设置，应该使用安卓的PreferenceAPI来创建一致的用户体验。
+概览与使用View创造界面不同，设置是由xml文件中声明的各种Preference的子类组成。
+一个Preference对象构成一个设置。每个Preference显示为列表中的一个子项，并提供合适的UI供用户交互。例如，CheckB">
+<meta property="og:updated_time" content="2016-02-05T10:48:46.616Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Preferences API（一）">
+<meta name="twitter:description" content="应用一般都包含一些用户可以自定义的设置，比如是否推送通知，更新数据的频率等等。
+如果想要为应用提供设置，应该使用安卓的PreferenceAPI来创建一致的用户体验。
+概览与使用View创造界面不同，设置是由xml文件中声明的各种Preference的子类组成。
+一个Preference对象构成一个设置。每个Preference显示为列表中的一个子项，并提供合适的UI供用户交互。例如，CheckB">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 使用Preferences API（一） | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                使用Preferences API（一）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-02-05T15:43:43+08:00" content="2016-02-05">
+              2016-02-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>应用一般都包含一些用户可以自定义的设置，比如是否推送通知，更新数据的频率等等。</p>
+<p>如果想要为应用提供设置，应该使用安卓的<code>Preference</code>API来创建一致的用户体验。</p>
+<h1 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h1><p>与使用<code>View</code>创造界面不同，设置是由xml文件中声明的各种<code>Preference</code>的子类组成。</p>
+<p>一个<code>Preference</code>对象构成一个设置。每个<code>Preference</code>显示为列表中的一个子项，并提供合适的UI供用户交互。例如，<code>CheckBoxPreference</code>创造一个勾选框子项，<code>ListPreference</code>创造一个弹出选择列表对话框的子项。</p>
+<p>每个<code>Preference</code>在系统使用的默认的<code>SharedPreferences</code>文件中存在一个对应的键值对。用户更改设置后，系统在SP文件中更新相应的值。只有当需要从SP中读取值以决定应用行为时，才需要直接与SP相交互。<br><a id="more"></a></p>
+<p>存在SP中的值包含以下几种类型：</p>
+<ul>
+<li>Boolean</li>
+<li>Float</li>
+<li>Int</li>
+<li>Long</li>
+<li>String</li>
+<li>String <code>Set</code></li>
+</ul>
+<p>因为用户的设置UI是通过<code>Preference</code>而非<code>View</code>构成的，所以需要使用特殊的<code>Activity</code>或<code>Fragment</code>子类来展示设置：</p>
+<ul>
+<li>如果应用支持安卓3.0以前的设备，需要继承<code>PreferenceActivity</code>。</li>
+<li>在3.0以上版本，应该使用一个传统<code>Activity</code>来加载<code>PreferenceFragment</code>。当有多组设定时，也可以使用<code>PreferenceActivity</code>来为大屏幕创建一个双面板的布局。</li>
+</ul>
+<h1 id="Preference"><a href="#Preference" class="headerlink" title="Preference"></a>Preference</h1><p>应用的每个设定都由一个特定的<code>Pref</code>子类来表示。每个子类包含一套核心属性，可以指定设定的标题和默认值等等。每个子类也提供自己特殊的属性和UI。</p>
+<h1 id="在XML中定义属性"><a href="#在XML中定义属性" class="headerlink" title="在XML中定义属性"></a>在XML中定义属性</h1><p>虽然可以在运行时创建新的<code>Pref</code>，但是应该在XML中定义设定的列表。使用XML的方法更好，因为文件可以提供易读的结构，也容易更新。而且，应用的设定一般都是预先设定好的，虽然可以在运行时进行修改。</p>
+<p>每个<code>Pref</code>子类可以用一个匹配类名的XML元素声明，比如<code>&lt;CheckBoxPreference&gt;</code>。</p>
+<p>必须在<code>res/xml/</code>目录下保存XML文件。虽然可以随便命名文件，但是一般都取名为<code>preferences.xml</code>。一般只需要一个文件，因为阶层中的分支一般使用嵌套的<code>PreferenceScreen</code>来声明。</p>
+<blockquote>
+<p>注意：如果想要创建多面板布局，则需要为每个fragment创建相应的XML文件。</p>
+</blockquote>
+<p>XML文件的根节点必须是一个<code>&lt;PreferenceScreen&gt;</code>元素。在元素内可以添加<code>Pref</code>。元素内每个添加的子元素都显示为设定列表的一个子项。比如：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;PreferenceScreen xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;
+    &lt;CheckBoxPreference
+        android:key=&quot;pref_sync&quot;
+        android:title=&quot;@string/pref_sync&quot;
+        android:summary=&quot;@string/pref_sync_summ&quot;
+        android:defaultValue=&quot;true&quot; /&gt;
+    &lt;ListPreference
+        android:dependency=&quot;pref_sync&quot;
+        android:key=&quot;pref_syncConnectionType&quot;
+        android:title=&quot;@string/pref_syncConnectionType&quot;
+        android:dialogTitle=&quot;@string/pref_syncConnectionType&quot;
+        android:entries=&quot;@array/pref_syncConnectionTypes_entries&quot;
+        android:entryValues=&quot;@array/pref_syncConnectionTypes_values&quot;
+        android:defaultValue=&quot;@string/pref_syncConnectionTypes_default&quot; /&gt;
+&lt;/PreferenceScreen&gt;
+</code></pre><p>每个子项都包含了三个特性：</p>
+<p><code>android:key</code>：每个持有数据的pref都需要包含该特性。它为系统指明了一个独特的key字符串，以将设置存储至SP中。只有<code>PrefrenceCategory</code>和<code>PreferenceScreen</code>元素以及指明调用的<code>Intent</code>或显示的<code>Fragment</code>的元素不需要该属性。</p>
+<p><code>android:title</code>：提供用户可见的设定名称。</p>
+<p><code>android:defaultValue</code>：系统应在SP中设定的初始值。应该为每个设定都提供一个初始值。</p>
+<h1 id="创建设定组"><a href="#创建设定组" class="headerlink" title="创建设定组"></a>创建设定组</h1><p>如果设定的列表超过10项，可能对用户很不友好。这时可以将他们分成几组。一组相关的设定可以用两种方式呈现出来：使用标题或使用子屏幕。</p>
+<h2 id="使用标题"><a href="#使用标题" class="headerlink" title="使用标题"></a>使用标题</h2><p>如果想要为设定组之间提供带有标题的分隔线，可以将各组<code>Pref</code>对象放置在<code>PreferenceCategory</code>中。</p>
+<pre><code>&lt;PreferenceScreen xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;
+    &lt;PreferenceCategory 
+        android:title=&quot;@string/pref_sms_storage_title&quot;
+        android:key=&quot;pref_key_storage_settings&quot;&gt;
+        &lt;CheckBoxPreference
+            android:key=&quot;pref_key_auto_delete&quot;
+            android:summary=&quot;@string/pref_summary_auto_delete&quot;
+            android:title=&quot;@string/pref_title_auto_delete&quot;
+            android:defaultValue=&quot;false&quot;... /&gt;
+        &lt;Preference 
+            android:key=&quot;pref_key_sms_delete_limit&quot;
+            android:dependency=&quot;pref_key_auto_delete&quot;
+            android:summary=&quot;@string/pref_summary_delete_limit&quot;
+            android:title=&quot;@string/pref_title_sms_delete&quot;... /&gt;
+        &lt;Preference 
+            android:key=&quot;pref_key_mms_delete_limit&quot;
+            android:dependency=&quot;pref_key_auto_delete&quot;
+            android:summary=&quot;@string/pref_summary_delete_limit&quot;
+            android:title=&quot;@string/pref_title_mms_delete&quot; ... /&gt;
+    &lt;/PreferenceCategory&gt;
+    ...
+&lt;/PreferenceScreen&gt;
+</code></pre><h2 id="使用子屏幕"><a href="#使用子屏幕" class="headerlink" title="使用子屏幕"></a>使用子屏幕</h2><p>如果想要将设定组防止在子屏幕中，可以将各组<code>Pref</code>对象放置在<code>PreferenceScreen</code>中。</p>
+<pre><code>&lt;PreferenceScreen  xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;
+    &lt;!-- opens a subscreen of settings --&gt;
+    &lt;PreferenceScreen
+        android:key=&quot;button_voicemail_category_key&quot;
+        android:title=&quot;@string/voicemail&quot;
+        android:persistent=&quot;false&quot;&gt;
+        &lt;ListPreference
+            android:key=&quot;button_voicemail_provider_key&quot;
+            android:title=&quot;@string/voicemail_provider&quot; ... /&gt;
+        &lt;!-- opens another nested subscreen --&gt;
+        &lt;PreferenceScreen
+            android:key=&quot;button_voicemail_setting_key&quot;
+            android:title=&quot;@string/voicemail_settings&quot;
+            android:persistent=&quot;false&quot;&gt;
+            ...
+        &lt;/PreferenceScreen&gt;
+        &lt;RingtonePreference
+            android:key=&quot;button_voicemail_ringtone_key&quot;
+            android:title=&quot;@string/voicemail_ringtone_title&quot;
+            android:ringtoneType=&quot;notification&quot; ... /&gt;
+        ...
+    &lt;/PreferenceScreen&gt;
+    ...
+&lt;/PreferenceScreen&gt;
+</code></pre><h2 id="使用intents"><a href="#使用intents" class="headerlink" title="使用intents"></a>使用intents</h2><p>一些情况下，可能需要使用pref子项打开一个不同的activity而非设置屏幕，比如使用浏览器来浏览网页。要在用户选中pref子项时调用<code>Intent</code>，可以添加一个<code>&lt;intent&gt;</code>元素作为相应<code>&lt;Preference&gt;</code>元素的子项。</p>
+<pre><code>&lt;Preference android:title=&quot;@string/prefs_web_page&quot; &gt;
+    &lt;intent android:action=&quot;android.intent.action.VIEW&quot;
+            android:data=&quot;http://www.example.com&quot; /&gt;
+&lt;/Preference&gt;
+</code></pre><p>可以通过下面的属性来创建显式或隐式的intent。</p>
+<p><code>android:action</code>: The action to assign, as per the setAction() method.</p>
+<p><code>android:data</code>: The data to assign, as per the setData() method.</p>
+<p><code>android:mimeType</code>: The MIME type to assign, as per the setType() method.</p>
+<p><code>android:targetClass</code>: The class part of the component name, as per the setComponent() method.</p>
+<p><code>android:targetPackage</code>: The package part of the component name, as per the setComponent() method. </p>
+<h1 id="创建Pref-Activity"><a href="#创建Pref-Activity" class="headerlink" title="创建Pref Activity"></a>创建Pref Activity</h1><p>要在activity中展示设定，可以继承<code>PA</code>类。</p>
+<blockquote>
+<p>3.0以上版本应该使用<code>PreferenceFragment</code>。</p>
+</blockquote>
+<p>最重要的是记住，在<code>onCreate()</code>回调中，并不载入布局视图。而是调用<code>addPreferencesFromResource()</code>来添加XML中声明的pref。</p>
+<pre><code>public class SettingsActivity extends PreferenceActivity {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.preferences);
+    }
+}
+</code></pre><p>上面的代码已经足够供一些应用使用了。因为一旦用户修改某项pref，系统就将改变存储到默认的SP中，并供应用的其他组件读取。还有很多应用，需要额外的一些代码来侦听pref发生的变化。</p>
+<h1 id="使用Pref-Fragments"><a href="#使用Pref-Fragments" class="headerlink" title="使用Pref Fragments"></a>使用Pref Fragments</h1><p><code>Fragments</code>为应用提供了更加灵活的结构。所以，尽可能使用PF来展示设定而非PA。</p>
+<p>PF的实现非常简单，只需要定义<code>onCreate()</code>方法来加载pref文件。</p>
+<pre><code>public static class SettingsFragment extends PreferenceFragment {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Load the preferences from an XML resource
+        addPreferencesFromResource(R.xml.preferences);
+    }
+    ...
+}
+</code></pre><p>可以像添加其他<code>Fragment</code>一样将PF添加到<code>Activity</code>中。如下：</p>
+<pre><code>public class SettingsActivity extends Activity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Display the fragment as the main content.
+        getFragmentManager().beginTransaction()
+                .replace(android.R.id.content, new SettingsFragment())
+                .commit();
+    }
+}
+</code></pre><blockquote>
+<p>注意：PF本身不具有<code>Context</code>对象。如果需要<code>Context</code>，可以调用<code>getActivity()</code>。然而，调用该方法的时候需要注意，仅仅在fragment连接到activity上时调用。如果没有，或者被解除连接，将会返回null。</p>
+</blockquote>
+<h1 id="设置默认值"><a href="#设置默认值" class="headerlink" title="设置默认值"></a>设置默认值</h1><p>创建的pref很可能决定着应用的一些重要行为，所以有必要在用户第一次打开应用时，创建每个pref都拥有默认值的关联SP文件。</p>
+<p>首先要做的是在XML中文件中为每个pref使用<code>android:defaultValue</code>来指明默认值。这个值可以为适合相应<code>Preference</code>对象的任意数据类型。</p>
+<pre><code>&lt;!-- default value is a boolean --&gt;
+&lt;CheckBoxPreference
+    android:defaultValue=&quot;true&quot;
+    ... /&gt;
+
+&lt;!-- default value is a string --&gt;
+&lt;ListPreference
+    android:defaultValue=&quot;@string/pref_syncConnectionTypes_default&quot;
+    ... /&gt;
+</code></pre><p>然后，在应用的主ACT的<code>onCreate()</code>方法，以及任何可能的首次入口activity中调用<code>setDefaultValues()</code>：</p>
+<pre><code>PreferenceManager.setDefaultValues(this, R.xml.advanced_preferences, false);
+</code></pre><p>在<code>onCreate()</code>中调用保证了应用以默认设置初始化。这个方法有三个参数：应用的<code>Context</code>，pref XML的资源ID，指示是否覆盖的布尔变量。</p>
+<p>只要将第三个参数设置为<code>false</code>，便可以安全地在每次ACT启动时调用该方法，无需担心覆盖pref。</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/04/Bug-of-TabLayout/" rel="next" title="A Bug of TabLayout">
+                <i class="fa fa-chevron-left"></i> A Bug of TabLayout
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/05/learning-preferences-2/" rel="prev" title="使用Preferences API（二）">
+                使用Preferences API（二） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">82</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概览"><span class="nav-number">1.</span> <span class="nav-text">概览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Preference"><span class="nav-number">2.</span> <span class="nav-text">Preference</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在XML中定义属性"><span class="nav-number">3.</span> <span class="nav-text">在XML中定义属性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建设定组"><span class="nav-number">4.</span> <span class="nav-text">创建设定组</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用标题"><span class="nav-number">4.1.</span> <span class="nav-text">使用标题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用子屏幕"><span class="nav-number">4.2.</span> <span class="nav-text">使用子屏幕</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用intents"><span class="nav-number">4.3.</span> <span class="nav-text">使用intents</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建Pref-Activity"><span class="nav-number">5.</span> <span class="nav-text">创建Pref Activity</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用Pref-Fragments"><span class="nav-number">6.</span> <span class="nav-text">使用Pref Fragments</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#设置默认值"><span class="nav-number">7.</span> <span class="nav-text">设置默认值</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

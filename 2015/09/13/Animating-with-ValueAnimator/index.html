@@ -1,0 +1,761 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Animation," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="用AnimatorSet编排多个动画很多时候，播放动画的时机取决于其他动画的开始和结束。安卓系统可以将多个动画捆绑在一个AnimatorSet中，以指定同时播放动画，按顺序播放动画或者延迟一定时间后播放。AnimatorSet对象也可以互相嵌套。下面的例子取自一个弹球游戏，播放下面的顺序播放Animator对象：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓动画学习笔记（四） 属性动画（续）">
+<meta property="og:url" content="http://yoursite.com/2015/09/13/Animating-with-ValueAnimator/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="用AnimatorSet编排多个动画很多时候，播放动画的时机取决于其他动画的开始和结束。安卓系统可以将多个动画捆绑在一个AnimatorSet中，以指定同时播放动画，按顺序播放动画或者延迟一定时间后播放。AnimatorSet对象也可以互相嵌套。下面的例子取自一个弹球游戏，播放下面的顺序播放Animator对象：">
+<meta property="og:updated_time" content="2015-09-13T12:35:35.030Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="安卓动画学习笔记（四） 属性动画（续）">
+<meta name="twitter:description" content="用AnimatorSet编排多个动画很多时候，播放动画的时机取决于其他动画的开始和结束。安卓系统可以将多个动画捆绑在一个AnimatorSet中，以指定同时播放动画，按顺序播放动画或者延迟一定时间后播放。AnimatorSet对象也可以互相嵌套。下面的例子取自一个弹球游戏，播放下面的顺序播放Animator对象：">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 安卓动画学习笔记（四） 属性动画（续） | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                安卓动画学习笔记（四） 属性动画（续）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-13T16:09:59+08:00" content="2015-09-13">
+              2015-09-13
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="用AnimatorSet编排多个动画"><a href="#用AnimatorSet编排多个动画" class="headerlink" title="用AnimatorSet编排多个动画"></a>用AnimatorSet编排多个动画</h2><p>很多时候，播放动画的时机取决于其他动画的开始和结束。安卓系统可以将多个动画捆绑在一个<code>AnimatorSet</code>中，以指定同时播放动画，按顺序播放动画或者延迟一定时间后播放。<code>AnimatorSet</code>对象也可以互相嵌套。<br>下面的例子取自一个弹球游戏，播放下面的顺序播放<code>Animator</code>对象：<br><a id="more"></a></p>
+<ol>
+<li>Plays bounceAnim</li>
+<li>Plays squashAnim1, squashAnim2, stretchAnim1, and stretchAnim2 at the same time.</li>
+<li>Plays bounceBackAnim.</li>
+<li><p>Plays fadeAnim.</p>
+<p> AnimatorSet bouncer = new AnimatorSet();<br> bouncer.play(bounceAnim).before(squashAnim1);<br> bouncer.play(squashAnim1).with(squashAnim2);<br> bouncer.play(squashAnim1).with(stretchAnim1);<br> bouncer.play(squashAnim1).with(stretchAnim2);<br> bouncer.play(bounceBackAnim).after(stretchAnim2);<br> ValueAnimator fadeAnim = ObjectAnimator.ofFloat(newBall, “alpha”, 1f, 0f);<br> fadeAnim.setDuration(250);<br> AnimatorSet animatorSet = new AnimatorSet();<br> animatorSet.play(bouncer).before(fadeAnim);<br> animatorSet.start();</p>
+</li>
+</ol>
+<h2 id="动画侦听器"><a href="#动画侦听器" class="headerlink" title="动画侦听器"></a>动画侦听器</h2><p>在动画过程中，可以侦听一些重要事件。</p>
+<ul>
+<li><p><code>Animator.AnimatorListener</code></p>
+<ul>
+<li><code>onAnimationStart()</code></li>
+<li><code>onAnimationEnd()</code></li>
+<li><code>onAnimationRepeat()</code></li>
+<li><code>onAnimationCancel()</code> <em>动画取消时也将调用<code>onAnimationEnd()</code></em></li>
+</ul>
+</li>
+<li><p><code>ValueAnimator.AnimatorUpdateListener</code></p>
+<ul>
+<li><code>onAnimationUpdate()</code> 在动画的每一帧都会调用。在动画过程中，侦听这个时间可以使用<code>ValueAnimator</code>计算得出的值。通过调用传入的<code>ValueAnimator</code>的<code>getAnimatedValue()</code>可以获得当前的值。如果使用<code>ValueAnimator</code>必须要实现这个侦听器。  有时需要调用<code>invalidate()</code>方法，详见上一篇文章。</li>
+</ul>
+</li>
+</ul>
+<h2 id="ViewGroup的布局变化动画"><a href="#ViewGroup的布局变化动画" class="headerlink" title="ViewGroup的布局变化动画"></a>ViewGroup的布局变化动画</h2><p>属性动画系统可以为ViewGroup布局变化提供动画，也为View提供了一种简单的动画方式。<br>可以使用<code>LayoutTransition</code>类来为布局变化提供动画。ViewGroup添加或移除View或者设置属性为<code>VISIBLE``INVISIBLE``GONE</code>时可以添加出现和消失的动画。ViewGroup中剩下的View也会通过动画移动到新的位置。可以通过调用<code>setAnimator()</code>方法来为<code>LayoutTransition</code>提供<code>Animator</code>，并选择下面几个常数之一：</p>
+<ul>
+<li><code>APPEARING</code> 新的item出现时执行</li>
+<li><code>CHANGE_APPEARING</code> item因为新item添加而改变位置时执行</li>
+<li><code>DISAPPEARING</code> item消失时执行</li>
+<li><code>CHANGE_DISAPPEARING</code> item因为其他item消失而改变位置时执行</li>
+</ul>
+<p>可以为这四种类型的时间提供自定义的动画，也可以使用默认的动画<br><code>layout_animations_by_default.xml</code>。<br>使用默认动画时需要将ViewGroup的<code>android:animateLayoutchanges</code>属性设置为<code>true</code>。</p>
+<pre><code>&lt;LinearLayout
+    android:orientation=&quot;vertical&quot;
+    android:layout_width=&quot;wrap_content&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:id=&quot;@+id/verticalContainer&quot;
+    android:animateLayoutChanges=&quot;true&quot; /&gt;
+</code></pre><p>这样就可以自动处理ViewGroup中添加删除View的动画。</p>
+<h2 id="使用TypeEvaluator"><a href="#使用TypeEvaluator" class="headerlink" title="使用TypeEvaluator"></a>使用TypeEvaluator</h2><h2 id="使用Interpolator"><a href="#使用Interpolator" class="headerlink" title="使用Interpolator"></a>使用Interpolator</h2><h2 id="指定关键帧"><a href="#指定关键帧" class="headerlink" title="指定关键帧"></a>指定关键帧</h2><h2 id="View的动画"><a href="#View的动画" class="headerlink" title="View的动画"></a>View的动画</h2><p>属性动画系统可以为View对象提供streamlined动画，并提供一些视图动画不具有的优势。视图动画仅仅改变了View绘制的位置，由每个View的容器进行处理，而View对象本身没有变化。导致一些行为仍然留在原来的位置，即使画在别的位置上。安卓3.0以后，添加了新的属性和相应的getter和setter方法来弥补这个不足。<br>属性动画系统可以通过改变实际的属性来操纵View的动画。而且，View可以在属性改变之后自动调用<code>invalidate()</code>方法来刷新屏幕。<code>View</code>类中支持属性动画的新的属性有：</p>
+<ul>
+<li><code>translationX</code>和<code>translationY</code>：这些属性控制View摆放位置的偏移增量，相对其布局容器设定的左上角坐标。</li>
+<li><code>rotation</code>,<code>rotationX</code>和<code>rotationY</code>：这些属性控制围绕中轴点的2D和3D旋转。</li>
+<li><code>scaleX</code>和<code>scaleY</code>：这些属性控制View围绕中轴点的2D缩放大小。</li>
+<li><code>pivotX</code>和<code>pivotY</code>：这些属性控制中轴点的位置。旋转和缩放都围绕着中轴点进行。默认情况下，中轴点位于对象的中心位置。</li>
+<li><code>x</code>和<code>y</code>：这些属性描述View在容器中的最终位置，是left和top值与translationX和translationY值得总和。</li>
+<li><code>alpha</code>：代表View的透明度。默认值为1（不透明），0代表完全透明。</li>
+</ul>
+<p>要改变View的属性，比如颜色或者旋转，只需要创建一个属性animator，并制定想要添加动画的View属性，比如：</p>
+<pre><code>ObjectAnimator.ofFloat(myView, &quot;rotation&quot;, 0f, 360f);
+</code></pre><h2 id="使用ViewPropertyAnimator"><a href="#使用ViewPropertyAnimator" class="headerlink" title="使用ViewPropertyAnimator"></a>使用ViewPropertyAnimator</h2><p><code>ViewPropertyAnimator</code>利用其中的<code>Animator</code>对象，提供了简单的方法来为<code>View</code>的几个属性并行地实现动画。它与<code>ObjectAnimator</code>的表现类似，修改实际的属性值，但在同时改变多个属性的时候效率更高。而且它的代码也更加紧凑易读。下面的片段体现了几种实现方法的区别：</p>
+<h3 id="多个ObjectAnimator对象"><a href="#多个ObjectAnimator对象" class="headerlink" title="多个ObjectAnimator对象"></a>多个ObjectAnimator对象</h3><pre><code>ObjectAnimator animX = ObjectAnimator.ofFloat(myView, &quot;x&quot;, 50f);
+ObjectAnimator animY = ObjectAnimator.ofFloat(myView, &quot;y&quot;, 100f);
+AnimatorSet animSetXY = new AnimatorSet();
+animSetXY.playTogether(animX, animY);
+animSetXY.start();
+</code></pre><h3 id="单个ObjectAnimator"><a href="#单个ObjectAnimator" class="headerlink" title="单个ObjectAnimator"></a>单个ObjectAnimator</h3><pre><code>PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat(&quot;x&quot;, 50f);
+PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat(&quot;y&quot;, 100f);
+ObjectAnimator.ofPropertyValuesHolder(myView, pvhX, pvyY).start();
+</code></pre><h3 id="ViewPropertyAnimator"><a href="#ViewPropertyAnimator" class="headerlink" title="ViewPropertyAnimator"></a>ViewPropertyAnimator</h3><pre><code>myView.animate().x(50f).y(100f);
+</code></pre><h2 id="在XML中声明动画"><a href="#在XML中声明动画" class="headerlink" title="在XML中声明动画"></a>在XML中声明动画</h2><p>属性动画系统支持使用XML来声明动画。通过在XML中定义动画，可以简单地在多个activity中重用动画，编辑动画顺序也更加容易。<br>为了与传统的视图动画相区分，从安卓3.1开始，应该将属性动画的XML文件存储在<code>res/animator</code>目录（而非<code>res/anim/</code>）。使用<code>animator</code>目录名并非强制的，但在使用一些插件时会更加方便。<br>下面的属性动画类通过相应的标签支持XML声明：</p>
+<ul>
+<li><code>ValueAnimator</code> <animator></animator></li>
+<li><code>ObjectAnimator</code> <objectanimator></objectanimator></li>
+<li><code>AnimatorSet</code> <set></set></li>
+</ul>
+<p>下面的例子按次序播放两套对象动画，第一套嵌套着两个同时播放的对象动画：</p>
+<pre><code>&lt;set android:ordering=&quot;sequentially&quot;&gt;
+    &lt;set&gt;
+        &lt;objectAnimator
+            android:propertyName=&quot;x&quot;
+            android:duration=&quot;500&quot;
+            android:valueTo=&quot;400&quot;
+            android:valueType=&quot;intType&quot;/&gt;
+        &lt;objectAnimator
+            android:propertyName=&quot;y&quot;
+            android:duration=&quot;500&quot;
+            android:valueTo=&quot;300&quot;
+            android:valueType=&quot;intType&quot;/&gt;
+    &lt;/set&gt;
+    &lt;objectAnimator
+        android:propertyName=&quot;alpha&quot;
+        android:duration=&quot;500&quot;
+        android:valueTo=&quot;1f&quot;/&gt;
+&lt;/set&gt;
+</code></pre><p>为了运行这个动画，必将在代码中把XML资源inflate给一个<code>AnimatorSet</code>对象，在启动动画集合之前，必须为所有对象设置目标对象。调用<code>setTarget()</code>可以方便地为<code>AnimatorSet</code>中的所有动画设置同一个目标对象。</p>
+<pre><code>AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(myContext,
+    R.anim.property_animator);
+set.setTarget(myObject);
+set.start();
+</code></pre>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Animation/" rel="tag">#Animation</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/13/Property-Animation/" rel="next" title="安卓动画学习笔记（三） 属性动画">
+                <i class="fa fa-chevron-left"></i> 安卓动画学习笔记（三） 属性动画
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/13/View-Animation/" rel="prev" title="安卓动画学习笔记（五） 视图动画">
+                安卓动画学习笔记（五） 视图动画 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">82</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#用AnimatorSet编排多个动画"><span class="nav-number">1.</span> <span class="nav-text">用AnimatorSet编排多个动画</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动画侦听器"><span class="nav-number">2.</span> <span class="nav-text">动画侦听器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ViewGroup的布局变化动画"><span class="nav-number">3.</span> <span class="nav-text">ViewGroup的布局变化动画</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用TypeEvaluator"><span class="nav-number">4.</span> <span class="nav-text">使用TypeEvaluator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Interpolator"><span class="nav-number">5.</span> <span class="nav-text">使用Interpolator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指定关键帧"><span class="nav-number">6.</span> <span class="nav-text">指定关键帧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#View的动画"><span class="nav-number">7.</span> <span class="nav-text">View的动画</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用ViewPropertyAnimator"><span class="nav-number">8.</span> <span class="nav-text">使用ViewPropertyAnimator</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#多个ObjectAnimator对象"><span class="nav-number">8.1.</span> <span class="nav-text">多个ObjectAnimator对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单个ObjectAnimator"><span class="nav-number">8.2.</span> <span class="nav-text">单个ObjectAnimator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ViewPropertyAnimator"><span class="nav-number">8.3.</span> <span class="nav-text">ViewPropertyAnimator</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在XML中声明动画"><span class="nav-number">9.</span> <span class="nav-text">在XML中声明动画</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

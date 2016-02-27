@@ -1,0 +1,817 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Camera," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="在应用中可能会用到拍摄照片的功能，而这部分功能在整个应用中可能只是一小部分，所以开发时没有必要花精力去处理到底如何拍照。幸运的是，可以使用安卓设备中的其他相机应用来帮你处理。
+要求相机权限如果拍照时应用的核心内容，那么需要限制安装应用的手机必须有相机。在manifest中可以如下处理：
+&amp;lt;manifest ... &amp;gt;
+    &amp;lt;uses-feature android:name=">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓拍摄和保存照片">
+<meta property="og:url" content="http://yoursite.com/2015/09/23/Taking-Photos-Simply/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="在应用中可能会用到拍摄照片的功能，而这部分功能在整个应用中可能只是一小部分，所以开发时没有必要花精力去处理到底如何拍照。幸运的是，可以使用安卓设备中的其他相机应用来帮你处理。
+要求相机权限如果拍照时应用的核心内容，那么需要限制安装应用的手机必须有相机。在manifest中可以如下处理：
+&amp;lt;manifest ... &amp;gt;
+    &amp;lt;uses-feature android:name=">
+<meta property="og:updated_time" content="2015-09-23T13:19:49.144Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="安卓拍摄和保存照片">
+<meta name="twitter:description" content="在应用中可能会用到拍摄照片的功能，而这部分功能在整个应用中可能只是一小部分，所以开发时没有必要花精力去处理到底如何拍照。幸运的是，可以使用安卓设备中的其他相机应用来帮你处理。
+要求相机权限如果拍照时应用的核心内容，那么需要限制安装应用的手机必须有相机。在manifest中可以如下处理：
+&amp;lt;manifest ... &amp;gt;
+    &amp;lt;uses-feature android:name=">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 安卓拍摄和保存照片 | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                安卓拍摄和保存照片
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-23T19:58:10+08:00" content="2015-09-23">
+              2015-09-23
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在应用中可能会用到拍摄照片的功能，而这部分功能在整个应用中可能只是一小部分，所以开发时没有必要花精力去处理到底如何拍照。幸运的是，可以使用安卓设备中的其他相机应用来帮你处理。</p>
+<h2 id="要求相机权限"><a href="#要求相机权限" class="headerlink" title="要求相机权限"></a>要求相机权限</h2><p>如果拍照时应用的核心内容，那么需要限制安装应用的手机必须有相机。在manifest中可以如下处理：</p>
+<pre><code>&lt;manifest ... &gt;
+    &lt;uses-feature android:name=&quot;android.hardware.camera&quot;
+                  android:required=&quot;true&quot; /&gt;
+    ...
+&lt;/manifest&gt;
+</code></pre><a id="more"></a>
+<p>如果应用使用，但是不要求必须拥有相机，可以设置<code>android:required</code>为<code>false</code>。这样即使没有相机也可以使用应用，而在运行时可以通过调用<code>hasSystemFeature(PackageManager.FEATURE_CAMERA)</code>方法来检查是否可以使用相机。</p>
+<h2 id="使用相机应用拍摄照片"><a href="#使用相机应用拍摄照片" class="headerlink" title="使用相机应用拍摄照片"></a>使用相机应用拍摄照片</h2><p>安卓借助一个描述行为意图的<code>Intent</code>，将行为委托给其他的应用。整个过程中有三个部分：<code>Intent</code>自身，打开外部<code>Activity</code>，回到activity时的处理。</p>
+<pre><code>static final int REQUEST_IMAGE_CAPTURE = 1;
+
+private void dispatchTakePictureIntent() {
+    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+    }
+}
+</code></pre><p>注意<code>startActivityForResult()</code>方法由<code>resolveActivity()</code>所进行的条件检查进行保护，后者返回第一个可以处理intent的activity组件。这里的检查非常重要，因为如果没有应用可以处理intent，自己的应用将会崩溃。所以只要返回值非null，就能够安全地使用intent。</p>
+<h2 id="获取缩略图"><a href="#获取缩略图" class="headerlink" title="获取缩略图"></a>获取缩略图</h2><p>如果应用要做的不仅仅是拍摄照片，可能会需要从相机应用中取回图片，进行处理。<br>安卓相机应用将照片编码成<code>Bitmap</code>放到<code>Intent</code>中传递给<code>onActivityResult()</code>方法。照片被放在<code>Intent</code>的extras中，其key为<code>&quot;data&quot;</code>。下面的代码取回图片并显示：</p>
+<pre><code>@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == REQUEST_IMAGE_CAPTURE &amp;&amp; resultCode == RESULT_OK) {
+        Bundle extras = data.getExtras();
+        Bitmap imageBitmap = (Bitmap) extras.get(&quot;data&quot;);
+        mImageView.setImageBitmap(imageBitmap);
+    }
+}
+</code></pre><blockquote>
+<p>注意：从<code>&quot;data&quot;</code>中取回的缩略图，可能仅仅适合作为图标使用。处理全尺寸的图片需要更多的工作。</p>
+</blockquote>
+<h2 id="保存全尺寸照片"><a href="#保存全尺寸照片" class="headerlink" title="保存全尺寸照片"></a>保存全尺寸照片</h2><p>如果给安卓相机应用一个文件去存储，那么它将保存完整尺寸的照片。必须提供一个完整的文件名来了告诉相机应用在哪保存照片。<br>一般，任何用户用相机拍摄的照片，都应该存在设备的公共外部存储中，这样可以使所有应用都可以访问。存储共享的照片的合适路径由<code>getExternalStoragePublicDirectory()</code>和<code>DIRECTORY_PICTURES</code>参数提供。因为这个目录由所有应用共享，读写时分别需要<code>READ_EXTERNAL_STORAGE</code>和<code>WRITE_EXTERNAL_STORAGE</code>权限。写权限隐含了读取权限，所以只需要请求写权限就可以了。</p>
+<pre><code>&lt;manifest ...&gt;
+    &lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot; /&gt;
+    ...
+&lt;/manifest&gt;
+</code></pre><p>然而，如果希望想保持照片为应用私有，可以使用<code>getExternalFilesDir()</code>方法提供的目录。安卓4.3及以下版本，写进这个目录需要提供写权限。之后的版本则不需要，因为目录不会被其他应用访问。添加<code>maxSdkVersion</code>，就可以仅仅在低版本中请求写权限。</p>
+<pre><code>&lt;manifest ...&gt;
+    &lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot;
+                     android:maxSdkVersion=&quot;18&quot; /&gt;
+    ...
+&lt;/manifest&gt;
+</code></pre><blockquote>
+<p>注意：写进这个目录的文件会在用户卸载时删除。</p>
+</blockquote>
+<p>一旦决定了存储文件的目录，就需要创建一个不冲突的文件名。另外也可能需要就路径放在成员变量中以便以后使用。下面是一个使用日期时间戳为新照片获得一个独一无二的用户名的方法：</p>
+<pre><code>String mCurrentPhotoPath;
+
+private File createImageFile() throws IOException {
+    // Create an image file name
+    String timeStamp = new SimpleDateFormat(&quot;yyyyMMdd_HHmmss&quot;).format(new Date());
+    String imageFileName = &quot;JPEG_&quot; + timeStamp + &quot;_&quot;;
+    File storageDir = Environment.getExternalStoragePublicDirectory(
+            Environment.DIRECTORY_PICTURES);
+    File image = File.createTempFile(
+        imageFileName,  /* prefix */
+        &quot;.jpg&quot;,         /* suffix */
+        storageDir      /* directory */
+    );
+
+    // Save a file: path for use with ACTION_VIEW intents
+    mCurrentPhotoPath = &quot;file:&quot; + image.getAbsolutePath();
+    return image;
+}
+</code></pre><p>使用这个方法就可以为相片创建一个文件，现在可以这样创建和使用<code>Intent</code>：</p>
+<pre><code>static final int REQUEST_TAKE_PHOTO = 1;
+
+private void dispatchTakePictureIntent() {
+    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    // Ensure that there&apos;s a camera activity to handle the intent
+    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+        // Create the File where the photo should go
+        File photoFile = null;
+        try {
+            photoFile = createImageFile();
+        } catch (IOException ex) {
+            // Error occurred while creating the File
+            ...
+        }
+        // Continue only if the File was successfully created
+        if (photoFile != null) {
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                    Uri.fromFile(photoFile));
+            startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+        }
+    }
+}
+</code></pre><h2 id="添加照片至相册"><a href="#添加照片至相册" class="headerlink" title="添加照片至相册"></a>添加照片至相册</h2><p>通过intent创造的照片，其存储地址是已知的，因为一开始就确定了存储的位置。但对用户来说，访问照片的最简单的方式是让照片可以通过系统的Media Provider访问。</p>
+<blockquote>
+<p>注意：如果使用<code>getExternalFilesDir()</code>目录，媒体扫描器将无法访问文件，因为他们是应用私有的。</p>
+</blockquote>
+<p>下面的例子展示了如何调用系统的媒体扫描器来把照片添加到Media Provider的数据库，并呈现在安卓的媒体库应用和其它应用中。</p>
+<pre><code>private void galleryAddPic() {
+    Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+    File f = new File(mCurrentPhotoPath);
+    Uri contentUri = Uri.fromFile(f);
+    mediaScanIntent.setData(contentUri);
+    this.sendBroadcast(mediaScanIntent);
+}
+</code></pre><h2 id="解码压缩后的图片"><a href="#解码压缩后的图片" class="headerlink" title="解码压缩后的图片"></a>解码压缩后的图片</h2><p>在有限的内存中管理全尺寸的图片很可能出现问题。如果在显示了仅仅几张图片之后就发现应用耗尽内存，就应该将JPEG压缩到目标view匹配的大小后再展开至内存中，以大量减少动态堆的使用。</p>
+<pre><code>private void setPic() {
+    // Get the dimensions of the View
+    int targetW = mImageView.getWidth();
+    int targetH = mImageView.getHeight();
+
+    // Get the dimensions of the bitmap
+    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+    bmOptions.inJustDecodeBounds = true;
+    BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+    int photoW = bmOptions.outWidth;
+    int photoH = bmOptions.outHeight;
+
+    // Determine how much to scale down the image
+    int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+    // Decode the image file into a Bitmap sized to fill the View
+    bmOptions.inJustDecodeBounds = false;
+    bmOptions.inSampleSize = scaleFactor;
+    bmOptions.inPurgeable = true;
+
+    Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+    mImageView.setImageBitmap(bitmap);
+}
+</code></pre><h2 id="手动存储图片"><a href="#手动存储图片" class="headerlink" title="手动存储图片"></a>手动存储图片</h2><p>上面存储图片的例子是使用<code>Intent</code>来自动处理的，那么怎么收到存储一个图片呢？<br>使用<code>MediaStore</code>就可以了：</p>
+<pre><code>MediaStore.Images.Media.insertImage(ContentResolver cr, Bitmap source, String title, String description)
+</code></pre><p>这个方法可以将图片存到默认路径下，那么如果想将图片存到其他路径，或者进行压缩处理呢？</p>
+<pre><code>try {
+    file = createImageFile();
+    Bitmap bitmap = getBitmap();
+    FileOutputStream os = new FileOutputStream(file);
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+    os.close();
+    MediaStore.Images.Media.insertImage(getContentResolver(),file.getAbsolutePath(),file.getName(),file.getName());
+} catch (IOException e) {
+    e.printStackTrace();
+    Toast.makeText(getActivity(), &quot;failed to save the image&quot;, Toast.LENGTH_SHORT).show();
+}
+</code></pre><p>使用重载的<code>insertImage()</code>方法就可以将图片存至其他指定路径了。</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Camera/" rel="tag">#Camera</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/23/wrong-use-of-application/" rel="next" title="继承Application类的误区">
+                <i class="fa fa-chevron-left"></i> 继承Application类的误区
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/23/Generalized-Target-Type-Inference/" rel="prev" title="Java 8泛型方法的自动推导">
+                Java 8泛型方法的自动推导 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">82</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#要求相机权限"><span class="nav-number">1.</span> <span class="nav-text">要求相机权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用相机应用拍摄照片"><span class="nav-number">2.</span> <span class="nav-text">使用相机应用拍摄照片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取缩略图"><span class="nav-number">3.</span> <span class="nav-text">获取缩略图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#保存全尺寸照片"><span class="nav-number">4.</span> <span class="nav-text">保存全尺寸照片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加照片至相册"><span class="nav-number">5.</span> <span class="nav-text">添加照片至相册</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解码压缩后的图片"><span class="nav-number">6.</span> <span class="nav-text">解码压缩后的图片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#手动存储图片"><span class="nav-number">7.</span> <span class="nav-text">手动存储图片</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>
