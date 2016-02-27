@@ -2,16 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/2016/02/27/testing/</loc>
+    <loc>http://yoursite.com/2015/10/11/Saving-Data-in-SQL-Databases/</loc>
     
-    <lastmod>2016-02-27T03:04:19.824Z</lastmod>
+    <lastmod>2016-02-27T08:15:06.105Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/13/review-loaders-2/</loc>
+    
+    <lastmod>2016-02-27T07:41:24.134Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://yoursite.com/2016/02/27/resetting-hexo/</loc>
     
-    <lastmod>2016-02-27T02:49:22.287Z</lastmod>
+    <lastmod>2016-02-27T03:22:09.615Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/27/testing/</loc>
+    
+    <lastmod>2016-02-27T03:04:19.824Z</lastmod>
     
   </url>
   
@@ -93,13 +107,6 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2015/10/11/Saving-Data-in-SQL-Databases/</loc>
-    
-    <lastmod>2016-02-16T11:29:14.989Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://yoursite.com/2015/11/16/notes-about-ContentProviders/</loc>
     
     <lastmod>2016-02-16T11:27:07.717Z</lastmod>
@@ -152,13 +159,6 @@
     <loc>http://yoursite.com/2016/02/13/review-loaders/</loc>
     
     <lastmod>2016-02-14T17:11:12.388Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2016/02/13/review-loaders-2/</loc>
-    
-    <lastmod>2016-02-14T17:10:42.419Z</lastmod>
     
   </url>
   

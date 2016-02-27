@@ -67,7 +67,7 @@
 <meta property="og:site_name" content="Welcome to SPHIA">
 <meta property="og:description" content="过去在安卓3.0前，很多应用经常出现无法响应的bug。最主要的原因，便是在UI线程执行查询或加载数据。虽然文档一直强调即使回馈的重要性，之前的API并不鼓励这样的行为。过去通常使用activity的方法以管理Cursor。而且这些方法在UI线程中操作，并不跨越配置变更。
 理解LoaderManagerLoaderManager的一些事件会有activity或fragment的生命周期事件触发。比如">
-<meta property="og:updated_time" content="2016-02-14T17:10:42.419Z">
+<meta property="og:updated_time" content="2016-02-27T07:41:24.134Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="重探Loader（二）">
 <meta name="twitter:description" content="过去在安卓3.0前，很多应用经常出现无法响应的bug。最主要的原因，便是在UI线程执行查询或加载数据。虽然文档一直强调即使回馈的重要性，之前的API并不鼓励这样的行为。过去通常使用activity的方法以管理Cursor。而且这些方法在UI线程中操作，并不跨越配置变更。
@@ -281,141 +281,7 @@
 <li>一个接收数据变化通知的观测者。Loader应该实现某种观测者，比如<code>BroadcastReceiver</code>等等，来监视数据源的变化。一旦侦测到变化，观测者应该调用<code>Loader#onContentChanged()</code>方法，如果Loader处在启动状态，强制进行一次新的加载；否则产生一个flag来表示有新的变化，这样一旦Loader再次启动就会重新载入数据。</li>
 </ol>
 <h1 id="实现Loader"><a href="#实现Loader" class="headerlink" title="实现Loader"></a>实现Loader</h1><p>在实现自己的Loader时，有很多问题必须谨记。子类必须实现<code>loadInBackground()</code>方法并重写<code>onStartLoading()</code>, <code>onStopLoading()</code>, <code>onReset()</code>, <code>onCanceled()</code>, and <code>deliverResult(D results)</code>来实现一个完全工作的Loader。重写这些方法非常重要，因为LoaderManager会根据activity或fragment的状态来调用他们。比如，启动activity后，会在<code>activity#onStart()</code>方法中告知LoaderManager启动所有Loader。如果Loader未被启动，LoaderManager调用<code>startLoading()</code>，使得Loader进入启动状态，并立即调用其<code>onStartLoading()</code>方法。</p>
-<pre><code>public CursorLoaderass SampleLoader extends AsyncTaskLoader&lt;List&lt;SampleItem&gt;&gt; {
-
-  // 在这里保持Loader数据的引用
-  private List&lt;SampleItem&gt; mData;
-
-  public SampleLoader(Context ctx) {
-    // Loader可以跨越多个activity使用（假如没有绑定到LoaderManager），所以不要直接保持context的引用。
-    // 这会导致泄露整个activity的context。父类的构造器会存储一个Application Context的引用
-    // 可以通过getContext()方法获取
-    super(ctx);
-  }
-
-  /****************************************************/
-  /** (1) 执行异步加载的任务 **/
-  /****************************************************/
-
-  @Override
-  public List&lt;SampleItem&gt; loadInBackground() {
-    // 该方法在后台线程创建并产生新的数据的集合，传送给客户端
-    List&lt;SampleItem&gt; data = new ArrayList&lt;SampleItem&gt;();
-
-    // TODO: 在这里执行查询，并将结果添加至data
-
-    return data;
-  }
-
-  /********************************************************/
-  /** (2) 将结果传送给注册的侦听器 **/
-  /********************************************************/
-
-  @Override
-  public void deliverResult(List&lt;SampleItem&gt; data) {
-    if (isReset()) {
-      // Loader已被复位; 无视结果，并将数据无效化.
-      releaseResources(data);
-      return;
-    }
-
-    // 保持旧数据的引用，使之不被gc回收。
-    // 保护它直到新数据被送达.
-    List&lt;SampleItem&gt; oLoaderData = mData;
-    mData = data;
-
-    if (isStarted()) {
-      // 若Loader已启动，传送结果至客户端。父类方法会实现具体的操作。
-      super.deliverResult(data);
-    }
-
-    // 将已经不需要的旧数据无效化.
-    if (oLoaderData != null &amp;&amp; oLoaderData != data) {
-      releaseResources(oLoaderData);
-    }
-  }
-
-  /*********************************************************/
-  /** (3) 实现Loader状态依赖的行为 **/
-  /*********************************************************/
-
-  @Override
-  protected void onStartLoading() {
-    if (mData != null) {
-      // 立即传送先前载入的数据.
-      deliverResult(mData);
-    }
-
-    // 监视数据源.
-    if (mObserver == null) {
-      mObserver = new SampleObserver();
-      // TODO: 注册观测者
-    }
-
-    if (takeContentChanged() || mData == null) {
-      // 观测者发现变化后，应调用loader的onContentChanged()
-      // 后者会造成下次调用takeContentChanged()返回true
-      // 这种情况下（或当前数据为null），会强制一次新的加载
-      forceLoad();
-    }
-  }
-
-  @Override
-  protected void onStopLoading() {
-    // 在停止状态下，应该试着取消当前的载入（如果有的话）
-    cancelLoad();
-
-    // 注意我们没有变更观测者. 停止状态下的Loaders仍然应该监视数据源的变化
-    // 这样Loader再次启动后会知道是否需要强制进行新的加载
-  }
-
-  @Override
-  protected void onReset() {
-    // 确保loader已被停止.
-    onStopLoading();
-
-    // 这里我们可以释放与&apos;mData&apos;关联的资源.
-    if (mData != null) {
-      releaseResources(mData);
-      mData = null;
-    }
-
-    // 如果loader正在被复位，应该停止监视数据变化.
-    if (mObserver != null) {
-      // TODO: 注销观测者
-      mObserver = null;
-    }
-  }
-
-  @Override
-  public void onCanceled(List&lt;SampleItem&gt; data) {
-    // 试着取消当前的异步加载.
-    super.onCanceled(data);
-
-    // 加载已取消，应该释放&apos;data&apos;相关的资源
-    releaseResources(data);
-  }
-
-  private void releaseResources(List&lt;SampleItem&gt; data) {
-    // 对简单的列表，不需要做任何事。对Cursor，应该在这里进行关闭。所有Loader相关的资源
-    // 应该在这里释放
-  }
-
-  /*********************************************************************/
-  /** (4) 接收数据变化通知的观测者 **/
-  /*********************************************************************/
-
-  // NOTE: Implementing an observer is outside the scope of this post (this example
-  // uses a made-up &quot;SampleObserver&quot; to illustrate when/where the observer shouLoader 
-  // be initialized). 
-
-  // 观测者只需要能够探测到数据源的变化并通过调用onContentChanged()报告给Loader
-  // 如果在写载入设备上所有应用的列表的Loader的话，观测者应该是一个侦听
-  // ACTION_PACKAGE_ADDED intent的BroadcastReceiver，并且探测到新应用安装时，
-  // 调用特定Loader的onContentChanged() 方法
-
-  private SampleObserver mObserver;
-}
+<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SampleLoader</span> <span class="keyword">extends</span> <span class="title">AsyncTaskLoader</span>&lt;<span class="title">List</span>&lt;<span class="title">SampleItem</span>&gt;&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 在这里保持Loader数据的引用</span></span><br><span class="line">  <span class="keyword">private</span> List&lt;SampleItem&gt; mData;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">SampleLoader</span><span class="params">(Context ctx)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Loader可以跨越多个activity使用（假如没有绑定到LoaderManager），所以不要直接保持context的引用。</span></span><br><span class="line">    <span class="comment">// 这会导致泄露整个activity的context。父类的构造器会存储一个Application Context的引用</span></span><br><span class="line">    <span class="comment">// 可以通过getContext()方法获取</span></span><br><span class="line">    <span class="keyword">super</span>(ctx);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/****************************************************/</span></span><br><span class="line">  <span class="comment">/** (1) 执行异步加载的任务 **/</span></span><br><span class="line">  <span class="comment">/****************************************************/</span></span><br><span class="line"></span><br><span class="line">  <span class="annotation">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> List&lt;SampleItem&gt; <span class="title">loadInBackground</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 该方法在后台线程创建并产生新的数据的集合，传送给客户端</span></span><br><span class="line">    List&lt;SampleItem&gt; data = <span class="keyword">new</span> ArrayList&lt;SampleItem&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// <span class="doctag">TODO:</span> 在这里执行查询，并将结果添加至data</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> data;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/********************************************************/</span></span><br><span class="line">  <span class="comment">/** (2) 将结果传送给注册的侦听器 **/</span></span><br><span class="line">  <span class="comment">/********************************************************/</span></span><br><span class="line"></span><br><span class="line">  <span class="annotation">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deliverResult</span><span class="params">(List&lt;SampleItem&gt; data)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (isReset()) &#123;</span><br><span class="line">      <span class="comment">// Loader已被复位; 无视结果，并将数据无效化.</span></span><br><span class="line">      releaseResources(data);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 保持旧数据的引用，使之不被gc回收。</span></span><br><span class="line">    <span class="comment">// 保护它直到新数据被送达.</span></span><br><span class="line">    List&lt;SampleItem&gt; oLoaderData = mData;</span><br><span class="line">    mData = data;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (isStarted()) &#123;</span><br><span class="line">      <span class="comment">// 若Loader已启动，传送结果至客户端。父类方法会实现具体的操作。</span></span><br><span class="line">      <span class="keyword">super</span>.deliverResult(data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将已经不需要的旧数据无效化.</span></span><br><span class="line">    <span class="keyword">if</span> (oLoaderData != <span class="keyword">null</span> &amp;&amp; oLoaderData != data) &#123;</span><br><span class="line">      releaseResources(oLoaderData);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*********************************************************/</span></span><br><span class="line">  <span class="comment">/** (3) 实现Loader状态依赖的行为 **/</span></span><br><span class="line">  <span class="comment">/*********************************************************/</span></span><br><span class="line"></span><br><span class="line">  <span class="annotation">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onStartLoading</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mData != <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="comment">// 立即传送先前载入的数据.</span></span><br><span class="line">      deliverResult(mData);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 监视数据源.</span></span><br><span class="line">    <span class="keyword">if</span> (mObserver == <span class="keyword">null</span>) &#123;</span><br><span class="line">      mObserver = <span class="keyword">new</span> SampleObserver();</span><br><span class="line">      <span class="comment">// <span class="doctag">TODO:</span> 注册观测者</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (takeContentChanged() || mData == <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="comment">// 观测者发现变化后，应调用loader的onContentChanged()</span></span><br><span class="line">      <span class="comment">// 后者会造成下次调用takeContentChanged()返回true</span></span><br><span class="line">      <span class="comment">// 这种情况下（或当前数据为null），会强制一次新的加载</span></span><br><span class="line">      forceLoad();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="annotation">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onStopLoading</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 在停止状态下，应该试着取消当前的载入（如果有的话）</span></span><br><span class="line">    cancelLoad();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 注意我们没有变更观测者. 停止状态下的Loaders仍然应该监视数据源的变化</span></span><br><span class="line">    <span class="comment">// 这样Loader再次启动后会知道是否需要强制进行新的加载</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="annotation">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onReset</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 确保loader已被停止.</span></span><br><span class="line">    onStopLoading();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这里我们可以释放与'mData'关联的资源.</span></span><br><span class="line">    <span class="keyword">if</span> (mData != <span class="keyword">null</span>) &#123;</span><br><span class="line">      releaseResources(mData);</span><br><span class="line">      mData = <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果loader正在被复位，应该停止监视数据变化.</span></span><br><span class="line">    <span class="keyword">if</span> (mObserver != <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="comment">// <span class="doctag">TODO:</span> 注销观测者</span></span><br><span class="line">      mObserver = <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="annotation">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCanceled</span><span class="params">(List&lt;SampleItem&gt; data)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 试着取消当前的异步加载.</span></span><br><span class="line">    <span class="keyword">super</span>.onCanceled(data);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 加载已取消，应该释放'data'相关的资源</span></span><br><span class="line">    releaseResources(data);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">releaseResources</span><span class="params">(List&lt;SampleItem&gt; data)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 对简单的列表，不需要做任何事。对Cursor，应该在这里进行关闭。所有Loader相关的资源</span></span><br><span class="line">    <span class="comment">// 应该在这里释放</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*********************************************************************/</span></span><br><span class="line">  <span class="comment">/** (4) 接收数据变化通知的观测者 **/</span></span><br><span class="line">  <span class="comment">/*********************************************************************/</span></span><br><span class="line"> </span><br><span class="line">  <span class="comment">// <span class="doctag">NOTE:</span> Implementing an observer is outside the scope of this post (this example</span></span><br><span class="line">  <span class="comment">// uses a made-up "SampleObserver" to illustrate when/where the observer shouLoader </span></span><br><span class="line">  <span class="comment">// be initialized). </span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 观测者只需要能够探测到数据源的变化并通过调用onContentChanged()报告给Loader</span></span><br><span class="line">  <span class="comment">// 如果在写载入设备上所有应用的列表的Loader的话，观测者应该是一个侦听</span></span><br><span class="line">  <span class="comment">// ACTION_PACKAGE_ADDED intent的BroadcastReceiver，并且探测到新应用安装时，</span></span><br><span class="line">  <span class="comment">// 调用特定Loader的onContentChanged() 方法</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> SampleObserver mObserver;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </code></pre>
       
     </div>
@@ -523,7 +389,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

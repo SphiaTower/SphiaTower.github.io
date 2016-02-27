@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Hexo," />
 
 
 
@@ -59,16 +59,16 @@
 
 
 
-<meta name="description">
+<meta name="description" content="Today I spent an entire morning fixing a bug of hexo. However, I failed to fix it and leaving my blog unable to update. After trying various solutions, I decided to reconstruct my blog. Now I will rec">
 <meta property="og:type" content="article">
-<meta property="og:title" content="resetting hexo">
+<meta property="og:title" content="Procedures of Restoring My Blog with Hexo">
 <meta property="og:url" content="http://yoursite.com/2016/02/27/resetting-hexo/index.html">
 <meta property="og:site_name" content="Welcome to SPHIA">
-<meta property="og:description">
-<meta property="og:updated_time" content="2016-02-27T02:49:22.287Z">
+<meta property="og:description" content="Today I spent an entire morning fixing a bug of hexo. However, I failed to fix it and leaving my blog unable to update. After trying various solutions, I decided to reconstruct my blog. Now I will rec">
+<meta property="og:updated_time" content="2016-02-27T03:22:09.615Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="resetting hexo">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Procedures of Restoring My Blog with Hexo">
+<meta name="twitter:description" content="Today I spent an entire morning fixing a bug of hexo. However, I failed to fix it and leaving my blog unable to update. After trying various solutions, I decided to reconstruct my blog. Now I will rec">
 
 
 
@@ -86,7 +86,7 @@
   };
 </script>
 
-  <title> resetting hexo | Welcome to SPHIA </title>
+  <title> Procedures of Restoring My Blog with Hexo | Welcome to SPHIA </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -216,7 +216,7 @@
             
             
               
-                resetting hexo
+                Procedures of Restoring My Blog with Hexo
               
             
           </h1>
@@ -254,11 +254,41 @@
       
 
       
-        
+        <p>Today I spent an entire morning fixing a bug of hexo. However, I failed to fix it and leaving my blog unable to update. After trying various solutions, I decided to reconstruct my blog. Now I will record the process of resetting my blog.</p>
+<h1 id="Initialize-Hexo"><a href="#Initialize-Hexo" class="headerlink" title="Initialize Hexo"></a>Initialize Hexo</h1><p>First, delete the old repo in Github, and re-init a hexo directory:</p>
+<pre><code>hexo init my-hexo-website
+
+cd my-hexo-website
+npm install
+</code></pre><h1 id="Configure-Git"><a href="#Configure-Git" class="headerlink" title="Configure Git"></a>Configure Git</h1><p>Inside your hexo-website folder, use the command</p>
+<pre><code>git init 
+</code></pre><a id="more"></a>
+<p>Add the important files to Git and then commit those files as the first change:</p>
+<pre><code>git add _config.yml packages.json .gitignore scaffolds/*.md 
+git commit -m &quot;Adding a new Hexo website&quot;
+</code></pre><h1 id="Create-a-Repository-on-Github"><a href="#Create-a-Repository-on-Github" class="headerlink" title="Create a Repository on Github"></a>Create a Repository on Github</h1><p>Sign into your account on Github and create a new repository.</p>
+<p>Choose SSH in quick setup.</p>
+<p>Add this new repository to your local git repository</p>
+<pre><code>git remote add origin git@github.com:sphiatower/sphiatower.github.io.git
+</code></pre><p>Then I copied all articles and themes back to my new directory. However I got an error when deploying:</p>
+<pre><code>deployer not found github
+</code></pre><p>This solution is changing <code>type: github</code> into <code>type: git</code></p>
+<pre><code>deploy:
+  type: git
+  repository: https://github.com/username/username.github.com.git
+  branch: master
+</code></pre><p>Finally, my blog managed to work as before.</p>
+
       
     </div>
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Hexo/" rel="tag">#Hexo</a>
+          
+        </div>
       
 
       
@@ -353,7 +383,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -393,7 +423,7 @@
               
             
             
-              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Initialize-Hexo"><span class="nav-number">1.</span> <span class="nav-text">Initialize Hexo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Configure-Git"><span class="nav-number">2.</span> <span class="nav-text">Configure Git</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Create-a-Repository-on-Github"><span class="nav-number">3.</span> <span class="nav-text">Create a Repository on Github</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

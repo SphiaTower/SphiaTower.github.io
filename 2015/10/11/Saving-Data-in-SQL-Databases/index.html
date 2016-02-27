@@ -67,7 +67,7 @@
 <meta property="og:site_name" content="Welcome to SPHIA">
 <meta property="og:description" content="重复性或结构化的数据时候存入数据库中，比如联系人信息。
 定义Schema和ContractSchema是SQL数据库的主要原则之一：数据库如何组织的正式声明。Schema表现在创建数据库时使用的SQL语句。它可以帮助创建一个contract类，后者用一种系统的，自记录的方式显式地指明schema的布局。">
-<meta property="og:updated_time" content="2016-02-16T11:29:14.989Z">
+<meta property="og:updated_time" content="2016-02-27T08:15:06.105Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="安卓SQL数据库总结">
 <meta name="twitter:description" content="重复性或结构化的数据时候存入数据库中，比如联系人信息。
@@ -264,133 +264,30 @@
 <p><strong>注意：</strong>通过实现<code>BaseColumns</code>接口，内部类将继承一个主键域<code>_ID</code>，一些安卓类如cursor adaptor会需要这个主键。它并非必需的，但可以帮助数据库与安卓框架协同工作。</p>
 </blockquote>
 <p>下面的片段定义了一张表的表名和列名：</p>
-<pre><code>public final class FeedReaderContract {
-    // To prevent someone from accidentally instantiating the contract class,
-    // give it an empty constructor.
-    public FeedReaderContract() {}
-
-    /* Inner class that defines the table contents */
-    public static abstract class FeedEntry implements BaseColumns {
-        public static final String TABLE_NAME = &quot;entry&quot;;
-        public static final String COLUMN_NAME_ENTRY_ID = &quot;entryid&quot;;
-        public static final String COLUMN_NAME_TITLE = &quot;title&quot;;
-        public static final String COLUMN_NAME_SUBTITLE = &quot;subtitle&quot;;
-        ...
-    }
-}
+<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">FeedReaderContract</span> </span>&#123;</span><br><span class="line">    <span class="comment">// To prevent someone from accidentally instantiating the contract class,</span></span><br><span class="line">    <span class="comment">// give it an empty constructor.</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FeedReaderContract</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Inner class that defines the table contents */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">FeedEntry</span> <span class="keyword">implements</span> <span class="title">BaseColumns</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String TABLE_NAME = <span class="string">"entry"</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String COLUMN_NAME_ENTRY_ID = <span class="string">"entryid"</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String COLUMN_NAME_TITLE = <span class="string">"title"</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String COLUMN_NAME_SUBTITLE = <span class="string">"subtitle"</span>;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </code></pre><h2 id="用SQL-Helper创建数据库"><a href="#用SQL-Helper创建数据库" class="headerlink" title="用SQL Helper创建数据库"></a>用SQL Helper创建数据库</h2><p>一旦定义了自己数据库的外观，接下来应该实现创造和维护数据库及表的方法。下面使一些创建和删除表的典型语句：</p>
-<pre><code>private static final String TEXT_TYPE = &quot; TEXT&quot;;
-private static final String COMMA_SEP = &quot;,&quot;;
-private static final String SQL_CREATE_ENTRIES =
-    &quot;CREATE TABLE &quot; + FeedEntry.TABLE_NAME + &quot; (&quot; +
-    FeedEntry._ID + &quot; INTEGER PRIMARY KEY,&quot; +
-    FeedEntry.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
-    FeedEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
-    ... // Any other options for the CREATE command
-    &quot; )&quot;;
-
-private static final String SQL_DELETE_ENTRIES =
-    &quot;DROP TABLE IF EXISTS &quot; + FeedEntry.TABLE_NAME;
+<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TEXT_TYPE = <span class="string">" TEXT"</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String COMMA_SEP = <span class="string">","</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String SQL_CREATE_ENTRIES =</span><br><span class="line">    <span class="string">"CREATE TABLE "</span> + FeedEntry.TABLE_NAME + <span class="string">" ("</span> +</span><br><span class="line">    FeedEntry._ID + <span class="string">" INTEGER PRIMARY KEY,"</span> +</span><br><span class="line">    FeedEntry.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +</span><br><span class="line">    FeedEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +</span><br><span class="line">    ... <span class="comment">// Any other options for the CREATE command</span></span><br><span class="line">    <span class="string">" )"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String SQL_DELETE_ENTRIES =</span><br><span class="line">    <span class="string">"DROP TABLE IF EXISTS "</span> + FeedEntry.TABLE_NAME;</span><br></pre></td></tr></table></figure>
 </code></pre><p>正如在设备的内部存储中保存的文件一样，安卓将数据库存储在应用的私有硬盘空间中。这些数据是安全的，因为默认不能被其他应用访问。</p>
 <p><code>SQLiteOpenHelper</code>中有一套有用的API。使用这个类来获得数据库的引用时，系统只在需要时执行创建和更新数据库的（可能长时间执行的）操作，而非在应用启动时。需要做的仅仅是调用<code>getWritableDatabase()</code>或者<code>getReadableDatabase()</code>。</p>
 <blockquote>
 <p><strong>注意：</strong>因为可能会长期执行，所以确保<code>getWritableDatabase()</code>或者<code>getReadableDatabase()</code>在后台线程中调用，如使用<code>AsyncTask()</code>或者<code>IntentService</code>。</p>
 </blockquote>
 <p>要使用<code>SQLiteOpenHelper</code>，创建一个子类，重写<code>onCreate()</code>, <code>onUpgrade()</code>, <code>onOpen()</code>回调方法。也可以重新<code>onDowngrade()</code>但并非必需的。</p>
-<pre><code>public class FeedReaderDbHelper extends SQLiteOpenHelper {
-    // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = &quot;FeedReader.db&quot;;
-
-    public FeedReaderDbHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_ENTRIES);
-    }
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // This database is only a cache for online data, so its upgrade policy is
-        // to simply to discard the data and start over
-        db.execSQL(SQL_DELETE_ENTRIES);
-        onCreate(db);
-    }
-    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        onUpgrade(db, oldVersion, newVersion);
-    }
-}
+<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FeedReaderDbHelper</span> <span class="keyword">extends</span> <span class="title">SQLiteOpenHelper</span> </span>&#123;</span><br><span class="line">    <span class="comment">// If you change the database schema, you must increment the database version.</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DATABASE_VERSION = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String DATABASE_NAME = <span class="string">"FeedReader.db"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FeedReaderDbHelper</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context, DATABASE_NAME, <span class="keyword">null</span>, DATABASE_VERSION);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(SQLiteDatabase db)</span> </span>&#123;</span><br><span class="line">        db.execSQL(SQL_CREATE_ENTRIES);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onUpgrade</span><span class="params">(SQLiteDatabase db, <span class="keyword">int</span> oldVersion, <span class="keyword">int</span> newVersion)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// This database is only a cache for online data, so its upgrade policy is</span></span><br><span class="line">        <span class="comment">// to simply to discard the data and start over</span></span><br><span class="line">        db.execSQL(SQL_DELETE_ENTRIES);</span><br><span class="line">        onCreate(db);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDowngrade</span><span class="params">(SQLiteDatabase db, <span class="keyword">int</span> oldVersion, <span class="keyword">int</span> newVersion)</span> </span>&#123;</span><br><span class="line">        onUpgrade(db, oldVersion, newVersion);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </code></pre><p>要访问数据库，实例化其子类：</p>
-<pre><code>FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getContext());
+<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FeedReaderDbHelper mDbHelper = <span class="keyword">new</span> FeedReaderDbHelper(getContext());</span><br></pre></td></tr></table></figure>
 </code></pre><h2 id="向数据库中添加信息"><a href="#向数据库中添加信息" class="headerlink" title="向数据库中添加信息"></a>向数据库中添加信息</h2><p>通过传送<code>ContentValues</code>到<code>insert()</code>方法向数据库中插入数据：</p>
-<pre><code>// Gets the data repository in write mode
-SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
-// Create a new map of values, where column names are the keys
-ContentValues values = new ContentValues();
-values.put(FeedEntry.COLUMN_NAME_ENTRY_ID, id);
-values.put(FeedEntry.COLUMN_NAME_TITLE, title);
-values.put(FeedEntry.COLUMN_NAME_CONTENT, content);
-
-// Insert the new row, returning the primary key value of the new row
-long newRowId;
-newRowId = db.insert(
-         FeedEntry.TABLE_NAME,
-         FeedEntry.COLUMN_NAME_NULLABLE,
-         values);
+<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Gets the data repository in write mode</span></span><br><span class="line">SQLiteDatabase db = mDbHelper.getWritableDatabase();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create a new map of values, where column names are the keys</span></span><br><span class="line">ContentValues values = <span class="keyword">new</span> ContentValues();</span><br><span class="line">values.put(FeedEntry.COLUMN_NAME_ENTRY_ID, id);</span><br><span class="line">values.put(FeedEntry.COLUMN_NAME_TITLE, title);</span><br><span class="line">values.put(FeedEntry.COLUMN_NAME_CONTENT, content);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Insert the new row, returning the primary key value of the new row</span></span><br><span class="line"><span class="keyword">long</span> newRowId;</span><br><span class="line">newRowId = db.insert(</span><br><span class="line">         FeedEntry.TABLE_NAME,</span><br><span class="line">         FeedEntry.COLUMN_NAME_NULLABLE,</span><br><span class="line">         values);</span><br></pre></td></tr></table></figure>
 </code></pre><p><code>insert()</code>方法的第一个参数是表名。第二个参数提供一个列的名字，当<code>ContentValues</code>为空时，框架可以插入NULL进入这个列中。如果设置为<code>&quot;null&quot;</code>，框架将不会在没有值时插入新行。</p>
 <h2 id="从数据库中读取信息"><a href="#从数据库中读取信息" class="headerlink" title="从数据库中读取信息"></a>从数据库中读取信息</h2><p>要从数据库中读取数据，使用<code>query()</code>方法，传送给你的选择标准和想要的栏。这个方法结合了<code>insert()</code>和<code>update()</code>的元素，除了将要插入的数据改为想要取回的栏。查询的结果通过一个<code>Cursor</code>对象来返回。</p>
-<pre><code>SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-// Define a projection that specifies which columns from the database
-// you will actually use after this query.
-String[] projection = {
-    FeedEntry._ID,
-    FeedEntry.COLUMN_NAME_TITLE,
-    FeedEntry.COLUMN_NAME_UPDATED,
-    ...
-    };
-
-// How you want the results sorted in the resulting Cursor
-String sortOrder =
-    FeedEntry.COLUMN_NAME_UPDATED + &quot; DESC&quot;;
-
-Cursor c = db.query(
-    FeedEntry.TABLE_NAME,  // The table to query
-    projection,                               // The columns to return
-    selection,                                // The columns for the WHERE clause
-    selectionArgs,                            // The values for the WHERE clause
-    null,                                     // don&apos;t group the rows
-    null,                                     // don&apos;t filter by row groups
-    sortOrder                                 // The sort order
-    );
+<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">SQLiteDatabase db = mDbHelper.getReadableDatabase();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Define a projection that specifies which columns from the database</span></span><br><span class="line"><span class="comment">// you will actually use after this query.</span></span><br><span class="line">String[] projection = &#123;</span><br><span class="line">    FeedEntry._ID,</span><br><span class="line">    FeedEntry.COLUMN_NAME_TITLE,</span><br><span class="line">    FeedEntry.COLUMN_NAME_UPDATED,</span><br><span class="line">    ...</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// How you want the results sorted in the resulting Cursor</span></span><br><span class="line">String sortOrder =</span><br><span class="line">    FeedEntry.COLUMN_NAME_UPDATED + <span class="string">" DESC"</span>;</span><br><span class="line"></span><br><span class="line">Cursor c = db.query(</span><br><span class="line">    FeedEntry.TABLE_NAME,  <span class="comment">// The table to query</span></span><br><span class="line">    projection,                               <span class="comment">// The columns to return</span></span><br><span class="line">    selection,                                <span class="comment">// The columns for the WHERE clause</span></span><br><span class="line">    selectionArgs,                            <span class="comment">// The values for the WHERE clause</span></span><br><span class="line">    <span class="keyword">null</span>,                                     <span class="comment">// don't group the rows</span></span><br><span class="line">    <span class="keyword">null</span>,                                     <span class="comment">// don't filter by row groups</span></span><br><span class="line">    sortOrder                                 <span class="comment">// The sort order</span></span><br><span class="line">    );</span><br></pre></td></tr></table></figure>
 </code></pre><p>使用<code>Cursor</code>中的移动方法来查看其中的行，在读取数据之前也必须调用它。一般，应该首先调用<code>moveToFirst()</code>，它将“读取位置”设置在结果中的第一个条目。对每个行而言，可以通过调用<code>Cursor</code>中的get方法来获取某一列的值，比如<code>getString</code>或<code>getLong()</code>。调用其中每个get方法，都必须传送想要的栏的索引位置。这些位置可以通过<code>getColumnIndex()</code>或者<code>getColumnIndexOrThrow()</code>来获得。</p>
-<pre><code>cursor.moveToFirst();
-long itemId = cursor.getLong(
-    cursor.getColumnIndexOrThrow(FeedEntry._ID)
-);
+<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cursor.moveToFirst();</span><br><span class="line"><span class="keyword">long</span> itemId = cursor.getLong(</span><br><span class="line">    cursor.getColumnIndexOrThrow(FeedEntry._ID)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 </code></pre><h2 id="从数据库中删除信息"><a href="#从数据库中删除信息" class="headerlink" title="从数据库中删除信息"></a>从数据库中删除信息</h2><p>要从表中删除行，需要提供识别行的选择标准。数据库的API提供了一套创建选择标准的机理来防止SQL注入。这套机理将选择指定的过程分为选择条款和选择参数两部分。选择条款定义了要查看的栏，也允许合并栏测试。选择参数是绑定到选择条款中的值。因为结果的处理与通常的SQL语句不同，所以对SQL注入免疫。</p>
-<pre><code>// Define &apos;where&apos; part of query.
-String selection = FeedEntry.COLUMN_NAME_ENTRY_ID + &quot; LIKE ?&quot;;
-// Specify arguments in placeholder order.
-String[] selectionArgs = { String.valueOf(rowId) };
-// Issue SQL statement.
-db.delete(table_name, selection, selectionArgs);
+<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Define 'where' part of query.</span></span><br><span class="line">String selection = FeedEntry.COLUMN_NAME_ENTRY_ID + <span class="string">" LIKE ?"</span>;</span><br><span class="line"><span class="comment">// Specify arguments in placeholder order.</span></span><br><span class="line">String[] selectionArgs = &#123; String.valueOf(rowId) &#125;;</span><br><span class="line"><span class="comment">// Issue SQL statement.</span></span><br><span class="line">db.delete(table_name, selection, selectionArgs);</span><br></pre></td></tr></table></figure>
 </code></pre><h2 id="更新数据库"><a href="#更新数据库" class="headerlink" title="更新数据库"></a>更新数据库</h2><p>需要修改数据库的一个子集时，使用<code>update()</code>方法。</p>
 <p>更新数据库结合了<code>insert()</code>语法和<code>delete()</code>的<code>where</code>语法。</p>
-<pre><code>SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-// New value for one column
-ContentValues values = new ContentValues();
-values.put(FeedEntry.COLUMN_NAME_TITLE, title);
-
-// Which row to update, based on the ID
-String selection = FeedEntry.COLUMN_NAME_ENTRY_ID + &quot; LIKE ?&quot;;
-String[] selectionArgs = { String.valueOf(rowId) };
-
-int count = db.update(
-    FeedReaderDbHelper.FeedEntry.TABLE_NAME,
-    values,
-    selection,
-    selectionArgs);
+<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">SQLiteDatabase db = mDbHelper.getReadableDatabase();</span><br><span class="line"></span><br><span class="line"><span class="comment">// New value for one column</span></span><br><span class="line">ContentValues values = <span class="keyword">new</span> ContentValues();</span><br><span class="line">values.put(FeedEntry.COLUMN_NAME_TITLE, title);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Which row to update, based on the ID</span></span><br><span class="line">String selection = FeedEntry.COLUMN_NAME_ENTRY_ID + <span class="string">" LIKE ?"</span>;</span><br><span class="line">String[] selectionArgs = &#123; String.valueOf(rowId) &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> count = db.update(</span><br><span class="line">    FeedReaderDbHelper.FeedEntry.TABLE_NAME,</span><br><span class="line">    values,</span><br><span class="line">    selection,</span><br><span class="line">    selectionArgs);</span><br></pre></td></tr></table></figure>
 </code></pre>
       
     </div>
@@ -500,7 +397,7 @@ int count = db.update(
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

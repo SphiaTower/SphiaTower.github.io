@@ -32,18 +32,54 @@
   </entry>
   
   <entry>
-    <title>resetting hexo</title>
+    <title>Procedures of Restoring My Blog with Hexo</title>
     <link href="http://yoursite.com/2016/02/27/resetting-hexo/"/>
     <id>http://yoursite.com/2016/02/27/resetting-hexo/</id>
     <published>2016-02-27T02:49:22.000Z</published>
-    <updated>2016-02-27T02:49:22.287Z</updated>
+    <updated>2016-02-27T03:22:09.615Z</updated>
     
-    <content type="html"></content>
+    <content type="html">&lt;p&gt;Today I spent an entire morning fixing a bug of hexo. However, I failed to fix it and leaving my blog unable to update. After trying various solutions, I decided to reconstruct my blog. Now I will record the process of resetting my blog.&lt;/p&gt;
+&lt;h1 id=&quot;Initialize-Hexo&quot;&gt;&lt;a href=&quot;#Initialize-Hexo&quot; class=&quot;headerlink&quot; title=&quot;Initialize Hexo&quot;&gt;&lt;/a&gt;Initialize Hexo&lt;/h1&gt;&lt;p&gt;First, delete the old repo in Github, and re-init a hexo directory:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;hexo init my-hexo-website
+
+cd my-hexo-website
+npm install
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&quot;Configure-Git&quot;&gt;&lt;a href=&quot;#Configure-Git&quot; class=&quot;headerlink&quot; title=&quot;Configure Git&quot;&gt;&lt;/a&gt;Configure Git&lt;/h1&gt;&lt;p&gt;Inside your hexo-website folder, use the command&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git init 
+&lt;/code&gt;&lt;/pre&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;p&gt;Add the important files to Git and then commit those files as the first change:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git add _config.yml packages.json .gitignore scaffolds/*.md 
+git commit -m &amp;quot;Adding a new Hexo website&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&quot;Create-a-Repository-on-Github&quot;&gt;&lt;a href=&quot;#Create-a-Repository-on-Github&quot; class=&quot;headerlink&quot; title=&quot;Create a Repository on Github&quot;&gt;&lt;/a&gt;Create a Repository on Github&lt;/h1&gt;&lt;p&gt;Sign into your account on Github and create a new repository.&lt;/p&gt;
+&lt;p&gt;Choose SSH in quick setup.&lt;/p&gt;
+&lt;p&gt;Add this new repository to your local git repository&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git remote add origin git@github.com:sphiatower/sphiatower.github.io.git
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Then I copied all articles and themes back to my new directory. However I got an error when deploying:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;deployer not found github
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This solution is changing &lt;code&gt;type: github&lt;/code&gt; into &lt;code&gt;type: git&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;deploy:
+  type: git
+  repository: https://github.com/username/username.github.com.git
+  branch: master
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Finally, my blog managed to work as before.&lt;/p&gt;
+</content>
     
     <summary type="html">
     
+      &lt;p&gt;Today I spent an entire morning fixing a bug of hexo. However, I failed to fix it and leaving my blog unable to update. After trying various solutions, I decided to reconstruct my blog. Now I will record the process of resetting my blog.&lt;/p&gt;
+&lt;h1 id=&quot;Initialize-Hexo&quot;&gt;&lt;a href=&quot;#Initialize-Hexo&quot; class=&quot;headerlink&quot; title=&quot;Initialize Hexo&quot;&gt;&lt;/a&gt;Initialize Hexo&lt;/h1&gt;&lt;p&gt;First, delete the old repo in Github, and re-init a hexo directory:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;hexo init my-hexo-website
+
+cd my-hexo-website
+npm install
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&quot;Configure-Git&quot;&gt;&lt;a href=&quot;#Configure-Git&quot; class=&quot;headerlink&quot; title=&quot;Configure Git&quot;&gt;&lt;/a&gt;Configure Git&lt;/h1&gt;&lt;p&gt;Inside your hexo-website folder, use the command&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git init 
+&lt;/code&gt;&lt;/pre&gt;
+    
     </summary>
     
+    
+      <category term="Hexo" scheme="http://yoursite.com/tags/Hexo/"/>
     
   </entry>
   
@@ -87,7 +123,7 @@
     <link href="http://yoursite.com/2016/02/13/review-loaders-2/"/>
     <id>http://yoursite.com/2016/02/13/review-loaders-2/</id>
     <published>2016-02-13T13:58:48.000Z</published>
-    <updated>2016-02-14T17:10:42.419Z</updated>
+    <updated>2016-02-27T07:41:24.134Z</updated>
     
     <content type="html">&lt;h1 id=&quot;过去&quot;&gt;&lt;a href=&quot;#过去&quot; class=&quot;headerlink&quot; title=&quot;过去&quot;&gt;&lt;/a&gt;过去&lt;/h1&gt;&lt;p&gt;在安卓3.0前，很多应用经常出现无法响应的bug。最主要的原因，便是在UI线程执行查询或加载数据。虽然文档一直强调即使回馈的重要性，之前的API并不鼓励这样的行为。过去通常使用activity的方法以管理Cursor。而且这些方法在UI线程中操作，并不跨越配置变更。&lt;/p&gt;
 &lt;h1 id=&quot;理解LoaderManager&quot;&gt;&lt;a href=&quot;#理解LoaderManager&quot; class=&quot;headerlink&quot; title=&quot;理解LoaderManager&quot;&gt;&lt;/a&gt;理解LoaderManager&lt;/h1&gt;&lt;p&gt;LoaderManager的一些事件会有activity或fragment的生命周期事件触发。比如activity销毁时，会通知LoaderManager销毁并关闭所有所有Loader。&lt;/p&gt;
@@ -113,141 +149,7 @@
 &lt;li&gt;一个接收数据变化通知的观测者。Loader应该实现某种观测者，比如&lt;code&gt;BroadcastReceiver&lt;/code&gt;等等，来监视数据源的变化。一旦侦测到变化，观测者应该调用&lt;code&gt;Loader#onContentChanged()&lt;/code&gt;方法，如果Loader处在启动状态，强制进行一次新的加载；否则产生一个flag来表示有新的变化，这样一旦Loader再次启动就会重新载入数据。&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h1 id=&quot;实现Loader&quot;&gt;&lt;a href=&quot;#实现Loader&quot; class=&quot;headerlink&quot; title=&quot;实现Loader&quot;&gt;&lt;/a&gt;实现Loader&lt;/h1&gt;&lt;p&gt;在实现自己的Loader时，有很多问题必须谨记。子类必须实现&lt;code&gt;loadInBackground()&lt;/code&gt;方法并重写&lt;code&gt;onStartLoading()&lt;/code&gt;, &lt;code&gt;onStopLoading()&lt;/code&gt;, &lt;code&gt;onReset()&lt;/code&gt;, &lt;code&gt;onCanceled()&lt;/code&gt;, and &lt;code&gt;deliverResult(D results)&lt;/code&gt;来实现一个完全工作的Loader。重写这些方法非常重要，因为LoaderManager会根据activity或fragment的状态来调用他们。比如，启动activity后，会在&lt;code&gt;activity#onStart()&lt;/code&gt;方法中告知LoaderManager启动所有Loader。如果Loader未被启动，LoaderManager调用&lt;code&gt;startLoading()&lt;/code&gt;，使得Loader进入启动状态，并立即调用其&lt;code&gt;onStartLoading()&lt;/code&gt;方法。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public CursorLoaderass SampleLoader extends AsyncTaskLoader&amp;lt;List&amp;lt;SampleItem&amp;gt;&amp;gt; {
-
-  // 在这里保持Loader数据的引用
-  private List&amp;lt;SampleItem&amp;gt; mData;
-
-  public SampleLoader(Context ctx) {
-    // Loader可以跨越多个activity使用（假如没有绑定到LoaderManager），所以不要直接保持context的引用。
-    // 这会导致泄露整个activity的context。父类的构造器会存储一个Application Context的引用
-    // 可以通过getContext()方法获取
-    super(ctx);
-  }
-
-  /****************************************************/
-  /** (1) 执行异步加载的任务 **/
-  /****************************************************/
-
-  @Override
-  public List&amp;lt;SampleItem&amp;gt; loadInBackground() {
-    // 该方法在后台线程创建并产生新的数据的集合，传送给客户端
-    List&amp;lt;SampleItem&amp;gt; data = new ArrayList&amp;lt;SampleItem&amp;gt;();
-
-    // TODO: 在这里执行查询，并将结果添加至data
-
-    return data;
-  }
-
-  /********************************************************/
-  /** (2) 将结果传送给注册的侦听器 **/
-  /********************************************************/
-
-  @Override
-  public void deliverResult(List&amp;lt;SampleItem&amp;gt; data) {
-    if (isReset()) {
-      // Loader已被复位; 无视结果，并将数据无效化.
-      releaseResources(data);
-      return;
-    }
-
-    // 保持旧数据的引用，使之不被gc回收。
-    // 保护它直到新数据被送达.
-    List&amp;lt;SampleItem&amp;gt; oLoaderData = mData;
-    mData = data;
-
-    if (isStarted()) {
-      // 若Loader已启动，传送结果至客户端。父类方法会实现具体的操作。
-      super.deliverResult(data);
-    }
-
-    // 将已经不需要的旧数据无效化.
-    if (oLoaderData != null &amp;amp;&amp;amp; oLoaderData != data) {
-      releaseResources(oLoaderData);
-    }
-  }
-
-  /*********************************************************/
-  /** (3) 实现Loader状态依赖的行为 **/
-  /*********************************************************/
-
-  @Override
-  protected void onStartLoading() {
-    if (mData != null) {
-      // 立即传送先前载入的数据.
-      deliverResult(mData);
-    }
-
-    // 监视数据源.
-    if (mObserver == null) {
-      mObserver = new SampleObserver();
-      // TODO: 注册观测者
-    }
-
-    if (takeContentChanged() || mData == null) {
-      // 观测者发现变化后，应调用loader的onContentChanged()
-      // 后者会造成下次调用takeContentChanged()返回true
-      // 这种情况下（或当前数据为null），会强制一次新的加载
-      forceLoad();
-    }
-  }
-
-  @Override
-  protected void onStopLoading() {
-    // 在停止状态下，应该试着取消当前的载入（如果有的话）
-    cancelLoad();
-
-    // 注意我们没有变更观测者. 停止状态下的Loaders仍然应该监视数据源的变化
-    // 这样Loader再次启动后会知道是否需要强制进行新的加载
-  }
-
-  @Override
-  protected void onReset() {
-    // 确保loader已被停止.
-    onStopLoading();
-
-    // 这里我们可以释放与&amp;apos;mData&amp;apos;关联的资源.
-    if (mData != null) {
-      releaseResources(mData);
-      mData = null;
-    }
-
-    // 如果loader正在被复位，应该停止监视数据变化.
-    if (mObserver != null) {
-      // TODO: 注销观测者
-      mObserver = null;
-    }
-  }
-
-  @Override
-  public void onCanceled(List&amp;lt;SampleItem&amp;gt; data) {
-    // 试着取消当前的异步加载.
-    super.onCanceled(data);
-
-    // 加载已取消，应该释放&amp;apos;data&amp;apos;相关的资源
-    releaseResources(data);
-  }
-
-  private void releaseResources(List&amp;lt;SampleItem&amp;gt; data) {
-    // 对简单的列表，不需要做任何事。对Cursor，应该在这里进行关闭。所有Loader相关的资源
-    // 应该在这里释放
-  }
-
-  /*********************************************************************/
-  /** (4) 接收数据变化通知的观测者 **/
-  /*********************************************************************/
-
-  // NOTE: Implementing an observer is outside the scope of this post (this example
-  // uses a made-up &amp;quot;SampleObserver&amp;quot; to illustrate when/where the observer shouLoader 
-  // be initialized). 
-
-  // 观测者只需要能够探测到数据源的变化并通过调用onContentChanged()报告给Loader
-  // 如果在写载入设备上所有应用的列表的Loader的话，观测者应该是一个侦听
-  // ACTION_PACKAGE_ADDED intent的BroadcastReceiver，并且探测到新应用安装时，
-  // 调用特定Loader的onContentChanged() 方法
-
-  private SampleObserver mObserver;
-}
+&lt;pre&gt;&lt;code&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;61&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;62&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;63&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;65&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;66&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;67&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;68&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;69&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;70&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;71&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;72&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;73&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;74&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;75&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;76&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;77&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;78&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;79&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;80&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;81&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;82&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;83&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;84&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;85&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;86&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;87&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;88&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;89&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;90&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;91&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;92&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;93&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;94&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;95&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;96&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;97&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;98&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;99&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;100&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;101&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;102&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;103&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;104&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;105&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;106&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;107&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;108&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;109&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;110&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;111&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;112&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;113&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;114&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;115&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;116&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;117&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;118&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;119&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;120&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;121&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;122&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;123&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;124&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;125&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;126&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;127&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;128&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;129&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;130&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;131&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;132&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;133&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;134&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;135&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;SampleLoader&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;AsyncTaskLoader&lt;/span&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;List&lt;/span&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;SampleItem&lt;/span&gt;&amp;gt;&amp;gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;// 在这里保持Loader数据的引用&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; List&amp;lt;SampleItem&amp;gt; mData;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;SampleLoader&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Context ctx)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// Loader可以跨越多个activity使用（假如没有绑定到LoaderManager），所以不要直接保持context的引用。&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 这会导致泄露整个activity的context。父类的构造器会存储一个Application Context的引用&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 可以通过getContext()方法获取&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;(ctx);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;/****************************************************/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;/** (1) 执行异步加载的任务 **/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;/****************************************************/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; List&amp;lt;SampleItem&amp;gt; &lt;span class=&quot;title&quot;&gt;loadInBackground&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 该方法在后台线程创建并产生新的数据的集合，传送给客户端&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    List&amp;lt;SampleItem&amp;gt; data = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ArrayList&amp;lt;SampleItem&amp;gt;();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// &lt;span class=&quot;doctag&quot;&gt;TODO:&lt;/span&gt; 在这里执行查询，并将结果添加至data&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; data;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;/********************************************************/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;/** (2) 将结果传送给注册的侦听器 **/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;/********************************************************/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;deliverResult&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(List&amp;lt;SampleItem&amp;gt; data)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (isReset()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;comment&quot;&gt;// Loader已被复位; 无视结果，并将数据无效化.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      releaseResources(data);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 保持旧数据的引用，使之不被gc回收。&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 保护它直到新数据被送达.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    List&amp;lt;SampleItem&amp;gt; oLoaderData = mData;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    mData = data;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (isStarted()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;comment&quot;&gt;// 若Loader已启动，传送结果至客户端。父类方法会实现具体的操作。&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.deliverResult(data);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 将已经不需要的旧数据无效化.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (oLoaderData != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt; &amp;amp;&amp;amp; oLoaderData != data) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      releaseResources(oLoaderData);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;/*********************************************************/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;/** (3) 实现Loader状态依赖的行为 **/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;/*********************************************************/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onStartLoading&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mData != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;comment&quot;&gt;// 立即传送先前载入的数据.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      deliverResult(mData);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 监视数据源.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mObserver == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      mObserver = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; SampleObserver();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;comment&quot;&gt;// &lt;span class=&quot;doctag&quot;&gt;TODO:&lt;/span&gt; 注册观测者&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (takeContentChanged() || mData == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;comment&quot;&gt;// 观测者发现变化后，应调用loader的onContentChanged()&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;comment&quot;&gt;// 后者会造成下次调用takeContentChanged()返回true&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;comment&quot;&gt;// 这种情况下（或当前数据为null），会强制一次新的加载&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      forceLoad();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onStopLoading&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 在停止状态下，应该试着取消当前的载入（如果有的话）&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    cancelLoad();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 注意我们没有变更观测者. 停止状态下的Loaders仍然应该监视数据源的变化&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 这样Loader再次启动后会知道是否需要强制进行新的加载&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onReset&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 确保loader已被停止.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    onStopLoading();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 这里我们可以释放与&#39;mData&#39;关联的资源.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mData != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      releaseResources(mData);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      mData = &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 如果loader正在被复位，应该停止监视数据变化.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (mObserver != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;comment&quot;&gt;// &lt;span class=&quot;doctag&quot;&gt;TODO:&lt;/span&gt; 注销观测者&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      mObserver = &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onCanceled&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(List&amp;lt;SampleItem&amp;gt; data)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 试着取消当前的异步加载.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCanceled(data);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 加载已取消，应该释放&#39;data&#39;相关的资源&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    releaseResources(data);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;releaseResources&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(List&amp;lt;SampleItem&amp;gt; data)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 对简单的列表，不需要做任何事。对Cursor，应该在这里进行关闭。所有Loader相关的资源&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// 应该在这里释放&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;/*********************************************************************/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;/** (4) 接收数据变化通知的观测者 **/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;/*********************************************************************/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;// &lt;span class=&quot;doctag&quot;&gt;NOTE:&lt;/span&gt; Implementing an observer is outside the scope of this post (this example&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;// uses a made-up &quot;SampleObserver&quot; to illustrate when/where the observer shouLoader &lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;// be initialized). &lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;// 观测者只需要能够探测到数据源的变化并通过调用onContentChanged()报告给Loader&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;// 如果在写载入设备上所有应用的列表的Loader的话，观测者应该是一个侦听&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;// ACTION_PACKAGE_ADDED intent的BroadcastReceiver，并且探测到新应用安装时，&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;// 调用特定Loader的onContentChanged() 方法&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; SampleObserver mObserver;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;/code&gt;&lt;/pre&gt;</content>
     
     <summary type="html">
