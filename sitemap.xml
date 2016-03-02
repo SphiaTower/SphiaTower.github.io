@@ -2,6 +2,41 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/03/02/wear-dev-5/</loc>
+    
+    <lastmod>2016-03-02T15:08:43.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/27/Wear-Dev-4/</loc>
+    
+    <lastmod>2016-03-02T00:45:36.261Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/27/Wear-Dev-3/</loc>
+    
+    <lastmod>2016-02-27T13:32:40.136Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/27/Wear-Dev-2/</loc>
+    
+    <lastmod>2016-02-27T13:27:28.651Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/02/27/Wear-Dev-1/</loc>
+    
+    <lastmod>2016-02-27T12:52:50.753Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2015/10/11/Saving-Data-in-SQL-Databases/</loc>
     
     <lastmod>2016-02-27T08:15:06.105Z</lastmod>

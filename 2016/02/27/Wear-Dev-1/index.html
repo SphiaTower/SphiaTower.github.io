@@ -1,0 +1,689 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android Wear," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="I bought a moto 360 last year. But I seldom wear it, because it’s kind of useless. No app in Android Wear is irreplaceable. Many people never wears it in life because a cellphone is enough. So it’s ne">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Wear 开发 （一） 创建手表通知">
+<meta property="og:url" content="http://yoursite.com/2016/02/27/Wear-Dev-1/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="I bought a moto 360 last year. But I seldom wear it, because it’s kind of useless. No app in Android Wear is irreplaceable. Many people never wears it in life because a cellphone is enough. So it’s ne">
+<meta property="og:updated_time" content="2016-02-27T12:52:50.753Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Wear 开发 （一） 创建手表通知">
+<meta name="twitter:description" content="I bought a moto 360 last year. But I seldom wear it, because it’s kind of useless. No app in Android Wear is irreplaceable. Many people never wears it in life because a cellphone is enough. So it’s ne">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Android Wear 开发 （一） 创建手表通知 | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android Wear 开发 （一） 创建手表通知
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-02-27T19:54:50+08:00" content="2016-02-27">
+              2016-02-27
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>I bought a moto 360 last year. But I seldom wear it, because it’s kind of useless. No app in Android Wear is irreplaceable. Many people never wears it in life because a cellphone is enough. So it’s necessary to develop a functional Wearable app whose performance is better in wearable devices than in cellphones.</p>
+<h1 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h1><p>首先来看 <code>Notification</code>. 要创建同时发送到手表的手机通知，使用 <code>NotificationCompat.Builder</code>.</p>
+<p>在gradle中引入需要的包：</p>
+<pre><code>compile &quot;com.android.support:support-v4:20.0.+&quot;
+</code></pre><p>通知呈现在手机上时，用户触碰通知，调用<code>setContentIntent()</code>指定的 <code>PendingIntent</code> 。而在手表上，用户将通知滑动至左边以显示<strong>Open</strong>动作，后者调用手机上的intent。<br><a id="more"></a></p>
+<h1 id="添加动作按钮"><a href="#添加动作按钮" class="headerlink" title="添加动作按钮"></a>添加动作按钮</h1><p>除了<code>setContentIntent()</code>定义的主内容动作外，可以传递<code>PendingIntent</code>给<code>addAction()</code>方法添加其他的动作。</p>
+<p>下面的代码增加了一个查看地图的动作：<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Build an intent for an action to view a map</span></span><br><span class="line">Intent mapIntent = <span class="keyword">new</span> Intent(Intent.ACTION_VIEW);</span><br><span class="line">Uri geoUri = Uri.parse(<span class="string">"geo:0,0?q="</span> + Uri.encode(location));</span><br><span class="line">mapIntent.setData(geoUri);</span><br><span class="line">PendingIntent mapPendingIntent =</span><br><span class="line">        PendingIntent.getActivity(<span class="keyword">this</span>, <span class="number">0</span>, mapIntent, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">NotificationCompat.Builder notificationBuilder =</span><br><span class="line">        <span class="keyword">new</span> NotificationCompat.Builder(<span class="keyword">this</span>)</span><br><span class="line">        .setSmallIcon(R.drawable.ic_event)</span><br><span class="line">        .setContentTitle(eventTitle)</span><br><span class="line">        .setContentText(eventLocation)</span><br><span class="line">        .setContentIntent(viewPendingIntent)</span><br><span class="line">        .addAction(R.drawable.ic_map,</span><br><span class="line">                getString(R.string.map), mapPendingIntent);</span><br></pre></td></tr></table></figure><br>在手机上，这个动作显示为通知上附加的一个按钮。在手表上，这个动作显示为滑动通知后的大按钮。用户触发后，会在手机上调用关联的intent。</p>
+<h1 id="指定手表动作"><a href="#指定手表动作" class="headerlink" title="指定手表动作"></a>指定手表动作</h1><p>如果希望手表上的动作与手机不同。可以使用<code>WearableExtender.addAction()</code>方法。一旦使用这个方法添加了动作，使用<code>NotificationCompat.Builder.addAction()</code>添加的方法将都不会被手表显示。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Create an intent for the reply action</span></span><br><span class="line">Intent actionIntent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, ActionActivity.class);</span><br><span class="line">PendingIntent actionPendingIntent =</span><br><span class="line">        PendingIntent.getActivity(<span class="keyword">this</span>, <span class="number">0</span>, actionIntent,</span><br><span class="line">                PendingIntent.FLAG_UPDATE_CURRENT);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create the action</span></span><br><span class="line">NotificationCompat.Action action =</span><br><span class="line">        <span class="keyword">new</span> NotificationCompat.Action.Builder(R.drawable.ic_action,</span><br><span class="line">                getString(R.string.label), actionPendingIntent)</span><br><span class="line">                .build();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Build the notification and add the action via WearableExtender</span></span><br><span class="line">Notification notification =</span><br><span class="line">        <span class="keyword">new</span> NotificationCompat.Builder(mContext)</span><br><span class="line">                .setSmallIcon(R.drawable.ic_message)</span><br><span class="line">                .setContentTitle(getString(R.string.title))</span><br><span class="line">                .setContentText(getString(R.string.content))</span><br><span class="line">                .extend(<span class="keyword">new</span> WearableExtender().addAction(action))</span><br><span class="line">                .build();</span><br></pre></td></tr></table></figure></p>
+<h1 id="添加大视图"><a href="#添加大视图" class="headerlink" title="添加大视图"></a>添加大视图</h1><p>通过大视图可以在通知中插入扩展的文字内容。在手机上，用户可以展开通知来查看大视图的内容。而在手表上则是默认可见。</p>
+<p>要添加扩展内容，调用<code>NotificationCompat.Builder</code>的<code>setStyle()</code> 方法，传入一个<code>BigTextStyle</code>或<code>InboxStyle</code>实例。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Specify the 'big view' content to display the long</span></span><br><span class="line"><span class="comment">// event description that may not fit the normal content text.</span></span><br><span class="line">BigTextStyle bigStyle = <span class="keyword">new</span> NotificationCompat.BigTextStyle();</span><br><span class="line">bigStyle.bigText(eventDescription);</span><br><span class="line"></span><br><span class="line">NotificationCompat.Builder notificationBuilder =</span><br><span class="line">        <span class="keyword">new</span> NotificationCompat.Builder(<span class="keyword">this</span>)</span><br><span class="line">        .setSmallIcon(R.drawable.ic_event)</span><br><span class="line">        .setLargeIcon(BitmapFactory.decodeResource(</span><br><span class="line">                getResources(), R.drawable.notif_background))</span><br><span class="line">        .setContentTitle(eventTitle)</span><br><span class="line">        .setContentText(eventLocation)</span><br><span class="line">        .setContentIntent(viewPendingIntent)</span><br><span class="line">        .addAction(R.drawable.ic_map,</span><br><span class="line">                getString(R.string.map), mapPendingIntent)</span><br><span class="line">        .setStyle(bigStyle);</span><br></pre></td></tr></table></figure></p>
+<p>通过<code>setLargeIcon()</code>方法可以为任意的通知添加一个大图标。然而，这些图标在手表上显示为大的背景图片，因为缩放的原因会不太好看。</p>
+<h1 id="为通知添加手表功能"><a href="#为通知添加手表功能" class="headerlink" title="为通知添加手表功能"></a>为通知添加手表功能</h1><p>如果需要为通知添加手表专用的选项，比如指定获取用户的语言输入，可以调用<code>NotificationCompat.WearableExtender</code>类来指定选项。</p>
+<ol>
+<li>创建<code>WearableExtender</code>实例，设置选项；</li>
+<li>创建<code>NotificationCompat.Builder</code>实例，设置属性；</li>
+<li>调用<code>extend()</code>并传入<code>WearableExtender</code>，应用手表的设置；</li>
+<li><p>调用<code>build()</code>来建造通知。</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Create a WearableExtender to add functionality for wearables</span></span><br><span class="line">NotificationCompat.WearableExtender wearableExtender =</span><br><span class="line">        <span class="keyword">new</span> NotificationCompat.WearableExtender()</span><br><span class="line">        .setHintHideIcon(<span class="keyword">true</span>)</span><br><span class="line">        .setBackground(mBitmap);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create a NotificationCompat.Builder to build a standard notification</span></span><br><span class="line"><span class="comment">// then extend it with the WearableExtender</span></span><br><span class="line">Notification notif = <span class="keyword">new</span> NotificationCompat.Builder(mContext)</span><br><span class="line">        .setContentTitle(<span class="string">"New mail from "</span> + sender)</span><br><span class="line">        .setContentText(subject)</span><br><span class="line">        .setSmallIcon(R.drawable.new_mail)</span><br><span class="line">        .extend(wearableExtender)</span><br><span class="line">        .build();</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="发送通知"><a href="#发送通知" class="headerlink" title="发送通知"></a>发送通知</h1><p>发送通知时，一定要使用<code>NotificationManagerCompat</code>API而非<code>NotificationManager</code>，以确保手表的功能能够正常使用。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Get an instance of the NotificationManager service</span></span><br><span class="line">NotificationManagerCompat notificationManager =</span><br><span class="line">        NotificationManagerCompat.from(mContext);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Issue the notification with notification manager.</span></span><br><span class="line">notificationManager.notify(notificationId, notif);</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android-Wear/" rel="tag">#Android Wear</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/27/testing/" rel="next" title="testing">
+                <i class="fa fa-chevron-left"></i> testing
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/27/Wear-Dev-2/" rel="prev" title="Android Wear 开发 （二） 在通知中接收语音输入">
+                Android Wear 开发 （二） 在通知中接收语音输入 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">87</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Getting-Started"><span class="nav-number">1.</span> <span class="nav-text">Getting Started</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加动作按钮"><span class="nav-number">2.</span> <span class="nav-text">添加动作按钮</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#指定手表动作"><span class="nav-number">3.</span> <span class="nav-text">指定手表动作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加大视图"><span class="nav-number">4.</span> <span class="nav-text">添加大视图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#为通知添加手表功能"><span class="nav-number">5.</span> <span class="nav-text">为通知添加手表功能</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#发送通知"><span class="nav-number">6.</span> <span class="nav-text">发送通知</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

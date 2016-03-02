@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-02-27T03:04:19.824Z</updated>
+  <updated>2016-03-02T15:08:43.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,242 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android Wear 开发 （五） 创建自定义布局</title>
+    <link href="http://yoursite.com/2016/03/02/wear-dev-5/"/>
+    <id>http://yoursite.com/2016/03/02/wear-dev-5/</id>
+    <published>2016-03-02T00:46:42.000Z</published>
+    <updated>2016-03-02T15:08:43.000Z</updated>
+    
+    <content type="html">&lt;p&gt;在手表上创建布局与手机相同，除了必须根据屏幕尺寸和瞥视动作设计以外。不要仅仅将功能和UI从手机应用中搬运至手表，这样的体验非常不好。只有在必要的时候才应该创建自定义布局。&lt;/p&gt;
+&lt;h1 id=&quot;创建自定义通知&quot;&gt;&lt;a href=&quot;#创建自定义通知&quot; class=&quot;headerlink&quot; title=&quot;创建自定义通知&quot;&gt;&lt;/a&gt;创建自定义通知&lt;/h1&gt;&lt;p&gt;一般应该在手机上创建同桌并自动同步至手表。这样只需创建一次通知就可以出现在多种设备上（甚至包括汽车和电视）。&lt;/p&gt;
+&lt;p&gt;如果标准的通知风格不适合你的话，可以显示一个有自定义布局的activity。应该只在手表上创建和发布自定义通知，这些通知不会被同步至手机上。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在手表上创建自定义通知时，可以使用标准API(API Level 20)而非支持库。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;要创建自定义通知：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;创建布局，并为想要展示的activity设置内容视图。&lt;/p&gt;
+ &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Bundle bundle)&lt;/span&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    setContentView(R.layout.notification_activity);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;在manifest中为activity设定必要的属性，使之能够在手表的context stream process中显示。需要将activity声明为可输出，可嵌入，并有空白的任务关系。&lt;/p&gt;
+ &lt;activity android:name=&quot;com.example.MyDisplayActivity&quot; android:exported=&quot;true&quot; android:allowembedded=&quot;true&quot; android:taskaffinity=&quot;&quot; android:theme=&quot;@android:style/Theme.DeviceDefault.Light&quot;&gt;
+&lt;/activity&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;为想要显示的activity创建一个&lt;code&gt;PendingIntent&lt;/code&gt;。&lt;/p&gt;
+ &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Intent notificationIntent = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, NotificationActivity.class);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;PendingIntent notificationPendingIntent = PendingIntent.getActivity(&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;创建一个&lt;code&gt;Notification&lt;/code&gt;，然后调用&lt;code&gt;setDisplayIntent()&lt;/code&gt;并传入&lt;code&gt;PendingIntent&lt;/code&gt;。系统使用这个&lt;code&gt;PendingIntent&lt;/code&gt;在用户查看通知的时候启动activity。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;调用&lt;code&gt;notify()&lt;/code&gt;方法发送通知。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意：当通知再主屏幕上显示时，系统使用由通知语义产生的标准模板来展示。这个模板在所有表盘上都可以工作。用户上滑通知后，会看到通知的自定义activity。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;用手表UI库创建布局&quot;&gt;&lt;a href=&quot;#用手表UI库创建布局&quot; class=&quot;headerlink&quot; title=&quot;用手表UI库创建布局&quot;&gt;&lt;/a&gt;用手表UI库创建布局&lt;/h1&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在手表上创建布局与手机相同，除了必须根据屏幕尺寸和瞥视动作设计以外。不要仅仅将功能和UI从手机应用中搬运至手表，这样的体验非常不好。只有在必要的时候才应该创建自定义布局。&lt;/p&gt;
+&lt;h1 id=&quot;创建自定义通知&quot;&gt;&lt;a href=&quot;#创建自定义通知&quot; class=&quot;headerlink&quot; title=&quot;创建自定义通知&quot;&gt;&lt;/a&gt;创建自定义通知&lt;/h1&gt;&lt;p&gt;一般应该在手机上创建同桌并自动同步至手表。这样只需创建一次通知就可以出现在多种设备上（甚至包括汽车和电视）。&lt;/p&gt;
+&lt;p&gt;如果标准的通知风格不适合你的话，可以显示一个有自定义布局的activity。应该只在手表上创建和发布自定义通知，这些通知不会被同步至手机上。&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="Android Wear" scheme="http://yoursite.com/tags/Android-Wear/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android Wear 开发 （四） 创建和运行手表应用</title>
+    <link href="http://yoursite.com/2016/02/27/Wear-Dev-4/"/>
+    <id>http://yoursite.com/2016/02/27/Wear-Dev-4/</id>
+    <published>2016-02-27T13:33:07.000Z</published>
+    <updated>2016-03-02T00:45:36.261Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;更新SDK&quot;&gt;&lt;a href=&quot;#更新SDK&quot; class=&quot;headerlink&quot; title=&quot;更新SDK&quot;&gt;&lt;/a&gt;更新SDK&lt;/h1&gt;&lt;p&gt;开始创建穿戴应用前，首先：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;更新SDK工具至23.0.0或以上&lt;/li&gt;
+&lt;li&gt;更新SDK至API20或以上&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;设置手表设备&quot;&gt;&lt;a href=&quot;#设置手表设备&quot; class=&quot;headerlink&quot; title=&quot;设置手表设备&quot;&gt;&lt;/a&gt;设置手表设备&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;在手机上安装Android Wear应用。&lt;/li&gt;
+&lt;li&gt;根据指示与手表配对。&lt;/li&gt;
+&lt;li&gt;保持Android Wear在手机上打开。&lt;/li&gt;
+&lt;li&gt;在手表上启用adb调试。&lt;ol&gt;
+&lt;li&gt;进入&lt;strong&gt;Settings &amp;gt; About&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;点击&lt;strong&gt;Build number&lt;/strong&gt;七次。&lt;/li&gt;
+&lt;li&gt;右滑返回设置目录。&lt;/li&gt;
+&lt;li&gt;进入屏幕底端的开发者设置。&lt;/li&gt;
+&lt;li&gt;点击ADB调试来启用adb。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;通过USB连接手表到机器上，这样可以直接安装应用。Android Wear应用和手表上都会显示一条消息表示允许调试。（如果不能通过USB连接，可以尝试使用蓝牙）&lt;/li&gt;
+&lt;li&gt;在Android Wear应用上，勾选总是允许这台电脑，并点击OK。&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h1 id=&quot;创建项目&quot;&gt;&lt;a href=&quot;#创建项目&quot; class=&quot;headerlink&quot; title=&quot;创建项目&quot;&gt;&lt;/a&gt;创建项目&lt;/h1&gt;要开始开发，首先创建一个包含手表和手机模组的应用项目。在Android Studio中创建最为方法，只需按照向导的说明即可。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;向导结束后，Android Studio会创建一个包含手机模组和手表模组的新项目。可以在这个项目中为两者创建activiy，service和自定义布局。手机应用执行重量级的任务，比如网络通讯，密集处理，或大量用户交互的任务。应用完成操作后，应该通过通知或同步发送数据的方式将结果告知手表。&lt;/p&gt;
+&lt;h1 id=&quot;安装手表应用&quot;&gt;&lt;a href=&quot;#安装手表应用&quot; class=&quot;headerlink&quot; title=&quot;安装手表应用&quot;&gt;&lt;/a&gt;安装手表应用&lt;/h1&gt;&lt;p&gt;在手表上直接安装应用就像和在手机上一样。使用&lt;code&gt;adb install&lt;/code&gt;或AS上的&lt;strong&gt;Play&lt;/strong&gt;按钮。&lt;/p&gt;
+&lt;p&gt;准备发布应用时，应该将手表应用嵌入至手机应用中。用户通过Google Play安装手机应用后，连接的手表自动接收手表应用。&lt;/p&gt;
+&lt;h1 id=&quot;引入正确的库&quot;&gt;&lt;a href=&quot;#引入正确的库&quot; class=&quot;headerlink&quot; title=&quot;引入正确的库&quot;&gt;&lt;/a&gt;引入正确的库&lt;/h1&gt;&lt;p&gt;作为项目向导的一部分，模组的&lt;code&gt;build.gradle&lt;/code&gt;中引入了正确的依赖。然而，这些依赖并非必要的。&lt;/p&gt;
+&lt;h2 id=&quot;通知&quot;&gt;&lt;a href=&quot;#通知&quot; class=&quot;headerlink&quot; title=&quot;通知&quot;&gt;&lt;/a&gt;通知&lt;/h2&gt;&lt;p&gt;Android v4 support library包含了扩展手机通知已支持手表的API。&lt;/p&gt;
+&lt;p&gt;只显示在手表上的通知（即手表应用发出的通知），可以使用标准的框架API（API Level 20)，并在手表模组上移除这个支持库的依赖。&lt;/p&gt;
+&lt;h2 id=&quot;手表数据层&quot;&gt;&lt;a href=&quot;#手表数据层&quot; class=&quot;headerlink&quot; title=&quot;手表数据层&quot;&gt;&lt;/a&gt;手表数据层&lt;/h2&gt;&lt;p&gt;要在手表和手机间通过手表数据层同步和发送数据，需要Google Play服务的最新版。如果没有使用这些API，可以从两个模组中移除依赖。&lt;/p&gt;
+&lt;h2 id=&quot;手表UI支持库&quot;&gt;&lt;a href=&quot;#手表UI支持库&quot; class=&quot;headerlink&quot; title=&quot;手表UI支持库&quot;&gt;&lt;/a&gt;手表UI支持库&lt;/h2&gt;&lt;p&gt;这是一个包含了手表UI空间的非官方的库。谷歌鼓励在应用中使用他们，因为他们是很好的模范。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;更新SDK&quot;&gt;&lt;a href=&quot;#更新SDK&quot; class=&quot;headerlink&quot; title=&quot;更新SDK&quot;&gt;&lt;/a&gt;更新SDK&lt;/h1&gt;&lt;p&gt;开始创建穿戴应用前，首先：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;更新SDK工具至23.0.0或以上&lt;/li&gt;
+&lt;li&gt;更新SDK至API20或以上&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&quot;设置手表设备&quot;&gt;&lt;a href=&quot;#设置手表设备&quot; class=&quot;headerlink&quot; title=&quot;设置手表设备&quot;&gt;&lt;/a&gt;设置手表设备&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;在手机上安装Android Wear应用。&lt;/li&gt;
+&lt;li&gt;根据指示与手表配对。&lt;/li&gt;
+&lt;li&gt;保持Android Wear在手机上打开。&lt;/li&gt;
+&lt;li&gt;在手表上启用adb调试。&lt;ol&gt;
+&lt;li&gt;进入&lt;strong&gt;Settings &amp;gt; About&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;点击&lt;strong&gt;Build number&lt;/strong&gt;七次。&lt;/li&gt;
+&lt;li&gt;右滑返回设置目录。&lt;/li&gt;
+&lt;li&gt;进入屏幕底端的开发者设置。&lt;/li&gt;
+&lt;li&gt;点击ADB调试来启用adb。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;通过USB连接手表到机器上，这样可以直接安装应用。Android Wear应用和手表上都会显示一条消息表示允许调试。（如果不能通过USB连接，可以尝试使用蓝牙）&lt;/li&gt;
+&lt;li&gt;在Android Wear应用上，勾选总是允许这台电脑，并点击OK。
+    
+    </summary>
+    
+    
+      <category term="Android Wear" scheme="http://yoursite.com/tags/Android-Wear/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android Wear 开发 （三） 在通知中添加页面</title>
+    <link href="http://yoursite.com/2016/02/27/Wear-Dev-3/"/>
+    <id>http://yoursite.com/2016/02/27/Wear-Dev-3/</id>
+    <published>2016-02-27T13:27:51.000Z</published>
+    <updated>2016-02-27T13:32:40.136Z</updated>
+    
+    <content type="html">&lt;p&gt;要创建多页面的通知：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;使用&lt;code&gt;NotificationCompat.Builder&lt;/code&gt;创建主通知（第一页），就像在手机上呈现一样。&lt;/li&gt;
+&lt;li&gt;同样使用&lt;code&gt;NotificationCompat.Builder&lt;/code&gt;创建其他页面。&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;通过&lt;code&gt;addPage()&lt;/code&gt;将这些页面添加至主通知，或添加&lt;code&gt;Collection&lt;/code&gt;中的页面。&lt;/p&gt;
+ &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Create builder for the main notification&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;NotificationCompat.Builder notificationBuilder =&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; NotificationCompat.Builder(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setSmallIcon(R.drawable.new_message)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setContentTitle(&lt;span class=&quot;string&quot;&gt;&quot;Page 1&quot;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setContentText(&lt;span class=&quot;string&quot;&gt;&quot;Short message&quot;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setContentIntent(viewPendingIntent);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Create a big text style for the second page&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;BigTextStyle secondPageStyle = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; NotificationCompat.BigTextStyle();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;secondPageStyle.setBigContentTitle(&lt;span class=&quot;string&quot;&gt;&quot;Page 2&quot;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;               .bigText(&lt;span class=&quot;string&quot;&gt;&quot;A lot of text...&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Create second page notification&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Notification secondPageNotification =&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; NotificationCompat.Builder(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setStyle(secondPageStyle)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .build();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Extend the notification builder with the second page&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Notification notification = notificationBuilder&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .extend(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; NotificationCompat.WearableExtender()&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .addPage(secondPageNotification))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .build();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Issue the notification&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;notificationManager =&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        NotificationManagerCompat.from(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;notificationManager.notify(notificationId, notification);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;要创建多页面的通知：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;使用&lt;code&gt;NotificationCompat.Builder&lt;/code&gt;创建主通知（第一页），就像在手机上呈现一样。&lt;/li&gt;
+&lt;li&gt;同样使用&lt;code&gt;NotificationCompat.Builder&lt;/co
+    
+    </summary>
+    
+    
+      <category term="Android Wear" scheme="http://yoursite.com/tags/Android-Wear/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android Wear 开发 （二） 在通知中接收语音输入</title>
+    <link href="http://yoursite.com/2016/02/27/Wear-Dev-2/"/>
+    <id>http://yoursite.com/2016/02/27/Wear-Dev-2/</id>
+    <published>2016-02-27T12:53:14.000Z</published>
+    <updated>2016-02-27T13:27:28.651Z</updated>
+    
+    <content type="html">&lt;p&gt;在手机上，有需要输入文字的通知时，一般会启动一个activity以供输入。然而在手表上没有键盘输入，可以让用户通过语音回复或者通过&lt;code&gt;RemoteInput&lt;/code&gt;选择预先定义的文字消息。&lt;/p&gt;
+&lt;p&gt;用户使用语音回复或者选择某条消息时，系统将文字回应附在为通知指定的&lt;code&gt;Intent&lt;/code&gt;上，发送至手机应用中。&lt;/p&gt;
+&lt;h1 id=&quot;定义语音输入&quot;&gt;&lt;a href=&quot;#定义语音输入&quot; class=&quot;headerlink&quot; title=&quot;定义语音输入&quot;&gt;&lt;/a&gt;定义语音输入&lt;/h1&gt;&lt;p&gt;要创建一个支持语音输入的动作，首先创建一个&lt;code&gt;RemoteInput.Builder&lt;/code&gt;的实例，它可以添加至通知动作中。这个类的构造器接受一个字符串，系统使用它作为语音输入的key，之后使用它在手机上取回输入的文字。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Key for the string that&#39;s delivered in the action&#39;s intent&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; String EXTRA_VOICE_REPLY = &lt;span class=&quot;string&quot;&gt;&quot;extra_voice_reply&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;String replyLabel = getResources().getString(R.string.reply_label);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;RemoteInput remoteInput = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; RemoteInput.Builder(EXTRA_VOICE_REPLY)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setLabel(replyLabel)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .build();&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h2 id=&quot;添加预定义文字回复&quot;&gt;&lt;a href=&quot;#添加预定义文字回复&quot; class=&quot;headerlink&quot; title=&quot;添加预定义文字回复&quot;&gt;&lt;/a&gt;添加预定义文字回复&lt;/h2&gt;&lt;p&gt;调用&lt;code&gt;setChoices()&lt;/code&gt;并传入字符串数组即可。&lt;/p&gt;
+&lt;p&gt;比如在资源数组中定义一些响应：&lt;/p&gt;
+&lt;p&gt;res/values/strings.xml&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt;
+&amp;lt;resources&amp;gt;
+    &amp;lt;string-array name=&amp;quot;reply_choices&amp;quot;&amp;gt;
+        &amp;lt;item&amp;gt;Yes&amp;lt;/item&amp;gt;
+        &amp;lt;item&amp;gt;No&amp;lt;/item&amp;gt;
+        &amp;lt;item&amp;gt;Maybe&amp;lt;/item&amp;gt;
+    &amp;lt;/string-array&amp;gt;
+&amp;lt;/resources&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后填充字符串数组，并添加至&lt;code&gt;RemoteInput&lt;/code&gt;：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; String EXTRA_VOICE_REPLY = &lt;span class=&quot;string&quot;&gt;&quot;extra_voice_reply&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;String replyLabel = getResources().getString(R.string.reply_label);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;String[] replyChoices = getResources().getStringArray(R.array.reply_choices);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;RemoteInput remoteInput = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; RemoteInput.Builder(EXTRA_VOICE_REPLY)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setLabel(replyLabel)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setChoices(replyChoices)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .build();&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&quot;添加语音输入作为通知动作&quot;&gt;&lt;a href=&quot;#添加语音输入作为通知动作&quot; class=&quot;headerlink&quot; title=&quot;添加语音输入作为通知动作&quot;&gt;&lt;/a&gt;添加语音输入作为通知动作&lt;/h1&gt;&lt;p&gt;要设置语音输入，调用&lt;code&gt;addRemoteInput()&lt;/code&gt;将&lt;code&gt;RemoteInput&lt;/code&gt;对象附给一个动作。然后在通知上应用动作。&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Create an intent for the reply action&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Intent replyIntent = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, ReplyActivity.class);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;PendingIntent replyPendingIntent =&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        PendingIntent.getActivity(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;, replyIntent,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                PendingIntent.FLAG_UPDATE_CURRENT);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Create the reply action and add the remote input&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;NotificationCompat.Action action =&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; NotificationCompat.Action.Builder(R.drawable.ic_reply_icon,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                getString(R.string.label), replyPendingIntent)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .addRemoteInput(remoteInput)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .build();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Build the notification and add the action via WearableExtender&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Notification notification =&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; NotificationCompat.Builder(mContext)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .setSmallIcon(R.drawable.ic_message)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .setContentTitle(getString(R.string.title))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .setContentText(getString(R.string.content))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .extend(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; WearableExtender().addAction(action))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .build();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Issue the notification&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;NotificationManagerCompat notificationManager =&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        NotificationManagerCompat.from(mContext);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;notificationManager.notify(notificationId, notification);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h1 id=&quot;接收语音输入作为字符串&quot;&gt;&lt;a href=&quot;#接收语音输入作为字符串&quot; class=&quot;headerlink&quot; title=&quot;接收语音输入作为字符串&quot;&gt;&lt;/a&gt;接收语音输入作为字符串&lt;/h1&gt;&lt;p&gt;调用&lt;code&gt;getResultFromIntent()&lt;/code&gt;方法，传入回复的动作的intent，就可以在回复动作intent所声明的activity中，收到用户转录出的消息。这个方法返回一个&lt;code&gt;Bundle&lt;/code&gt;来包含文字响应。可以查询&lt;code&gt;Bundle&lt;/code&gt;以获得响应。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意不要使用&lt;code&gt;Intent.getExtras()&lt;/code&gt;来获得语音结果，因为语音输入以&lt;code&gt;ClipData&lt;/code&gt;进行存储。&lt;code&gt;getResultFromIntent()&lt;/code&gt;方法提供便利的获取字符序列的方法，无需手动处理&lt;code&gt;ClipData&lt;/code&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;下面的代码显示了一个方法，它接收一个intent，返回&lt;code&gt;EXTRA_VOICE_REPLY&lt;/code&gt;key的语音响应。&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * Obtain the intent that started this activity by calling&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * Activity.getIntent() and pass it into this method to&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * get the associated voice input string.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; CharSequence &lt;span class=&quot;title&quot;&gt;getMessageText&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Intent intent)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (remoteInput != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; remoteInput.getCharSequence(EXTRA_VOICE_REPLY);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在手机上，有需要输入文字的通知时，一般会启动一个activity以供输入。然而在手表上没有键盘输入，可以让用户通过语音回复或者通过&lt;code&gt;RemoteInput&lt;/code&gt;选择预先定义的文字消息。&lt;/p&gt;
+&lt;p&gt;用户使用语音回复或者选择某条消息时，系统将文字回应附在为通知指定的&lt;code&gt;Intent&lt;/code&gt;上，发送至手机应用中。&lt;/p&gt;
+&lt;h1 id=&quot;定义语音输入&quot;&gt;&lt;a href=&quot;#定义语音输入&quot; class=&quot;headerlink&quot; title=&quot;定义语音输入&quot;&gt;&lt;/a&gt;定义语音输入&lt;/h1&gt;&lt;p&gt;要创建一个支持语音输入的动作，首先创建一个&lt;code&gt;RemoteInput.Builder&lt;/code&gt;的实例，它可以添加至通知动作中。这个类的构造器接受一个字符串，系统使用它作为语音输入的key，之后使用它在手机上取回输入的文字。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Key for the string that&#39;s delivered in the action&#39;s intent&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; String EXTRA_VOICE_REPLY = &lt;span class=&quot;string&quot;&gt;&quot;extra_voice_reply&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;String replyLabel = getResources().getString(R.string.reply_label);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;RemoteInput remoteInput = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; RemoteInput.Builder(EXTRA_VOICE_REPLY)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setLabel(replyLabel)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .build();&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/code&gt;&lt;/pre&gt;
+    
+    </summary>
+    
+    
+      <category term="Android Wear" scheme="http://yoursite.com/tags/Android-Wear/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android Wear 开发 （一） 创建手表通知</title>
+    <link href="http://yoursite.com/2016/02/27/Wear-Dev-1/"/>
+    <id>http://yoursite.com/2016/02/27/Wear-Dev-1/</id>
+    <published>2016-02-27T11:54:50.000Z</published>
+    <updated>2016-02-27T12:52:50.753Z</updated>
+    
+    <content type="html">&lt;p&gt;I bought a moto 360 last year. But I seldom wear it, because it’s kind of useless. No app in Android Wear is irreplaceable. Many people never wears it in life because a cellphone is enough. So it’s necessary to develop a functional Wearable app whose performance is better in wearable devices than in cellphones.&lt;/p&gt;
+&lt;h1 id=&quot;Getting-Started&quot;&gt;&lt;a href=&quot;#Getting-Started&quot; class=&quot;headerlink&quot; title=&quot;Getting Started&quot;&gt;&lt;/a&gt;Getting Started&lt;/h1&gt;&lt;p&gt;首先来看 &lt;code&gt;Notification&lt;/code&gt;. 要创建同时发送到手表的手机通知，使用 &lt;code&gt;NotificationCompat.Builder&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;在gradle中引入需要的包：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;compile &amp;quot;com.android.support:support-v4:20.0.+&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;通知呈现在手机上时，用户触碰通知，调用&lt;code&gt;setContentIntent()&lt;/code&gt;指定的 &lt;code&gt;PendingIntent&lt;/code&gt; 。而在手表上，用户将通知滑动至左边以显示&lt;strong&gt;Open&lt;/strong&gt;动作，后者调用手机上的intent。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;添加动作按钮&quot;&gt;&lt;a href=&quot;#添加动作按钮&quot; class=&quot;headerlink&quot; title=&quot;添加动作按钮&quot;&gt;&lt;/a&gt;添加动作按钮&lt;/h1&gt;&lt;p&gt;除了&lt;code&gt;setContentIntent()&lt;/code&gt;定义的主内容动作外，可以传递&lt;code&gt;PendingIntent&lt;/code&gt;给&lt;code&gt;addAction()&lt;/code&gt;方法添加其他的动作。&lt;/p&gt;
+&lt;p&gt;下面的代码增加了一个查看地图的动作：&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Build an intent for an action to view a map&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Intent mapIntent = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(Intent.ACTION_VIEW);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Uri geoUri = Uri.parse(&lt;span class=&quot;string&quot;&gt;&quot;geo:0,0?q=&quot;&lt;/span&gt; + Uri.encode(location));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;mapIntent.setData(geoUri);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;PendingIntent mapPendingIntent =&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        PendingIntent.getActivity(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;, mapIntent, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;NotificationCompat.Builder notificationBuilder =&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; NotificationCompat.Builder(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setSmallIcon(R.drawable.ic_event)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setContentTitle(eventTitle)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setContentText(eventLocation)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setContentIntent(viewPendingIntent)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .addAction(R.drawable.ic_map,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                getString(R.string.map), mapPendingIntent);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;br&gt;在手机上，这个动作显示为通知上附加的一个按钮。在手表上，这个动作显示为滑动通知后的大按钮。用户触发后，会在手机上调用关联的intent。&lt;/p&gt;
+&lt;h1 id=&quot;指定手表动作&quot;&gt;&lt;a href=&quot;#指定手表动作&quot; class=&quot;headerlink&quot; title=&quot;指定手表动作&quot;&gt;&lt;/a&gt;指定手表动作&lt;/h1&gt;&lt;p&gt;如果希望手表上的动作与手机不同。可以使用&lt;code&gt;WearableExtender.addAction()&lt;/code&gt;方法。一旦使用这个方法添加了动作，使用&lt;code&gt;NotificationCompat.Builder.addAction()&lt;/code&gt;添加的方法将都不会被手表显示。&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Create an intent for the reply action&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Intent actionIntent = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, ActionActivity.class);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;PendingIntent actionPendingIntent =&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        PendingIntent.getActivity(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;, actionIntent,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                PendingIntent.FLAG_UPDATE_CURRENT);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Create the action&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;NotificationCompat.Action action =&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; NotificationCompat.Action.Builder(R.drawable.ic_action,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                getString(R.string.label), actionPendingIntent)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .build();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Build the notification and add the action via WearableExtender&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Notification notification =&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; NotificationCompat.Builder(mContext)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .setSmallIcon(R.drawable.ic_message)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .setContentTitle(getString(R.string.title))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .setContentText(getString(R.string.content))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .extend(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; WearableExtender().addAction(action))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .build();&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h1 id=&quot;添加大视图&quot;&gt;&lt;a href=&quot;#添加大视图&quot; class=&quot;headerlink&quot; title=&quot;添加大视图&quot;&gt;&lt;/a&gt;添加大视图&lt;/h1&gt;&lt;p&gt;通过大视图可以在通知中插入扩展的文字内容。在手机上，用户可以展开通知来查看大视图的内容。而在手表上则是默认可见。&lt;/p&gt;
+&lt;p&gt;要添加扩展内容，调用&lt;code&gt;NotificationCompat.Builder&lt;/code&gt;的&lt;code&gt;setStyle()&lt;/code&gt; 方法，传入一个&lt;code&gt;BigTextStyle&lt;/code&gt;或&lt;code&gt;InboxStyle&lt;/code&gt;实例。&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Specify the &#39;big view&#39; content to display the long&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// event description that may not fit the normal content text.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;BigTextStyle bigStyle = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; NotificationCompat.BigTextStyle();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;bigStyle.bigText(eventDescription);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;NotificationCompat.Builder notificationBuilder =&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; NotificationCompat.Builder(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setSmallIcon(R.drawable.ic_event)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setLargeIcon(BitmapFactory.decodeResource(&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                getResources(), R.drawable.notif_background))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setContentTitle(eventTitle)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setContentText(eventLocation)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setContentIntent(viewPendingIntent)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .addAction(R.drawable.ic_map,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                getString(R.string.map), mapPendingIntent)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setStyle(bigStyle);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;通过&lt;code&gt;setLargeIcon()&lt;/code&gt;方法可以为任意的通知添加一个大图标。然而，这些图标在手表上显示为大的背景图片，因为缩放的原因会不太好看。&lt;/p&gt;
+&lt;h1 id=&quot;为通知添加手表功能&quot;&gt;&lt;a href=&quot;#为通知添加手表功能&quot; class=&quot;headerlink&quot; title=&quot;为通知添加手表功能&quot;&gt;&lt;/a&gt;为通知添加手表功能&lt;/h1&gt;&lt;p&gt;如果需要为通知添加手表专用的选项，比如指定获取用户的语言输入，可以调用&lt;code&gt;NotificationCompat.WearableExtender&lt;/code&gt;类来指定选项。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;创建&lt;code&gt;WearableExtender&lt;/code&gt;实例，设置选项；&lt;/li&gt;
+&lt;li&gt;创建&lt;code&gt;NotificationCompat.Builder&lt;/code&gt;实例，设置属性；&lt;/li&gt;
+&lt;li&gt;调用&lt;code&gt;extend()&lt;/code&gt;并传入&lt;code&gt;WearableExtender&lt;/code&gt;，应用手表的设置；&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;调用&lt;code&gt;build()&lt;/code&gt;来建造通知。&lt;/p&gt;
+ &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Create a WearableExtender to add functionality for wearables&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;NotificationCompat.WearableExtender wearableExtender =&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; NotificationCompat.WearableExtender()&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setHintHideIcon(&lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setBackground(mBitmap);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Create a NotificationCompat.Builder to build a standard notification&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// then extend it with the WearableExtender&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Notification notif = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; NotificationCompat.Builder(mContext)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setContentTitle(&lt;span class=&quot;string&quot;&gt;&quot;New mail from &quot;&lt;/span&gt; + sender)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setContentText(subject)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .setSmallIcon(R.drawable.new_mail)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .extend(wearableExtender)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .build();&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&quot;发送通知&quot;&gt;&lt;a href=&quot;#发送通知&quot; class=&quot;headerlink&quot; title=&quot;发送通知&quot;&gt;&lt;/a&gt;发送通知&lt;/h1&gt;&lt;p&gt;发送通知时，一定要使用&lt;code&gt;NotificationManagerCompat&lt;/code&gt;API而非&lt;code&gt;NotificationManager&lt;/code&gt;，以确保手表的功能能够正常使用。&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Get an instance of the NotificationManager service&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;NotificationManagerCompat notificationManager =&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        NotificationManagerCompat.from(mContext);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Issue the notification with notification manager.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;notificationManager.notify(notificationId, notif);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;I bought a moto 360 last year. But I seldom wear it, because it’s kind of useless. No app in Android Wear is irreplaceable. Many people never wears it in life because a cellphone is enough. So it’s necessary to develop a functional Wearable app whose performance is better in wearable devices than in cellphones.&lt;/p&gt;
+&lt;h1 id=&quot;Getting-Started&quot;&gt;&lt;a href=&quot;#Getting-Started&quot; class=&quot;headerlink&quot; title=&quot;Getting Started&quot;&gt;&lt;/a&gt;Getting Started&lt;/h1&gt;&lt;p&gt;首先来看 &lt;code&gt;Notification&lt;/code&gt;. 要创建同时发送到手表的手机通知，使用 &lt;code&gt;NotificationCompat.Builder&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;在gradle中引入需要的包：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;compile &amp;quot;com.android.support:support-v4:20.0.+&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;通知呈现在手机上时，用户触碰通知，调用&lt;code&gt;setContentIntent()&lt;/code&gt;指定的 &lt;code&gt;PendingIntent&lt;/code&gt; 。而在手表上，用户将通知滑动至左边以显示&lt;strong&gt;Open&lt;/strong&gt;动作，后者调用手机上的intent。&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="Android Wear" scheme="http://yoursite.com/tags/Android-Wear/"/>
+    
+  </entry>
   
   <entry>
     <title>testing</title>
@@ -1251,528 +1487,6 @@ public void setTitle(CharSequence title) {
     
     
       <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Notes on Content Providers (II) Creating a Content Provider</title>
-    <link href="http://yoursite.com/2015/11/16/notes-about-ContentProviders-2/"/>
-    <id>http://yoursite.com/2015/11/16/notes-about-ContentProviders-2/</id>
-    <published>2015-11-16T15:12:32.000Z</published>
-    <updated>2016-02-16T11:13:24.135Z</updated>
-    
-    <content type="html">&lt;h1 id=&quot;Before-You-Start-Building&quot;&gt;&lt;a href=&quot;#Before-You-Start-Building&quot; class=&quot;headerlink&quot; title=&quot;Before You Start Building&quot;&gt;&lt;/a&gt;Before You Start Building&lt;/h1&gt;&lt;p&gt;You need to build a content provider if you want to provide one or more of the following features:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;You want to offer complex data or files to other applications.&lt;/li&gt;
-&lt;li&gt;You want to allow users to copy complex data from your app into other apps.&lt;/li&gt;
-&lt;li&gt;You want to provide custom search suggestions using the search framework.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Follow these steps to build your provider:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Design the raw storage for your data. A content provider offers data in two ways:  File data or  “Structured” data.&lt;/li&gt;
-&lt;li&gt;Define a concrete implementation of the ContentProvider class and its required methods. &lt;/li&gt;
-&lt;li&gt;Define the provider’s authority string, its content URIs, and column names. If you want the provider’s application to handle intents, also define intent actions, extras data, and flags. Also define the permissions that you will require for applications that want to access your data. You should consider defining all of these values as constants in a separate contract class; later, you can expose this class to other developers.&lt;/li&gt;
-&lt;li&gt;Add other optional pieces, such as sample data or an implementation of &lt;code&gt;AbstractThreadedSyncAdapter&lt;/code&gt; that can synchronize data between the provider and cloud-based data.  &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;h1 id=&quot;Designing-Data-Storage&quot;&gt;&lt;a href=&quot;#Designing-Data-Storage&quot; class=&quot;headerlink&quot; title=&quot;Designing Data Storage&quot;&gt;&lt;/a&gt;Designing Data Storage&lt;/h1&gt;For working with network-based data, use classes in &lt;code&gt;java.net&lt;/code&gt; and &lt;code&gt;android.net&lt;/code&gt;. You can also synchronize network-based data to a local data store such as a database, and then offer the data as tables or files.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&quot;Data-design-considerations&quot;&gt;&lt;a href=&quot;#Data-design-considerations&quot; class=&quot;headerlink&quot; title=&quot;Data design considerations&quot;&gt;&lt;/a&gt;Data design considerations&lt;/h2&gt;&lt;p&gt;Table data should always have a “primary key” column that the provider maintains as a unique numeric value for each row. You can use this value to link the row to related rows in other tables (using it as a “foreign key”). Although you can use any name for this column, using &lt;code&gt;BaseColumns._ID&lt;/code&gt; is the best choice, because linking the results of a provider query to a &lt;code&gt;ListView&lt;/code&gt; requires one of the retrieved columns to have the name _ID&lt;code&gt;.&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;If you want to provide bitmap images or other very large pieces of file-oriented data, store the data in a file and then provide it indirectly rather than storing it directly in a table. If you do this, you need to tell users of your provider that they need to use a &lt;code&gt;ContentResolver&lt;/code&gt; file method to access the data.&lt;/p&gt;
-&lt;p&gt;Use the Binary Large OBject (BLOB) data type to store data that varies in size or has a varying structure. For example, you can use a BLOB column to store a protocol buffer or JSON structure. &lt;/p&gt;
-&lt;h1 id=&quot;Designing-Content-URIs&quot;&gt;&lt;a href=&quot;#Designing-Content-URIs&quot; class=&quot;headerlink&quot; title=&quot;Designing Content URIs&quot;&gt;&lt;/a&gt;Designing Content URIs&lt;/h1&gt;&lt;p&gt;Content URIs include the symbolic name of the entire provider (its authority) and a name that points to a table or file (a path). The optional id part points to an individual row in a table. &lt;/p&gt;
-&lt;h2 id=&quot;Designing-an-authority&quot;&gt;&lt;a href=&quot;#Designing-an-authority&quot; class=&quot;headerlink&quot; title=&quot;Designing an authority&quot;&gt;&lt;/a&gt;Designing an authority&lt;/h2&gt;&lt;p&gt;A provider usually has a single authority, which serves as its Android-internal name. To avoid conflicts with other providers, you should use Internet domain ownership (in reverse) as the basis of your provider authority. For example, if your Android package name is &lt;code&gt;com.example.&amp;lt;appname&amp;gt;&lt;/code&gt;, you should give your provider the authority &lt;code&gt;com.example.&amp;lt;appname&amp;gt;.provider&lt;/code&gt;. &lt;/p&gt;
-&lt;h2 id=&quot;Content-URI-patterns&quot;&gt;&lt;a href=&quot;#Content-URI-patterns&quot; class=&quot;headerlink&quot; title=&quot;Content URI patterns&quot;&gt;&lt;/a&gt;Content URI patterns&lt;/h2&gt;&lt;p&gt;To help you choose which action to take for an incoming content URI, the provider API includes the convenience class &lt;code&gt;UriMatcher&lt;/code&gt;, which maps content URI “patterns” to integer values. You can use the integer values in a switch statement that chooses the desired action for the content URI or URIs that match a particular pattern. &lt;/p&gt;
-&lt;p&gt;A content URI pattern matches content URIs using wildcard characters:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;*: Matches a string of any valid characters of any length.&lt;/li&gt;
-&lt;li&gt;#: Matches a string of numeric characters of any length.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The method &lt;code&gt;addURI()&lt;/code&gt; maps an authority and path to an integer value. The method &lt;code&gt;match()&lt;/code&gt; returns the integer value for a URI. A switch statement chooses between querying the entire table, and querying for a single record&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public class ExampleProvider extends ContentProvider {
-...
-    // Creates a UriMatcher object.
-    private static final UriMatcher sUriMatcher;
-...
-    /*
-     * The calls to addURI() go here, for all of the content URI patterns that the provider
-     * should recognize. For this snippet, only the calls for table 3 are shown.
-     */
-...
-    /*
-     * Sets the integer value for multiple rows in table 3 to 1. Notice that no wildcard is used
-     * in the path
-     */
-    sUriMatcher.addURI(&amp;quot;com.example.app.provider&amp;quot;, &amp;quot;table3&amp;quot;, 1);
-
-    /*
-     * Sets the code for a single row to 2. In this case, the &amp;quot;#&amp;quot; wildcard is
-     * used. &amp;quot;content://com.example.app.provider/table3/3&amp;quot; matches, but
-     * &amp;quot;content://com.example.app.provider/table3 doesn&amp;apos;t.
-     */
-    sUriMatcher.addURI(&amp;quot;com.example.app.provider&amp;quot;, &amp;quot;table3/#&amp;quot;, 2);
-...
-    // Implements ContentProvider.query()
-    public Cursor query(
-        Uri uri,
-        String[] projection,
-        String selection,
-        String[] selectionArgs,
-        String sortOrder) {
-...
-        /*
-         * Choose the table to query and a sort order based on the code returned for the incoming
-         * URI. Here, too, only the statements for table 3 are shown.
-         */
-        switch (sUriMatcher.match(uri)) {
-
-
-            // If the incoming URI was for all of table3
-            case 1:
-
-                if (TextUtils.isEmpty(sortOrder)) sortOrder = &amp;quot;_ID ASC&amp;quot;;
-                break;
-
-            // If the incoming URI was for a single row
-            case 2:
-
-                /*
-                 * Because this URI was for a single row, the _ID value part is
-                 * present. Get the last path segment from the URI; this is the _ID value.
-                 * Then, append the value to the WHERE clause for the query
-                 */
-                selection = selection + &amp;quot;_ID = &amp;quot; uri.getLastPathSegment();
-                break;
-
-            default:
-            ...
-                // If the URI is not recognized, you should do some error handling here.
-        }
-        // call the code to actually do the query
-    }
-&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&quot;Implementing-the-ContentProvider-Class&quot;&gt;&lt;a href=&quot;#Implementing-the-ContentProvider-Class&quot; class=&quot;headerlink&quot; title=&quot;Implementing the ContentProvider Class&quot;&gt;&lt;/a&gt;Implementing the ContentProvider Class&lt;/h1&gt;&lt;p&gt;All forms of access eventually call &lt;code&gt;ContentResolver&lt;/code&gt;, which then calls a concrete method of &lt;code&gt;ContentProvider&lt;/code&gt; to get access. &lt;/p&gt;
-&lt;h2 id=&quot;Required-methods&quot;&gt;&lt;a href=&quot;#Required-methods&quot; class=&quot;headerlink&quot; title=&quot;Required methods&quot;&gt;&lt;/a&gt;Required methods&lt;/h2&gt;&lt;p&gt;The abstract class &lt;code&gt;ContentProvider&lt;/code&gt; defines six abstract methods that you must implement as part of your own concrete subclass. All of these methods except &lt;code&gt;onCreate()&lt;/code&gt; are called by a client application that is attempting to access your content provider. Notice that these methods have the same signature as the identically-named &lt;code&gt;ContentResolver&lt;/code&gt; methods. &lt;/p&gt;
-&lt;p&gt;Your implementation of these methods should account for the following:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;All of these methods except &lt;code&gt;onCreate()&lt;/code&gt; can be called by multiple threads at once, so they must be thread-safe.&lt;/li&gt;
-&lt;li&gt;Avoid doing lengthy operations in &lt;code&gt;onCreate()&lt;/code&gt;. Defer initialization tasks until they are actually needed. The section Implementing the &lt;code&gt;onCreate()&lt;/code&gt; method discusses this in more detail.&lt;/li&gt;
-&lt;li&gt;Although you must implement these methods, your code does not have to do anything except return the expected data type. For example, you may want to prevent other applications from inserting data into some tables. To do this, you can ignore the call to &lt;code&gt;insert()&lt;/code&gt; and return 0.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;Implementing-the-query-method&quot;&gt;&lt;a href=&quot;#Implementing-the-query-method&quot; class=&quot;headerlink&quot; title=&quot;Implementing the query() method&quot;&gt;&lt;/a&gt;Implementing the query() method&lt;/h2&gt;&lt;p&gt;If you aren’t using an SQLite database as your data storage, use one of the concrete subclasses of &lt;code&gt;Cursor&lt;/code&gt;. &lt;/p&gt;
-&lt;p&gt;Remember that the Android system must be able to communicate the Exception across process boundaries. Android can do this for the following exceptions that may be useful in handling query errors:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;IllegalArgumentException&lt;/code&gt; (You may choose to throw this if your provider receives an invalid content URI)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;NullPointerException&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;Implementing-the-onCreate-method&quot;&gt;&lt;a href=&quot;#Implementing-the-onCreate-method&quot; class=&quot;headerlink&quot; title=&quot;Implementing the onCreate() method&quot;&gt;&lt;/a&gt;Implementing the onCreate() method&lt;/h2&gt;&lt;p&gt;You should perform only fast-running initialization tasks in this method, and defer database creation and data loading until the provider actually receives a request for the data.&lt;/p&gt;
-&lt;p&gt;For example, if you are using an SQLite database you can create a new &lt;code&gt;SQLiteOpenHelper&lt;/code&gt; object in &lt;code&gt;ContentProvider.onCreate()&lt;/code&gt;, and then create the SQL tables the first time you open the database. To facilitate this, the first time you call &lt;code&gt;getWritableDatabase()&lt;/code&gt;, it automatically calls the &lt;code&gt;SQLiteOpenHelper.onCreate()&lt;/code&gt; method. &lt;/p&gt;
-&lt;h1 id=&quot;Implementing-a-Contract-Class&quot;&gt;&lt;a href=&quot;#Implementing-a-Contract-Class&quot; class=&quot;headerlink&quot; title=&quot;Implementing a Contract Class&quot;&gt;&lt;/a&gt;Implementing a Contract Class&lt;/h1&gt;&lt;p&gt;A contract class is a public final class that contains constant definitions for the URIs, column names, MIME types, and other meta-data that pertain to the provider. &lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Before-You-Start-Building&quot;&gt;&lt;a href=&quot;#Before-You-Start-Building&quot; class=&quot;headerlink&quot; title=&quot;Before You Start Building&quot;&gt;&lt;/a&gt;Before You Start Building&lt;/h1&gt;&lt;p&gt;You need to build a content provider if you want to provide one or more of the following features:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;You want to offer complex data or files to other applications.&lt;/li&gt;
-&lt;li&gt;You want to allow users to copy complex data from your app into other apps.&lt;/li&gt;
-&lt;li&gt;You want to provide custom search suggestions using the search framework.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Follow these steps to build your provider:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Design the raw storage for your data. A content provider offers data in two ways:  File data or  “Structured” data.&lt;/li&gt;
-&lt;li&gt;Define a concrete implementation of the ContentProvider class and its required methods. &lt;/li&gt;
-&lt;li&gt;Define the provider’s authority string, its content URIs, and column names. If you want the provider’s application to handle intents, also define intent actions, extras data, and flags. Also define the permissions that you will require for applications that want to access your data. You should consider defining all of these values as constants in a separate contract class; later, you can expose this class to other developers.&lt;/li&gt;
-&lt;li&gt;Add other optional pieces, such as sample data or an implementation of &lt;code&gt;AbstractThreadedSyncAdapter&lt;/code&gt; that can synchronize data between the provider and cloud-based data.
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
-    
-      <category term="Content Provider" scheme="http://yoursite.com/tags/Content-Provider/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Notes on Content Providers (I) Content Provider Basics</title>
-    <link href="http://yoursite.com/2015/11/16/notes-about-ContentProviders/"/>
-    <id>http://yoursite.com/2015/11/16/notes-about-ContentProviders/</id>
-    <published>2015-11-16T14:03:55.000Z</published>
-    <updated>2016-02-16T11:27:07.717Z</updated>
-    
-    <content type="html">&lt;h1 id=&quot;Content-Provider-Basics&quot;&gt;&lt;a href=&quot;#Content-Provider-Basics&quot; class=&quot;headerlink&quot; title=&quot;Content Provider Basics&quot;&gt;&lt;/a&gt;Content Provider Basics&lt;/h1&gt;&lt;p&gt;A provider isn’t required to have a primary key, and it isn’t required to use &lt;code&gt;_ID&lt;/code&gt; as the column name of a primary key if one is present. However, if you want to bind data from a provider to a &lt;code&gt;ListView&lt;/code&gt;, one of the column names has to be &lt;code&gt;_ID&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;The &lt;code&gt;ContentResolver&lt;/code&gt; object in the client application’s process and the &lt;code&gt;ContentProvider&lt;/code&gt; object in the application that owns the provider automatically handle inter-process communication. &lt;code&gt;ContentProvider&lt;/code&gt; also acts as an abstraction layer between its repository of data and the external appearance of data as tables.&lt;/p&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;p&gt;A content URI is a URI that identifies data in a provider. Content URIs include the symbolic name of the entire provider (its authority) and a name that points to a table (a path). When you call a client method to access a table in a provider, the content URI for the table is one of the arguments.  &lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;content://user_dictionary/words
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;where the &lt;code&gt;user_dictionary&lt;/code&gt; string is the provider’s authority, and the words string is the table’s path. The string content:// (the scheme) is always present, and identifies this as a content URI. &lt;/p&gt;
-&lt;p&gt;Many providers allow you to access a single row in a table by appending an &lt;code&gt;ID&lt;/code&gt; value to the end of the URI. For example, to retrieve a row whose &lt;code&gt;_ID&lt;/code&gt; is 4 from user dictionary, you can use this content URI:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Uri singleUri = ContentUris.withAppendedId(UserDictionary.Words.CONTENT_URI,4);
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The &lt;code&gt;Uri&lt;/code&gt; and &lt;code&gt;Uri.Builder&lt;/code&gt; classes contain convenience methods for constructing well-formed URI objects from strings. The &lt;code&gt;ContentUris&lt;/code&gt; class contains convenience methods for appending id values to a URI. &lt;/p&gt;
-&lt;p&gt;In actual code, however, you should do queries asynchronously on a separate thread. One way to do this is to use the &lt;code&gt;CursorLoader&lt;/code&gt; class.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;// A &amp;quot;projection&amp;quot; defines the columns that will be returned for each row
-String[] mProjection =
-{
-    UserDictionary.Words._ID,    // Contract class constant for the _ID column name
-    UserDictionary.Words.WORD,   // Contract class constant for the word column name
-    UserDictionary.Words.LOCALE  // Contract class constant for the locale column name
-};
-
-// Defines a string to contain the selection clause
-String mSelectionClause = null;
-
-// Initializes an array to contain selection arguments
-String[] mSelectionArgs = {&amp;quot;&amp;quot;};
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The set of columns that the query should return is called a projection (the variable &lt;code&gt;mProjection&lt;/code&gt;).&lt;/p&gt;
-&lt;p&gt;The expression that specifies the rows to retrieve is split into a selection clause and selection arguments. The selection clause is a combination of logical and &lt;code&gt;Boolean&lt;/code&gt; expressions, column names, and values (the variable &lt;code&gt;mSelectionClause&lt;/code&gt;). If you specify the replaceable parameter ? instead of a value, the query method retrieves the value from the selection arguments array (the variable &lt;code&gt;mSelectionArgs&lt;/code&gt;). &lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;/*
- * This defines a one-element String array to contain the selection argument.
- */
-String[] mSelectionArgs = {&amp;quot;&amp;quot;};
-
-// Gets a word from the UI
-mSearchString = mSearchWord.getText().toString();
-
-// Remember to insert code here to check for invalid or malicious input.
-
-// If the word is the empty string, gets everything
-if (TextUtils.isEmpty(mSearchString)) {
-    // Setting the selection clause to null will return all words
-    mSelectionClause = null;
-    mSelectionArgs[0] = &amp;quot;&amp;quot;;
-
-} else {
-    // Constructs a selection clause that matches the word that the user entered.
-    mSelectionClause = UserDictionary.Words.WORD + &amp;quot; = ?&amp;quot;;
-
-    // Moves the user&amp;apos;s input string to the selection arguments.
-    mSelectionArgs[0] = mSearchString;
-
-}
-
-// Does a query against the table and returns a Cursor object
-mCursor = getContentResolver().query(
-    UserDictionary.Words.CONTENT_URI,  // The content URI of the words table
-    mProjection,                       // The columns to return for each row
-    mSelectionClause                   // Either null, or the word the user entered
-    mSelectionArgs,                    // Either empty, or the string the user entered
-    mSortOrder);                       // The sort order for the returned rows
-
-// Some providers return null if an error occurs, others throw an exception
-if (null == mCursor) {
-    /*
-     * Insert code here to handle the error. Be sure not to use the cursor! You may want to
-     * call android.util.Log.e() to log this error.
-     *
-     */
-// If the Cursor is empty, the provider found no matches
-} else if (mCursor.getCount() &amp;lt; 1) {
-
-    /*
-     * Insert code here to notify the user that the search was unsuccessful. This isn&amp;apos;t necessarily
-     * an error. You may want to offer the user the option to insert a new row, or re-type the
-     * search term.
-     */
-
-} else {
-    // Insert code here to do something with the results
-
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This query is analogous to the SQL statement:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;SELECT _ID, word, locale FROM words WHERE word = &amp;lt;userinput&amp;gt; ORDER BY word ASC;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;In this SQL statement, the actual column names are used instead of contract class constants. &lt;/p&gt;
-&lt;p&gt;Use a selection clause that uses &lt;code&gt;?&lt;/code&gt; as a replaceable parameter and a separate array of selection arguments. When you do this, the user input is bound directly to the query rather than being interpreted as part of an SQL statement. Because it’s not treated as SQL, the user input can’t inject malicious SQL.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;// Constructs a selection clause with a replaceable parameter
-String mSelectionClause =  &amp;quot;var = ?&amp;quot;;
-
-// Defines an array to contain the selection arguments
-String[] selectionArgs = {&amp;quot;&amp;quot;};
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;A selection clause that uses ? as a replaceable parameter and an array of selection arguments array are preferred way to specify a selection, even if the provider isn’t based on an SQL database. &lt;/p&gt;
-&lt;h2 id=&quot;Displaying-query-results&quot;&gt;&lt;a href=&quot;#Displaying-query-results&quot; class=&quot;headerlink&quot; title=&quot;Displaying query results&quot;&gt;&lt;/a&gt;Displaying query results&lt;/h2&gt;&lt;p&gt;If no rows match the selection criteria, the provider returns a &lt;code&gt;Cursor&lt;/code&gt; object for which &lt;code&gt;Cursor.getCount()&lt;/code&gt; is 0 (an empty cursor). &lt;/p&gt;
-&lt;p&gt;Since a &lt;code&gt;Cursor&lt;/code&gt; is a “list” of rows, a good way to display the contents of a &lt;code&gt;Cursor&lt;/code&gt; is to link it to a &lt;code&gt;ListView&lt;/code&gt; via a &lt;code&gt;SimpleCursorAdapter&lt;/code&gt;. &lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;// Defines a list of columns to retrieve from the Cursor and load into an output row
-String[] mWordListColumns =
-{
-    UserDictionary.Words.WORD,   // Contract class constant containing the word column name
-    UserDictionary.Words.LOCALE  // Contract class constant containing the locale column name
-};
-
-// Defines a list of View IDs that will receive the Cursor columns for each row
-int[] mWordListItems = { R.id.dictWord, R.id.locale};
-
-// Creates a new SimpleCursorAdapter
-mCursorAdapter = new SimpleCursorAdapter(
-    getApplicationContext(),               // The application&amp;apos;s Context object
-    R.layout.wordlistrow,                  // A layout in XML for one row in the ListView
-    mCursor,                               // The result from the query
-    mWordListColumns,                      // A string array of column names in the cursor
-    mWordListItems,                        // An integer array of view IDs in the row layout
-    0);                                    // Flags (usually none are needed)
-
-// Sets the adapter for the ListView
-mWordList.setAdapter(mCursorAdapter);
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Note: To back a &lt;code&gt;ListView&lt;/code&gt; with a &lt;code&gt;Cursor&lt;/code&gt;, the cursor must contain a column named _ID. Because of this, the query shown previously retrieves the &lt;code&gt;_ID&lt;/code&gt; column for the “words” table, even though the &lt;code&gt;ListView&lt;/code&gt; doesn’t display it. This restriction also explains why most providers have a _ID column for each of their tables. &lt;/p&gt;
-&lt;h2 id=&quot;Getting-data-from-query-results&quot;&gt;&lt;a href=&quot;#Getting-data-from-query-results&quot; class=&quot;headerlink&quot; title=&quot;Getting data from query results&quot;&gt;&lt;/a&gt;Getting data from query results&lt;/h2&gt;&lt;p&gt;Cursor implementations contain several “get” methods for retrieving different types of data from the object. For example, the previous snippet uses &lt;code&gt;getString()&lt;/code&gt;. They also have a &lt;code&gt;getType()&lt;/code&gt; method that returns a value indicating the data type of the column. &lt;/p&gt;
-&lt;h1 id=&quot;Inserting-Updating-and-Deleting-Data&quot;&gt;&lt;a href=&quot;#Inserting-Updating-and-Deleting-Data&quot; class=&quot;headerlink&quot; title=&quot;Inserting, Updating, and Deleting Data&quot;&gt;&lt;/a&gt;Inserting, Updating, and Deleting Data&lt;/h1&gt;&lt;h2 id=&quot;Inserting-data&quot;&gt;&lt;a href=&quot;#Inserting-data&quot; class=&quot;headerlink&quot; title=&quot;Inserting data&quot;&gt;&lt;/a&gt;Inserting data&lt;/h2&gt;&lt;p&gt;To insert data into a provider, you call the &lt;code&gt;ContentResolver.insert()&lt;/code&gt; method. This method inserts a new row into the provider and returns a content URI for that row. &lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;// Defines a new Uri object that receives the result of the insertion
-Uri mNewUri;
-
-...
-
-// Defines an object to contain the new values to insert
-ContentValues mNewValues = new ContentValues();
-
-/*
- * Sets the values of each column and inserts the word. The arguments to the &amp;quot;put&amp;quot;
- * method are &amp;quot;column name&amp;quot; and &amp;quot;value&amp;quot;
- */
-mNewValues.put(UserDictionary.Words.APP_ID, &amp;quot;example.user&amp;quot;);
-mNewValues.put(UserDictionary.Words.LOCALE, &amp;quot;en_US&amp;quot;);
-mNewValues.put(UserDictionary.Words.WORD, &amp;quot;insert&amp;quot;);
-mNewValues.put(UserDictionary.Words.FREQUENCY, &amp;quot;100&amp;quot;);
-
-mNewUri = getContentResolver().insert(
-    UserDictionary.Word.CONTENT_URI,   // the user dictionary content URI
-    mNewValues                          // the values to insert
-);
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The data for the new row goes into a single &lt;code&gt;ContentValues&lt;/code&gt; object, which is similar in form to a one-row cursor. The columns in this object don’t need to have the same data type, and if you don’t want to specify a value at all, you can set a column to null using &lt;code&gt;ContentValues.putNull()&lt;/code&gt;. &lt;/p&gt;
-&lt;p&gt;The snippet doesn’t add the _ID column, because this column is maintained automatically. The provider assigns a unique value of _ID to every row that is added. Providers usually use this value as the table’s primary key. &lt;/p&gt;
-&lt;p&gt;To get the value of _ID from the returned Uri, call &lt;code&gt;ContentUris.parseId()&lt;/code&gt;. &lt;/p&gt;
-&lt;h2 id=&quot;Updating-data&quot;&gt;&lt;a href=&quot;#Updating-data&quot; class=&quot;headerlink&quot; title=&quot;Updating data&quot;&gt;&lt;/a&gt;Updating data&lt;/h2&gt;&lt;p&gt;To update a row, you use a &lt;code&gt;ContentValues&lt;/code&gt; object with the updated values just as you do with an insertion, and selection criteria just as you do with a query. The client method you use is &lt;code&gt;ContentResolver.update()&lt;/code&gt;.&lt;/p&gt;
-&lt;h2 id=&quot;Deleting-data&quot;&gt;&lt;a href=&quot;#Deleting-data&quot; class=&quot;headerlink&quot; title=&quot;Deleting data&quot;&gt;&lt;/a&gt;Deleting data&lt;/h2&gt;&lt;p&gt;Deleting rows is similar to retrieving row data: you specify selection criteria for the rows you want to delete and the client method returns the number of deleted rows. &lt;/p&gt;
-&lt;h1 id=&quot;Provider-Data-Types&quot;&gt;&lt;a href=&quot;#Provider-Data-Types&quot; class=&quot;headerlink&quot; title=&quot;Provider Data Types&quot;&gt;&lt;/a&gt;Provider Data Types&lt;/h1&gt;&lt;p&gt;Providers also maintain MIME data type information for each content URI they define. You can use the MIME type information to find out if your application can handle data that the provider offers, or to choose a type of handling based on the MIME type. You usually need the MIME type when you are working with a provider that contains complex data structures or files.&lt;/p&gt;
-&lt;p&gt;To get the MIME type corresponding to a content URI, call &lt;code&gt;ContentResolver.getType()&lt;/code&gt;. &lt;/p&gt;
-&lt;h1 id=&quot;Alternative-Forms-of-Provider-Access&quot;&gt;&lt;a href=&quot;#Alternative-Forms-of-Provider-Access&quot; class=&quot;headerlink&quot; title=&quot;Alternative Forms of Provider Access&quot;&gt;&lt;/a&gt;Alternative Forms of Provider Access&lt;/h1&gt;&lt;p&gt;Three alternative forms of provider access are important in application development:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Batch access: You can create a batch of access calls with methods in the &lt;code&gt;ContentProviderOperation&lt;/code&gt; class, and then apply them with &lt;code&gt;ContentResolver.applyBatch()&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Asynchronous queries: You should do queries in a separate thread. One way to do this is to use a &lt;code&gt;CursorLoader&lt;/code&gt; object. The examples in the Loaders guide demonstrate how to do this.&lt;/li&gt;
-&lt;li&gt;Data access via intents: Although you can’t send an intent directly to a provider, you can send an intent to the provider’s application, which is usually the best-equipped to modify the provider’s data.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&quot;Contract-Classes&quot;&gt;&lt;a href=&quot;#Contract-Classes&quot; class=&quot;headerlink&quot; title=&quot;Contract Classes&quot;&gt;&lt;/a&gt;Contract Classes&lt;/h1&gt;&lt;p&gt;A contract class defines constants that help applications work with the content URIs, column names, intent actions, and other features of a content provider. Contract classes are not included automatically with a provider; the provider’s developer has to define them and then make them available to other developers. &lt;/p&gt;
-&lt;h1 id=&quot;MIME-Type-Reference&quot;&gt;&lt;a href=&quot;#MIME-Type-Reference&quot; class=&quot;headerlink&quot; title=&quot;MIME Type Reference&quot;&gt;&lt;/a&gt;MIME Type Reference&lt;/h1&gt;&lt;p&gt;Content providers can return standard MIME media types, or custom MIME type strings, or both.&lt;/p&gt;
-&lt;p&gt;MIME types have the format&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;type/subtype
-&lt;/code&gt;&lt;/pre&gt;</content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Content-Provider-Basics&quot;&gt;&lt;a href=&quot;#Content-Provider-Basics&quot; class=&quot;headerlink&quot; title=&quot;Content Provider Basics&quot;&gt;&lt;/a&gt;Content Provider Basics&lt;/h1&gt;&lt;p&gt;A provider isn’t required to have a primary key, and it isn’t required to use &lt;code&gt;_ID&lt;/code&gt; as the column name of a primary key if one is present. However, if you want to bind data from a provider to a &lt;code&gt;ListView&lt;/code&gt;, one of the column names has to be &lt;code&gt;_ID&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;The &lt;code&gt;ContentResolver&lt;/code&gt; object in the client application’s process and the &lt;code&gt;ContentProvider&lt;/code&gt; object in the application that owns the provider automatically handle inter-process communication. &lt;code&gt;ContentProvider&lt;/code&gt; also acts as an abstraction layer between its repository of data and the external appearance of data as tables.&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
-    
-      <category term="Content Provider" scheme="http://yoursite.com/tags/Content-Provider/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Notes on the Activity Lifecycle</title>
-    <link href="http://yoursite.com/2015/11/16/notes-about-the-activity-lifecycle/"/>
-    <id>http://yoursite.com/2015/11/16/notes-about-the-activity-lifecycle/</id>
-    <published>2015-11-16T12:52:33.000Z</published>
-    <updated>2016-02-16T10:04:38.975Z</updated>
-    
-    <content type="html">&lt;h1 id=&quot;Starting-an-Activity&quot;&gt;&lt;a href=&quot;#Starting-an-Activity&quot; class=&quot;headerlink&quot; title=&quot;Starting an Activity&quot;&gt;&lt;/a&gt;Starting an Activity&lt;/h1&gt;&lt;p&gt;Technically, the activity becomes visible to the user when &lt;code&gt;onStart()&lt;/code&gt; is called, but &lt;code&gt;onResume()&lt;/code&gt; quickly follows and the activity remains in the Resumed state until something occurs to change that, such as when a phone call is received, the user navigates to another activity, or the device screen turns off.&lt;/p&gt;
-&lt;p&gt;Most apps don’t need to implement this method because local class references are destroyed with the activity and your activity should perform most cleanup during &lt;code&gt;onPause()&lt;/code&gt; and &lt;code&gt;onStop()&lt;/code&gt;. However, if your activity includes background threads that you created during &lt;code&gt;onCreate()&lt;/code&gt; or other long-running resources that could potentially leak memory if not properly closed, you should kill them during &lt;code&gt;onDestroy()&lt;/code&gt;.&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;The system calls &lt;code&gt;onDestroy()&lt;/code&gt; after it has already called &lt;code&gt;onPause()&lt;/code&gt; and &lt;code&gt;onStop()&lt;/code&gt; in all situations except one: when you call &lt;code&gt;finish()&lt;/code&gt; from within the &lt;code&gt;onCreate()&lt;/code&gt; method. In some cases, such as when your activity operates as a temporary decision maker to launch another activity, you might call &lt;code&gt;finish()&lt;/code&gt; from within &lt;code&gt;onCreate()&lt;/code&gt; to destroy the activity. In this case, the system immediately calls &lt;code&gt;onDestroy()&lt;/code&gt; without calling any of the other lifecycle methods.&lt;/p&gt;
-&lt;h1 id=&quot;Pausing-and-Resuming-an-Activity&quot;&gt;&lt;a href=&quot;#Pausing-and-Resuming-an-Activity&quot; class=&quot;headerlink&quot; title=&quot;Pausing and Resuming an Activity&quot;&gt;&lt;/a&gt;Pausing and Resuming an Activity&lt;/h1&gt;&lt;p&gt;When the system calls &lt;code&gt;onPause()&lt;/code&gt; for your activity, it technically means your activity is still partially visible, but most often is an indication that the user is leaving the activity and it will soon enter the Stopped state. You should usually use the &lt;code&gt;onPause()&lt;/code&gt; callback to:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Stop animations or other ongoing actions that could consume CPU.&lt;/li&gt;
-&lt;li&gt;Commit unsaved changes, but only if users expect such changes to be permanently saved when they leave (such as a draft email).&lt;/li&gt;
-&lt;li&gt;Release system resources, such as broadcast receivers, handles to sensors (like GPS), or any resources that may affect battery life while your activity is paused and the user does not need them.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Notice that no matter what scenario causes the activity to stop, the system always calls &lt;code&gt;onPause()&lt;/code&gt; before calling &lt;code&gt;onStop()&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;However, you should avoid performing CPU-intensive work during &lt;code&gt;onPause()&lt;/code&gt;, such as writing to a database, because it can slow the visible transition to the next activity (you should instead perform heavy-load shutdown operations during &lt;code&gt;onStop()&lt;/code&gt;).&lt;/p&gt;
-&lt;h1 id=&quot;Stopping-and-Restarting-an-Activity&quot;&gt;&lt;a href=&quot;#Stopping-and-Restarting-an-Activity&quot; class=&quot;headerlink&quot; title=&quot;Stopping and Restarting an Activity&quot;&gt;&lt;/a&gt;Stopping and Restarting an Activity&lt;/h1&gt;&lt;p&gt;When your activity receives a call to the &lt;code&gt;onStop()&lt;/code&gt; method, it’s no longer visible and should release almost all resources that aren’t needed while the user is not using it. Once your activity is stopped, the system might destroy the instance if it needs to recover system memory. In extreme cases, the system might simply kill your app process without calling the activity’s final &lt;code&gt;onDestroy()&lt;/code&gt; callback, so it’s important you use &lt;code&gt;onStop()&lt;/code&gt; to release resources that might leak memory.&lt;/p&gt;
-&lt;p&gt;When your activity is stopped, the Activity object is kept resident in memory and is recalled when the activity resumes. You don’t need to re-initialize components that were created during any of the callback methods leading up to the Resumed state. The system also keeps track of the current state for each View in the layout, so if the user entered text into an &lt;code&gt;EditText&lt;/code&gt; widget, that content is retained so you don’t need to save and restore it.&lt;/p&gt;
-&lt;p&gt;For this reason, you should usually use the &lt;code&gt;onStart()&lt;/code&gt; callback method as the counterpart to the &lt;code&gt;onStop()&lt;/code&gt; method, because the system calls &lt;code&gt;onStart()&lt;/code&gt;both when it creates your activity and when it restarts the activity from the stopped state.&lt;/p&gt;
-&lt;h1 id=&quot;Recreating-an-Activity&quot;&gt;&lt;a href=&quot;#Recreating-an-Activity&quot; class=&quot;headerlink&quot; title=&quot;Recreating an Activity&quot;&gt;&lt;/a&gt;Recreating an Activity&lt;/h1&gt;&lt;p&gt;However, if the system destroys the activity due to system constraints (rather than normal app behavior), then although the actual Activity instance is gone, the system remembers that it existed such that if the user navigates back to it, the system creates a new instance of the activity using a set of saved data that describes the state of the activity when it was destroyed. The saved data that the system uses to restore the previous state is called the “instance state” and is a collection of key-value pairs stored in a Bundle object.&lt;/p&gt;
-&lt;p&gt;So, if your activity instance is destroyed and recreated, the state of the layout is restored to its previous state with no code required by you. However, your activity might have more state information that you’d like to restore, such as member variables that track the user’s progress in the activity.&lt;/p&gt;
-&lt;p&gt;If the system must recreate the activity instance later, it passes the same &lt;code&gt;Bundle&lt;/code&gt; object to both the &lt;code&gt;onRestoreInstanceState()&lt;/code&gt; and &lt;code&gt;onCreate()&lt;/code&gt; methods.&lt;/p&gt;
-&lt;p&gt;The default implementation of this method saves information about the state of the activity’s view hierarchy, such as the text in an &lt;code&gt;EditText&lt;/code&gt; widget or the scroll position of a &lt;code&gt;ListView&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;Instead of restoring the state during &lt;code&gt;onCreate()&lt;/code&gt; you may choose to implement &lt;code&gt;onRestoreInstanceState()&lt;/code&gt;, which the system calls after the &lt;code&gt;onStart()&lt;/code&gt; method. The system calls &lt;code&gt;onRestoreInstanceState()&lt;/code&gt; only if there is a saved state to restore, so you do not need to check whether the &lt;code&gt;Bundle&lt;/code&gt; is null.&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Starting-an-Activity&quot;&gt;&lt;a href=&quot;#Starting-an-Activity&quot; class=&quot;headerlink&quot; title=&quot;Starting an Activity&quot;&gt;&lt;/a&gt;Starting an Activity&lt;/h1&gt;&lt;p&gt;Technically, the activity becomes visible to the user when &lt;code&gt;onStart()&lt;/code&gt; is called, but &lt;code&gt;onResume()&lt;/code&gt; quickly follows and the activity remains in the Resumed state until something occurs to change that, such as when a phone call is received, the user navigates to another activity, or the device screen turns off.&lt;/p&gt;
-&lt;p&gt;Most apps don’t need to implement this method because local class references are destroyed with the activity and your activity should perform most cleanup during &lt;code&gt;onPause()&lt;/code&gt; and &lt;code&gt;onStop()&lt;/code&gt;. However, if your activity includes background threads that you created during &lt;code&gt;onCreate()&lt;/code&gt; or other long-running resources that could potentially leak memory if not properly closed, you should kill them during &lt;code&gt;onDestroy()&lt;/code&gt;.&lt;br&gt;
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>An Encoding Problem in Clion</title>
-    <link href="http://yoursite.com/2015/11/11/clion-encoding/"/>
-    <id>http://yoursite.com/2015/11/11/clion-encoding/</id>
-    <published>2015-11-11T15:52:20.000Z</published>
-    <updated>2016-02-16T11:29:45.153Z</updated>
-    
-    <content type="html">&lt;p&gt;Clion is a great IDE of C/C++, made by JetBrain. But I found a problem that when the output of console is Chinese, it can’t be displayed correctly.&lt;/p&gt;
-&lt;p&gt;I tried to use the same method as Intellij IDEA, changing the encoding from GBK to UTF-8 at the right bottom corner. However, it didn’t work like IDEA 14.&lt;/p&gt;
-&lt;p&gt;After a lot of attempts modifying different settings, I have found the solution: In &lt;code&gt;File &amp;gt; Settings &amp;gt; Editor &amp;gt; File Encoding&lt;/code&gt;, modify both &lt;code&gt;IDE Encoding&lt;/code&gt; and &lt;code&gt;Project Encoding&lt;/code&gt; into UTF-8. After applied, click the console dock and then change the right bottom corner from UTF-8 to GBK. Then the console can output Chinese now.&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Clion is a great IDE of C/C++, made by JetBrain. But I found a problem that when the output of console is Chinese, it can’t be displayed 
-    
-    </summary>
-    
-    
-      <category term="Clion" scheme="http://yoursite.com/tags/Clion/"/>
-    
-      <category term="Encoding" scheme="http://yoursite.com/tags/Encoding/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Layout and Animation with Both Top &amp; Bottom Bars</title>
-    <link href="http://yoursite.com/2015/10/21/top-bottom-toolbar/"/>
-    <id>http://yoursite.com/2015/10/21/top-bottom-toolbar/</id>
-    <published>2015-10-21T14:10:58.000Z</published>
-    <updated>2015-10-21T15:05:53.869Z</updated>
-    
-    <content type="html">&lt;p&gt;Some apps have a layout containing both a top Toolbar/Actionbar and a bottom toolbar-like view. And when you scroll a &lt;code&gt;RecyclerView&lt;/code&gt;, both the top and bottom toolbar will enter/exit the screen with animation.&lt;/p&gt;
-&lt;p&gt;It’s not difficult for the top toolbar. The solution is using &lt;code&gt;CoordinatorLayout&lt;/code&gt; in the android material design library with a &lt;code&gt;Toolbar&lt;/code&gt; and a &lt;code&gt;RecyclerView&lt;/code&gt;. If the &lt;code&gt;RecyclerView&lt;/code&gt; is added dynamically at runtime, you can add a &lt;code&gt;FrameLayout&lt;/code&gt; as the container, and set scroll flags on it.&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;br&gt;For the bottom bar, the same approach of the top one does not work correctly. There may be lots of bugs. The solution is to use a custom layout like a &lt;code&gt;LinearLayout&lt;/code&gt;, and set &lt;code&gt;CoordinatorLayout.Behavior&lt;/code&gt; on it, which will make the layout cooperates with the &lt;code&gt;CoordinatorLayout&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;The activity xml:&lt;/strong&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;android.support.design.widget.CoordinatorLayout
-    android:layout_width=&amp;quot;match_parent&amp;quot;
-    android:layout_height=&amp;quot;match_parent&amp;quot;
-    xmlns:app=&amp;quot;http://schemas.android.com/apk/res-auto&amp;quot;
-    xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;&amp;gt;
-
-    &amp;lt;android.support.design.widget.AppBarLayout
-        android:layout_width=&amp;quot;match_parent&amp;quot;
-        android:layout_height=&amp;quot;wrap_content&amp;quot;&amp;gt;
-
-        &amp;lt;android.support.v7.widget.Toolbar
-            android:id=&amp;quot;@+id/top_toolbar&amp;quot;
-            android:layout_width=&amp;quot;fill_parent&amp;quot;
-            android:layout_height=&amp;quot;wrap_content&amp;quot;
-            app:layout_scrollFlags=&amp;quot;scroll|enterAlways&amp;quot; /&amp;gt;
-
-    &amp;lt;/android.support.design.widget.AppBarLayout&amp;gt;
-
-    &amp;lt;FrameLayout
-        android:layout_width=&amp;quot;fill_parent&amp;quot;
-        android:orientation=&amp;quot;vertical&amp;quot;
-        app:layout_behavior=&amp;quot;@string/appbar_scrolling_view_behavior&amp;quot;
-        android:id=&amp;quot;@+id/recycler_view_container&amp;quot;
-        android:layout_height=&amp;quot;fill_parent&amp;quot;/&amp;gt;
-
-    &amp;lt;LinearLayout
-        android:id=&amp;quot;@+id/bottom_bar&amp;quot;
-        android:layout_width=&amp;quot;match_parent&amp;quot;
-        android:orientation=&amp;quot;horizontal&amp;quot;
-        android:layout_height=&amp;quot;wrap_content&amp;quot;
-        android:layout_gravity=&amp;quot;bottom&amp;quot;
-        app:layout_behavior=&amp;quot;*THE_FULL_PACKAGE_NAME*.LinearLayoutBehavior &amp;quot;&amp;gt;
-        &amp;lt;!-- child views --&amp;gt;
-    &amp;lt;/LinearLayout&amp;gt;
-
-&amp;lt;/android.support.design.widget.CoordinatorLayout&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;The &lt;code&gt;Behavior&lt;/code&gt; class:&lt;/strong&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public class LinearLayoutBehavior extends CoordinatorLayout.Behavior&amp;lt;LinearLayout&amp;gt; {
-    private static final Interpolator INTERPOLATOR = new FastOutSlowInInterpolator();
-    private boolean mIsAnimatingOut = false;
-
-    public LinearLayoutBehavior(Context context, AttributeSet attrs) {
-        super();
-    }
-
-    @Override
-    public boolean onStartNestedScroll(final CoordinatorLayout coordinatorLayout, final LinearLayout child,
-                                       final View directTargetChild, final View target, final int nestedScrollAxes) {
-        return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL
-                || super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target, nestedScrollAxes);
-    }
-
-    @Override
-    public void onNestedScroll(final CoordinatorLayout coordinatorLayout, final LinearLayout child,
-                               final View target, final int dxConsumed, final int dyConsumed,
-                               final int dxUnconsumed, final int dyUnconsumed) {
-        super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
-        if (dyConsumed &amp;gt; 0 &amp;amp;&amp;amp; !this.mIsAnimatingOut &amp;amp;&amp;amp; child.getVisibility() == View.VISIBLE) {
-            // User scrolled down and the FAB is currently visible -&amp;gt; hide the FAB
-            animateOut(child);
-        } else if (dyConsumed &amp;lt; 0 &amp;amp;&amp;amp; child.getVisibility() != View.VISIBLE) {
-            // User scrolled up and the FAB is currently not visible -&amp;gt; show the FAB
-            animateIn(child);
-        }
-    }
-
-    private void animateOut(final LinearLayout linearLayout) {
-        if (Build.VERSION.SDK_INT &amp;gt;= 14) {
-            ViewCompat.animate(linearLayout).translationY(168F).alpha(0.0F).setInterpolator(INTERPOLATOR).withLayer()
-                    .setListener(new ViewPropertyAnimatorListener() {
-                        public void onAnimationStart(View view) {
-                            LinearLayoutBehavior.this.mIsAnimatingOut = true;
-                        }
-
-                        public void onAnimationCancel(View view) {
-                            LinearLayoutBehavior.this.mIsAnimatingOut = false;
-                        }
-
-                        public void onAnimationEnd(View view) {
-                            LinearLayoutBehavior.this.mIsAnimatingOut = false;
-                            view.setVisibility(View.GONE);
-                        }
-                    }).start();
-        } else {
-            Animation anim = AnimationUtils.loadAnimation(linearLayout.getContext(), R.anim.fab_out);
-            anim.setInterpolator(INTERPOLATOR);
-            anim.setDuration(200L);
-            anim.setAnimationListener(new Animation.AnimationListener() {
-                public void onAnimationStart(Animation animation) {
-                    LinearLayoutBehavior.this.mIsAnimatingOut = true;
-                }
-
-                public void onAnimationEnd(Animation animation) {
-                    LinearLayoutBehavior.this.mIsAnimatingOut = false;
-                    linearLayout.setVisibility(View.GONE);
-                }
-
-                @Override
-                public void onAnimationRepeat(final Animation animation) {
-                }
-            });
-            linearLayout.startAnimation(anim);
-        }
-    }
-
-    private void animateIn(LinearLayout linearLayout) {
-        linearLayout.setVisibility(View.VISIBLE);
-        if (Build.VERSION.SDK_INT &amp;gt;= 14) {
-            ViewCompat.animate(linearLayout).translationY(0).scaleX(1.0F).scaleY(1.0F).alpha(1.0F)
-                    .setInterpolator(INTERPOLATOR).withLayer().setListener(null)
-                    .start();
-        } else {
-            Animation anim = AnimationUtils.loadAnimation(linearLayout.getContext(), R.anim.fab_in);
-            anim.setDuration(200L);
-            anim.setInterpolator(INTERPOLATOR);
-            linearLayout.startAnimation(anim);
-        }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Some apps have a layout containing both a top Toolbar/Actionbar and a bottom toolbar-like view. And when you scroll a &lt;code&gt;RecyclerView&lt;/code&gt;, both the top and bottom toolbar will enter/exit the screen with animation.&lt;/p&gt;
-&lt;p&gt;It’s not difficult for the top toolbar. The solution is using &lt;code&gt;CoordinatorLayout&lt;/code&gt; in the android material design library with a &lt;code&gt;Toolbar&lt;/code&gt; and a &lt;code&gt;RecyclerView&lt;/code&gt;. If the &lt;code&gt;RecyclerView&lt;/code&gt; is added dynamically at runtime, you can add a &lt;code&gt;FrameLayout&lt;/code&gt; as the container, and set scroll flags on it.&lt;br&gt;
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
-    
-      <category term="Material Design" scheme="http://yoursite.com/tags/Material-Design/"/>
     
   </entry>
   
