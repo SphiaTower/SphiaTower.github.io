@@ -224,6 +224,361 @@
             
               
                 
+                <a class="post-title-link" href="/2015/09/07/creating-a-bound-service-2/" itemprop="url">
+                  Service学习笔记（七） 绑定Service（续）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-07T21:33:53+08:00" content="2015-09-07">
+              2015-09-07
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>上一篇已经基本介绍完毕了绑定Service的主要内容，这一篇来补充一下其他需要注意的问题。  </p>
+<h2 id="与生命周期相配合"><a href="#与生命周期相配合" class="headerlink" title="与生命周期相配合"></a>与生命周期相配合</h2><p>将绑定和解绑的过程与客户端生命周期的产生和销毁相配合，比如：  </p>
+<ul>
+<li>如果只在activity可见时与服务交互，应该在<code>onStart()</code>中绑定，在<code>onStop()</code>中解绑。</li>
+<li>如果希望activity停止在后台的时候也可以接受响应，可以在<code>onCreate()</code>中绑定，在<code>onDestroy()</code>中解绑。注意，这意味着activity整个运行期间（包括在后台）都需要使用服务，如果服务在不同的进程中，那个进程的权重会被增加，会更容易被系统杀掉。</li>
+<li><strong>不可以</strong>在activity的<code>onResume()</code>和<code>onPause()</code>期间绑定或者解绑，因为这两个回调在所有生命周期变化中都会发生，而在这些变化中执行的处理应该尽量做到最小。如果应用中多个activity绑定同一个service，在切换activity时，前一个activity解绑而后一个还没有绑定时，服务可能被销毁重建。
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/07/creating-a-bound-service-2/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/06/creating-a-bound-service/" itemprop="url">
+                  Service学习笔记（六） 绑定Service
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-06T21:37:07+08:00" content="2015-09-06">
+              2015-09-06
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="创建绑定的Service"><a href="#创建绑定的Service" class="headerlink" title="创建绑定的Service"></a>创建绑定的Service</h2><p>绑定的服务是指允许应用组件通过调用<code>bindService()</code>来绑定的服务，可以创建一个长期维持的连接（通常不允许调用<code>startService()</code>启动。<br>当需要使用Activity或者其他组件与服务进行互动的时候，或者是通过IPC将应用的一部分功能暴露给其他应用的时候，适合创建绑定的服务。<br>创建绑定的服务时，必须实现<code>onBind()</code>回调方法以返回一个定义了与服务通讯接口的<code>IBinder</code>。其他应用可以通过调用<code>bindService()</code>方法来获取这个接口，并调用服务中的方法。这种service仅仅为了绑定的控件而服务，所以一旦没有控件绑定，系统会立即将其销毁（无需像在启动模式一样手动停止服务）。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/06/creating-a-bound-service/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/06/python-builder-pattern/" itemprop="url">
+                  Python的默认参数陷阱与Builder模式
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-06T19:14:08+08:00" content="2015-09-06">
+              2015-09-06
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>上一篇探讨了Java和C#值传递和引用传递的问题，写完后又想起了Python的问题。作为一个动态类型的脚本语言，Python的情况似乎更加复杂一些，这里先按下不表，来看一下Python默认参数的一个小问题。<br>提到Python的默认参数陷阱，很多人都会想到那个经典list作为默认参数的问题。默认参数每次被使用后，list都会发生变化，导致函数每次返回的结果都不同。而这里要讨论的是另外一个问题：使用变量作为默认参数的问题。  </p>
+<h2 id="默认参数值的陷阱"><a href="#默认参数值的陷阱" class="headerlink" title="默认参数值的陷阱"></a>默认参数值的陷阱</h2><p>前一阵子，在写一个小型的Python项目时，遇到了这个问题。在项目中，经常在不同地方多次创建同一个类的实例，而所有实例的某个属性可能完全相同（但可能变化），比如：<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/06/python-builder-pattern/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/06/java-passing-value/" itemprop="url">
+                  Java的值传递与C#的ref/out
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-06T19:03:27+08:00" content="2015-09-06">
+              2015-09-06
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>最近用到了一个C#写成的桌面程序，并需要对其修改。C#作为一个静态的高级语言，很多特征与Java类似，当然也有大量的不同。在看代码时，发现有的函数签名的参数中出现了<code>out</code>关键字，便搜索了一下，结果得知这个关键字涉及了值传递与引用传递的问题。要学习明白这个关键字，首先要理解值传递和引用传递的问题，不妨先从更加熟悉的Java入手。  </p>
+<h2 id="Java的传递方式"><a href="#Java的传递方式" class="headerlink" title="Java的传递方式"></a>Java的传递方式</h2><p>乍一看，很容易认为Java使用引用传递，原因是Java中无处不在的“引用”，<code>Reference</code>。在Java中，可以将一个引用传入方法，在方法中修改对象的属性，比如：  </p>
+<pre><code>static void paintWhite(Car car){
+    car.setColor(Color.WHITE);
+}
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/06/java-passing-value/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/09/06/context-leak/" itemprop="url">
                   安卓内存泄露问题（一） Handler
                 </a>
@@ -742,104 +1097,12 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/04/hello-world/" itemprop="url">
-                  Hello World
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-04T16:00:00+08:00" content="2015-09-04">
-              2015-09-04
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -880,7 +1143,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">87</span>
+              <span class="site-state-item-count">91</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

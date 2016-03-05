@@ -2,16 +2,44 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/03/05/wear-dev-8/</loc>
+    
+    <lastmod>2016-03-05T06:42:42.348Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/03/05/wear-dev-7/</loc>
+    
+    <lastmod>2016-03-05T06:28:17.862Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/03/05/wear-dev-6/</loc>
+    
+    <lastmod>2016-03-05T03:32:02.668Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/03/02/wear-dev-5/</loc>
     
-    <lastmod>2016-03-02T15:08:43.000Z</lastmod>
+    <lastmod>2016-03-05T03:09:36.898Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/03/05/check-savedStateInstance-when-adding-frag/</loc>
+    
+    <lastmod>2016-03-05T03:05:28.120Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://yoursite.com/2016/02/27/Wear-Dev-4/</loc>
     
-    <lastmod>2016-03-02T00:45:36.261Z</lastmod>
+    <lastmod>2016-03-02T15:11:40.018Z</lastmod>
     
   </url>
   

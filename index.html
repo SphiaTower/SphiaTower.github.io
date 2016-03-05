@@ -224,8 +224,361 @@
             
               
                 
+                <a class="post-title-link" href="/2016/03/05/wear-dev-8/" itemprop="url">
+                  Android Wear 开发 （八） 添加语音功能
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-05T14:28:29+08:00" content="2016-03-05">
+              2016-03-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Wear提供两种语音动作：</p>
+<ul>
+<li>系统提供的：这些语音动作基于任务，并内置在Wear平台。在想要启动的activity中过滤出他们，比如“记笔记”或者“设定闹铃”。</li>
+<li>应用提供的：这些语音动作基于应用，声明他们就像启动图标一样。用户说“启动 ”来使用语音动作并启动一个指定的activity。
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/05/wear-dev-8/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/05/wear-dev-7/" itemprop="url">
+                  Android Wear 开发 （七） 保持应用可见
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-05T11:32:23+08:00" content="2016-03-05">
+              2016-03-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>一些手表应用需要对用户一直保持可见。比如，正在跑步的用户可以看一眼手表以知道跑过的距离和时间。在超市购物时，记录了购物清单后，可以很快地看一眼还有那些清单上还有那些没有购买。制作一个一直可见的应用会减少电池寿命，所以添加这个功能时一定要谨慎。</p>
+<p>Android Wear允许应用保留在前台，同时节省电源。应用可以在手表进入低功耗环境模式的同时，控制手表屏幕显示的内容。同时运行在环境模式和交互模式的应用称作常驻应用。</p>
+<h1 id="启用Ambient模式"><a href="#启用Ambient模式" class="headerlink" title="启用Ambient模式"></a>启用Ambient模式</h1><p>完成项目配置后，继承<code>WearableActivity</code>，他提供了可以启用环境模式的所有方法。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/05/wear-dev-7/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/05/wear-dev-6/" itemprop="url">
+                  Android Wear 开发 （六） 创建自定义布局
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-05T11:10:05+08:00" content="2016-03-05">
+              2016-03-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="使用手表UI库创建布局"><a href="#使用手表UI库创建布局" class="headerlink" title="使用手表UI库创建布局"></a>使用手表UI库创建布局</h1><p>在Android Studio中应用向导创建应用时会自动引入手表UI库。此外也可以在<code>build.gradle</code>中手动添加依赖声明：</p>
+<pre><code>dependencies {
+    compile fileTree(dir: &apos;libs&apos;, include: [&apos;*.jar&apos;])
+    compile &apos;com.google.android.support:wearable:+&apos;
+    compile &apos;com.google.android.gms:play-services-wearable:+&apos;
+}
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/05/wear-dev-6/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/05/check-savedStateInstance-when-adding-frag/" itemprop="url">
+                  Check savedStateInstance Before Adding A Fragment
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-05T10:49:53+08:00" content="2016-03-05">
+              2016-03-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>I found such a period of code in a project generated by Android Studio today.<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// savedInstanceState is non-null when there is fragment state</span></span><br><span class="line"><span class="comment">// saved from previous configurations of this activity</span></span><br><span class="line"><span class="comment">// (e.g. when rotating the screen from portrait to landscape).</span></span><br><span class="line"><span class="comment">// In this case, the fragment will automatically be re-added</span></span><br><span class="line"><span class="comment">// to its container so we don't need to manually add it.</span></span><br><span class="line"><span class="comment">// For more information, see the Fragments API guide at:</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// http://developer.android.com/guide/components/fragments.html</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="keyword">if</span> (savedInstanceState == <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="comment">// Create the detail fragment and add it to the activity</span></span><br><span class="line">    <span class="comment">// using a fragment transaction.</span></span><br><span class="line">    Bundle arguments = <span class="keyword">new</span> Bundle();</span><br><span class="line">    arguments.putString(ItemDetailFragment.ARG_ITEM_ID,</span><br><span class="line">            getIntent().getStringExtra(ItemDetailFragment.ARG_ITEM_ID));</span><br><span class="line">    ItemDetailFragment fragment = <span class="keyword">new</span> ItemDetailFragment();</span><br><span class="line">    fragment.setArguments(arguments);</span><br><span class="line">    getSupportFragmentManager().beginTransaction()</span><br><span class="line">            .add(R.id.item_detail_container, fragment)</span><br><span class="line">            .commit();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>I know the fact that after configuration changes, fragments will be added again. So you must check if fragments are already added like this:<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (fragmentManager.findFragmentById(R.id.container) == <span class="keyword">null</span>) &#123;</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>In fact, the saved fragment is retained by <code>savedStateInstance</code>. Therefore, you can simply check whether <code>savedStateInstance</code> exists to determine the existence of fragments.</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/03/02/wear-dev-5/" itemprop="url">
-                  Android Wear 开发 （五） 创建自定义布局
+                  Android Wear 开发 （五） 创建自定义通知
                 </a>
               
             
@@ -266,7 +619,7 @@
       
         
           <p>在手表上创建布局与手机相同，除了必须根据屏幕尺寸和瞥视动作设计以外。不要仅仅将功能和UI从手机应用中搬运至手表，这样的体验非常不好。只有在必要的时候才应该创建自定义布局。</p>
-<h1 id="创建自定义通知"><a href="#创建自定义通知" class="headerlink" title="创建自定义通知"></a>创建自定义通知</h1><p>一般应该在手机上创建同桌并自动同步至手表。这样只需创建一次通知就可以出现在多种设备上（甚至包括汽车和电视）。</p>
+<h1 id="创建自定义通知"><a href="#创建自定义通知" class="headerlink" title="创建自定义通知"></a>创建自定义通知</h1><p>一般应该在手机上创建通知并自动同步至手表。这样只需创建一次通知就可以出现在多种设备上（甚至包括汽车和电视）。</p>
 <p>如果标准的通知风格不适合你的话，可以显示一个有自定义布局的activity。应该只在手表上创建和发布自定义通知，这些通知不会被同步至手机上。<br>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/03/02/wear-dev-5/#more" rel="contents">
@@ -748,374 +1101,12 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/27/resetting-hexo/" itemprop="url">
-                  Procedures of Restoring My Blog with Hexo
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-27T10:49:22+08:00" content="2016-02-27">
-              2016-02-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Today I spent an entire morning fixing a bug of hexo. However, I failed to fix it and leaving my blog unable to update. After trying various solutions, I decided to reconstruct my blog. Now I will record the process of resetting my blog.</p>
-<h1 id="Initialize-Hexo"><a href="#Initialize-Hexo" class="headerlink" title="Initialize Hexo"></a>Initialize Hexo</h1><p>First, delete the old repo in Github, and re-init a hexo directory:</p>
-<pre><code>hexo init my-hexo-website
-
-cd my-hexo-website
-npm install
-</code></pre><h1 id="Configure-Git"><a href="#Configure-Git" class="headerlink" title="Configure Git"></a>Configure Git</h1><p>Inside your hexo-website folder, use the command</p>
-<pre><code>git init 
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/27/resetting-hexo/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/15/visitor-double-dispatch/" itemprop="url">
-                  Understanding the Visitor Pattern - Double Dispatch
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-15T21:28:29+08:00" content="2016-02-15">
-              2016-02-15
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>For the visitor pattern, it’s not difficult to remember its syntax or use it. But why we must use a visitor pattern instead of a static method (a function) or other workarounds?</p>
-<h1 id="Static-methods"><a href="#Static-methods" class="headerlink" title="Static methods"></a>Static methods</h1><p>For a specified class hierarchy, when it comes to adding a method for every class without modifying themselves, what comes into my mind at first is to create a set of functions, i.e. a static method in java, each taking an instance of that class.</p>
-<p>For example, if I want to add a method to <code>ICarElement</code> and its implementations, <code>Wheel</code>, <code>Engine</code> and <code>Body</code>, I could write such a class as a set of functions:<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/15/visitor-double-dispatch/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/13/review-loaders-2/" itemprop="url">
-                  重探Loader（二）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-13T21:58:48+08:00" content="2016-02-13">
-              2016-02-13
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="过去"><a href="#过去" class="headerlink" title="过去"></a>过去</h1><p>在安卓3.0前，很多应用经常出现无法响应的bug。最主要的原因，便是在UI线程执行查询或加载数据。虽然文档一直强调即使回馈的重要性，之前的API并不鼓励这样的行为。过去通常使用activity的方法以管理Cursor。而且这些方法在UI线程中操作，并不跨越配置变更。</p>
-<h1 id="理解LoaderManager"><a href="#理解LoaderManager" class="headerlink" title="理解LoaderManager"></a>理解LoaderManager</h1><p>LoaderManager的一些事件会有activity或fragment的生命周期事件触发。比如activity销毁时，会通知LoaderManager销毁并关闭所有所有Loader。</p>
-<p>LoaderManager不知道也不需要知道数据如何载入。它只是告诉Loader何时开始、结束或复位加载，保持状态通过配置变更，并提供简单的接口为客户端传送结果。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/13/review-loaders-2/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/13/review-loaders/" itemprop="url">
-                  重探Loader（一）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-13T20:52:41+08:00" content="2016-02-13">
-              2016-02-13
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Loader是安卓中非常好用的一个pattern，也是我个人非常喜欢用的一个。Loader最方便之处，就是免除了手动保存数据之苦。但在长期的使用之中，总觉得对loader的理解还是存在一些偏差。所以，这里重新复习一下loader的基本知识。</p>
-<p>Loader自安卓3.0引入，它的出现使得在activity或fragment中异步载入数据更加容易，有以下特性：</p>
-<ul>
-<li>每个activity或fragment都可使用</li>
-<li>异步载入数据</li>
-<li>监视数据源的变化，并获取新的数据</li>
-<li>配置变更后自动重连之前的loader cursor。无需重新获取数据
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/13/review-loaders/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1156,7 +1147,7 @@ npm install
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">87</span>
+              <span class="site-state-item-count">91</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

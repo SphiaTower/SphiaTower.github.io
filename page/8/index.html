@@ -224,6 +224,371 @@
             
               
                 
+                <a class="post-title-link" href="/2015/09/12/photoview/" itemprop="url">
+                  安卓手势学习笔记（五） 使用PhotoView缩放图片
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-12T12:58:52+08:00" content="2015-09-12">
+              2015-09-12
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>学习了安卓中多点触控的部分，发现全部自己来写还是比较复杂的。如果不是需要对手势进行专门处理的应用，其实没有太大必要花时间在这个上面，所以决定学习一些开源控件。在学习PhotoView的时候，发现了几个问题，在此记录一下。  </p>
+<h2 id="Gradle"><a href="#Gradle" class="headerlink" title="Gradle"></a>Gradle</h2><p>首先，Github上的gradle配置是无效的，无法完成同步，需要将版本号下调成1.2.3才可以。</p>
+<pre><code>repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile &apos;com.github.chrisbanes.photoview:library:1.2.3&apos;
+}
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/12/photoview/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/12/Dragging-and-Scaling/" itemprop="url">
+                  安卓手势学习笔记（四） 拖动与缩放
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-12T12:16:46+08:00" content="2015-09-12">
+              2015-09-12
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>本文探讨如何使用手势拖动和缩放，用<code>onTouchEvent()</code>来拦截触屏事件。</p>
+<h2 id="拖动对象"><a href="#拖动对象" class="headerlink" title="拖动对象"></a>拖动对象</h2><p><em>如果使用3.0以上版本，可以使用内置的拖放事件侦听器<code>View.OnDragListener</code>。</em><br>拖动是一个很常用的操作：</p>
+<ul>
+<li>在拖动（或滚动）操作中，应用必须跟踪原始的触点（手指），即使其他手指也触摸了屏幕。例如，拖动图片时，用户将第二根手指放在了屏幕上，并抬起了第一根。如果应用只跟踪单独的触点，它会认为第二个触点为默认触点并将图片移动至那个位置。</li>
+<li>为了避免这种问题，应用需要辨别原始触点和后来出现的其他触点。可以通过跟踪<code>ACTION_POINTER_DOWN</code>和<code>ACTION_POINTER_UP</code>来实现。当次要触点按下或抬起时它们会被传送到<code>onTouchEvent()</code>中。</li>
+<li><code>ACTION_POINTER_UP</code>的情况下。。。</li>
+</ul>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/12/Dragging-and-Scaling/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/12/Handling-Multi-Touch-Gestures/" itemprop="url">
+                  安卓手势学习笔记（三） 多点触控
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-12T10:08:06+08:00" content="2015-09-12">
+              2015-09-12
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="跟踪多个触点"><a href="#跟踪多个触点" class="headerlink" title="跟踪多个触点"></a>跟踪多个触点</h2><p>当多个手指同时触碰屏幕时，系统产生如下的事件：</p>
+<ul>
+<li><code>ACTION_DOWN</code> –第一个触点。它启动了手势，在<code>MotionEvent</code>中该触点的数据索引是0.</li>
+<li><code>ACTION_POINTER_DOWN</code> –第一个触点之后触碰屏幕的其他触点。其索引通过<code>getActionIndex()</code>获取。</li>
+<li><code>ACTION_MOVE</code> –已经按下的手势发生变化。</li>
+<li><code>ACTION_POINTER_UP</code> –非最初手指抬起时发送。</li>
+<li><code>ACTION_UP</code> –最后一个手指离开屏幕时发送。
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/12/Handling-Multi-Touch-Gestures/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/12/tracking-movement/" itemprop="url">
+                  安卓手势学习笔记（二） 跟踪移动
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-12T09:41:29+08:00" content="2015-09-12">
+              2015-09-12
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>当触摸位置，压力，大小变化时，新的<code>onTouchEvent()</code>会被触发，并获得一个<code>ACTION_MOVE</code>事件。<br>手指触摸并不是一种精确的交互方式，检测触屏手势更多是根据一系列移动而非单一的操作。为了区分移动手势（如滑动）和非移动手势（如单击），安卓引入了”touch slop”的概念。它指的是在手势被判定为某个移动手势之前，手指可以随意移动的像素距离。<br>有几种办法可以跟踪手势中的移动：<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/12/tracking-movement/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/09/11/Detecting-Common-Gestures/" itemprop="url">
                   安卓手势学习笔记（一） 检测常用手势
                 </a>
@@ -742,367 +1107,12 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/07/creating-a-bound-service-2/" itemprop="url">
-                  Service学习笔记（七） 绑定Service（续）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-07T21:33:53+08:00" content="2015-09-07">
-              2015-09-07
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>上一篇已经基本介绍完毕了绑定Service的主要内容，这一篇来补充一下其他需要注意的问题。  </p>
-<h2 id="与生命周期相配合"><a href="#与生命周期相配合" class="headerlink" title="与生命周期相配合"></a>与生命周期相配合</h2><p>将绑定和解绑的过程与客户端生命周期的产生和销毁相配合，比如：  </p>
-<ul>
-<li>如果只在activity可见时与服务交互，应该在<code>onStart()</code>中绑定，在<code>onStop()</code>中解绑。</li>
-<li>如果希望activity停止在后台的时候也可以接受响应，可以在<code>onCreate()</code>中绑定，在<code>onDestroy()</code>中解绑。注意，这意味着activity整个运行期间（包括在后台）都需要使用服务，如果服务在不同的进程中，那个进程的权重会被增加，会更容易被系统杀掉。</li>
-<li><strong>不可以</strong>在activity的<code>onResume()</code>和<code>onPause()</code>期间绑定或者解绑，因为这两个回调在所有生命周期变化中都会发生，而在这些变化中执行的处理应该尽量做到最小。如果应用中多个activity绑定同一个service，在切换activity时，前一个activity解绑而后一个还没有绑定时，服务可能被销毁重建。
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/07/creating-a-bound-service-2/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/06/creating-a-bound-service/" itemprop="url">
-                  Service学习笔记（六） 绑定Service
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-06T21:37:07+08:00" content="2015-09-06">
-              2015-09-06
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="创建绑定的Service"><a href="#创建绑定的Service" class="headerlink" title="创建绑定的Service"></a>创建绑定的Service</h2><p>绑定的服务是指允许应用组件通过调用<code>bindService()</code>来绑定的服务，可以创建一个长期维持的连接（通常不允许调用<code>startService()</code>启动。<br>当需要使用Activity或者其他组件与服务进行互动的时候，或者是通过IPC将应用的一部分功能暴露给其他应用的时候，适合创建绑定的服务。<br>创建绑定的服务时，必须实现<code>onBind()</code>回调方法以返回一个定义了与服务通讯接口的<code>IBinder</code>。其他应用可以通过调用<code>bindService()</code>方法来获取这个接口，并调用服务中的方法。这种service仅仅为了绑定的控件而服务，所以一旦没有控件绑定，系统会立即将其销毁（无需像在启动模式一样手动停止服务）。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/06/creating-a-bound-service/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/06/python-builder-pattern/" itemprop="url">
-                  Python的默认参数陷阱与Builder模式
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-06T19:14:08+08:00" content="2015-09-06">
-              2015-09-06
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>上一篇探讨了Java和C#值传递和引用传递的问题，写完后又想起了Python的问题。作为一个动态类型的脚本语言，Python的情况似乎更加复杂一些，这里先按下不表，来看一下Python默认参数的一个小问题。<br>提到Python的默认参数陷阱，很多人都会想到那个经典list作为默认参数的问题。默认参数每次被使用后，list都会发生变化，导致函数每次返回的结果都不同。而这里要讨论的是另外一个问题：使用变量作为默认参数的问题。  </p>
-<h2 id="默认参数值的陷阱"><a href="#默认参数值的陷阱" class="headerlink" title="默认参数值的陷阱"></a>默认参数值的陷阱</h2><p>前一阵子，在写一个小型的Python项目时，遇到了这个问题。在项目中，经常在不同地方多次创建同一个类的实例，而所有实例的某个属性可能完全相同（但可能变化），比如：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/06/python-builder-pattern/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/06/java-passing-value/" itemprop="url">
-                  Java的值传递与C#的ref/out
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-06T19:03:27+08:00" content="2015-09-06">
-              2015-09-06
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>最近用到了一个C#写成的桌面程序，并需要对其修改。C#作为一个静态的高级语言，很多特征与Java类似，当然也有大量的不同。在看代码时，发现有的函数签名的参数中出现了<code>out</code>关键字，便搜索了一下，结果得知这个关键字涉及了值传递与引用传递的问题。要学习明白这个关键字，首先要理解值传递和引用传递的问题，不妨先从更加熟悉的Java入手。  </p>
-<h2 id="Java的传递方式"><a href="#Java的传递方式" class="headerlink" title="Java的传递方式"></a>Java的传递方式</h2><p>乍一看，很容易认为Java使用引用传递，原因是Java中无处不在的“引用”，<code>Reference</code>。在Java中，可以将一个引用传入方法，在方法中修改对象的属性，比如：  </p>
-<pre><code>static void paintWhite(Car car){
-    car.setColor(Color.WHITE);
-}
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/06/java-passing-value/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1143,7 +1153,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">87</span>
+              <span class="site-state-item-count">91</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

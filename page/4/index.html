@@ -224,6 +224,359 @@
             
               
                 
+                <a class="post-title-link" href="/2015/10/15/EmptyView-in-ViewPager/" itemprop="url">
+                  EmptyView in ViewPager
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-15T22:40:48+08:00" content="2015-10-15">
+              2015-10-15
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Today I encountered a very subtle bug that the <code>Fragment</code>s restored from a <code>ViewPager</code> show its empty view with their data already loaded.</p>
+<p>My <code>CustomFragment</code> shows an empty view when initialized, and switch to the <code>RecyclerView</code> once data is loaded. The process of animation has been summarized in one of my old articles(<a href="http://sphiatower.github.io/2015/09/08/viewpager/">http://sphiatower.github.io/2015/09/08/viewpager/</a>). In short, it hides the <code>RecyclerView</code> and shows the empty view in the <code>onCreateView</code> callback. </p>
+<p>Every time the data of <code>RecyclerView</code> is updated, it will check an <code>empty</code> flag whether it’s the first time of loading data. If true, the cross fade animation is played to show the content and the flag is updated to remember that data has been loaded.</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/15/EmptyView-in-ViewPager/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/11/Saving-Data-in-SQL-Databases/" itemprop="url">
+                  安卓SQL数据库总结
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-11T19:49:20+08:00" content="2015-10-11">
+              2015-10-11
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>重复性或结构化的数据时候存入数据库中，比如联系人信息。</p>
+<h2 id="定义Schema和Contract"><a href="#定义Schema和Contract" class="headerlink" title="定义Schema和Contract"></a>定义Schema和Contract</h2><p>Schema是SQL数据库的主要原则之一：数据库如何组织的正式声明。Schema表现在创建数据库时使用的SQL语句。它可以帮助创建一个contract类，后者用一种系统的，自记录的方式显式地指明schema的布局。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/11/Saving-Data-in-SQL-Databases/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/10/ImageGetter-with-Picasso/" itemprop="url">
+                  A Failed Attempt to Implement Html.ImageGetter with Picasso
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-10T19:48:19+08:00" content="2015-10-10">
+              2015-10-10
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>Picasso is an very powerful for handling image downloading and caching operations. However, sometimes we need to display an image in a <code>TextView</code> by calling <code>Html.fromHtml</code>, which need a <code>ImageGetter</code> passed as a parameter.</p>
+<p>Essentially speaking, <code>ImageGetter</code> is a function interface used to wrap a single function <code>getDrawable(String source)</code>. The <code>getDrawable()</code> function is called by <code>Html.fromHtml</code> as a sync process. So <code>getDrawable()</code> could not be executed from the UI thread. And the problem is how to get a <code>Drawable</code> instance using Picasso synchronously, since an async process could not return a <code>Drawable</code> in a the method body of <code>getDrawable()</code>.</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/10/ImageGetter-with-Picasso/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/08/Requesting-Permissions-at-Run-Time/" itemprop="url">
+                  Android M 运行时权限
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-08T22:26:56+08:00" content="2015-10-08">
+              2015-10-08
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>从API 23开始，用户将在应用运行时授予权限而非安装时。用户可以在应用的设置屏幕中重新设置权限。</p>
+<p>系统权限被分为两类：<em>普通</em>和<em>危险</em>。</p>
+<ul>
+<li>普通权限不直接危及用户的隐私。如果应用在manifest中列出普通权限，系统将自动授予。</li>
+<li>危险权限会允许应用访问用户的私密数据。如果列出在manifest中，用户必须显示批准权限。</li>
+</ul>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/08/Requesting-Permissions-at-Run-Time/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/10/07/notifyDataSetChanged/" itemprop="url">
                   A Problem about notifyDataSetChanged()
                 </a>
@@ -745,375 +1098,12 @@ saxParser.parse(inputSource, defaultHandler);
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/30/Scheduling-Repeating-Alarms/" itemprop="url">
-                  安卓调度重复闹钟
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-30T21:24:15+08:00" content="2015-09-30">
-              2015-09-30
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><code>AlarmManager</code>类实现的闹钟可以执行在应用的生命周期之外执行基于时间的操作。例如，可以设定一个闹钟来初始化一个长期运行的操作，比如每天启动一次下载天气预报的服务。</p>
-<p>闹钟有以下特性：</p>
-<ul>
-<li>可以在指定时间或时间间隔发射Intent</li>
-<li>可以与broadcast receiver一起使用来启动服务或者执行其他服务</li>
-<li>可以在应用之外进行触发事件或动作，即使应用未启动或者设备在睡眠状态中</li>
-<li>可以最小化应用要求的资源。无需依赖定时器或者连续运行的后台服务就可以调度操作。</li>
-</ul>
-<blockquote>
-<p>对确保在应用生命周期内发生的定时操作而言，考虑使用将<code>Handler</code>与<code>Timer</code>、<code>Thread</code>联合使用。这样可以使安卓更好地控制系统资源。</p>
-</blockquote>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/30/Scheduling-Repeating-Alarms/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/29/source-code-of-volley/" itemprop="url">
-                  源码解析 - Volley
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-29T19:45:23+08:00" content="2015-09-29">
-              2015-09-29
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Volley是安卓中处理网络请求的一个包。虽然从来没有使用过，但从文档来看使用起来还是很容易的。但一直疑惑的一点就是为什么要使用这个包来进行网络操作。接下来就从源代码看起。</p>
-<h2 id="Volley-newRequestQueue"><a href="#Volley-newRequestQueue" class="headerlink" title="Volley.newRequestQueue()"></a>Volley.newRequestQueue()</h2><p>使用Volley首先要创建一个请求队列，接下来就先看这个方法。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/29/source-code-of-volley/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/28/singleton-in-android/" itemprop="url">
-                  安卓中使用Singleton的问题
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-28T21:48:42+08:00" content="2015-09-28">
-              2015-09-28
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在<a href="http://sphiatower.github.io/2015/09/23/wrong-use-of-application/" title="之前的文章">http://sphiatower.github.io/2015/09/23/wrong-use-of-application/</a>中提到了，安卓官方文档中，不建议使用<code>Application</code>子类来支持全局访问。而应使用静态单例，但是在静态单例的使用中也有一些问题。标准的使用方法是这样的：</p>
-<pre><code>private Singleton sInstance;
-public Singleton getInstance(Context context){
-    if(sInstance == null) {
-        sInstance = new Singleton(context.getApplicationContext());
-    }
-    retrun sInstance:
-}
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/28/singleton-in-android/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/28/source-code-of-AsyncTask/" itemprop="url">
-                  源码解析 - AsyncTask
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-28T19:50:12+08:00" content="2015-09-28">
-              2015-09-28
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><code>AsyncTask</code>是安卓中非常常用的一个类，它避免了每次都手动通过<code>Handler</code>与UI线程通讯。但也有很多人认为应该尽量避免使用<code>AsyncTask</code>，那么这个类到底该不该用呢？接下来就从源码层面上来看一看。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/28/source-code-of-AsyncTask/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1154,7 +1144,7 @@ public Singleton getInstance(Context context){
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">87</span>
+              <span class="site-state-item-count">91</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

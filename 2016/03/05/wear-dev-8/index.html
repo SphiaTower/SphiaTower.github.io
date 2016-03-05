@@ -1,0 +1,700 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android Wear," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="Wear提供两种语音动作：
+
+系统提供的：这些语音动作基于任务，并内置在Wear平台。在想要启动的activity中过滤出他们，比如“记笔记”或者“设定闹铃”。
+应用提供的：这些语音动作基于应用，声明他们就像启动图标一样。用户说“启动 ”来使用语音动作并启动一个指定的activity。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Wear 开发 （八） 添加语音功能">
+<meta property="og:url" content="http://yoursite.com/2016/03/05/wear-dev-8/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="Wear提供两种语音动作：
+
+系统提供的：这些语音动作基于任务，并内置在Wear平台。在想要启动的activity中过滤出他们，比如“记笔记”或者“设定闹铃”。
+应用提供的：这些语音动作基于应用，声明他们就像启动图标一样。用户说“启动 ”来使用语音动作并启动一个指定的activity。">
+<meta property="og:updated_time" content="2016-03-05T06:42:42.348Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Wear 开发 （八） 添加语音功能">
+<meta name="twitter:description" content="Wear提供两种语音动作：
+
+系统提供的：这些语音动作基于任务，并内置在Wear平台。在想要启动的activity中过滤出他们，比如“记笔记”或者“设定闹铃”。
+应用提供的：这些语音动作基于应用，声明他们就像启动图标一样。用户说“启动 ”来使用语音动作并启动一个指定的activity。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Android Wear 开发 （八） 添加语音功能 | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android Wear 开发 （八） 添加语音功能
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-05T14:28:29+08:00" content="2016-03-05">
+              2016-03-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Wear提供两种语音动作：</p>
+<ul>
+<li>系统提供的：这些语音动作基于任务，并内置在Wear平台。在想要启动的activity中过滤出他们，比如“记笔记”或者“设定闹铃”。</li>
+<li>应用提供的：这些语音动作基于应用，声明他们就像启动图标一样。用户说“启动 ”来使用语音动作并启动一个指定的activity。<a id="more"></a>
+<h1 id="声明系统提供的语音动作"><a href="#声明系统提供的语音动作" class="headerlink" title="声明系统提供的语音动作"></a>声明系统提供的语音动作</h1>Android Wear平台提供了很多基于用户动作的语音intent。当用户说出语音动作后，应用可以过滤发出的intent来启动一个activity。如果想要启动一个后台运行的service，显示一个activity作为可见信号，然后在activity中启动service。记得在想要离开可见信号时调用<code>finish()</code>。</li>
+</ul>
+<p>拿“记笔记”作为例子，声明intent filter来启动一个activity：</p>
+<pre><code>&lt;activity android:name=&quot;MyNoteActivity&quot;&gt;
+    &lt;intent-filter&gt;
+        &lt;action android:name=&quot;android.intent.action.SEND&quot; /&gt;
+        &lt;category android:name=&quot;com.google.android.voicesearch.SELF_NOTE&quot; /&gt;
+    &lt;/intent-filter&gt;
+&lt;/activity&gt;
+</code></pre><h1 id="声明应用提供的语音动作"><a href="#声明应用提供的语音动作" class="headerlink" title="声明应用提供的语音动作"></a>声明应用提供的语音动作</h1><p>如果这些平台语音intent不能满足要求，可以直接通过“Start Activity名”的语音动作来启动应用。</p>
+<p>注册一个“启动”动作与在手机上注册启动图标一样，只是需要一个语音动作而非图标。</p>
+<p>要指定“启动”之后要说的文字，为想要启动的activity指定一个<code>label</code>属性。</p>
+<pre><code>&lt;application&gt;
+  &lt;activity android:name=&quot;StartRunActivity&quot; android:label=&quot;MyRunningApp&quot;&gt;
+      &lt;intent-filter&gt;
+          &lt;action android:name=&quot;android.intent.action.MAIN&quot; /&gt;
+          &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot; /&gt;
+      &lt;/intent-filter&gt;
+  &lt;/activity&gt;
+&lt;/application&gt;
+</code></pre><h1 id="获取任意语音输入"><a href="#获取任意语音输入" class="headerlink" title="获取任意语音输入"></a>获取任意语音输入</h1><p>除了用语音动作启动activity之外，也可以调用系统内置的语音识别activity来获取语音输入，特别是在需要搜索或作为信息发送时。</p>
+<p>在应用中调用<code>startActivityForResult()</code>并使用<code>ACTION_RECOGNIZE_SPEECH</code>动作。这将启动一个语音识别activity，然后可以在<code>onActivityResult()</code>中处理结果。</p>
+<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SPEECH_REQUEST_CODE = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create an intent that can start the Speech Recognizer activity</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">displaySpeechRecognizer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Intent intent = <span class="keyword">new</span> Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);</span><br><span class="line">    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,</span><br><span class="line">            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);</span><br><span class="line"><span class="comment">// Start the activity, the intent will be populated with the speech text</span></span><br><span class="line">    startActivityForResult(intent, SPEECH_REQUEST_CODE);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// This callback is invoked when the Speech Recognizer returns.</span></span><br><span class="line"><span class="comment">// This is where you process the intent and extract the speech text from the intent.</span></span><br><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onActivityResult</span><span class="params">(<span class="keyword">int</span> requestCode, <span class="keyword">int</span> resultCode,</span><br><span class="line">        Intent data)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (requestCode == SPEECH_REQUEST_CODE &amp;&amp; resultCode == RESULT_OK) &#123;</span><br><span class="line">        List&lt;String&gt; results = data.getStringArrayListExtra(</span><br><span class="line">                RecognizerIntent.EXTRA_RESULTS);</span><br><span class="line">        String spokenText = results.get(<span class="number">0</span>);</span><br><span class="line">        <span class="comment">// Do something with spokenText</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">super</span>.onActivityResult(requestCode, resultCode, data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android-Wear/" rel="tag">#Android Wear</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/05/wear-dev-7/" rel="next" title="Android Wear 开发 （七） 保持应用可见">
+                <i class="fa fa-chevron-left"></i> Android Wear 开发 （七） 保持应用可见
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">91</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#声明系统提供的语音动作"><span class="nav-number">1.</span> <span class="nav-text">声明系统提供的语音动作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#声明应用提供的语音动作"><span class="nav-number">2.</span> <span class="nav-text">声明应用提供的语音动作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#获取任意语音输入"><span class="nav-number">3.</span> <span class="nav-text">获取任意语音输入</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

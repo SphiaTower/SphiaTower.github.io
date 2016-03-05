@@ -224,6 +224,368 @@
             
               
                 
+                <a class="post-title-link" href="/2016/02/27/resetting-hexo/" itemprop="url">
+                  Procedures of Restoring My Blog with Hexo
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-02-27T10:49:22+08:00" content="2016-02-27">
+              2016-02-27
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Today I spent an entire morning fixing a bug of hexo. However, I failed to fix it and leaving my blog unable to update. After trying various solutions, I decided to reconstruct my blog. Now I will record the process of resetting my blog.</p>
+<h1 id="Initialize-Hexo"><a href="#Initialize-Hexo" class="headerlink" title="Initialize Hexo"></a>Initialize Hexo</h1><p>First, delete the old repo in Github, and re-init a hexo directory:</p>
+<pre><code>hexo init my-hexo-website
+
+cd my-hexo-website
+npm install
+</code></pre><h1 id="Configure-Git"><a href="#Configure-Git" class="headerlink" title="Configure Git"></a>Configure Git</h1><p>Inside your hexo-website folder, use the command</p>
+<pre><code>git init 
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/27/resetting-hexo/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/02/15/visitor-double-dispatch/" itemprop="url">
+                  Understanding the Visitor Pattern - Double Dispatch
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-02-15T21:28:29+08:00" content="2016-02-15">
+              2016-02-15
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>For the visitor pattern, it’s not difficult to remember its syntax or use it. But why we must use a visitor pattern instead of a static method (a function) or other workarounds?</p>
+<h1 id="Static-methods"><a href="#Static-methods" class="headerlink" title="Static methods"></a>Static methods</h1><p>For a specified class hierarchy, when it comes to adding a method for every class without modifying themselves, what comes into my mind at first is to create a set of functions, i.e. a static method in java, each taking an instance of that class.</p>
+<p>For example, if I want to add a method to <code>ICarElement</code> and its implementations, <code>Wheel</code>, <code>Engine</code> and <code>Body</code>, I could write such a class as a set of functions:<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/15/visitor-double-dispatch/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/02/13/review-loaders-2/" itemprop="url">
+                  重探Loader（二）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-02-13T21:58:48+08:00" content="2016-02-13">
+              2016-02-13
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="过去"><a href="#过去" class="headerlink" title="过去"></a>过去</h1><p>在安卓3.0前，很多应用经常出现无法响应的bug。最主要的原因，便是在UI线程执行查询或加载数据。虽然文档一直强调即使回馈的重要性，之前的API并不鼓励这样的行为。过去通常使用activity的方法以管理Cursor。而且这些方法在UI线程中操作，并不跨越配置变更。</p>
+<h1 id="理解LoaderManager"><a href="#理解LoaderManager" class="headerlink" title="理解LoaderManager"></a>理解LoaderManager</h1><p>LoaderManager的一些事件会有activity或fragment的生命周期事件触发。比如activity销毁时，会通知LoaderManager销毁并关闭所有所有Loader。</p>
+<p>LoaderManager不知道也不需要知道数据如何载入。它只是告诉Loader何时开始、结束或复位加载，保持状态通过配置变更，并提供简单的接口为客户端传送结果。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/13/review-loaders-2/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/02/13/review-loaders/" itemprop="url">
+                  重探Loader（一）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-02-13T20:52:41+08:00" content="2016-02-13">
+              2016-02-13
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Loader是安卓中非常好用的一个pattern，也是我个人非常喜欢用的一个。Loader最方便之处，就是免除了手动保存数据之苦。但在长期的使用之中，总觉得对loader的理解还是存在一些偏差。所以，这里重新复习一下loader的基本知识。</p>
+<p>Loader自安卓3.0引入，它的出现使得在activity或fragment中异步载入数据更加容易，有以下特性：</p>
+<ul>
+<li>每个activity或fragment都可使用</li>
+<li>异步载入数据</li>
+<li>监视数据源的变化，并获取新的数据</li>
+<li>配置变更后自动重连之前的loader cursor。无需重新获取数据
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/13/review-loaders/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/02/05/learning-preferences-2/" itemprop="url">
                   使用Preferences API（二）
                 </a>
@@ -745,359 +1107,12 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/01/03/Glide-image-size/" itemprop="url">
-                  A Glide Sizing Problem
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-01-03T00:02:01+08:00" content="2016-01-03">
-              2016-01-03
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Months ago, I encountered a very frustrating bug of Glide. I was using Glide to display images in a <code>RecyclerView</code>. The image was wrapped in a custom layout, and it was added dynamically. No matter how I adjust the code, images can’t be displayed  with its width matching parent. Sometimes it was even scaled into a pixel point!</p>
-<p>Until today, I found that the problem was because that Glide figured out the wrong dimensions, as is described here - “<a href="https://github.com/bumptech/glide/wiki/Transformations" target="_blank" rel="external">https://github.com/bumptech/glide/wiki/Transformations</a>“.</p>
-<p>I’m not sure about why Glide get the wrong dimension. But the solution is pretty easy: just call <code>.override(int,int)</code> to set the dimension by yourself. And a <code>.fitCenter()</code> call can then make sure that the scaling of width and height is not changed.</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/12/20/loader-compares-reference/" itemprop="url">
-                  LoaderManager Compares References
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-12-20T00:02:58+08:00" content="2015-12-20">
-              2015-12-20
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Today, one of my <code>Loader</code> implementations behaved totally weird after I modified its code. The <code>Loader</code> loaded successfully at the 1st time, but failed on all following attempts. The <code>loadInBackground()</code> method returned, but <code>onLoadFinished()</code> was not called.</p>
-<p>The <code>LoaderManager</code> class compares the new loaded data and old retained data by code like <code>if(oldData!=newData)</code> to decide whether to update the data or not. Note that it uses <code>==</code> operator to compare them. In my case, my <code>Loader</code> retains a same <code>TreeMap</code> object and add/update entries into it, resulting that they’re identified as the same reference, so the loader won’t deliver the new result.</p>
-<p>To solve this problem, you have to create a new <code>TreeMap</code> and add back all the old data.</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/12/16/jcenter-peer-not-authenticated/" itemprop="url">
-                  Jcenter peer not authenticated
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-12-16T00:27:34+08:00" content="2015-12-16">
-              2015-12-16
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Today my gradle failed to sync because the following error:</p>
-<pre><code>Error: peer not authenticated
-</code></pre><p>I found lots of solutions but none of them take effects, only to know it is caused by the problem of certificate of <code>jCenter()</code>.</p>
-<p>Finally, it was fixed by replacing all the <code>jCenter()</code> into <code>mavenCentral()</code> in all <code>build.gradle</code> files. Surprisingly, the local gradle repos work without modification.</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/11/18/How-Android-Draws-Views/" itemprop="url">
-                  安卓绘制View的过程
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-11-18T19:58:13+08:00" content="2015-11-18">
-              2015-11-18
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>一个<code>Activity</code>获得焦点时，会被请求绘制其布局。安卓框架会处理绘制的过程，但<code>Activity</code>必须提供布局阶层的根节点。</p>
-<pre><code><figure class="highlight java"><figcaption><span>View.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">       <span class="comment">// ........</span></span><br><span class="line"></span><br><span class="line">       <span class="comment">/*</span><br><span class="line">        * Draw traversal performs several drawing steps which must be executed</span><br><span class="line">        * in the appropriate order:</span><br><span class="line">        *</span><br><span class="line">        *      1. Draw the background</span><br><span class="line">        *      2. If necessary, save the canvas' layers to prepare for fading</span><br><span class="line">        *      3. Draw view's content</span><br><span class="line">        *      4. Draw children</span><br><span class="line">        *      5. If necessary, draw the fading edges and restore layers</span><br><span class="line">        *      6. Draw decorations (scrollbars for instance)</span><br><span class="line">        */</span></span><br><span class="line">	<span class="comment">// ......</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/11/18/How-Android-Draws-Views/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1138,7 +1153,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">87</span>
+              <span class="site-state-item-count">91</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

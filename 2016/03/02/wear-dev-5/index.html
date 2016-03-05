@@ -60,20 +60,20 @@
 
 
 <meta name="description" content="在手表上创建布局与手机相同，除了必须根据屏幕尺寸和瞥视动作设计以外。不要仅仅将功能和UI从手机应用中搬运至手表，这样的体验非常不好。只有在必要的时候才应该创建自定义布局。
-创建自定义通知一般应该在手机上创建同桌并自动同步至手表。这样只需创建一次通知就可以出现在多种设备上（甚至包括汽车和电视）。
+创建自定义通知一般应该在手机上创建通知并自动同步至手表。这样只需创建一次通知就可以出现在多种设备上（甚至包括汽车和电视）。
 如果标准的通知风格不适合你的话，可以显示一个有自定义布局的activity。应该只在手表上创建和发布自定">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android Wear 开发 （五） 创建自定义布局">
+<meta property="og:title" content="Android Wear 开发 （五） 创建自定义通知">
 <meta property="og:url" content="http://yoursite.com/2016/03/02/wear-dev-5/index.html">
 <meta property="og:site_name" content="Welcome to SPHIA">
 <meta property="og:description" content="在手表上创建布局与手机相同，除了必须根据屏幕尺寸和瞥视动作设计以外。不要仅仅将功能和UI从手机应用中搬运至手表，这样的体验非常不好。只有在必要的时候才应该创建自定义布局。
-创建自定义通知一般应该在手机上创建同桌并自动同步至手表。这样只需创建一次通知就可以出现在多种设备上（甚至包括汽车和电视）。
+创建自定义通知一般应该在手机上创建通知并自动同步至手表。这样只需创建一次通知就可以出现在多种设备上（甚至包括汽车和电视）。
 如果标准的通知风格不适合你的话，可以显示一个有自定义布局的activity。应该只在手表上创建和发布自定">
-<meta property="og:updated_time" content="2016-03-02T15:08:43.000Z">
+<meta property="og:updated_time" content="2016-03-05T03:09:36.898Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android Wear 开发 （五） 创建自定义布局">
+<meta name="twitter:title" content="Android Wear 开发 （五） 创建自定义通知">
 <meta name="twitter:description" content="在手表上创建布局与手机相同，除了必须根据屏幕尺寸和瞥视动作设计以外。不要仅仅将功能和UI从手机应用中搬运至手表，这样的体验非常不好。只有在必要的时候才应该创建自定义布局。
-创建自定义通知一般应该在手机上创建同桌并自动同步至手表。这样只需创建一次通知就可以出现在多种设备上（甚至包括汽车和电视）。
+创建自定义通知一般应该在手机上创建通知并自动同步至手表。这样只需创建一次通知就可以出现在多种设备上（甚至包括汽车和电视）。
 如果标准的通知风格不适合你的话，可以显示一个有自定义布局的activity。应该只在手表上创建和发布自定">
 
 
@@ -92,7 +92,7 @@
   };
 </script>
 
-  <title> Android Wear 开发 （五） 创建自定义布局 | Welcome to SPHIA </title>
+  <title> Android Wear 开发 （五） 创建自定义通知 | Welcome to SPHIA </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -222,7 +222,7 @@
             
             
               
-                Android Wear 开发 （五） 创建自定义布局
+                Android Wear 开发 （五） 创建自定义通知
               
             
           </h1>
@@ -261,7 +261,7 @@
 
       
         <p>在手表上创建布局与手机相同，除了必须根据屏幕尺寸和瞥视动作设计以外。不要仅仅将功能和UI从手机应用中搬运至手表，这样的体验非常不好。只有在必要的时候才应该创建自定义布局。</p>
-<h1 id="创建自定义通知"><a href="#创建自定义通知" class="headerlink" title="创建自定义通知"></a>创建自定义通知</h1><p>一般应该在手机上创建同桌并自动同步至手表。这样只需创建一次通知就可以出现在多种设备上（甚至包括汽车和电视）。</p>
+<h1 id="创建自定义通知"><a href="#创建自定义通知" class="headerlink" title="创建自定义通知"></a>创建自定义通知</h1><p>一般应该在手机上创建通知并自动同步至手表。这样只需创建一次通知就可以出现在多种设备上（甚至包括汽车和电视）。</p>
 <p>如果标准的通知风格不适合你的话，可以显示一个有自定义布局的activity。应该只在手表上创建和发布自定义通知，这些通知不会被同步至手机上。<br><a id="more"></a></p>
 <blockquote>
 <p>在手表上创建自定义通知时，可以使用标准API(API Level 20)而非支持库。</p>
@@ -272,8 +272,8 @@
  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle bundle)</span></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    setContentView(R.layout.notification_activity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>在manifest中为activity设定必要的属性，使之能够在手表的context stream process中显示。需要将activity声明为可输出，可嵌入，并有空白的任务关系。</p>
- <activity android:name="com.example.MyDisplayActivity" android:exported="true" android:allowembedded="true" android:taskaffinity="" android:theme="@android:style/Theme.DeviceDefault.Light">
-</activity></li>
+ <figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;activity android:<span class="property">name</span>=<span class="string">"com.example.MyDisplayActivity"</span></span><br><span class="line">     android:exported=<span class="string">"true"</span></span><br><span class="line">     android:allowEmbedded=<span class="string">"true"</span></span><br><span class="line">     android:taskAffinity=<span class="string">""</span></span><br><span class="line">     android:theme=<span class="string">"@android:style/Theme.DeviceDefault.Light"</span> /&gt;</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>为想要显示的activity创建一个<code>PendingIntent</code>。</p>
  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Intent notificationIntent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, NotificationActivity.class);</span><br><span class="line">PendingIntent notificationPendingIntent = PendingIntent.getActivity(</span><br><span class="line">        <span class="keyword">this</span>, <span class="number">0</span>, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);</span><br></pre></td></tr></table></figure>
 </li>
@@ -284,7 +284,7 @@
 <blockquote>
 <p>注意：当通知再主屏幕上显示时，系统使用由通知语义产生的标准模板来展示。这个模板在所有表盘上都可以工作。用户上滑通知后，会看到通知的自定义activity。</p>
 </blockquote>
-<h1 id="用手表UI库创建布局"><a href="#用手表UI库创建布局" class="headerlink" title="用手表UI库创建布局"></a>用手表UI库创建布局</h1>
+
       
     </div>
 
@@ -308,6 +308,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/05/check-savedStateInstance-when-adding-frag/" rel="prev" title="Check savedStateInstance Before Adding A Fragment">
+                Check savedStateInstance Before Adding A Fragment <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -375,7 +379,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">87</span>
+              <span class="site-state-item-count">91</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -425,7 +429,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#创建自定义通知"><span class="nav-number">1.</span> <span class="nav-text">创建自定义通知</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用手表UI库创建布局"><span class="nav-number">2.</span> <span class="nav-text">用手表UI库创建布局</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#创建自定义通知"><span class="nav-number">1.</span> <span class="nav-text">创建自定义通知</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
