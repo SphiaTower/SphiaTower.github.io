@@ -224,6 +224,537 @@
             
               
                 
+                <a class="post-title-link" href="/2015/11/16/notes-about-ContentProviders-2/" itemprop="url">
+                  Notes on Content Providers (II) Creating a Content Provider
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-11-16T23:12:32+08:00" content="2015-11-16">
+              2015-11-16
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Before-You-Start-Building"><a href="#Before-You-Start-Building" class="headerlink" title="Before You Start Building"></a>Before You Start Building</h1><p>You need to build a content provider if you want to provide one or more of the following features:</p>
+<ul>
+<li>You want to offer complex data or files to other applications.</li>
+<li>You want to allow users to copy complex data from your app into other apps.</li>
+<li>You want to provide custom search suggestions using the search framework.</li>
+</ul>
+<p>Follow these steps to build your provider:</p>
+<ol>
+<li>Design the raw storage for your data. A content provider offers data in two ways:  File data or  “Structured” data.</li>
+<li>Define a concrete implementation of the ContentProvider class and its required methods. </li>
+<li>Define the provider’s authority string, its content URIs, and column names. If you want the provider’s application to handle intents, also define intent actions, extras data, and flags. Also define the permissions that you will require for applications that want to access your data. You should consider defining all of these values as constants in a separate contract class; later, you can expose this class to other developers.</li>
+<li>Add other optional pieces, such as sample data or an implementation of <code>AbstractThreadedSyncAdapter</code> that can synchronize data between the provider and cloud-based data.
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/11/16/notes-about-ContentProviders-2/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/11/16/notes-about-ContentProviders/" itemprop="url">
+                  Notes on Content Providers (I) Content Provider Basics
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-11-16T22:03:55+08:00" content="2015-11-16">
+              2015-11-16
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Content-Provider-Basics"><a href="#Content-Provider-Basics" class="headerlink" title="Content Provider Basics"></a>Content Provider Basics</h1><p>A provider isn’t required to have a primary key, and it isn’t required to use <code>_ID</code> as the column name of a primary key if one is present. However, if you want to bind data from a provider to a <code>ListView</code>, one of the column names has to be <code>_ID</code>.</p>
+<p>The <code>ContentResolver</code> object in the client application’s process and the <code>ContentProvider</code> object in the application that owns the provider automatically handle inter-process communication. <code>ContentProvider</code> also acts as an abstraction layer between its repository of data and the external appearance of data as tables.</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/11/16/notes-about-ContentProviders/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/11/16/notes-about-the-activity-lifecycle/" itemprop="url">
+                  Notes on the Activity Lifecycle
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-11-16T20:52:33+08:00" content="2015-11-16">
+              2015-11-16
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Starting-an-Activity"><a href="#Starting-an-Activity" class="headerlink" title="Starting an Activity"></a>Starting an Activity</h1><p>Technically, the activity becomes visible to the user when <code>onStart()</code> is called, but <code>onResume()</code> quickly follows and the activity remains in the Resumed state until something occurs to change that, such as when a phone call is received, the user navigates to another activity, or the device screen turns off.</p>
+<p>Most apps don’t need to implement this method because local class references are destroyed with the activity and your activity should perform most cleanup during <code>onPause()</code> and <code>onStop()</code>. However, if your activity includes background threads that you created during <code>onCreate()</code> or other long-running resources that could potentially leak memory if not properly closed, you should kill them during <code>onDestroy()</code>.<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/11/16/notes-about-the-activity-lifecycle/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/11/11/clion-encoding/" itemprop="url">
+                  An Encoding Problem in Clion
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-11-11T23:52:20+08:00" content="2015-11-11">
+              2015-11-11
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Clion is a great IDE of C/C++, made by JetBrain. But I found a problem that when the output of console is Chinese, it can’t be displayed correctly.</p>
+<p>I tried to use the same method as Intellij IDEA, changing the encoding from GBK to UTF-8 at the right bottom corner. However, it didn’t work like IDEA 14.</p>
+<p>After a lot of attempts modifying different settings, I have found the solution: In <code>File &gt; Settings &gt; Editor &gt; File Encoding</code>, modify both <code>IDE Encoding</code> and <code>Project Encoding</code> into UTF-8. After applied, click the console dock and then change the right bottom corner from UTF-8 to GBK. Then the console can output Chinese now.</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/21/top-bottom-toolbar/" itemprop="url">
+                  Layout and Animation with Both Top & Bottom Bars
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-21T22:10:58+08:00" content="2015-10-21">
+              2015-10-21
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Some apps have a layout containing both a top Toolbar/Actionbar and a bottom toolbar-like view. And when you scroll a <code>RecyclerView</code>, both the top and bottom toolbar will enter/exit the screen with animation.</p>
+<p>It’s not difficult for the top toolbar. The solution is using <code>CoordinatorLayout</code> in the android material design library with a <code>Toolbar</code> and a <code>RecyclerView</code>. If the <code>RecyclerView</code> is added dynamically at runtime, you can add a <code>FrameLayout</code> as the container, and set scroll flags on it.<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/21/top-bottom-toolbar/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/21/include-local-library-using-gradle/" itemprop="url">
+                  Including Local Libraries Using Gradle
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-21T21:59:29+08:00" content="2015-10-21">
+              2015-10-21
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>After you have written or downloaded a android library, you may want to use it in your existing gradle-based project. It’s very easy to integrate an online library using gradle, but how to integrate a local library?</p>
+<p>The solution is very easy, because gradle supports importing local libraries just like online libraries. But you have to modify some setting files to make it work.<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/21/include-local-library-using-gradle/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/10/15/EmptyView-in-ViewPager/" itemprop="url">
                   EmptyView in ViewPager
                 </a>
@@ -556,548 +1087,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/07/notifyDataSetChanged/" itemprop="url">
-                  A Problem about notifyDataSetChanged()
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-07T12:23:37+08:00" content="2015-10-07">
-              2015-10-07
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>I found a problem when using <code>adapter</code> of a <code>RecyclerView</code>. The <code>notifyDataSetChanged()</code> method did not work because I wrapped it in a recursive method which never returns.</p>
-<p>And I found that the <code>notifyDataSetChanged()</code> method could only work after the wrapped method returned. For example, if a sleep is added after <code>notifyDataSetChanged()</code>, it won’t take effect before the sleep is finished.</p>
-<pre><code>void wrapper(){
-    mAdapter.notifyDataSetChanged();
-    try{
-        TimeUnit.Seconds.sleep(5);
-    }catch(Exception ignored){
-    }
-}
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/07/notifyDataSetChanged/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/07/Auto-Pager-Recycler/" itemprop="url">
-                  Introducing Auto-Pager Recycler
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-07T12:16:58+08:00" content="2015-10-07">
-              2015-10-07
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Hey guys! I’m here introducing my repo – AutoPagerRecycler.<br><a href="https://github.com/SphiaTower/AutoPagerRecyclerManager">https://github.com/SphiaTower/AutoPagerRecyclerManager</a></p>
-<h1 id="AutoPagerRecyclerManager"><a href="#AutoPagerRecyclerManager" class="headerlink" title="AutoPagerRecyclerManager"></a>AutoPagerRecyclerManager</h1><p>Provide auto pager support for a RecycleView, loading data from a multi-page source has never been so easy!</p>
-<h2 id="When-to-use-it"><a href="#When-to-use-it" class="headerlink" title="When to use it?"></a>When to use it?</h2><p>When you are building a <code>RecyclerView</code> based on data from a multi-page source. </p>
-<p>For example, you are displaying content from a forum, like www.forum.com/board.json?page=1. The <code>AutoPagerRecyclerManager</code> can handle the async process of loading a different page. The data form <code>page=2</code> <code>page=3</code> or any other pages could be loaded easily on scroll or other custom actions.</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/07/Auto-Pager-Recycler/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/03/Volley-UTF-8/" itemprop="url">
-                  Volley解析UTF-8产生乱码的解决方法
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-03T14:11:54+08:00" content="2015-10-03">
-              2015-10-03
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在使用Volley的<code>StringRequest</code>获取字符串的时候遇到了一个问题，返回的中文部分全部都是乱码，查找了一下原因，<a href="http://my.oschina.net/u/1247737/blog/393959">在这篇文章</a>中找到了答案：</p>
-<blockquote>
-<p>如果在服务器的返回数据的header中没有指定字符集那么就会默认使用 ISO-8859-1 字符集。<br>ISO-8859-1的别名叫做Latin1。这个字符集支持部分是用于欧洲的语言，不支持中文。</p>
-</blockquote>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/03/Volley-UTF-8/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/03/SaxParser/" itemprop="url">
-                  使用SAXParser解析XML
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-03T13:51:06+08:00" content="2015-10-03">
-              2015-10-03
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><code>SAXParser</code>是一个用来解析XML文件的工具，相比起使用正则表达式，效率更高，可操作性更强。使用起来有一些问题需要注意。</p>
-<h2 id="创建解析器"><a href="#创建解析器" class="headerlink" title="创建解析器"></a>创建解析器</h2><p>首先通过工厂方法拿到<code>SAXParser</code>的实例，接下来用<code>InputSource</code>类来包裹XML文件，然后再调用<code>parse</code>解析时，传入一个<code>DefaultHandler</code>的子类，来告诉parser解析的方式，并存储解析的结果。</p>
-<pre><code>SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
-InputSource inputSource = new InputSource();
-inputSource.setEncoding(&quot;UTF-8&quot;);
-inputSource.setCharacterStream(new StringReader(xml));
-XmlHandler defaultHandler = new XmlHandler();
-
-saxParser.parse(inputSource, defaultHandler);
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/03/SaxParser/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/01/IntentService-Reporting-Work-Status/" itemprop="url">
-                  Service学习笔记（八） 报告工作状态
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-01T12:50:49+08:00" content="2015-10-01">
-              2015-10-01
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>本文探讨如何将后台服务的结果发送到前台UI。推荐的方法是使用<code>LocalBroadcastManager</code>来发送和接收状态，它将广播<code>Intent</code>限制在自己的应用中。</p>
-<h2 id="IntentService报告状态"><a href="#IntentService报告状态" class="headerlink" title="IntentService报告状态"></a>IntentService报告状态</h2><p>为了在<code>IntentService</code>中发送工作状态到其他组件，首先创建<code>Intent</code>，在其附加data中包含当前状态。作为选项，可以添加一个动作和数据URI。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/01/IntentService-Reporting-Work-Status/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/01/Keeping-the-Device-Awake/" itemprop="url">
-                  安卓保持设备唤醒
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-01T12:02:25+08:00" content="2015-10-01">
-              2015-10-01
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>为了避免耗尽电池，闲置状态的安卓设备，很快会进入睡眠状态。然而，有时应用需要唤醒屏幕或CPU并保持唤醒状态来完成一些工作。</p>
-<p>使用的方法取决于应用本身的需求。然而，通用的原则是，应该尽量使用轻量级的方法，来减少应用对系统资源的冲击。下面将探讨当设备的默认睡眠行为无法满足应用需求时的处理方法。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/01/Keeping-the-Device-Awake/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1144,7 +1133,7 @@ saxParser.parse(inputSource, defaultHandler);
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">91</span>
+              <span class="site-state-item-count">97</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

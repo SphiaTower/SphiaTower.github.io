@@ -67,7 +67,7 @@ Android Wear允许应用保留在前台，同时节省电源。应用可以在�
 <meta property="og:site_name" content="Welcome to SPHIA">
 <meta property="og:description" content="一些手表应用需要对用户一直保持可见。比如，正在跑步的用户可以看一眼手表以知道跑过的距离和时间。在超市购物时，记录了购物清单后，可以很快地看一眼还有那些清单上还有那些没有购买。制作一个一直可见的应用会减少电池寿命，所以添加这个功能时一定要谨慎。
 Android Wear允许应用保留在前台，同时节省电源。应用可以在手表进入低功耗环境模式的同时，控制手表屏幕显示的内容。同时运行在环境模式和交互模式的应用">
-<meta property="og:updated_time" content="2016-03-05T06:28:17.862Z">
+<meta property="og:updated_time" content="2016-03-05T06:51:52.805Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Wear 开发 （七） 保持应用可见">
 <meta name="twitter:description" content="一些手表应用需要对用户一直保持可见。比如，正在跑步的用户可以看一眼手表以知道跑过的距离和时间。在超市购物时，记录了购物清单后，可以很快地看一眼还有那些清单上还有那些没有购买。制作一个一直可见的应用会减少电池寿命，所以添加这个功能时一定要谨慎。
@@ -261,22 +261,19 @@ Android Wear允许应用保留在前台，同时节省电源。应用可以在�
 <p>Android Wear允许应用保留在前台，同时节省电源。应用可以在手表进入低功耗环境模式的同时，控制手表屏幕显示的内容。同时运行在环境模式和交互模式的应用称作常驻应用。</p>
 <h1 id="启用Ambient模式"><a href="#启用Ambient模式" class="headerlink" title="启用Ambient模式"></a>启用Ambient模式</h1><p>完成项目配置后，继承<code>WearableActivity</code>，他提供了可以启用环境模式的所有方法。<br><a id="more"></a></p>
 <h2 id="配置开发项目"><a href="#配置开发项目" class="headerlink" title="配置开发项目"></a>配置开发项目</h2><ul>
-<li><p>在手表应用的manifest添加手表共享库：</p>
-  <application><br>    <uses-library android:name="com.google.android.wearable" android:required="false"><br>    …<br>  </uses-library></application>
-</li>
-<li><p>在手机和手表应用上添加<code>WAKE_LOCK</code>权限：</p>
-  <uses-permission android:name="android.permission.WAKE_LOCK">
-
-</uses-permission></li>
+<li>在手表应用的manifest添加手表共享库：  <figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="type">application</span>&gt;</span><br><span class="line">  &lt;uses-library android:<span class="property">name</span>=<span class="string">"com.google.android.wearable"</span></span><br><span class="line">                android:required=<span class="string">"false"</span> /&gt;</span><br><span class="line">  ...</span><br><span class="line">&lt;/<span class="type">application</span>&gt;</span><br></pre></td></tr></table></figure></li>
+<li>在手机和手表应用上添加<code>WAKE_LOCK</code>权限：  <figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;uses-permission android:<span class="property">name</span>=<span class="string">"android.permission.WAKE_LOCK"</span> /&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="创建支持环境模式的activity"><a href="#创建支持环境模式的activity" class="headerlink" title="创建支持环境模式的activity"></a>创建支持环境模式的activity</h2></li>
 </ul>
-<h2 id="创建支持环境模式的activity"><a href="#创建支持环境模式的activity" class="headerlink" title="创建支持环境模式的activity"></a>创建支持环境模式的activity</h2><ol>
+<ol>
 <li>创建一个<code>WearableActivity</code>的子类；</li>
 <li>在<code>onCreate()</code>方法中调用<code>setAmbientEnabled()</code>。 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">WearableActivity</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="annotation">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">	    <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">	</span><br><span class="line">	    setAmbientEnabled();</span><br><span class="line">	    ...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="处理模式间的变化"><a href="#处理模式间的变化" class="headerlink" title="处理模式间的变化"></a>处理模式间的变化</h2>如果在应用显示期间，用户在一段时间内不与应用交互，或者用户用手掌覆盖了屏幕，系统将会切换activity进入环境模式。应用切换至环境模式之后，将会更新activity UI至一个更加基础的布局以减轻电池消耗。应该使用黑色的背景和尽可能少的白色图片与文字。用户从交互模式进入环境模式时，应该维持一个相似的布局。<blockquote>
-<p>注意：在环境模式中，应该禁用屏幕上一切的交互元素，比如按钮。</p>
-</blockquote>
 </li>
 </ol>
+<h2 id="处理模式间的变化"><a href="#处理模式间的变化" class="headerlink" title="处理模式间的变化"></a>处理模式间的变化</h2><p>如果在应用显示期间，用户在一段时间内不与应用交互，或者用户用手掌覆盖了屏幕，系统将会切换activity进入环境模式。应用切换至环境模式之后，将会更新activity UI至一个更加基础的布局以减轻电池消耗。应该使用黑色的背景和尽可能少的白色图片与文字。用户从交互模式进入环境模式时，应该维持一个相似的布局。</p>
+<blockquote>
+<p>注意：在环境模式中，应该禁用屏幕上一切的交互元素，比如按钮。</p>
+</blockquote>
 <p>应用切换进入环境模式时，系统调用<code>onEnterAmbient()</code>方法。下面的代码在切换至环境模式后将文字颜色切换成白色，并禁用了抗锯齿功能。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onEnterAmbient</span><span class="params">(Bundle ambientDetails)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onEnterAmbient(ambientDetails);</span><br><span class="line"></span><br><span class="line">    mStateTextView.setTextColor(Color.WHITE);</span><br><span class="line">    mStateTextView.getPaint().setAntiAlias(<span class="keyword">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>用户点击屏幕或者提起手腕后，activity从环境模式切换成交互模式。系统调用<code>onExitAmbient()</code>方法。重写这个方法来更新UI布局，使应用进入在全彩、可交互的状态。</p>
 <p>下面的代码在应用进入交互模式后将文字颜色转换成绿色，并启用抗锯齿。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onExitAmbient</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onExitAmbient();</span><br><span class="line"></span><br><span class="line">    mStateTextView.setTextColor(Color.GREEN);</span><br><span class="line">    mStateTextView.getPaint().setAntiAlias(<span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h1 id="在环境模式更新内容"><a href="#在环境模式更新内容" class="headerlink" title="在环境模式更新内容"></a>在环境模式更新内容</h1><p>环境模式允许为用户更新屏幕，但必须慎重地平衡显示的更新和电池的寿命。在环境模式下，重写<code>onUpdateAmbient()</code>方法来更新屏幕的频率最好不超过一分钟一次。为了节省电源，更新不应该超过10秒一次。</p>
@@ -391,7 +388,7 @@ Android Wear允许应用保留在前台，同时节省电源。应用可以在�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">91</span>
+              <span class="site-state-item-count">97</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

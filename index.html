@@ -224,6 +224,549 @@
             
               
                 
+                <a class="post-title-link" href="/2016/03/05/wear-dev-14/" itemprop="url">
+                  Android Wear 开发 （十四） 处理数据层事件
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-05T23:11:19+08:00" content="2016-03-05">
+              2016-03-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>调用数据层API时，可以在完成时获取调用的状态，也可以侦听调用引起的任何改变。</p>
+<h1 id="等待数据层调用的状态"><a href="#等待数据层调用的状态" class="headerlink" title="等待数据层调用的状态"></a>等待数据层调用的状态</h1><p>数据层API有时返回一个<code>PendingResult</code>，比如<code>putDataItem()</code>。一旦<code>PendingResult</code>创建，操作会在后台被入队。如果在这之后什么也不做，操作最终会静默地完成。然而，一般情况下都想在操作完成后根据结果做些什么，所以<code>PendingResult</code>可以让你等待结果的状态，同步或异步地。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/05/wear-dev-14/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/05/wear-dev-13/" itemprop="url">
+                  Android Wear 开发 （十三） 发送接收消息
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-05T19:22:30+08:00" content="2016-03-05">
+              2016-03-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/05/wear-dev-12/" itemprop="url">
+                  Android Wear 开发 （十二） 传输Assets
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-05T17:28:37+08:00" content="2016-03-05">
+              2016-03-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>要通过蓝牙发送较大的二进制数据块，比如图片，可以为数据项附加一个<code>Asset</code>，并将数据项添加至复制的数据商店。</p>
+<p>Assets自动处理数据的缓存，来阻止重复传送，并节省蓝牙带宽。一个通用的模式是，在手机应用上下载图片，缩小至适合手表显示的尺寸，然后作为asset传送至手表上。</p>
+<blockquote>
+<p>数据项的大小限制在100KB，而asset则可以尽可能的大。然而，传输大asset会影响用户体验，所以传输时一定要做好测试工作来确保其表现。</p>
+</blockquote>
+<h1 id="传输Asset"><a href="#传输Asset" class="headerlink" title="传输Asset"></a>传输Asset</h1><p>使用<code>Asset</code>类的<code>create...()</code>方法来创建asset。这里，我们将一个bitmap转化为字节流，并调用<code>createFromBytes()</code>来创建asset。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Asset <span class="title">createAssetFromBitmap</span><span class="params">(Bitmap bitmap)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> ByteArrayOutputStream byteStream = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">    bitmap.compress(Bitmap.CompressFormat.PNG, <span class="number">100</span>, byteStream);</span><br><span class="line">    <span class="keyword">return</span> Asset.createFromBytes(byteStream.toByteArray());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>有了一个asset后，通过<code>DataMap</code>或<code>PutDataRequest</code>的<code>putAsset()</code>方法将它附加到数据项中。</p>
+<p><strong>使用PutDataRequest</strong><br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image);</span><br><span class="line">Asset asset = createAssetFromBitmap(bitmap);</span><br><span class="line">PutDataRequest request = PutDataRequest.create(<span class="string">"/image"</span>);</span><br><span class="line">request.putAsset(<span class="string">"profileImage"</span>, asset);</span><br><span class="line">Wearable.DataApi.putDataItem(mGoogleApiClient, request);</span><br></pre></td></tr></table></figure></p>
+<p><strong>使用PutDataMapRequest</strong><br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image);</span><br><span class="line">Asset asset = createAssetFromBitmap(bitmap);</span><br><span class="line">PutDataMapRequest dataMap = PutDataMapRequest.create(<span class="string">"/image"</span>);</span><br><span class="line">dataMap.getDataMap().putAsset(<span class="string">"profileImage"</span>, asset)</span><br><span class="line">PutDataRequest request = dataMap.asPutDataRequest();</span><br><span class="line">PendingResult&lt;DataApi.DataItemResult&gt; pendingResult = Wearable.DataApi</span><br><span class="line">        .putDataItem(mGoogleApiClient, request);</span><br></pre></td></tr></table></figure></p>
+<h1 id="接收assets"><a href="#接收assets" class="headerlink" title="接收assets"></a>接收assets</h1><p>Asset被创建后，可能想要在连接的另一侧进行读取。这里是一个实现回调来探测asset变化并提取asset的例子：<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDataChanged</span><span class="params">(DataEventBuffer dataEvents)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (DataEvent event : dataEvents) &#123;</span><br><span class="line">    <span class="keyword">if</span> (event.getType() == DataEvent.TYPE_CHANGED &amp;&amp;</span><br><span class="line">        event.getDataItem().getUri().getPath().equals(<span class="string">"/image"</span>)) &#123;</span><br><span class="line">      DataMapItem dataMapItem = DataMapItem.fromDataItem(event.getDataItem());</span><br><span class="line">      Asset profileAsset = dataMapItem.getDataMap().getAsset(<span class="string">"profileImage"</span>);</span><br><span class="line">      Bitmap bitmap = loadBitmapFromAsset(profileAsset);</span><br><span class="line">      <span class="comment">// Do something with the bitmap</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> Bitmap <span class="title">loadBitmapFromAsset</span><span class="params">(Asset asset)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (asset == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Asset must be non-null"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    ConnectionResult result =</span><br><span class="line">           mGoogleApiClient.blockingConnect(TIMEOUT_MS, TimeUnit.MILLISECONDS);</span><br><span class="line">    <span class="keyword">if</span> (!result.isSuccess()) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// convert asset into a file descriptor and block until it's ready</span></span><br><span class="line">    InputStream assetInputStream = Wearable.DataApi.getFdForAsset(</span><br><span class="line">            mGoogleApiClient, asset).await().getInputStream();</span><br><span class="line">            mGoogleApiClient.disconnect();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (assetInputStream == <span class="keyword">null</span>) &#123;</span><br><span class="line">        Log.w(TAG, <span class="string">"Requested an unknown Asset."</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// decode the stream into a bitmap</span></span><br><span class="line">    <span class="keyword">return</span> BitmapFactory.decodeStream(assetInputStream);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/05/wear-dev-11/" itemprop="url">
+                  Android Wear 开发 （十一） 同步数据项
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-05T17:06:21+08:00" content="2016-03-05">
+              2016-03-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><code>DataItem</code>定义了系统用来在手机和手表间同步数据的数据接口。它通常包含了：</p>
+<ul>
+<li><strong>Payload</strong> - 一个字节数组，可以设置任何数据，可以自己进行对象序列化和反序列化。其大小限制在100KB。</li>
+<li><strong>Path</strong> - 一个独特的字符串，必须以一个前斜杠开始，如<code>(/path/to/data)</code>。</li>
+</ul>
+<p>一般不需要直接实现<code>DataItem</code>。只需：</p>
+<ol>
+<li>创建一个<code>PutDataRequest</code>对象，指定一个字符串路径来标识该项目。</li>
+<li>调用<code>setData()</code>来设置payload。</li>
+<li>如果同步的延迟会影响用户体验，调用<code>setUrgent()</code>。</li>
+<li>调用<code>DataApi.putDataItem()</code>。</li>
+</ol>
+<p>在请求数据项时，系统返回正确实现了<code>DataItem</code>接口的对象。然而，并不推荐使用<code>setData()</code>直接设置原生的字节，建议使用data map，它用一个容易使用的类似<code>Bundle</code>的接口来暴露数据。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/05/wear-dev-11/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/05/wear-dev-10/" itemprop="url">
+                  Android Wear 开发 （十） 访问手表数据层
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-05T16:58:05+08:00" content="2016-03-05">
+              2016-03-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>要调用数据层API，首先创建一个<code>GoogleApiClient</code>的实例，作为所有Google Play服务API的入口。</p>
+<p><code>GoogleApiClient</code>提供了一个builder，最简单的实例如下：<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">GoogleApiClient mGoogleApiClient = <span class="keyword">new</span> GoogleApiClient.Builder(<span class="keyword">this</span>)</span><br><span class="line">        .addConnectionCallbacks(<span class="keyword">new</span> ConnectionCallbacks() &#123;</span><br><span class="line">                <span class="annotation">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onConnected</span><span class="params">(Bundle connectionHint)</span> </span>&#123;</span><br><span class="line">                    Log.d(TAG, <span class="string">"onConnected: "</span> + connectionHint);</span><br><span class="line">                    <span class="comment">// Now you can use the Data Layer API</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="annotation">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onConnectionSuspended</span><span class="params">(<span class="keyword">int</span> cause)</span> </span>&#123;</span><br><span class="line">                    Log.d(TAG, <span class="string">"onConnectionSuspended: "</span> + cause);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        .addOnConnectionFailedListener(<span class="keyword">new</span> OnConnectionFailedListener() &#123;</span><br><span class="line">                <span class="annotation">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onConnectionFailed</span><span class="params">(ConnectionResult result)</span> </span>&#123;</span><br><span class="line">                    Log.d(TAG, <span class="string">"onConnectionFailed: "</span> + result);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">        <span class="comment">// Request access only to the Wearable API</span></span><br><span class="line">        .addApi(Wearable.API)</span><br><span class="line">        .build();</span><br></pre></td></tr></table></figure><br>在使用数据层API之前，在客户端上调用<code>connect()</code>方法启动一个连接。系统为客户端调用<code>onConected()</code>回调时，就可以使用数据层API了。</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/05/wear-dev-bluetooth/" itemprop="url">
+                  Android Wear 开发 （九） 通过蓝牙调试
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-05T15:36:31+08:00" content="2016-03-05">
+              2016-03-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>一些安卓手表可以通过USB接口连接至电脑进行尝试，而我的moto360只能通过蓝牙进行调试。在尝试用蓝牙调试的过程中，遇到了一些问题，一并记录下来。</p>
+<p>通过蓝牙可以将手表的debug输出发送至连接在开发机上的手机上。</p>
+<h1 id="为调试设置设备"><a href="#为调试设置设备" class="headerlink" title="为调试设置设备"></a>为调试设置设备</h1><ol>
+<li>启用手机的<strong>USB调试</strong>。</li>
+<li>启用手表的<strong>蓝牙调试</strong>：<ol>
+<li>触碰主屏幕两次打开手表目录。</li>
+<li>滑至底部，点击<strong>设置</strong>。</li>
+<li>滑至底部。如果没有<strong>开发者选项</strong>，点击<strong>关于</strong>，然后点击版本号七次。</li>
+<li>点击<strong>开发者目录</strong>。</li>
+<li>启用<strong>通过蓝牙调试</strong>。</li>
+</ol>
+</li>
+</ol>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/05/wear-dev-bluetooth/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/03/05/wear-dev-8/" itemprop="url">
                   Android Wear 开发 （八） 添加语音功能
                 </a>
@@ -556,551 +1099,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/02/wear-dev-5/" itemprop="url">
-                  Android Wear 开发 （五） 创建自定义通知
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-03-02T08:46:42+08:00" content="2016-03-02">
-              2016-03-02
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在手表上创建布局与手机相同，除了必须根据屏幕尺寸和瞥视动作设计以外。不要仅仅将功能和UI从手机应用中搬运至手表，这样的体验非常不好。只有在必要的时候才应该创建自定义布局。</p>
-<h1 id="创建自定义通知"><a href="#创建自定义通知" class="headerlink" title="创建自定义通知"></a>创建自定义通知</h1><p>一般应该在手机上创建通知并自动同步至手表。这样只需创建一次通知就可以出现在多种设备上（甚至包括汽车和电视）。</p>
-<p>如果标准的通知风格不适合你的话，可以显示一个有自定义布局的activity。应该只在手表上创建和发布自定义通知，这些通知不会被同步至手机上。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/02/wear-dev-5/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/27/Wear-Dev-4/" itemprop="url">
-                  Android Wear 开发 （四） 创建和运行手表应用
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-27T21:33:07+08:00" content="2016-02-27">
-              2016-02-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="更新SDK"><a href="#更新SDK" class="headerlink" title="更新SDK"></a>更新SDK</h1><p>开始创建穿戴应用前，首先：</p>
-<ul>
-<li>更新SDK工具至23.0.0或以上</li>
-<li>更新SDK至API20或以上</li>
-</ul>
-<h1 id="设置手表设备"><a href="#设置手表设备" class="headerlink" title="设置手表设备"></a>设置手表设备</h1><ol>
-<li>在手机上安装Android Wear应用。</li>
-<li>根据指示与手表配对。</li>
-<li>保持Android Wear在手机上打开。</li>
-<li>在手表上启用adb调试。<ol>
-<li>进入<strong>Settings &gt; About</strong>。</li>
-<li>点击<strong>Build number</strong>七次。</li>
-<li>右滑返回设置目录。</li>
-<li>进入屏幕底端的开发者设置。</li>
-<li>点击ADB调试来启用adb。</li>
-</ol>
-</li>
-<li>通过USB连接手表到机器上，这样可以直接安装应用。Android Wear应用和手表上都会显示一条消息表示允许调试。（如果不能通过USB连接，可以尝试使用蓝牙）</li>
-<li>在Android Wear应用上，勾选总是允许这台电脑，并点击OK。
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/27/Wear-Dev-4/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/27/Wear-Dev-3/" itemprop="url">
-                  Android Wear 开发 （三） 在通知中添加页面
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-27T21:27:51+08:00" content="2016-02-27">
-              2016-02-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>要创建多页面的通知：</p>
-<ol>
-<li>使用<code>NotificationCompat.Builder</code>创建主通知（第一页），就像在手机上呈现一样。</li>
-<li>同样使用<code>NotificationCompat.Builder</code>创建其他页面。</li>
-<li><p>通过<code>addPage()</code>将这些页面添加至主通知，或添加<code>Collection</code>中的页面。</p>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Create builder for the main notification</span></span><br><span class="line">NotificationCompat.Builder notificationBuilder =</span><br><span class="line">        <span class="keyword">new</span> NotificationCompat.Builder(<span class="keyword">this</span>)</span><br><span class="line">        .setSmallIcon(R.drawable.new_message)</span><br><span class="line">        .setContentTitle(<span class="string">"Page 1"</span>)</span><br><span class="line">        .setContentText(<span class="string">"Short message"</span>)</span><br><span class="line">        .setContentIntent(viewPendingIntent);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create a big text style for the second page</span></span><br><span class="line">BigTextStyle secondPageStyle = <span class="keyword">new</span> NotificationCompat.BigTextStyle();</span><br><span class="line">secondPageStyle.setBigContentTitle(<span class="string">"Page 2"</span>)</span><br><span class="line">               .bigText(<span class="string">"A lot of text..."</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create second page notification</span></span><br><span class="line">Notification secondPageNotification =</span><br><span class="line">        <span class="keyword">new</span> NotificationCompat.Builder(<span class="keyword">this</span>)</span><br><span class="line">        .setStyle(secondPageStyle)</span><br><span class="line">        .build();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Extend the notification builder with the second page</span></span><br><span class="line">Notification notification = notificationBuilder</span><br><span class="line">        .extend(<span class="keyword">new</span> NotificationCompat.WearableExtender()</span><br><span class="line">                .addPage(secondPageNotification))</span><br><span class="line">        .build();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Issue the notification</span></span><br><span class="line">notificationManager =</span><br><span class="line">        NotificationManagerCompat.from(<span class="keyword">this</span>);</span><br><span class="line">notificationManager.notify(notificationId, notification);</span><br></pre></td></tr></table></figure></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/27/Wear-Dev-2/" itemprop="url">
-                  Android Wear 开发 （二） 在通知中接收语音输入
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-27T20:53:14+08:00" content="2016-02-27">
-              2016-02-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在手机上，有需要输入文字的通知时，一般会启动一个activity以供输入。然而在手表上没有键盘输入，可以让用户通过语音回复或者通过<code>RemoteInput</code>选择预先定义的文字消息。</p>
-<p>用户使用语音回复或者选择某条消息时，系统将文字回应附在为通知指定的<code>Intent</code>上，发送至手机应用中。</p>
-<h1 id="定义语音输入"><a href="#定义语音输入" class="headerlink" title="定义语音输入"></a>定义语音输入</h1><p>要创建一个支持语音输入的动作，首先创建一个<code>RemoteInput.Builder</code>的实例，它可以添加至通知动作中。这个类的构造器接受一个字符串，系统使用它作为语音输入的key，之后使用它在手机上取回输入的文字。</p>
-<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Key for the string that's delivered in the action's intent</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String EXTRA_VOICE_REPLY = <span class="string">"extra_voice_reply"</span>;</span><br><span class="line"></span><br><span class="line">String replyLabel = getResources().getString(R.string.reply_label);</span><br><span class="line"></span><br><span class="line">RemoteInput remoteInput = <span class="keyword">new</span> RemoteInput.Builder(EXTRA_VOICE_REPLY)</span><br><span class="line">        .setLabel(replyLabel)</span><br><span class="line">        .build();</span><br></pre></td></tr></table></figure>
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/27/Wear-Dev-2/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/27/Wear-Dev-1/" itemprop="url">
-                  Android Wear 开发 （一） 创建手表通知
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-27T19:54:50+08:00" content="2016-02-27">
-              2016-02-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>I bought a moto 360 last year. But I seldom wear it, because it’s kind of useless. No app in Android Wear is irreplaceable. Many people never wears it in life because a cellphone is enough. So it’s necessary to develop a functional Wearable app whose performance is better in wearable devices than in cellphones.</p>
-<h1 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h1><p>首先来看 <code>Notification</code>. 要创建同时发送到手表的手机通知，使用 <code>NotificationCompat.Builder</code>.</p>
-<p>在gradle中引入需要的包：</p>
-<pre><code>compile &quot;com.android.support:support-v4:20.0.+&quot;
-</code></pre><p>通知呈现在手机上时，用户触碰通知，调用<code>setContentIntent()</code>指定的 <code>PendingIntent</code> 。而在手表上，用户将通知滑动至左边以显示<strong>Open</strong>动作，后者调用手机上的intent。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/27/Wear-Dev-1/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/27/testing/" itemprop="url">
-                  testing
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-27T11:04:19+08:00" content="2016-02-27">
-              2016-02-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1147,7 +1145,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">91</span>
+              <span class="site-state-item-count">97</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

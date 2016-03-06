@@ -71,7 +71,7 @@
 
 系统提供的：这些语音动作基于任务，并内置在Wear平台。在想要启动的activity中过滤出他们，比如“记笔记”或者“设定闹铃”。
 应用提供的：这些语音动作基于应用，声明他们就像启动图标一样。用户说“启动 ”来使用语音动作并启动一个指定的activity。">
-<meta property="og:updated_time" content="2016-03-05T06:42:42.348Z">
+<meta property="og:updated_time" content="2016-03-05T06:50:01.461Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Wear 开发 （八） 添加语音功能">
 <meta name="twitter:description" content="Wear提供两种语音动作：
@@ -267,8 +267,9 @@
 <ul>
 <li>系统提供的：这些语音动作基于任务，并内置在Wear平台。在想要启动的activity中过滤出他们，比如“记笔记”或者“设定闹铃”。</li>
 <li>应用提供的：这些语音动作基于应用，声明他们就像启动图标一样。用户说“启动 ”来使用语音动作并启动一个指定的activity。<a id="more"></a>
-<h1 id="声明系统提供的语音动作"><a href="#声明系统提供的语音动作" class="headerlink" title="声明系统提供的语音动作"></a>声明系统提供的语音动作</h1>Android Wear平台提供了很多基于用户动作的语音intent。当用户说出语音动作后，应用可以过滤发出的intent来启动一个activity。如果想要启动一个后台运行的service，显示一个activity作为可见信号，然后在activity中启动service。记得在想要离开可见信号时调用<code>finish()</code>。</li>
+</li>
 </ul>
+<h1 id="声明系统提供的语音动作"><a href="#声明系统提供的语音动作" class="headerlink" title="声明系统提供的语音动作"></a>声明系统提供的语音动作</h1><p>Android Wear平台提供了很多基于用户动作的语音intent。当用户说出语音动作后，应用可以过滤发出的intent来启动一个activity。如果想要启动一个后台运行的service，显示一个activity作为可见信号，然后在activity中启动service。记得在想要离开可见信号时调用<code>finish()</code>。</p>
 <p>拿“记笔记”作为例子，声明intent filter来启动一个activity：</p>
 <pre><code>&lt;activity android:name=&quot;MyNoteActivity&quot;&gt;
     &lt;intent-filter&gt;
@@ -288,9 +289,8 @@
   &lt;/activity&gt;
 &lt;/application&gt;
 </code></pre><h1 id="获取任意语音输入"><a href="#获取任意语音输入" class="headerlink" title="获取任意语音输入"></a>获取任意语音输入</h1><p>除了用语音动作启动activity之外，也可以调用系统内置的语音识别activity来获取语音输入，特别是在需要搜索或作为信息发送时。</p>
-<p>在应用中调用<code>startActivityForResult()</code>并使用<code>ACTION_RECOGNIZE_SPEECH</code>动作。这将启动一个语音识别activity，然后可以在<code>onActivityResult()</code>中处理结果。</p>
-<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SPEECH_REQUEST_CODE = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create an intent that can start the Speech Recognizer activity</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">displaySpeechRecognizer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Intent intent = <span class="keyword">new</span> Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);</span><br><span class="line">    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,</span><br><span class="line">            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);</span><br><span class="line"><span class="comment">// Start the activity, the intent will be populated with the speech text</span></span><br><span class="line">    startActivityForResult(intent, SPEECH_REQUEST_CODE);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// This callback is invoked when the Speech Recognizer returns.</span></span><br><span class="line"><span class="comment">// This is where you process the intent and extract the speech text from the intent.</span></span><br><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onActivityResult</span><span class="params">(<span class="keyword">int</span> requestCode, <span class="keyword">int</span> resultCode,</span><br><span class="line">        Intent data)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (requestCode == SPEECH_REQUEST_CODE &amp;&amp; resultCode == RESULT_OK) &#123;</span><br><span class="line">        List&lt;String&gt; results = data.getStringArrayListExtra(</span><br><span class="line">                RecognizerIntent.EXTRA_RESULTS);</span><br><span class="line">        String spokenText = results.get(<span class="number">0</span>);</span><br><span class="line">        <span class="comment">// Do something with spokenText</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">super</span>.onActivityResult(requestCode, resultCode, data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</code></pre>
+<p>在应用中调用<code>startActivityForResult()</code>并使用<code>ACTION_RECOGNIZE_SPEECH</code>动作。这将启动一个语音识别activity，然后可以在<code>onActivityResult()</code>中处理结果。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SPEECH_REQUEST_CODE = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create an intent that can start the Speech Recognizer activity</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">displaySpeechRecognizer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Intent intent = <span class="keyword">new</span> Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);</span><br><span class="line">    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,</span><br><span class="line">            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);</span><br><span class="line"><span class="comment">// Start the activity, the intent will be populated with the speech text</span></span><br><span class="line">    startActivityForResult(intent, SPEECH_REQUEST_CODE);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// This callback is invoked when the Speech Recognizer returns.</span></span><br><span class="line"><span class="comment">// This is where you process the intent and extract the speech text from the intent.</span></span><br><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onActivityResult</span><span class="params">(<span class="keyword">int</span> requestCode, <span class="keyword">int</span> resultCode,</span><br><span class="line">        Intent data)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (requestCode == SPEECH_REQUEST_CODE &amp;&amp; resultCode == RESULT_OK) &#123;</span><br><span class="line">        List&lt;String&gt; results = data.getStringArrayListExtra(</span><br><span class="line">                RecognizerIntent.EXTRA_RESULTS);</span><br><span class="line">        String spokenText = results.get(<span class="number">0</span>);</span><br><span class="line">        <span class="comment">// Do something with spokenText</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">super</span>.onActivityResult(requestCode, resultCode, data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
       
     </div>
 
@@ -314,6 +314,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/05/wear-dev-bluetooth/" rel="prev" title="Android Wear 开发 （九） 通过蓝牙调试">
+                Android Wear 开发 （九） 通过蓝牙调试 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -381,7 +385,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">91</span>
+              <span class="site-state-item-count">97</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

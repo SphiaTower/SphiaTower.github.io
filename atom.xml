@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-03-05T06:42:42.348Z</updated>
+  <updated>2016-03-06T05:42:00.499Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,18 +16,285 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Android Wear 开发 （十四） 处理数据层事件</title>
+    <link href="http://yoursite.com/2016/03/05/wear-dev-14/"/>
+    <id>http://yoursite.com/2016/03/05/wear-dev-14/</id>
+    <published>2016-03-05T15:11:19.000Z</published>
+    <updated>2016-03-06T05:42:00.499Z</updated>
+    
+    <content type="html">&lt;p&gt;调用数据层API时，可以在完成时获取调用的状态，也可以侦听调用引起的任何改变。&lt;/p&gt;
+&lt;h1 id=&quot;等待数据层调用的状态&quot;&gt;&lt;a href=&quot;#等待数据层调用的状态&quot; class=&quot;headerlink&quot; title=&quot;等待数据层调用的状态&quot;&gt;&lt;/a&gt;等待数据层调用的状态&lt;/h1&gt;&lt;p&gt;数据层API有时返回一个&lt;code&gt;PendingResult&lt;/code&gt;，比如&lt;code&gt;putDataItem()&lt;/code&gt;。一旦&lt;code&gt;PendingResult&lt;/code&gt;创建，操作会在后台被入队。如果在这之后什么也不做，操作最终会静默地完成。然而，一般情况下都想在操作完成后根据结果做些什么，所以&lt;code&gt;PendingResult&lt;/code&gt;可以让你等待结果的状态，同步或异步地。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;异步调用&quot;&gt;&lt;a href=&quot;#异步调用&quot; class=&quot;headerlink&quot; title=&quot;异步调用&quot;&gt;&lt;/a&gt;异步调用&lt;/h2&gt;&lt;p&gt;如果代码运行在UI线程，不要调用数据层API的阻塞方法。可以通过向&lt;code&gt;PendingResult&lt;/code&gt;添加一个回调方法来运行异步调用，它将在操作完成后启用。&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;pendingResult.setResultCallback(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ResultCallback&amp;lt;DataItemResult&amp;gt;() &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onResult&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; DataItemResult result)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(result.getStatus().isSuccess()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Log.d(TAG, &lt;span class=&quot;string&quot;&gt;&quot;Data item set: &quot;&lt;/span&gt; + result.getDataItem().getUri());&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h2 id=&quot;同步调用&quot;&gt;&lt;a href=&quot;#同步调用&quot; class=&quot;headerlink&quot; title=&quot;同步调用&quot;&gt;&lt;/a&gt;同步调用&lt;/h2&gt;&lt;p&gt;如果代码运行在后台服务里单独的handler线程，如&lt;code&gt;WearableListenerService&lt;/code&gt;，那么调用阻塞的方法没有问题。这种情况下，应该调用&lt;code&gt;PendingResult&lt;/code&gt;的&lt;code&gt;await()&lt;/code&gt;方法，它将阻塞直到请求完成，并返回一个&lt;code&gt;Result&lt;/code&gt;对象。&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;DataItemResult result = pendingResult.await();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(result.getStatus().isSuccess()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Log.d(TAG, &lt;span class=&quot;string&quot;&gt;&quot;Data item set: &quot;&lt;/span&gt; + result.getDataItem().getUri());&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h1 id=&quot;侦听数据层事件&quot;&gt;&lt;a href=&quot;#侦听数据层事件&quot; class=&quot;headerlink&quot; title=&quot;侦听数据层事件&quot;&gt;&lt;/a&gt;侦听数据层事件&lt;/h1&gt;&lt;p&gt;因为数据层在手机和手表间同步并且发送数据，一般需要侦听一些重要的事件，比如数据项被创建时，消息被接收时，或者手表或手机被连接时。&lt;/p&gt;
+&lt;p&gt;要侦听数据层事件，有两种选择：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;创建一个service继承&lt;code&gt;WearableListenerService&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;创建一个activity实现&lt;code&gt;DataApi.DataListener&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;两种方法都可以重写希望处理的数据事件回调方法。&lt;/p&gt;
+&lt;h2 id=&quot;WearableListenerService&quot;&gt;&lt;a href=&quot;#WearableListenerService&quot; class=&quot;headerlink&quot; title=&quot;WearableListenerService&quot;&gt;&lt;/a&gt;WearableListenerService&lt;/h2&gt;&lt;p&gt;一般在手机和手表中都需要创建service的实例。如果对其中的一个中的数据事件不感兴趣，那么不需要实现相应的service。&lt;/p&gt;
+&lt;p&gt;例如，手机应用可以设置和获取数据项对象，而手表应用可以侦听这些更新来刷新自己的UI。这个手表永远都不会更新任何的数据项，所以手机应用无需侦听手表应用的数据项事件。&lt;/p&gt;
+&lt;p&gt;可以用&lt;code&gt;WearableListenerService&lt;/code&gt;侦听下面的事件：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;onDataChanged()&lt;/code&gt; - 当数据项对象被创建，改变或删除时调用。连接一侧的事件会在两侧都触发调用。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;onMessageReceived()&lt;/code&gt; - 从连接一侧发送的消息在连接的另一侧触发回调。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;onPeerConnected()&lt;/code&gt;和&lt;code&gt;onPeerDisconnected()&lt;/code&gt; - 连接建立或断开时调用。连接一侧的连接状态的改变在两侧都触发回调。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;要创建一个&lt;code&gt;WearableListenerService&lt;/code&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;创建一个继承&lt;code&gt;WearableListenerService&lt;/code&gt;的类；&lt;/li&gt;
+&lt;li&gt;侦听感兴趣的事件，比如&lt;code&gt;onDataChanged()&lt;/code&gt;；&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;在manifest中生命一个intent filter来告知系统自己的&lt;code&gt;WearableListenerService&lt;/code&gt;。这将允许系统按需要绑定service。&lt;/p&gt;
+ &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;DataLayerListenerService&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;WearableListenerService&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; String TAG = &lt;span class=&quot;string&quot;&gt;&quot;DataLayerSample&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; String START_ACTIVITY_PATH = &lt;span class=&quot;string&quot;&gt;&quot;/start-activity&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; String DATA_ITEM_RECEIVED_PATH = &lt;span class=&quot;string&quot;&gt;&quot;/data-item-received&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onDataChanged&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(DataEventBuffer dataEvents)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (Log.isLoggable(TAG, Log.DEBUG)) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Log.d(TAG, &lt;span class=&quot;string&quot;&gt;&quot;onDataChanged: &quot;&lt;/span&gt; + dataEvents);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; List events = FreezableUtils&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .freezeIterable(dataEvents);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        GoogleApiClient googleApiClient = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; GoogleApiClient.Builder(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .addApi(Wearable.API)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .build();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ConnectionResult connectionResult =&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                googleApiClient.blockingConnect(&lt;span class=&quot;number&quot;&gt;30&lt;/span&gt;, TimeUnit.SECONDS);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (!connectionResult.isSuccess()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Log.e(TAG, &lt;span class=&quot;string&quot;&gt;&quot;Failed to connect to GoogleApiClient.&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;comment&quot;&gt;// Loop through the events and send a message&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;comment&quot;&gt;// to the node that created the data item.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (DataEvent event : events) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Uri uri = event.getDataItem().getUri();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// Get the node id from the host value of the URI&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            String nodeId = uri.getHost();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// Set the data of the message to be the bytes of the URI&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;byte&lt;/span&gt;[] payload = uri.toString().getBytes();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// Send the RPC&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Wearable.MessageApi.sendMessage(googleApiClient, nodeId,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    DATA_ITEM_RECEIVED_PATH, payload);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;下面是manifest中对应的intent filter：&lt;/p&gt;
+ &lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;service android:name=&quot;.DataLayerListenerService&quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;lt;intent-filter&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &amp;lt;action android:name=&quot;com.google.android.gms.wearable.BIND_LISTENER&quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;lt;/intent-filter&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/service&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h2 id=&quot;数据层回调的权限&quot;&gt;&lt;a href=&quot;#数据层回调的权限&quot; class=&quot;headerlink&quot; title=&quot;数据层回调的权限&quot;&gt;&lt;/a&gt;数据层回调的权限&lt;/h2&gt;&lt;p&gt;要向应用发送数据层事件的回调，Google Play服务绑定至&lt;code&gt;WearableListenerService&lt;/code&gt;，并且通过IPC调用回调。这导致了回调继承了调用进程的权限。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;如果试图在回调中执行特权的操作，安全检查可能会失败。因为回调以调用进程的身份运行，而非应用的进程。&lt;/p&gt;
+&lt;p&gt;要解决这个问题，调用&lt;code&gt;clearCallingIdentity()&lt;/code&gt;以在穿过IPC边界后重置身份，并且在完成了特权操作后调用&lt;code&gt;restoreCallingIdentity()&lt;/code&gt;以恢复身份。&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;long&lt;/span&gt; token = Binder.clearCallingIdentity();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    performOperationRequiringPermissions();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125; &lt;span class=&quot;keyword&quot;&gt;finally&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Binder.restoreCallingIdentity(token);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h2 id=&quot;Listener-Activity&quot;&gt;&lt;a href=&quot;#Listener-Activity&quot; class=&quot;headerlink&quot; title=&quot;Listener Activity&quot;&gt;&lt;/a&gt;Listener Activity&lt;/h2&gt;&lt;p&gt;如果应用只有当用户与应用交互时关心数据层事件，不需要使用长期运行的service来处理所有数据改变，可以在activity中通过实现下面的一个或多个接口来侦听事件：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;DataApi.DataListener&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;MessageApi.MessageListener&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;NodeApi.NodeListener&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;要创造一个侦听数据事件的activity：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;实现想要的接口；&lt;/li&gt;
+&lt;li&gt;在&lt;code&gt;onCreate(Bundle)&lt;/code&gt;中创建&lt;code&gt;GoogleApiClient&lt;/code&gt;的一个实例来使用数据层API；&lt;/li&gt;
+&lt;li&gt;在&lt;code&gt;onStart()&lt;/code&gt;调用&lt;code&gt;connect()&lt;/code&gt;来连接客户端至Google Play服务；&lt;/li&gt;
+&lt;li&gt;连接至Google Play服务之后，系统调用&lt;code&gt;onConnected()&lt;/code&gt;。在这里调用&lt;code&gt;DataApi.addListener()&lt;/code&gt;, &lt;code&gt;MessageApi.addListener()&lt;/code&gt;, 或 &lt;code&gt;NodeApi.addListener()&lt;/code&gt;来告知Google Play服务，当面activity希望侦听数据层事件。&lt;/li&gt;
+&lt;li&gt;在&lt;code&gt;onStop()&lt;/code&gt;中调用&lt;code&gt;DataApi.removeListener()&lt;/code&gt;, &lt;code&gt;MessageApi.removeListener()&lt;/code&gt;, 或 &lt;code&gt;NodeApi.removeListener()&lt;/code&gt;注销任意的侦听器。&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;根据实现的接口实现&lt;code&gt;onDataChanged()&lt;/code&gt;, &lt;code&gt;onMessageReceived()&lt;/code&gt;, &lt;code&gt;onPeerConnected()&lt;/code&gt;, 和&lt;code&gt;onPeerDisconnected()&lt;/code&gt;. &lt;/p&gt;
+ &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;MainActivity&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Activity&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;title&quot;&gt;DataApi&lt;/span&gt;.&lt;span class=&quot;title&quot;&gt;DataListener&lt;/span&gt;, &lt;span class=&quot;title&quot;&gt;ConnectionCallbacks&lt;/span&gt;, &lt;span class=&quot;title&quot;&gt;OnConnectionFailedListener&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; GoogleApiClient mGoogleApiClient;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Bundle savedInstanceState)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        setContentView(R.layout.main);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        mGoogleApiClient = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; GoogleApiClient.Builder(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .addApi(Wearable.API)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .addConnectionCallbacks(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .addOnConnectionFailedListener(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .build();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onStart&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onStart();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (!mResolvingError) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            mGoogleApiClient.connect();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onConnected&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Bundle connectionHint)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (Log.isLoggable(TAG, Log.DEBUG)) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Log.d(TAG, &lt;span class=&quot;string&quot;&gt;&quot;Connected to Google Api Service&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Wearable.DataApi.addListener(mGoogleApiClient, &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onStop&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt; != mGoogleApiClient &amp;amp;&amp;amp; mGoogleApiClient.isConnected()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Wearable.DataApi.removeListener(mGoogleApiClient, &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            mGoogleApiClient.disconnect();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onStop();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onDataChanged&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(DataEventBuffer dataEvents)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (DataEvent event : dataEvents) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (event.getType() == DataEvent.TYPE_DELETED) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                Log.d(TAG, &lt;span class=&quot;string&quot;&gt;&quot;DataItem deleted: &quot;&lt;/span&gt; + event.getDataItem().getUri());&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125; &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (event.getType() == DataEvent.TYPE_CHANGED) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                Log.d(TAG, &lt;span class=&quot;string&quot;&gt;&quot;DataItem changed: &quot;&lt;/span&gt; + event.getDataItem().getUri());&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;调用数据层API时，可以在完成时获取调用的状态，也可以侦听调用引起的任何改变。&lt;/p&gt;
+&lt;h1 id=&quot;等待数据层调用的状态&quot;&gt;&lt;a href=&quot;#等待数据层调用的状态&quot; class=&quot;headerlink&quot; title=&quot;等待数据层调用的状态&quot;&gt;&lt;/a&gt;等待数据层调用的状态&lt;/h1&gt;&lt;p&gt;数据层API有时返回一个&lt;code&gt;PendingResult&lt;/code&gt;，比如&lt;code&gt;putDataItem()&lt;/code&gt;。一旦&lt;code&gt;PendingResult&lt;/code&gt;创建，操作会在后台被入队。如果在这之后什么也不做，操作最终会静默地完成。然而，一般情况下都想在操作完成后根据结果做些什么，所以&lt;code&gt;PendingResult&lt;/code&gt;可以让你等待结果的状态，同步或异步地。&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="Android Wear" scheme="http://yoursite.com/tags/Android-Wear/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android Wear 开发 （十三） 发送接收消息</title>
+    <link href="http://yoursite.com/2016/03/05/wear-dev-13/"/>
+    <id>http://yoursite.com/2016/03/05/wear-dev-13/</id>
+    <published>2016-03-05T11:22:30.000Z</published>
+    <updated>2016-03-05T11:23:21.568Z</updated>
+    
+    <content type="html"></content>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+      <category term="Android Wear" scheme="http://yoursite.com/tags/Android-Wear/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android Wear 开发 （十二） 传输Assets</title>
+    <link href="http://yoursite.com/2016/03/05/wear-dev-12/"/>
+    <id>http://yoursite.com/2016/03/05/wear-dev-12/</id>
+    <published>2016-03-05T09:28:37.000Z</published>
+    <updated>2016-03-05T09:42:05.766Z</updated>
+    
+    <content type="html">&lt;p&gt;要通过蓝牙发送较大的二进制数据块，比如图片，可以为数据项附加一个&lt;code&gt;Asset&lt;/code&gt;，并将数据项添加至复制的数据商店。&lt;/p&gt;
+&lt;p&gt;Assets自动处理数据的缓存，来阻止重复传送，并节省蓝牙带宽。一个通用的模式是，在手机应用上下载图片，缩小至适合手表显示的尺寸，然后作为asset传送至手表上。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;数据项的大小限制在100KB，而asset则可以尽可能的大。然而，传输大asset会影响用户体验，所以传输时一定要做好测试工作来确保其表现。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;传输Asset&quot;&gt;&lt;a href=&quot;#传输Asset&quot; class=&quot;headerlink&quot; title=&quot;传输Asset&quot;&gt;&lt;/a&gt;传输Asset&lt;/h1&gt;&lt;p&gt;使用&lt;code&gt;Asset&lt;/code&gt;类的&lt;code&gt;create...()&lt;/code&gt;方法来创建asset。这里，我们将一个bitmap转化为字节流，并调用&lt;code&gt;createFromBytes()&lt;/code&gt;来创建asset。&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; Asset &lt;span class=&quot;title&quot;&gt;createAssetFromBitmap&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Bitmap bitmap)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; ByteArrayOutputStream byteStream = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ByteArrayOutputStream();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    bitmap.compress(Bitmap.CompressFormat.PNG, &lt;span class=&quot;number&quot;&gt;100&lt;/span&gt;, byteStream);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; Asset.createFromBytes(byteStream.toByteArray());&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;br&gt;有了一个asset后，通过&lt;code&gt;DataMap&lt;/code&gt;或&lt;code&gt;PutDataRequest&lt;/code&gt;的&lt;code&gt;putAsset()&lt;/code&gt;方法将它附加到数据项中。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;使用PutDataRequest&lt;/strong&gt;&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Asset asset = createAssetFromBitmap(bitmap);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;PutDataRequest request = PutDataRequest.create(&lt;span class=&quot;string&quot;&gt;&quot;/image&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;request.putAsset(&lt;span class=&quot;string&quot;&gt;&quot;profileImage&quot;&lt;/span&gt;, asset);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Wearable.DataApi.putDataItem(mGoogleApiClient, request);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;使用PutDataMapRequest&lt;/strong&gt;&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Asset asset = createAssetFromBitmap(bitmap);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;PutDataMapRequest dataMap = PutDataMapRequest.create(&lt;span class=&quot;string&quot;&gt;&quot;/image&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;dataMap.getDataMap().putAsset(&lt;span class=&quot;string&quot;&gt;&quot;profileImage&quot;&lt;/span&gt;, asset)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;PutDataRequest request = dataMap.asPutDataRequest();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;PendingResult&amp;lt;DataApi.DataItemResult&amp;gt; pendingResult = Wearable.DataApi&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .putDataItem(mGoogleApiClient, request);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h1 id=&quot;接收assets&quot;&gt;&lt;a href=&quot;#接收assets&quot; class=&quot;headerlink&quot; title=&quot;接收assets&quot;&gt;&lt;/a&gt;接收assets&lt;/h1&gt;&lt;p&gt;Asset被创建后，可能想要在连接的另一侧进行读取。这里是一个实现回调来探测asset变化并提取asset的例子：&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onDataChanged&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(DataEventBuffer dataEvents)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (DataEvent event : dataEvents) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (event.getType() == DataEvent.TYPE_CHANGED &amp;amp;&amp;amp;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        event.getDataItem().getUri().getPath().equals(&lt;span class=&quot;string&quot;&gt;&quot;/image&quot;&lt;/span&gt;)) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      DataMapItem dataMapItem = DataMapItem.fromDataItem(event.getDataItem());&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      Asset profileAsset = dataMapItem.getDataMap().getAsset(&lt;span class=&quot;string&quot;&gt;&quot;profileImage&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      Bitmap bitmap = loadBitmapFromAsset(profileAsset);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;comment&quot;&gt;// Do something with the bitmap&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; Bitmap &lt;span class=&quot;title&quot;&gt;loadBitmapFromAsset&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Asset asset)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (asset == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; IllegalArgumentException(&lt;span class=&quot;string&quot;&gt;&quot;Asset must be non-null&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    ConnectionResult result =&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;           mGoogleApiClient.blockingConnect(TIMEOUT_MS, TimeUnit.MILLISECONDS);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (!result.isSuccess()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// convert asset into a file descriptor and block until it&#39;s ready&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    InputStream assetInputStream = Wearable.DataApi.getFdForAsset(&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            mGoogleApiClient, asset).await().getInputStream();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            mGoogleApiClient.disconnect();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (assetInputStream == &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Log.w(TAG, &lt;span class=&quot;string&quot;&gt;&quot;Requested an unknown Asset.&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// decode the stream into a bitmap&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; BitmapFactory.decodeStream(assetInputStream);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;要通过蓝牙发送较大的二进制数据块，比如图片，可以为数据项附加一个&lt;code&gt;Asset&lt;/code&gt;，并将数据项添加至复制的数据商店。&lt;/p&gt;
+&lt;p&gt;Assets自动处理数据的缓存，来阻止重复传送，并节省蓝牙带宽。一个通用的模式是，在手机应用上下载图片，缩小至适合手表显示的
+    
+    </summary>
+    
+    
+      <category term="Android Wear" scheme="http://yoursite.com/tags/Android-Wear/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android Wear 开发 （十一） 同步数据项</title>
+    <link href="http://yoursite.com/2016/03/05/wear-dev-11/"/>
+    <id>http://yoursite.com/2016/03/05/wear-dev-11/</id>
+    <published>2016-03-05T09:06:21.000Z</published>
+    <updated>2016-03-05T09:27:45.924Z</updated>
+    
+    <content type="html">&lt;p&gt;&lt;code&gt;DataItem&lt;/code&gt;定义了系统用来在手机和手表间同步数据的数据接口。它通常包含了：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Payload&lt;/strong&gt; - 一个字节数组，可以设置任何数据，可以自己进行对象序列化和反序列化。其大小限制在100KB。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Path&lt;/strong&gt; - 一个独特的字符串，必须以一个前斜杠开始，如&lt;code&gt;(/path/to/data)&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;一般不需要直接实现&lt;code&gt;DataItem&lt;/code&gt;。只需：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;创建一个&lt;code&gt;PutDataRequest&lt;/code&gt;对象，指定一个字符串路径来标识该项目。&lt;/li&gt;
+&lt;li&gt;调用&lt;code&gt;setData()&lt;/code&gt;来设置payload。&lt;/li&gt;
+&lt;li&gt;如果同步的延迟会影响用户体验，调用&lt;code&gt;setUrgent()&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;调用&lt;code&gt;DataApi.putDataItem()&lt;/code&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在请求数据项时，系统返回正确实现了&lt;code&gt;DataItem&lt;/code&gt;接口的对象。然而，并不推荐使用&lt;code&gt;setData()&lt;/code&gt;直接设置原生的字节，建议使用data map，它用一个容易使用的类似&lt;code&gt;Bundle&lt;/code&gt;的接口来暴露数据。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;用data-map同步数据&quot;&gt;&lt;a href=&quot;#用data-map同步数据&quot; class=&quot;headerlink&quot; title=&quot;用data map同步数据&quot;&gt;&lt;/a&gt;用data map同步数据&lt;/h1&gt;&lt;p&gt;尽可能使用&lt;code&gt;DataMap&lt;/code&gt;类。系统会自动进行对象的序列化和反序列化，像&lt;code&gt;Bundle&lt;/code&gt;一样。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;创建&lt;code&gt;PutDataMapRequest&lt;/code&gt;对象，为数据项设定路径。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意：路径字符串是连接的两侧用来访问数据项的独特的标识符。如果在应用中使用了阶层式的数据，应该创建一个path scheme来匹配数据的阶层。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;调用&lt;code&gt;PutDataMapRequest.getDataMap()&lt;/code&gt;来获取一个可以设置值的data map。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;调用&lt;code&gt;put...()&lt;/code&gt;方法设置值。&lt;/li&gt;
+&lt;li&gt;如果延迟会影响用户体验，调用&lt;code&gt;setUrgent()&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;调用&lt;code&gt;PutDataMapRequest.asPutDataRequest()&lt;/code&gt;来获取一个&lt;code&gt;PutDataRequest&lt;/code&gt;对象。&lt;/li&gt;
+&lt;li&gt;调用&lt;code&gt;DataApi.putDataItem&lt;/code&gt;来请求系统创建数据项。&lt;blockquote&gt;
+&lt;p&gt;注意：如果手机和手表断开连接，数据将被缓存，并在连接重新建立后进行同步。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;code&gt;increaseCounter()&lt;/code&gt;方法展示了如果创建data map并放入数据：&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;MainActivity&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Activity&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;title&quot;&gt;DataApi&lt;/span&gt;.&lt;span class=&quot;title&quot;&gt;DataListener&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;title&quot;&gt;GoogleApiClient&lt;/span&gt;.&lt;span class=&quot;title&quot;&gt;ConnectionCallbacks&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;title&quot;&gt;GoogleApiClient&lt;/span&gt;.&lt;span class=&quot;title&quot;&gt;OnConnectionFailedListener&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; String COUNT_KEY = &lt;span class=&quot;string&quot;&gt;&quot;com.example.key.count&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; GoogleApiClient mGoogleApiClient;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; count = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// Create a data map and put data in it&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;increaseCounter&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        PutDataMapRequest putDataMapReq = PutDataMapRequest.create(&lt;span class=&quot;string&quot;&gt;&quot;/count&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        putDataMapReq.getDataMap().putInt(COUNT_KEY, count++);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        PendingResult&amp;lt;DataApi.DataItemResult&amp;gt; pendingResult =&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h1 id=&quot;侦听数据项事件&quot;&gt;&lt;a href=&quot;#侦听数据项事件&quot; class=&quot;headerlink&quot; title=&quot;侦听数据项事件&quot;&gt;&lt;/a&gt;侦听数据项事件&lt;/h1&gt;&lt;p&gt;如果数据层连接的一侧改变了某个数据项，应该在另一侧也获取通知。这只需实现数据项事件的侦听器即可：&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;61&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;MainActivity&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Activity&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;implements&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;title&quot;&gt;DataApi&lt;/span&gt;.&lt;span class=&quot;title&quot;&gt;DataListener&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;title&quot;&gt;GoogleApiClient&lt;/span&gt;.&lt;span class=&quot;title&quot;&gt;ConnectionCallbacks&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;title&quot;&gt;GoogleApiClient&lt;/span&gt;.&lt;span class=&quot;title&quot;&gt;OnConnectionFailedListener&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; String COUNT_KEY = &lt;span class=&quot;string&quot;&gt;&quot;com.example.key.count&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; GoogleApiClient mGoogleApiClient;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; count = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Bundle savedInstanceState)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        setContentView(R.layout.activity_main);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        mGoogleApiClient = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; GoogleApiClient.Builder(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .addApi(Wearable.API)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .addConnectionCallbacks(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .addOnConnectionFailedListener(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                .build();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onResume&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onResume();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        mGoogleApiClient.connect();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onConnected&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Bundle bundle)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Wearable.DataApi.addListener(mGoogleApiClient, &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onPause&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onPause();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Wearable.DataApi.removeListener(mGoogleApiClient, &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        mGoogleApiClient.disconnect();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onDataChanged&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(DataEventBuffer dataEvents)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (DataEvent event : dataEvents) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (event.getType() == DataEvent.TYPE_CHANGED) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;comment&quot;&gt;// DataItem changed&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                DataItem item = event.getDataItem();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (item.getUri().getPath().compareTo(&lt;span class=&quot;string&quot;&gt;&quot;/count&quot;&lt;/span&gt;) == &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    DataMap dataMap = DataMapItem.fromDataItem(item).getDataMap();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    updateCount(dataMap.getInt(COUNT_KEY));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125; &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (event.getType() == DataEvent.TYPE_DELETED) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;comment&quot;&gt;// DataItem deleted&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// Our method to update the count&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;updateCount&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; c)&lt;/span&gt; &lt;/span&gt;&amp;#123; ... &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;br&gt;Activity实现了&lt;code&gt;DataItemt.DataListener&lt;/code&gt;接口，在&lt;code&gt;onConnected()&lt;/code&gt;方法中添加自身作为数据项事件的侦听器，并在&lt;code&gt;onPause()&lt;/code&gt;方法中移除。&lt;/p&gt;
+&lt;p&gt;同样也可以用service作为侦听器。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;code&gt;DataItem&lt;/code&gt;定义了系统用来在手机和手表间同步数据的数据接口。它通常包含了：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Payload&lt;/strong&gt; - 一个字节数组，可以设置任何数据，可以自己进行对象序列化和反序列化。其大小限制在100KB。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Path&lt;/strong&gt; - 一个独特的字符串，必须以一个前斜杠开始，如&lt;code&gt;(/path/to/data)&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;一般不需要直接实现&lt;code&gt;DataItem&lt;/code&gt;。只需：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;创建一个&lt;code&gt;PutDataRequest&lt;/code&gt;对象，指定一个字符串路径来标识该项目。&lt;/li&gt;
+&lt;li&gt;调用&lt;code&gt;setData()&lt;/code&gt;来设置payload。&lt;/li&gt;
+&lt;li&gt;如果同步的延迟会影响用户体验，调用&lt;code&gt;setUrgent()&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;调用&lt;code&gt;DataApi.putDataItem()&lt;/code&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在请求数据项时，系统返回正确实现了&lt;code&gt;DataItem&lt;/code&gt;接口的对象。然而，并不推荐使用&lt;code&gt;setData()&lt;/code&gt;直接设置原生的字节，建议使用data map，它用一个容易使用的类似&lt;code&gt;Bundle&lt;/code&gt;的接口来暴露数据。&lt;br&gt;
+    
+    </summary>
+    
+    
+      <category term="Android Wear" scheme="http://yoursite.com/tags/Android-Wear/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android Wear 开发 （十） 访问手表数据层</title>
+    <link href="http://yoursite.com/2016/03/05/wear-dev-10/"/>
+    <id>http://yoursite.com/2016/03/05/wear-dev-10/</id>
+    <published>2016-03-05T08:58:05.000Z</published>
+    <updated>2016-03-05T09:06:12.497Z</updated>
+    
+    <content type="html">&lt;p&gt;要调用数据层API，首先创建一个&lt;code&gt;GoogleApiClient&lt;/code&gt;的实例，作为所有Google Play服务API的入口。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;GoogleApiClient&lt;/code&gt;提供了一个builder，最简单的实例如下：&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;GoogleApiClient mGoogleApiClient = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; GoogleApiClient.Builder(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .addConnectionCallbacks(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ConnectionCallbacks() &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onConnected&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Bundle connectionHint)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    Log.d(TAG, &lt;span class=&quot;string&quot;&gt;&quot;onConnected: &quot;&lt;/span&gt; + connectionHint);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &lt;span class=&quot;comment&quot;&gt;// Now you can use the Data Layer API&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onConnectionSuspended&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; cause)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    Log.d(TAG, &lt;span class=&quot;string&quot;&gt;&quot;onConnectionSuspended: &quot;&lt;/span&gt; + cause);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .addOnConnectionFailedListener(&lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; OnConnectionFailedListener() &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onConnectionFailed&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(ConnectionResult result)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    Log.d(TAG, &lt;span class=&quot;string&quot;&gt;&quot;onConnectionFailed: &quot;&lt;/span&gt; + result);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;comment&quot;&gt;// Request access only to the Wearable API&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .addApi(Wearable.API)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        .build();&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;br&gt;在使用数据层API之前，在客户端上调用&lt;code&gt;connect()&lt;/code&gt;方法启动一个连接。系统为客户端调用&lt;code&gt;onConected()&lt;/code&gt;回调时，就可以使用数据层API了。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;要调用数据层API，首先创建一个&lt;code&gt;GoogleApiClient&lt;/code&gt;的实例，作为所有Google Play服务API的入口。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;GoogleApiClient&lt;/code&gt;提供了一个builder，最简单的实例如下：&lt;br&gt;   
+    
+    </summary>
+    
+    
+      <category term="Android Wear" scheme="http://yoursite.com/tags/Android-Wear/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android Wear 开发 （九） 通过蓝牙调试</title>
+    <link href="http://yoursite.com/2016/03/05/wear-dev-bluetooth/"/>
+    <id>http://yoursite.com/2016/03/05/wear-dev-bluetooth/</id>
+    <published>2016-03-05T07:36:31.000Z</published>
+    <updated>2016-03-05T07:50:53.612Z</updated>
+    
+    <content type="html">&lt;p&gt;一些安卓手表可以通过USB接口连接至电脑进行尝试，而我的moto360只能通过蓝牙进行调试。在尝试用蓝牙调试的过程中，遇到了一些问题，一并记录下来。&lt;/p&gt;
+&lt;p&gt;通过蓝牙可以将手表的debug输出发送至连接在开发机上的手机上。&lt;/p&gt;
+&lt;h1 id=&quot;为调试设置设备&quot;&gt;&lt;a href=&quot;#为调试设置设备&quot; class=&quot;headerlink&quot; title=&quot;为调试设置设备&quot;&gt;&lt;/a&gt;为调试设置设备&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;启用手机的&lt;strong&gt;USB调试&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;启用手表的&lt;strong&gt;蓝牙调试&lt;/strong&gt;：&lt;ol&gt;
+&lt;li&gt;触碰主屏幕两次打开手表目录。&lt;/li&gt;
+&lt;li&gt;滑至底部，点击&lt;strong&gt;设置&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;滑至底部。如果没有&lt;strong&gt;开发者选项&lt;/strong&gt;，点击&lt;strong&gt;关于&lt;/strong&gt;，然后点击版本号七次。&lt;/li&gt;
+&lt;li&gt;点击&lt;strong&gt;开发者目录&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;启用&lt;strong&gt;通过蓝牙调试&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h1 id=&quot;启动调试Session&quot;&gt;&lt;a href=&quot;#启动调试Session&quot; class=&quot;headerlink&quot; title=&quot;启动调试Session&quot;&gt;&lt;/a&gt;启动调试Session&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;在手机上打开Android Wear伴侣应用。&lt;/li&gt;
+&lt;li&gt;点击右上角的目录，选择设置。&lt;/li&gt;
+&lt;li&gt;启用&lt;strong&gt;通过蓝牙调试&lt;/strong&gt;，这时会看到： &lt;figure class=&quot;highlight http&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;Host&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;disconnected&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;Target&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;connected&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
+&lt;li&gt;通过USB连接手机至机器，并运行： &lt;figure class=&quot;highlight groovy&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;adb forward &lt;span class=&quot;string&quot;&gt;tcp:&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;4444&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;localabstract:&lt;/span&gt;/adb-hub&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;adb connect &lt;span class=&quot;string&quot;&gt;localhost:&lt;/span&gt;&lt;span class=&quot;number&quot;&gt;4444&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;运行adb命令只需在cmd中切换至&lt;code&gt;&amp;lt;sdk&amp;gt;\platform-tools&lt;/code&gt;即可，可以选择任意可用的端口。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这时Android Wear伴侣应用中的状态变为：&lt;br&gt;    &lt;figure class=&quot;highlight http&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;Host&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;connected&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attribute&quot;&gt;Target&lt;/span&gt;: &lt;span class=&quot;string&quot;&gt;connected&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h2 id=&quot;拒绝连接的解决方法&quot;&gt;&lt;a href=&quot;#拒绝连接的解决方法&quot; class=&quot;headerlink&quot; title=&quot;拒绝连接的解决方法&quot;&gt;&lt;/a&gt;拒绝连接的解决方法&lt;/h2&gt;&lt;p&gt;在上一步连接的过程中，可能出现以下的错误：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;unable to connect to localhost:4444: cannot connect to localhost:4444
+no connection could be made because the target machine actively refused it (10061).
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;解决方法是，使用&lt;code&gt;adb connect 127.0.0.1:4444&lt;/code&gt;替换刚才的&lt;code&gt;localhost&lt;/code&gt;语句。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;一些安卓手表可以通过USB接口连接至电脑进行尝试，而我的moto360只能通过蓝牙进行调试。在尝试用蓝牙调试的过程中，遇到了一些问题，一并记录下来。&lt;/p&gt;
+&lt;p&gt;通过蓝牙可以将手表的debug输出发送至连接在开发机上的手机上。&lt;/p&gt;
+&lt;h1 id=&quot;为调试设置设备&quot;&gt;&lt;a href=&quot;#为调试设置设备&quot; class=&quot;headerlink&quot; title=&quot;为调试设置设备&quot;&gt;&lt;/a&gt;为调试设置设备&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;启用手机的&lt;strong&gt;USB调试&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;启用手表的&lt;strong&gt;蓝牙调试&lt;/strong&gt;：&lt;ol&gt;
+&lt;li&gt;触碰主屏幕两次打开手表目录。&lt;/li&gt;
+&lt;li&gt;滑至底部，点击&lt;strong&gt;设置&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;滑至底部。如果没有&lt;strong&gt;开发者选项&lt;/strong&gt;，点击&lt;strong&gt;关于&lt;/strong&gt;，然后点击版本号七次。&lt;/li&gt;
+&lt;li&gt;点击&lt;strong&gt;开发者目录&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;启用&lt;strong&gt;通过蓝牙调试&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+      <category term="Android Wear" scheme="http://yoursite.com/tags/Android-Wear/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Android Wear 开发 （八） 添加语音功能</title>
     <link href="http://yoursite.com/2016/03/05/wear-dev-8/"/>
     <id>http://yoursite.com/2016/03/05/wear-dev-8/</id>
     <published>2016-03-05T06:28:29.000Z</published>
-    <updated>2016-03-05T06:42:42.348Z</updated>
+    <updated>2016-03-05T06:50:01.461Z</updated>
     
     <content type="html">&lt;p&gt;Wear提供两种语音动作：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;系统提供的：这些语音动作基于任务，并内置在Wear平台。在想要启动的activity中过滤出他们，比如“记笔记”或者“设定闹铃”。&lt;/li&gt;
 &lt;li&gt;应用提供的：这些语音动作基于应用，声明他们就像启动图标一样。用户说“启动 ”来使用语音动作并启动一个指定的activity。&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;h1 id=&quot;声明系统提供的语音动作&quot;&gt;&lt;a href=&quot;#声明系统提供的语音动作&quot; class=&quot;headerlink&quot; title=&quot;声明系统提供的语音动作&quot;&gt;&lt;/a&gt;声明系统提供的语音动作&lt;/h1&gt;Android Wear平台提供了很多基于用户动作的语音intent。当用户说出语音动作后，应用可以过滤发出的intent来启动一个activity。如果想要启动一个后台运行的service，显示一个activity作为可见信号，然后在activity中启动service。记得在想要离开可见信号时调用&lt;code&gt;finish()&lt;/code&gt;。&lt;/li&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h1 id=&quot;声明系统提供的语音动作&quot;&gt;&lt;a href=&quot;#声明系统提供的语音动作&quot; class=&quot;headerlink&quot; title=&quot;声明系统提供的语音动作&quot;&gt;&lt;/a&gt;声明系统提供的语音动作&lt;/h1&gt;&lt;p&gt;Android Wear平台提供了很多基于用户动作的语音intent。当用户说出语音动作后，应用可以过滤发出的intent来启动一个activity。如果想要启动一个后台运行的service，显示一个activity作为可见信号，然后在activity中启动service。记得在想要离开可见信号时调用&lt;code&gt;finish()&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;拿“记笔记”作为例子，声明intent filter来启动一个activity：&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;&amp;lt;activity android:name=&amp;quot;MyNoteActivity&amp;quot;&amp;gt;
     &amp;lt;intent-filter&amp;gt;
@@ -47,9 +314,8 @@
   &amp;lt;/activity&amp;gt;
 &amp;lt;/application&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&quot;获取任意语音输入&quot;&gt;&lt;a href=&quot;#获取任意语音输入&quot; class=&quot;headerlink&quot; title=&quot;获取任意语音输入&quot;&gt;&lt;/a&gt;获取任意语音输入&lt;/h1&gt;&lt;p&gt;除了用语音动作启动activity之外，也可以调用系统内置的语音识别activity来获取语音输入，特别是在需要搜索或作为信息发送时。&lt;/p&gt;
-&lt;p&gt;在应用中调用&lt;code&gt;startActivityForResult()&lt;/code&gt;并使用&lt;code&gt;ACTION_RECOGNIZE_SPEECH&lt;/code&gt;动作。这将启动一个语音识别activity，然后可以在&lt;code&gt;onActivityResult()&lt;/code&gt;中处理结果。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; SPEECH_REQUEST_CODE = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Create an intent that can start the Speech Recognizer activity&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;displaySpeechRecognizer&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Intent intent = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Start the activity, the intent will be populated with the speech text&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    startActivityForResult(intent, SPEECH_REQUEST_CODE);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// This callback is invoked when the Speech Recognizer returns.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// This is where you process the intent and extract the speech text from the intent.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onActivityResult&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; requestCode, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; resultCode,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Intent data)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (requestCode == SPEECH_REQUEST_CODE &amp;amp;&amp;amp; resultCode == RESULT_OK) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        List&amp;lt;String&amp;gt; results = data.getStringArrayListExtra(&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                RecognizerIntent.EXTRA_RESULTS);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        String spokenText = results.get(&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;comment&quot;&gt;// Do something with spokenText&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onActivityResult(requestCode, resultCode, data);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/code&gt;&lt;/pre&gt;</content>
+&lt;p&gt;在应用中调用&lt;code&gt;startActivityForResult()&lt;/code&gt;并使用&lt;code&gt;ACTION_RECOGNIZE_SPEECH&lt;/code&gt;动作。这将启动一个语音识别activity，然后可以在&lt;code&gt;onActivityResult()&lt;/code&gt;中处理结果。&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; SPEECH_REQUEST_CODE = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Create an intent that can start the Speech Recognizer activity&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;displaySpeechRecognizer&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Intent intent = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// Start the activity, the intent will be populated with the speech text&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    startActivityForResult(intent, SPEECH_REQUEST_CODE);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// This callback is invoked when the Speech Recognizer returns.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// This is where you process the intent and extract the speech text from the intent.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onActivityResult&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; requestCode, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; resultCode,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Intent data)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (requestCode == SPEECH_REQUEST_CODE &amp;amp;&amp;amp; resultCode == RESULT_OK) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        List&amp;lt;String&amp;gt; results = data.getStringArrayListExtra(&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                RecognizerIntent.EXTRA_RESULTS);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        String spokenText = results.get(&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;comment&quot;&gt;// Do something with spokenText&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onActivityResult(requestCode, resultCode, data);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+</content>
     
     <summary type="html">
     
@@ -70,28 +336,25 @@
     <link href="http://yoursite.com/2016/03/05/wear-dev-7/"/>
     <id>http://yoursite.com/2016/03/05/wear-dev-7/</id>
     <published>2016-03-05T03:32:23.000Z</published>
-    <updated>2016-03-05T06:28:17.862Z</updated>
+    <updated>2016-03-05T06:51:52.805Z</updated>
     
     <content type="html">&lt;p&gt;一些手表应用需要对用户一直保持可见。比如，正在跑步的用户可以看一眼手表以知道跑过的距离和时间。在超市购物时，记录了购物清单后，可以很快地看一眼还有那些清单上还有那些没有购买。制作一个一直可见的应用会减少电池寿命，所以添加这个功能时一定要谨慎。&lt;/p&gt;
 &lt;p&gt;Android Wear允许应用保留在前台，同时节省电源。应用可以在手表进入低功耗环境模式的同时，控制手表屏幕显示的内容。同时运行在环境模式和交互模式的应用称作常驻应用。&lt;/p&gt;
 &lt;h1 id=&quot;启用Ambient模式&quot;&gt;&lt;a href=&quot;#启用Ambient模式&quot; class=&quot;headerlink&quot; title=&quot;启用Ambient模式&quot;&gt;&lt;/a&gt;启用Ambient模式&lt;/h1&gt;&lt;p&gt;完成项目配置后，继承&lt;code&gt;WearableActivity&lt;/code&gt;，他提供了可以启用环境模式的所有方法。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;配置开发项目&quot;&gt;&lt;a href=&quot;#配置开发项目&quot; class=&quot;headerlink&quot; title=&quot;配置开发项目&quot;&gt;&lt;/a&gt;配置开发项目&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;在手表应用的manifest添加手表共享库：&lt;/p&gt;
-  &lt;application&gt;&lt;br&gt;    &lt;uses-library android:name=&quot;com.google.android.wearable&quot; android:required=&quot;false&quot;&gt;&lt;br&gt;    …&lt;br&gt;  &lt;/uses-library&gt;&lt;/application&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;在手机和手表应用上添加&lt;code&gt;WAKE_LOCK&lt;/code&gt;权限：&lt;/p&gt;
-  &lt;uses-permission android:name=&quot;android.permission.WAKE_LOCK&quot;&gt;
-
-&lt;/uses-permission&gt;&lt;/li&gt;
+&lt;li&gt;在手表应用的manifest添加手表共享库：  &lt;figure class=&quot;highlight applescript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;&lt;span class=&quot;type&quot;&gt;application&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;lt;uses-library android:&lt;span class=&quot;property&quot;&gt;name&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;com.google.android.wearable&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                android:required=&lt;span class=&quot;string&quot;&gt;&quot;false&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/&lt;span class=&quot;type&quot;&gt;application&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
+&lt;li&gt;在手机和手表应用上添加&lt;code&gt;WAKE_LOCK&lt;/code&gt;权限：  &lt;figure class=&quot;highlight applescript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;uses-permission android:&lt;span class=&quot;property&quot;&gt;name&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;android.permission.WAKE_LOCK&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h2 id=&quot;创建支持环境模式的activity&quot;&gt;&lt;a href=&quot;#创建支持环境模式的activity&quot; class=&quot;headerlink&quot; title=&quot;创建支持环境模式的activity&quot;&gt;&lt;/a&gt;创建支持环境模式的activity&lt;/h2&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&quot;创建支持环境模式的activity&quot;&gt;&lt;a href=&quot;#创建支持环境模式的activity&quot; class=&quot;headerlink&quot; title=&quot;创建支持环境模式的activity&quot;&gt;&lt;/a&gt;创建支持环境模式的activity&lt;/h2&gt;&lt;ol&gt;
+&lt;ol&gt;
 &lt;li&gt;创建一个&lt;code&gt;WearableActivity&lt;/code&gt;的子类；&lt;/li&gt;
 &lt;li&gt;在&lt;code&gt;onCreate()&lt;/code&gt;方法中调用&lt;code&gt;setAmbientEnabled()&lt;/code&gt;。 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;MainActivity&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;WearableActivity&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Bundle savedInstanceState)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	    &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	    setAmbientEnabled();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	    ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h2 id=&quot;处理模式间的变化&quot;&gt;&lt;a href=&quot;#处理模式间的变化&quot; class=&quot;headerlink&quot; title=&quot;处理模式间的变化&quot;&gt;&lt;/a&gt;处理模式间的变化&lt;/h2&gt;如果在应用显示期间，用户在一段时间内不与应用交互，或者用户用手掌覆盖了屏幕，系统将会切换activity进入环境模式。应用切换至环境模式之后，将会更新activity UI至一个更加基础的布局以减轻电池消耗。应该使用黑色的背景和尽可能少的白色图片与文字。用户从交互模式进入环境模式时，应该维持一个相似的布局。&lt;blockquote&gt;
-&lt;p&gt;注意：在环境模式中，应该禁用屏幕上一切的交互元素，比如按钮。&lt;/p&gt;
-&lt;/blockquote&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
+&lt;h2 id=&quot;处理模式间的变化&quot;&gt;&lt;a href=&quot;#处理模式间的变化&quot; class=&quot;headerlink&quot; title=&quot;处理模式间的变化&quot;&gt;&lt;/a&gt;处理模式间的变化&lt;/h2&gt;&lt;p&gt;如果在应用显示期间，用户在一段时间内不与应用交互，或者用户用手掌覆盖了屏幕，系统将会切换activity进入环境模式。应用切换至环境模式之后，将会更新activity UI至一个更加基础的布局以减轻电池消耗。应该使用黑色的背景和尽可能少的白色图片与文字。用户从交互模式进入环境模式时，应该维持一个相似的布局。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意：在环境模式中，应该禁用屏幕上一切的交互元素，比如按钮。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;应用切换进入环境模式时，系统调用&lt;code&gt;onEnterAmbient()&lt;/code&gt;方法。下面的代码在切换至环境模式后将文字颜色切换成白色，并禁用了抗锯齿功能。&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onEnterAmbient&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Bundle ambientDetails)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onEnterAmbient(ambientDetails);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    mStateTextView.setTextColor(Color.WHITE);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    mStateTextView.getPaint().setAntiAlias(&lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;br&gt;用户点击屏幕或者提起手腕后，activity从环境模式切换成交互模式。系统调用&lt;code&gt;onExitAmbient()&lt;/code&gt;方法。重写这个方法来更新UI布局，使应用进入在全彩、可交互的状态。&lt;/p&gt;
 &lt;p&gt;下面的代码在应用进入交互模式后将文字颜色转换成绿色，并启用抗锯齿。&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onExitAmbient&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onExitAmbient();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    mStateTextView.setTextColor(Color.GREEN);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    mStateTextView.getPaint().setAntiAlias(&lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
 &lt;h1 id=&quot;在环境模式更新内容&quot;&gt;&lt;a href=&quot;#在环境模式更新内容&quot; class=&quot;headerlink&quot; title=&quot;在环境模式更新内容&quot;&gt;&lt;/a&gt;在环境模式更新内容&lt;/h1&gt;&lt;p&gt;环境模式允许为用户更新屏幕，但必须慎重地平衡显示的更新和电池的寿命。在环境模式下，重写&lt;code&gt;onUpdateAmbient()&lt;/code&gt;方法来更新屏幕的频率最好不超过一分钟一次。为了节省电源，更新不应该超过10秒一次。&lt;/p&gt;
@@ -805,747 +1068,6 @@ public void onLoaderReset(Loader&amp;lt;Cursor&amp;gt; loader) {
       <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
     
       <category term="Loader" scheme="http://yoursite.com/tags/Loader/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用Preferences API（二）</title>
-    <link href="http://yoursite.com/2016/02/05/learning-preferences-2/"/>
-    <id>http://yoursite.com/2016/02/05/learning-preferences-2/</id>
-    <published>2016-02-05T10:48:59.000Z</published>
-    <updated>2016-02-05T10:49:44.623Z</updated>
-    
-    <content type="html">&lt;h1 id=&quot;使用pref-header&quot;&gt;&lt;a href=&quot;#使用pref-header&quot; class=&quot;headerlink&quot; title=&quot;使用pref header&quot;&gt;&lt;/a&gt;使用pref header&lt;/h1&gt;&lt;p&gt;某些情况下，可能需要设计设置页面来使第一个屏幕展示一列子屏幕。在3.0以上版本中，应该使用新的header特性，而非使用嵌套的&lt;code&gt;PreferenceScreen&lt;/code&gt;元素。&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;分离各组设置至不同的PF实例。每组设置需要单独的XML文件。&lt;/li&gt;
-&lt;li&gt;创建XML header文件，列出每个设置组，声明含有对应设置列表的fragment。&lt;/li&gt;
-&lt;li&gt;继承PA类来持有设置。&lt;/li&gt;
-&lt;li&gt;实现&lt;code&gt;onBuildHeaderes()&lt;/code&gt;回调来指定header文件。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;这样做的一个好处是，PA可以自动在大屏幕中使用双面板布局呈现设定。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;创建header文件&quot;&gt;&lt;a href=&quot;#创建header文件&quot; class=&quot;headerlink&quot; title=&quot;创建header文件&quot;&gt;&lt;/a&gt;创建header文件&lt;/h2&gt;&lt;p&gt;在header列表中，各组设定由根&lt;code&gt;&amp;lt;preference-headers&amp;gt;&lt;/code&gt;中单个&lt;code&gt;&amp;lt;header&amp;gt;&lt;/code&gt;元素指定。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt;
-&amp;lt;preference-headers xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;&amp;gt;
-    &amp;lt;header 
-        android:fragment=&amp;quot;com.example.prefs.SettingsActivity$SettingsFragmentOne&amp;quot;
-        android:title=&amp;quot;@string/prefs_category_one&amp;quot;
-        android:summary=&amp;quot;@string/prefs_summ_category_one&amp;quot; /&amp;gt;
-    &amp;lt;header 
-        android:fragment=&amp;quot;com.example.prefs.SettingsActivity$SettingsFragmentTwo&amp;quot;
-        android:title=&amp;quot;@string/prefs_category_two&amp;quot;
-        android:summary=&amp;quot;@string/prefs_summ_category_two&amp;quot; &amp;gt;
-        &amp;lt;!-- key/value pairs can be included as arguments for the fragment. --&amp;gt;
-        &amp;lt;extra android:name=&amp;quot;someKey&amp;quot; android:value=&amp;quot;someHeaderValue&amp;quot; /&amp;gt;
-    &amp;lt;/header&amp;gt;
-&amp;lt;/preference-headers&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;通过&lt;code&gt;android:fragment&lt;/code&gt;属性，每个header声明一个用户选择时应该打开的PF实例。&lt;/p&gt;
-&lt;p&gt;&lt;extras&gt;元素可以用&lt;code&gt;Bundle&lt;/code&gt;将键值对传入fragment中。Fragment可以调用&lt;code&gt;getArguments()&lt;/code&gt;方法来获取参数。将参数传入fragment可能有很多原因，但其中比较好的一个原因是，可以使每一组设定重用同样的PF子类，并使用参数来指定应该加载的pref XML。&lt;/extras&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public static class SettingsFragment extends PreferenceFragment {
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        String settings = getArguments().getString(&amp;quot;settings&amp;quot;);
-        if (&amp;quot;notifications&amp;quot;.equals(settings)) {
-            addPreferencesFromResource(R.xml.settings_wifi);
-        } else if (&amp;quot;sync&amp;quot;.equals(settings)) {
-            addPreferencesFromResource(R.xml.settings_sync);
-        }
-    }
-&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&quot;显示header&quot;&gt;&lt;a href=&quot;#显示header&quot; class=&quot;headerlink&quot; title=&quot;显示header&quot;&gt;&lt;/a&gt;显示header&lt;/h2&gt;&lt;p&gt;要显示pref header，必须实现&lt;code&gt;onBuildHeader()&lt;/code&gt;回调，并调用&lt;code&gt;loadHeadersFromResources()&lt;/code&gt;。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public class SettingsActivity extends PreferenceActivity {
-    @Override
-    public void onBuildHeaders(List&amp;lt;Header&amp;gt; target) {
-        loadHeadersFromResource(R.xml.preference_headers, target);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当用户选择一个列表中的一个子项时，系统打开相应的PF。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;使用pref header时，PA的子类无需实现&lt;code&gt;onCreate()&lt;/code&gt;方法，因为ACT唯一需要的任务只是加载header。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h1 id=&quot;读取Pref&quot;&gt;&lt;a href=&quot;#读取Pref&quot; class=&quot;headerlink&quot; title=&quot;读取Pref&quot;&gt;&lt;/a&gt;读取Pref&lt;/h1&gt;&lt;p&gt;默认情况下，应用的所有pref都存在一个文件中，它可以在应用的任何地方通过调用静态方法&lt;code&gt;PreferenceManager.getDefaultSharedPreferences()&lt;/code&gt;来访问，并返回包含PA中所有pref对象相应的键值对的SP对象。&lt;/p&gt;
-&lt;p&gt;例如，下面是在某个ACT中读取一条pref值的代码：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-String syncConnPref = sharedPref.getString(SettingsActivity.KEY_PREF_SYNC_CONN, &amp;quot;&amp;quot;);
-&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&quot;侦听pref变化&quot;&gt;&lt;a href=&quot;#侦听pref变化&quot; class=&quot;headerlink&quot; title=&quot;侦听pref变化&quot;&gt;&lt;/a&gt;侦听pref变化&lt;/h2&gt;&lt;p&gt;有时候需要在用户改变pref时马上得到通知。为了获取一个pref发生变化的回调，实现&lt;code&gt;SharedPreference.OnSharedPreferenceChangeListener&lt;/code&gt;接口，并且通过&lt;code&gt;registerOnSharedPreferenceChangeListener()&lt;/code&gt;注册到SP对象中。&lt;/p&gt;
-&lt;p&gt;接口仅仅拥有一个回调方法，&lt;code&gt;onSharedPreferenceChanged()&lt;/code&gt;，最简单的是将其实现成为ACT的一部分：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public class SettingsActivity extends PreferenceActivity
-                              implements OnSharedPreferenceChangeListener {
-    public static final String KEY_PREF_SYNC_CONN = &amp;quot;pref_syncConnectionType&amp;quot;;
-    ...
-
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-        String key) {
-        if (key.equals(KEY_PREF_SYNC_CONN)) {
-            Preference connectionPref = findPreference(key);
-            // Set summary to be the user-description for the selected value
-            connectionPref.setSummary(sharedPreferences.getString(key, &amp;quot;&amp;quot;));
-        }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在这个例子中这个方法检查变化的设定是否为某个pref key。它调用&lt;code&gt;findPreference()&lt;/code&gt;方法来获取改变的&lt;code&gt;Preference&lt;/code&gt;对象，并可以将其summary替换成用户的选择。就是说，当设定是&lt;code&gt;ListPreference&lt;/code&gt;或其他多选设定时，应该调用&lt;code&gt;setSummary()&lt;/code&gt;方法来展示当前的状态。&lt;/p&gt;
-&lt;p&gt;为了ACT中合适的生命周期管理，建议在&lt;code&gt;onResume()&lt;/code&gt;和&lt;code&gt;onPause()&lt;/code&gt;回调中注册和注销&lt;code&gt;SharedPreferences.OnSharedPreferenceChangeListener&lt;/code&gt;:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;@Override
-protected void onResume() {
-    super.onResume();
-    getPreferenceScreen().getSharedPreferences()
-            .registerOnSharedPreferenceChangeListener(this);
-}
-
-@Override
-protected void onPause() {
-    super.onPause();
-    getPreferenceScreen().getSharedPreferences()
-            .unregisterOnSharedPreferenceChangeListener(this);
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
-&lt;p&gt;注意：调用注册方法时，pref manager不会储存一个侦听器的强引用。必须手动储存一个侦听器的强引用，否则将可能被gc回收。建议在一个存活时间与侦听器相同的某个实例中保持侦听器的引用。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;例如在下面的代码中，调用者不持有侦听器的引用。这会导致侦听器可能被gc回收，并在未来某个时候导致崩溃。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;prefs.registerOnSharedPreferenceChangeListener(
-  // Bad! The listener is subject to garbage collection!
-  new SharedPreferences.OnSharedPreferenceChangeListener() {
-  public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-    // listener implementation
-  }
-});
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在实例的field中存储侦听器的引用可以保持侦听器的实例：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;SharedPreferences.OnSharedPreferenceChangeListener listener =
-    new SharedPreferences.OnSharedPreferenceChangeListener() {
-  public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-    // listener implementation
-  }
-};
-prefs.registerOnSharedPreferenceChangeListener(listener);
-&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&quot;管理网络使用&quot;&gt;&lt;a href=&quot;#管理网络使用&quot; class=&quot;headerlink&quot; title=&quot;管理网络使用&quot;&gt;&lt;/a&gt;管理网络使用&lt;/h1&gt;&lt;p&gt;安卓4.0以后，系统的设置应用可以允许用户查看应用在前台和后台使用的数据流量大小。用户可以禁止应用的后台数据。为了避免用户禁止后台的数据访问，应该允许用户在设定中修订应用的数据使用方式。&lt;/p&gt;
-&lt;p&gt;例如，可以允许用户控制应用同步数据的周期，是否仅在wifi下上传下载数据，是否在漫游时使用数据。如果可以控制这些设定，用户可能不会再系统设定中关闭数据访问。&lt;/p&gt;
-&lt;p&gt;在PA中添加了这些控制数据行为的pref后，应该在manifest中添加一个&lt;code&gt;ACTION_MANAGE_NETWORK_USAGE&lt;/code&gt;的intent filter.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;activity android:name=&amp;quot;SettingsActivity&amp;quot; ... &amp;gt;
-    &amp;lt;intent-filter&amp;gt;
-       &amp;lt;action android:name=&amp;quot;android.intent.action.MANAGE_NETWORK_USAGE&amp;quot; /&amp;gt;
-       &amp;lt;category android:name=&amp;quot;android.intent.category.DEFAULT&amp;quot; /&amp;gt;
-    &amp;lt;/intent-filter&amp;gt;
-&amp;lt;/activity&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这个intent filter告诉系统这个ACT可以控制应用的数据使用。因而，用户在系统设定应用中查看应用的数据流量时，可以通过一个按钮打开该PA，具体设定使用方式。&lt;/p&gt;
-&lt;h1 id=&quot;创建自定义pref&quot;&gt;&lt;a href=&quot;#创建自定义pref&quot; class=&quot;headerlink&quot; title=&quot;创建自定义pref&quot;&gt;&lt;/a&gt;创建自定义pref&lt;/h1&gt;&lt;p&gt;略&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;使用pref-header&quot;&gt;&lt;a href=&quot;#使用pref-header&quot; class=&quot;headerlink&quot; title=&quot;使用pref header&quot;&gt;&lt;/a&gt;使用pref header&lt;/h1&gt;&lt;p&gt;某些情况下，可能需要设计设置页面来使第一个屏幕展示一列子屏幕。在3.0以上版本中，应该使用新的header特性，而非使用嵌套的&lt;code&gt;PreferenceScreen&lt;/code&gt;元素。&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;分离各组设置至不同的PF实例。每组设置需要单独的XML文件。&lt;/li&gt;
-&lt;li&gt;创建XML header文件，列出每个设置组，声明含有对应设置列表的fragment。&lt;/li&gt;
-&lt;li&gt;继承PA类来持有设置。&lt;/li&gt;
-&lt;li&gt;实现&lt;code&gt;onBuildHeaderes()&lt;/code&gt;回调来指定header文件。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;这样做的一个好处是，PA可以自动在大屏幕中使用双面板布局呈现设定。&lt;br&gt;
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用Preferences API（一）</title>
-    <link href="http://yoursite.com/2016/02/05/learning-preferences/"/>
-    <id>http://yoursite.com/2016/02/05/learning-preferences/</id>
-    <published>2016-02-05T07:43:43.000Z</published>
-    <updated>2016-02-05T10:48:46.616Z</updated>
-    
-    <content type="html">&lt;p&gt;应用一般都包含一些用户可以自定义的设置，比如是否推送通知，更新数据的频率等等。&lt;/p&gt;
-&lt;p&gt;如果想要为应用提供设置，应该使用安卓的&lt;code&gt;Preference&lt;/code&gt;API来创建一致的用户体验。&lt;/p&gt;
-&lt;h1 id=&quot;概览&quot;&gt;&lt;a href=&quot;#概览&quot; class=&quot;headerlink&quot; title=&quot;概览&quot;&gt;&lt;/a&gt;概览&lt;/h1&gt;&lt;p&gt;与使用&lt;code&gt;View&lt;/code&gt;创造界面不同，设置是由xml文件中声明的各种&lt;code&gt;Preference&lt;/code&gt;的子类组成。&lt;/p&gt;
-&lt;p&gt;一个&lt;code&gt;Preference&lt;/code&gt;对象构成一个设置。每个&lt;code&gt;Preference&lt;/code&gt;显示为列表中的一个子项，并提供合适的UI供用户交互。例如，&lt;code&gt;CheckBoxPreference&lt;/code&gt;创造一个勾选框子项，&lt;code&gt;ListPreference&lt;/code&gt;创造一个弹出选择列表对话框的子项。&lt;/p&gt;
-&lt;p&gt;每个&lt;code&gt;Preference&lt;/code&gt;在系统使用的默认的&lt;code&gt;SharedPreferences&lt;/code&gt;文件中存在一个对应的键值对。用户更改设置后，系统在SP文件中更新相应的值。只有当需要从SP中读取值以决定应用行为时，才需要直接与SP相交互。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;存在SP中的值包含以下几种类型：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Boolean&lt;/li&gt;
-&lt;li&gt;Float&lt;/li&gt;
-&lt;li&gt;Int&lt;/li&gt;
-&lt;li&gt;Long&lt;/li&gt;
-&lt;li&gt;String&lt;/li&gt;
-&lt;li&gt;String &lt;code&gt;Set&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;因为用户的设置UI是通过&lt;code&gt;Preference&lt;/code&gt;而非&lt;code&gt;View&lt;/code&gt;构成的，所以需要使用特殊的&lt;code&gt;Activity&lt;/code&gt;或&lt;code&gt;Fragment&lt;/code&gt;子类来展示设置：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;如果应用支持安卓3.0以前的设备，需要继承&lt;code&gt;PreferenceActivity&lt;/code&gt;。&lt;/li&gt;
-&lt;li&gt;在3.0以上版本，应该使用一个传统&lt;code&gt;Activity&lt;/code&gt;来加载&lt;code&gt;PreferenceFragment&lt;/code&gt;。当有多组设定时，也可以使用&lt;code&gt;PreferenceActivity&lt;/code&gt;来为大屏幕创建一个双面板的布局。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&quot;Preference&quot;&gt;&lt;a href=&quot;#Preference&quot; class=&quot;headerlink&quot; title=&quot;Preference&quot;&gt;&lt;/a&gt;Preference&lt;/h1&gt;&lt;p&gt;应用的每个设定都由一个特定的&lt;code&gt;Pref&lt;/code&gt;子类来表示。每个子类包含一套核心属性，可以指定设定的标题和默认值等等。每个子类也提供自己特殊的属性和UI。&lt;/p&gt;
-&lt;h1 id=&quot;在XML中定义属性&quot;&gt;&lt;a href=&quot;#在XML中定义属性&quot; class=&quot;headerlink&quot; title=&quot;在XML中定义属性&quot;&gt;&lt;/a&gt;在XML中定义属性&lt;/h1&gt;&lt;p&gt;虽然可以在运行时创建新的&lt;code&gt;Pref&lt;/code&gt;，但是应该在XML中定义设定的列表。使用XML的方法更好，因为文件可以提供易读的结构，也容易更新。而且，应用的设定一般都是预先设定好的，虽然可以在运行时进行修改。&lt;/p&gt;
-&lt;p&gt;每个&lt;code&gt;Pref&lt;/code&gt;子类可以用一个匹配类名的XML元素声明，比如&lt;code&gt;&amp;lt;CheckBoxPreference&amp;gt;&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;必须在&lt;code&gt;res/xml/&lt;/code&gt;目录下保存XML文件。虽然可以随便命名文件，但是一般都取名为&lt;code&gt;preferences.xml&lt;/code&gt;。一般只需要一个文件，因为阶层中的分支一般使用嵌套的&lt;code&gt;PreferenceScreen&lt;/code&gt;来声明。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;注意：如果想要创建多面板布局，则需要为每个fragment创建相应的XML文件。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;XML文件的根节点必须是一个&lt;code&gt;&amp;lt;PreferenceScreen&amp;gt;&lt;/code&gt;元素。在元素内可以添加&lt;code&gt;Pref&lt;/code&gt;。元素内每个添加的子元素都显示为设定列表的一个子项。比如：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt;
-&amp;lt;PreferenceScreen xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;&amp;gt;
-    &amp;lt;CheckBoxPreference
-        android:key=&amp;quot;pref_sync&amp;quot;
-        android:title=&amp;quot;@string/pref_sync&amp;quot;
-        android:summary=&amp;quot;@string/pref_sync_summ&amp;quot;
-        android:defaultValue=&amp;quot;true&amp;quot; /&amp;gt;
-    &amp;lt;ListPreference
-        android:dependency=&amp;quot;pref_sync&amp;quot;
-        android:key=&amp;quot;pref_syncConnectionType&amp;quot;
-        android:title=&amp;quot;@string/pref_syncConnectionType&amp;quot;
-        android:dialogTitle=&amp;quot;@string/pref_syncConnectionType&amp;quot;
-        android:entries=&amp;quot;@array/pref_syncConnectionTypes_entries&amp;quot;
-        android:entryValues=&amp;quot;@array/pref_syncConnectionTypes_values&amp;quot;
-        android:defaultValue=&amp;quot;@string/pref_syncConnectionTypes_default&amp;quot; /&amp;gt;
-&amp;lt;/PreferenceScreen&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;每个子项都包含了三个特性：&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;android:key&lt;/code&gt;：每个持有数据的pref都需要包含该特性。它为系统指明了一个独特的key字符串，以将设置存储至SP中。只有&lt;code&gt;PrefrenceCategory&lt;/code&gt;和&lt;code&gt;PreferenceScreen&lt;/code&gt;元素以及指明调用的&lt;code&gt;Intent&lt;/code&gt;或显示的&lt;code&gt;Fragment&lt;/code&gt;的元素不需要该属性。&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;android:title&lt;/code&gt;：提供用户可见的设定名称。&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;android:defaultValue&lt;/code&gt;：系统应在SP中设定的初始值。应该为每个设定都提供一个初始值。&lt;/p&gt;
-&lt;h1 id=&quot;创建设定组&quot;&gt;&lt;a href=&quot;#创建设定组&quot; class=&quot;headerlink&quot; title=&quot;创建设定组&quot;&gt;&lt;/a&gt;创建设定组&lt;/h1&gt;&lt;p&gt;如果设定的列表超过10项，可能对用户很不友好。这时可以将他们分成几组。一组相关的设定可以用两种方式呈现出来：使用标题或使用子屏幕。&lt;/p&gt;
-&lt;h2 id=&quot;使用标题&quot;&gt;&lt;a href=&quot;#使用标题&quot; class=&quot;headerlink&quot; title=&quot;使用标题&quot;&gt;&lt;/a&gt;使用标题&lt;/h2&gt;&lt;p&gt;如果想要为设定组之间提供带有标题的分隔线，可以将各组&lt;code&gt;Pref&lt;/code&gt;对象放置在&lt;code&gt;PreferenceCategory&lt;/code&gt;中。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;PreferenceScreen xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;&amp;gt;
-    &amp;lt;PreferenceCategory 
-        android:title=&amp;quot;@string/pref_sms_storage_title&amp;quot;
-        android:key=&amp;quot;pref_key_storage_settings&amp;quot;&amp;gt;
-        &amp;lt;CheckBoxPreference
-            android:key=&amp;quot;pref_key_auto_delete&amp;quot;
-            android:summary=&amp;quot;@string/pref_summary_auto_delete&amp;quot;
-            android:title=&amp;quot;@string/pref_title_auto_delete&amp;quot;
-            android:defaultValue=&amp;quot;false&amp;quot;... /&amp;gt;
-        &amp;lt;Preference 
-            android:key=&amp;quot;pref_key_sms_delete_limit&amp;quot;
-            android:dependency=&amp;quot;pref_key_auto_delete&amp;quot;
-            android:summary=&amp;quot;@string/pref_summary_delete_limit&amp;quot;
-            android:title=&amp;quot;@string/pref_title_sms_delete&amp;quot;... /&amp;gt;
-        &amp;lt;Preference 
-            android:key=&amp;quot;pref_key_mms_delete_limit&amp;quot;
-            android:dependency=&amp;quot;pref_key_auto_delete&amp;quot;
-            android:summary=&amp;quot;@string/pref_summary_delete_limit&amp;quot;
-            android:title=&amp;quot;@string/pref_title_mms_delete&amp;quot; ... /&amp;gt;
-    &amp;lt;/PreferenceCategory&amp;gt;
-    ...
-&amp;lt;/PreferenceScreen&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&quot;使用子屏幕&quot;&gt;&lt;a href=&quot;#使用子屏幕&quot; class=&quot;headerlink&quot; title=&quot;使用子屏幕&quot;&gt;&lt;/a&gt;使用子屏幕&lt;/h2&gt;&lt;p&gt;如果想要将设定组防止在子屏幕中，可以将各组&lt;code&gt;Pref&lt;/code&gt;对象放置在&lt;code&gt;PreferenceScreen&lt;/code&gt;中。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;PreferenceScreen  xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;&amp;gt;
-    &amp;lt;!-- opens a subscreen of settings --&amp;gt;
-    &amp;lt;PreferenceScreen
-        android:key=&amp;quot;button_voicemail_category_key&amp;quot;
-        android:title=&amp;quot;@string/voicemail&amp;quot;
-        android:persistent=&amp;quot;false&amp;quot;&amp;gt;
-        &amp;lt;ListPreference
-            android:key=&amp;quot;button_voicemail_provider_key&amp;quot;
-            android:title=&amp;quot;@string/voicemail_provider&amp;quot; ... /&amp;gt;
-        &amp;lt;!-- opens another nested subscreen --&amp;gt;
-        &amp;lt;PreferenceScreen
-            android:key=&amp;quot;button_voicemail_setting_key&amp;quot;
-            android:title=&amp;quot;@string/voicemail_settings&amp;quot;
-            android:persistent=&amp;quot;false&amp;quot;&amp;gt;
-            ...
-        &amp;lt;/PreferenceScreen&amp;gt;
-        &amp;lt;RingtonePreference
-            android:key=&amp;quot;button_voicemail_ringtone_key&amp;quot;
-            android:title=&amp;quot;@string/voicemail_ringtone_title&amp;quot;
-            android:ringtoneType=&amp;quot;notification&amp;quot; ... /&amp;gt;
-        ...
-    &amp;lt;/PreferenceScreen&amp;gt;
-    ...
-&amp;lt;/PreferenceScreen&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&quot;使用intents&quot;&gt;&lt;a href=&quot;#使用intents&quot; class=&quot;headerlink&quot; title=&quot;使用intents&quot;&gt;&lt;/a&gt;使用intents&lt;/h2&gt;&lt;p&gt;一些情况下，可能需要使用pref子项打开一个不同的activity而非设置屏幕，比如使用浏览器来浏览网页。要在用户选中pref子项时调用&lt;code&gt;Intent&lt;/code&gt;，可以添加一个&lt;code&gt;&amp;lt;intent&amp;gt;&lt;/code&gt;元素作为相应&lt;code&gt;&amp;lt;Preference&amp;gt;&lt;/code&gt;元素的子项。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;Preference android:title=&amp;quot;@string/prefs_web_page&amp;quot; &amp;gt;
-    &amp;lt;intent android:action=&amp;quot;android.intent.action.VIEW&amp;quot;
-            android:data=&amp;quot;http://www.example.com&amp;quot; /&amp;gt;
-&amp;lt;/Preference&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;可以通过下面的属性来创建显式或隐式的intent。&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;android:action&lt;/code&gt;: The action to assign, as per the setAction() method.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;android:data&lt;/code&gt;: The data to assign, as per the setData() method.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;android:mimeType&lt;/code&gt;: The MIME type to assign, as per the setType() method.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;android:targetClass&lt;/code&gt;: The class part of the component name, as per the setComponent() method.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;android:targetPackage&lt;/code&gt;: The package part of the component name, as per the setComponent() method. &lt;/p&gt;
-&lt;h1 id=&quot;创建Pref-Activity&quot;&gt;&lt;a href=&quot;#创建Pref-Activity&quot; class=&quot;headerlink&quot; title=&quot;创建Pref Activity&quot;&gt;&lt;/a&gt;创建Pref Activity&lt;/h1&gt;&lt;p&gt;要在activity中展示设定，可以继承&lt;code&gt;PA&lt;/code&gt;类。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;3.0以上版本应该使用&lt;code&gt;PreferenceFragment&lt;/code&gt;。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;最重要的是记住，在&lt;code&gt;onCreate()&lt;/code&gt;回调中，并不载入布局视图。而是调用&lt;code&gt;addPreferencesFromResource()&lt;/code&gt;来添加XML中声明的pref。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public class SettingsActivity extends PreferenceActivity {
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.preferences);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;上面的代码已经足够供一些应用使用了。因为一旦用户修改某项pref，系统就将改变存储到默认的SP中，并供应用的其他组件读取。还有很多应用，需要额外的一些代码来侦听pref发生的变化。&lt;/p&gt;
-&lt;h1 id=&quot;使用Pref-Fragments&quot;&gt;&lt;a href=&quot;#使用Pref-Fragments&quot; class=&quot;headerlink&quot; title=&quot;使用Pref Fragments&quot;&gt;&lt;/a&gt;使用Pref Fragments&lt;/h1&gt;&lt;p&gt;&lt;code&gt;Fragments&lt;/code&gt;为应用提供了更加灵活的结构。所以，尽可能使用PF来展示设定而非PA。&lt;/p&gt;
-&lt;p&gt;PF的实现非常简单，只需要定义&lt;code&gt;onCreate()&lt;/code&gt;方法来加载pref文件。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public static class SettingsFragment extends PreferenceFragment {
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // Load the preferences from an XML resource
-        addPreferencesFromResource(R.xml.preferences);
-    }
-    ...
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;可以像添加其他&lt;code&gt;Fragment&lt;/code&gt;一样将PF添加到&lt;code&gt;Activity&lt;/code&gt;中。如下：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public class SettingsActivity extends Activity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // Display the fragment as the main content.
-        getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new SettingsFragment())
-                .commit();
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
-&lt;p&gt;注意：PF本身不具有&lt;code&gt;Context&lt;/code&gt;对象。如果需要&lt;code&gt;Context&lt;/code&gt;，可以调用&lt;code&gt;getActivity()&lt;/code&gt;。然而，调用该方法的时候需要注意，仅仅在fragment连接到activity上时调用。如果没有，或者被解除连接，将会返回null。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h1 id=&quot;设置默认值&quot;&gt;&lt;a href=&quot;#设置默认值&quot; class=&quot;headerlink&quot; title=&quot;设置默认值&quot;&gt;&lt;/a&gt;设置默认值&lt;/h1&gt;&lt;p&gt;创建的pref很可能决定着应用的一些重要行为，所以有必要在用户第一次打开应用时，创建每个pref都拥有默认值的关联SP文件。&lt;/p&gt;
-&lt;p&gt;首先要做的是在XML中文件中为每个pref使用&lt;code&gt;android:defaultValue&lt;/code&gt;来指明默认值。这个值可以为适合相应&lt;code&gt;Preference&lt;/code&gt;对象的任意数据类型。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;!-- default value is a boolean --&amp;gt;
-&amp;lt;CheckBoxPreference
-    android:defaultValue=&amp;quot;true&amp;quot;
-    ... /&amp;gt;
-
-&amp;lt;!-- default value is a string --&amp;gt;
-&amp;lt;ListPreference
-    android:defaultValue=&amp;quot;@string/pref_syncConnectionTypes_default&amp;quot;
-    ... /&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后，在应用的主ACT的&lt;code&gt;onCreate()&lt;/code&gt;方法，以及任何可能的首次入口activity中调用&lt;code&gt;setDefaultValues()&lt;/code&gt;：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;PreferenceManager.setDefaultValues(this, R.xml.advanced_preferences, false);
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在&lt;code&gt;onCreate()&lt;/code&gt;中调用保证了应用以默认设置初始化。这个方法有三个参数：应用的&lt;code&gt;Context&lt;/code&gt;，pref XML的资源ID，指示是否覆盖的布尔变量。&lt;/p&gt;
-&lt;p&gt;只要将第三个参数设置为&lt;code&gt;false&lt;/code&gt;，便可以安全地在每次ACT启动时调用该方法，无需担心覆盖pref。&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;应用一般都包含一些用户可以自定义的设置，比如是否推送通知，更新数据的频率等等。&lt;/p&gt;
-&lt;p&gt;如果想要为应用提供设置，应该使用安卓的&lt;code&gt;Preference&lt;/code&gt;API来创建一致的用户体验。&lt;/p&gt;
-&lt;h1 id=&quot;概览&quot;&gt;&lt;a href=&quot;#概览&quot; class=&quot;headerlink&quot; title=&quot;概览&quot;&gt;&lt;/a&gt;概览&lt;/h1&gt;&lt;p&gt;与使用&lt;code&gt;View&lt;/code&gt;创造界面不同，设置是由xml文件中声明的各种&lt;code&gt;Preference&lt;/code&gt;的子类组成。&lt;/p&gt;
-&lt;p&gt;一个&lt;code&gt;Preference&lt;/code&gt;对象构成一个设置。每个&lt;code&gt;Preference&lt;/code&gt;显示为列表中的一个子项，并提供合适的UI供用户交互。例如，&lt;code&gt;CheckBoxPreference&lt;/code&gt;创造一个勾选框子项，&lt;code&gt;ListPreference&lt;/code&gt;创造一个弹出选择列表对话框的子项。&lt;/p&gt;
-&lt;p&gt;每个&lt;code&gt;Preference&lt;/code&gt;在系统使用的默认的&lt;code&gt;SharedPreferences&lt;/code&gt;文件中存在一个对应的键值对。用户更改设置后，系统在SP文件中更新相应的值。只有当需要从SP中读取值以决定应用行为时，才需要直接与SP相交互。&lt;br&gt;
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>A Bug of TabLayout</title>
-    <link href="http://yoursite.com/2016/01/04/Bug-of-TabLayout/"/>
-    <id>http://yoursite.com/2016/01/04/Bug-of-TabLayout/</id>
-    <published>2016-01-03T16:26:01.000Z</published>
-    <updated>2016-01-03T16:31:16.972Z</updated>
-    
-    <content type="html">&lt;p&gt;In Google’s design support library, there is a bug for version 22.2.1 that the &lt;code&gt;TabLayout&lt;/code&gt; in &lt;code&gt;Toolbar&lt;/code&gt; may not display. I spent neary an hour debugging for this problem. There is a work-around for this bug:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;tabLayout.post(new Runnable() {
-    @Override
-    public void run() {
-        tabLayout.setupWithViewPager(viewPager);
-    }
-});
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;But the easiest way is to upgrade the design library to version 23.&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;In Google’s design support library, there is a bug for version 22.2.1 that the &lt;code&gt;TabLayout&lt;/code&gt; in &lt;code&gt;Toolbar&lt;/code&gt; may not dis
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
-    
-      <category term="Material Design" scheme="http://yoursite.com/tags/Material-Design/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>安卓导航 - 提供合适的后退导航</title>
-    <link href="http://yoursite.com/2016/01/03/Providing-Proper-Back-Navigation/"/>
-    <id>http://yoursite.com/2016/01/03/Providing-Proper-Back-Navigation/</id>
-    <published>2016-01-03T10:50:14.000Z</published>
-    <updated>2016-01-03T11:37:13.407Z</updated>
-    
-    <content type="html">&lt;p&gt;后退导航是指用户如何从访问过的屏幕中向后移动。所有的安卓设备都提供有一个后退键，所以&lt;strong&gt;你的应用不应该再增加一个后退按钮。&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;在大多数的情况中，系统在用户导航时维持着一个后退栈。这使得系统能够再用户按下后退键之后合适地向后导航。然而，有一些情况下，你需要手动指明后退行为，以提供更好的用户体验。&lt;/p&gt;
-&lt;p&gt;需要手动指明后退行为的导航模式有：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;用户通过一条通知、一个桌面挂件或导航抽屉直接进入到一个深层次的activity时。&lt;/li&gt;
-&lt;li&gt;用户在fragment见导航的某些情况。&lt;/li&gt;
-&lt;li&gt;用户在&lt;code&gt;WebView&lt;/code&gt;的网页中导航时。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;h1 id=&quot;为深链接合成新的后退栈&quot;&gt;&lt;a href=&quot;#为深链接合成新的后退栈&quot; class=&quot;headerlink&quot; title=&quot;为深链接合成新的后退栈&quot;&gt;&lt;/a&gt;为深链接合成新的后退栈&lt;/h1&gt;&lt;p&gt;一般，系统在用户不断导航的过程中逐步地构建起后退栈。然而，当用户通过一个深层链接直接进入应用时，有必要去合成一个新的后退栈，因为activity处在一个新的任务中，根本没有任何后退栈。&lt;/p&gt;
-&lt;h2 id=&quot;在manifest中明确父activity&quot;&gt;&lt;a href=&quot;#在manifest中明确父activity&quot; class=&quot;headerlink&quot; title=&quot;在manifest中明确父activity&quot;&gt;&lt;/a&gt;在manifest中明确父activity&lt;/h2&gt;&lt;p&gt;// 见上一篇文章&lt;/p&gt;
-&lt;h2 id=&quot;启动activity时创造后退栈&quot;&gt;&lt;a href=&quot;#启动activity时创造后退栈&quot; class=&quot;headerlink&quot; title=&quot;启动activity时创造后退栈&quot;&gt;&lt;/a&gt;启动activity时创造后退栈&lt;/h2&gt;&lt;p&gt;向后退栈中添加activity发生在将用户带入应用的事件的一开始。也就是说，使用&lt;code&gt;TaskStackBuilder&lt;/code&gt;API而非&lt;code&gt;startActivity()&lt;/code&gt;来定义应该放入新后退栈的每个activity。然后，通过调用&lt;code&gt;startActivities()&lt;/code&gt;来启动目标activity，或者创建调用&lt;code&gt;getPendingIntent()&lt;/code&gt;合适的&lt;code&gt;PendingIntent&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;例如，当某个通知将用户带入至应用阶层中的一个深层activity时，可以使用下面的代码来创建一个&lt;code&gt;PendingIntent&lt;/code&gt;来启动activity，并为目标任务插入一个新的后退栈。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;// Intent for the activity to open when user selects the notification
-Intent detailsIntent = new Intent(this, DetailsActivity.class);
-
-// Use TaskStackBuilder to build the back stack and get the PendingIntent
-PendingIntent pendingIntent =
-        TaskStackBuilder.create(this)
-                        // add all of DetailsActivity&amp;apos;s parents to the stack,
-                        // followed by DetailsActivity itself
-                        .addNextIntentWithParentStack(upIntent)
-                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-builder.setContentIntent(pendingIntent);
-...
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;获得的&lt;code&gt;PendingIntent&lt;/code&gt;不仅指明了将要启动的activity（在&lt;code&gt;detailsIntent&lt;/code&gt;中定义），而且指明了应该插入至任务重的后退栈（&lt;code&gt;DetailsActivity&lt;/code&gt;的所有父亲）。所以当该activity启动后，按下后退键会在其父activity中向后导航。&lt;/p&gt;
-&lt;h1 id=&quot;为Fragment实现向后导航&quot;&gt;&lt;a href=&quot;#为Fragment实现向后导航&quot; class=&quot;headerlink&quot; title=&quot;为Fragment实现向后导航&quot;&gt;&lt;/a&gt;为Fragment实现向后导航&lt;/h1&gt;&lt;p&gt;在应用中使用fragment时，独立的&lt;code&gt;FragmentTransaction&lt;/code&gt;对象可能代表了应该添加至后退栈的上下文变化。例如，通过交换fragment实现master/detail flow时，应该确保在detail屏幕按下后退键时能够回到master屏幕。要实现的话，在commit之前调用&lt;code&gt;addToBackStack()&lt;/code&gt;。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;// Works with either the framework FragmentManager or the
-// support package FragmentManager (getSupportFragmentManager).
-getSupportFragmentManager().beginTransaction()
-                           .add(detailFragment, &amp;quot;detail&amp;quot;)
-                           // Add this transaction to the back stack
-                           .addToBackStack()
-                           .commit();
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当后退栈中存在&lt;code&gt;FragmentTransaction&lt;/code&gt;对象时，用户按下后退键后，&lt;code&gt;FragmentManager&lt;/code&gt;将会弹出后退栈中最近的一次transaction，并执行相反的操作（比如移除某个fragment，如果该transaction增添了它）。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;注意：当transaction是水平导航（如切换tab）时，或者修改内容表现（如调整过滤器）时，不应该将其添加至后退栈。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;如果应用更新更新了其他用户界面元素，以反应fragment的当前状态，比如action bar，记得在commit的时候更新UI。当通过后退栈返回的时候，同样应该更新UI。可以通过设置&lt;code&gt;FragmentManager.OnBackStackChangedListener&lt;/code&gt;来侦听&lt;code&gt;FragmentTransaction&lt;/code&gt;被反转的事件。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;getSupportFragmentManager().addOnBackStackChangedListener(
-        new FragmentManager.OnBackStackChangedListener() {
-            public void onBackStackChanged() {
-                // Update your UI here.
-            }
-        });
-&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&quot;为WebView实现后退栈&quot;&gt;&lt;a href=&quot;#为WebView实现后退栈&quot; class=&quot;headerlink&quot; title=&quot;为WebView实现后退栈&quot;&gt;&lt;/a&gt;为WebView实现后退栈&lt;/h1&gt;&lt;p&gt;如果应用的一部分包含在&lt;code&gt;WebView&lt;/code&gt;之中，可能适合使用后退键来遍历浏览历史。可以覆盖&lt;code&gt;onBackPressed()&lt;/code&gt;方法，来代理&lt;code&gt;WebView&lt;/code&gt;。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;@Override
-public void onBackPressed() {
-    if (mWebView.canGoBack()) {
-        mWebView.goBack();
-        return;
-    }
-
-    // Otherwise defer to system default behavior.
-    super.onBackPressed();
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;注意，当网页高度动态的时候可能产生大量的历史记录。&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;后退导航是指用户如何从访问过的屏幕中向后移动。所有的安卓设备都提供有一个后退键，所以&lt;strong&gt;你的应用不应该再增加一个后退按钮。&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;在大多数的情况中，系统在用户导航时维持着一个后退栈。这使得系统能够再用户按下后退键之后合适地向后导航。然而，有一些情况下，你需要手动指明后退行为，以提供更好的用户体验。&lt;/p&gt;
-&lt;p&gt;需要手动指明后退行为的导航模式有：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;用户通过一条通知、一个桌面挂件或导航抽屉直接进入到一个深层次的activity时。&lt;/li&gt;
-&lt;li&gt;用户在fragment见导航的某些情况。&lt;/li&gt;
-&lt;li&gt;用户在&lt;code&gt;WebView&lt;/code&gt;的网页中导航时。&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
-    
-      <category term="Navigation" scheme="http://yoursite.com/tags/Navigation/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>安卓导航 - 提供Up导航</title>
-    <link href="http://yoursite.com/2016/01/03/Providing-Up-Navigation/"/>
-    <id>http://yoursite.com/2016/01/03/Providing-Up-Navigation/</id>
-    <published>2016-01-03T10:21:31.000Z</published>
-    <updated>2016-02-26T13:00:24.495Z</updated>
-    
-    <content type="html">&lt;p&gt;所有不是主入口的屏幕都应该为用户提供一个通过action bar的Up按钮导航至逻辑父屏幕的方式。&lt;/p&gt;
-&lt;h1 id=&quot;明确父Activity&quot;&gt;&lt;a href=&quot;#明确父Activity&quot; class=&quot;headerlink&quot; title=&quot;明确父Activity&quot;&gt;&lt;/a&gt;明确父Activity&lt;/h1&gt;&lt;p&gt;要实现Up导航，第一步是为每个activity声明合适的父activity。这样系统就可以在manifest中获得activity的逻辑父页面，方便实现导航模式。&lt;/p&gt;
-&lt;p&gt;从安卓4.1开始，可以通过在&lt;code&gt;&amp;lt;activity&amp;gt;&lt;/code&gt;中指明&lt;code&gt;android:parentActivityName&lt;/code&gt;属性来声明逻辑父activity。 4.0以下的版本这里略去。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;application ... &amp;gt;
-    ...
-    &amp;lt;!-- The main/home activity (it has no parent activity) --&amp;gt;
-    &amp;lt;activity
-        android:name=&amp;quot;com.example.myfirstapp.MainActivity&amp;quot; ...&amp;gt;
-        ...
-    &amp;lt;/activity&amp;gt;
-    &amp;lt;!-- A child of the main activity --&amp;gt;
-    &amp;lt;activity
-        android:name=&amp;quot;com.example.myfirstapp.DisplayMessageActivity&amp;quot;
-        android:label=&amp;quot;@string/title_activity_display_message&amp;quot;
-        android:parentActivityName=&amp;quot;com.example.myfirstapp.MainActivity&amp;quot; &amp;gt;
-        &amp;lt;!-- Parent activity meta-data to support 4.0 and lower --&amp;gt;
-        &amp;lt;meta-data
-            android:name=&amp;quot;android.support.PARENT_ACTIVITY&amp;quot;
-            android:value=&amp;quot;com.example.myfirstapp.MainActivity&amp;quot; /&amp;gt;
-    &amp;lt;/activity&amp;gt;
-&amp;lt;/application&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这样声明之后，就可以使用&lt;code&gt;NavUtils&lt;/code&gt;API来进行合适的Up导航。&lt;/p&gt;
-&lt;h1 id=&quot;添加Up动作&quot;&gt;&lt;a href=&quot;#添加Up动作&quot; class=&quot;headerlink&quot; title=&quot;添加Up动作&quot;&gt;&lt;/a&gt;添加Up动作&lt;/h1&gt;&lt;p&gt;调用&lt;code&gt;setDisplayHomeAsUpEnabled()&lt;/code&gt;方法可以启用action bar的Up导航：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Bundle savedInstanceState)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    getActionBar().setDisplayHomeAsUpEnabled(&lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这样可以在应用图标旁边添加一个向左的箭头，当用户点击之后，activity就会收到一个&lt;code&gt;onOptionsItemSelected()&lt;/code&gt;调用。动作的ID为&lt;code&gt;android.R.id.home&lt;/code&gt;。&lt;/p&gt;
-&lt;h1 id=&quot;Up导航至父Activity&quot;&gt;&lt;a href=&quot;#Up导航至父Activity&quot; class=&quot;headerlink&quot; title=&quot;Up导航至父Activity&quot;&gt;&lt;/a&gt;Up导航至父Activity&lt;/h1&gt;&lt;p&gt;要想在用户点击应用图标后向上导航，可以使用&lt;code&gt;NavUtils&lt;/code&gt;类的静态方法，&lt;code&gt;navigateUpFromSameTask()&lt;/code&gt;。调用这个方法时，它终结当前的activity并启动或继续一个合适的父activity。如果目标父activity在任务的后退栈中，它将被取出到最前。取出的方法取决于父activity是否能够处理&lt;code&gt;onNewIntent()&lt;/code&gt;调用。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;如果父activity启用了&lt;code&gt;&amp;lt;singleTop&amp;gt;&lt;/code&gt;模式，或者&lt;code&gt;up&lt;/code&gt;intent包含了&lt;code&gt;FLAG_ACTIVITY_CLEAR_TOP&lt;/code&gt;,父activity将被带到栈顶，并且通过&lt;code&gt;onNewIntent()&lt;/code&gt;方法接收intent。&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;如果父activity启动了&lt;code&gt;&amp;lt;standard&amp;gt;&lt;/code&gt;模式，并且&lt;code&gt;up&lt;/code&gt;intent不包含&lt;code&gt;FLAG_ACTIVITY_CLEAR_TOP&lt;/code&gt;,父activity将从栈中移除，并在栈顶创建一个该activity的新实例来接收intent。&lt;/p&gt;
-  &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onOptionsItemSelected&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(MenuItem item)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;switch&lt;/span&gt; (item.getItemId()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	    &lt;span class=&quot;comment&quot;&gt;// Respond to the action bar&#39;s Up/Home button&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	    &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; android.R.id.home:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	        NavUtils.navigateUpFromSameTask(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onOptionsItemSelected(item);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;然而，&lt;strong&gt;仅仅当应用是当前任务的所有者&lt;/strong&gt;时使用&lt;code&gt;navigateUpFromSameTask()&lt;/code&gt;才合适（就是说，用户从该应用开始任务）。否则，如果activity由其他应用的任务启动，Up导航应该创建一个属于自己应用的新的任务，着需要创建一个新的后退栈。&lt;/p&gt;
-&lt;h2 id=&quot;以新的后退栈向上导航&quot;&gt;&lt;a href=&quot;#以新的后退栈向上导航&quot; class=&quot;headerlink&quot; title=&quot;以新的后退栈向上导航&quot;&gt;&lt;/a&gt;以新的后退栈向上导航&lt;/h2&gt;&lt;p&gt;如果activity提供了intent filter来允许其他应用启动activity，那么实现&lt;code&gt;onOptionsItemSelected()&lt;/code&gt;回调时，当用户由其他应用进入activity并点击Up按钮后，应用应该在向上导航之前，启动一个有合适的后退栈的新的任务。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onOptionsItemSelected&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(MenuItem item)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;switch&lt;/span&gt; (item.getItemId()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// Respond to the action bar&#39;s Up/Home button&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;case&lt;/span&gt; android.R.id.home:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Intent upIntent = NavUtils.getParentActivityIntent(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (NavUtils.shouldUpRecreateTask(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, upIntent)) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// This activity is NOT part of this app&#39;s task, so create a new task&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// when navigating up, with a synthesized back stack.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            TaskStackBuilder.create(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &lt;span class=&quot;comment&quot;&gt;// Add all of this activity&#39;s parents to the back stack&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    .addNextIntentWithParentStack(upIntent)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &lt;span class=&quot;comment&quot;&gt;// Navigate up to the closest parent&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    .startActivities();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125; &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// This activity is part of this app&#39;s task, so simply&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// navigate up to the logical parent activity.&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            NavUtils.navigateUpTo(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, upIntent);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onOptionsItemSelected(item);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/code&gt;&lt;/pre&gt;</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;所有不是主入口的屏幕都应该为用户提供一个通过action bar的Up按钮导航至逻辑父屏幕的方式。&lt;/p&gt;
-&lt;h1 id=&quot;明确父Activity&quot;&gt;&lt;a href=&quot;#明确父Activity&quot; class=&quot;headerlink&quot; title=&quot;明确父Activity&quot;&gt;&lt;/a&gt;明确父Activity&lt;/h1&gt;&lt;p&gt;要实现Up导航，第一步是为每个activity声明合适的父activity。这样系统就可以在manifest中获得activity的逻辑父页面，方便实现导航模式。&lt;/p&gt;
-&lt;p&gt;从安卓4.1开始，可以通过在&lt;code&gt;&amp;lt;activity&amp;gt;&lt;/code&gt;中指明&lt;code&gt;android:parentActivityName&lt;/code&gt;属性来声明逻辑父activity。 4.0以下的版本这里略去。&lt;br&gt;
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
-    
-      <category term="Navigation" scheme="http://yoursite.com/tags/Navigation/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>安卓导航 - 创建导航抽屉</title>
-    <link href="http://yoursite.com/2016/01/03/Creating-a-Navigation-Drawer/"/>
-    <id>http://yoursite.com/2016/01/03/Creating-a-Navigation-Drawer/</id>
-    <published>2016-01-03T06:46:01.000Z</published>
-    <updated>2016-01-03T11:37:14.891Z</updated>
-    
-    <content type="html">&lt;p&gt;导航抽屉式一个屏幕左侧展示应用主要导航选项的面板。它一般隐藏起来，当用户从左侧滑动屏幕或在应用最顶级层面上点击应用图标时会出现。&lt;/p&gt;
-&lt;h1 id=&quot;创建DrawerLayout&quot;&gt;&lt;a href=&quot;#创建DrawerLayout&quot; class=&quot;headerlink&quot; title=&quot;创建DrawerLayout&quot;&gt;&lt;/a&gt;创建DrawerLayout&lt;/h1&gt;&lt;p&gt;要添加导航抽屉，首先在布局的根视图上添加一个&lt;code&gt;DrawerLayout&lt;/code&gt;。在&lt;code&gt;DrawerLayout&lt;/code&gt;中添加显示一个屏幕主要内容的view，和一个显示抽屉内容的view。&lt;/p&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;p&gt;例如，下面的布局使用了一个有两个子view的&lt;code&gt;DrawerLayout&lt;/code&gt;：一个包含主要内容（由&lt;code&gt;Fragment&lt;/code&gt;填充）的&lt;code&gt;FrameLayout&lt;/code&gt;和一个作为导航抽屉的&lt;code&gt;ListView&lt;/code&gt;。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;android.support.v4.widget.DrawerLayout
-    xmlns:android=&amp;quot;http://schemas.android.com/apk/res/android&amp;quot;
-    android:id=&amp;quot;@+id/drawer_layout&amp;quot;
-    android:layout_width=&amp;quot;match_parent&amp;quot;
-    android:layout_height=&amp;quot;match_parent&amp;quot;&amp;gt;
-    &amp;lt;!-- The main content view --&amp;gt;
-    &amp;lt;FrameLayout
-        android:id=&amp;quot;@+id/content_frame&amp;quot;
-        android:layout_width=&amp;quot;match_parent&amp;quot;
-        android:layout_height=&amp;quot;match_parent&amp;quot; /&amp;gt;
-    &amp;lt;!-- The navigation drawer --&amp;gt;
-    &amp;lt;ListView android:id=&amp;quot;@+id/left_drawer&amp;quot;
-        android:layout_width=&amp;quot;240dp&amp;quot;
-        android:layout_height=&amp;quot;match_parent&amp;quot;
-        android:layout_gravity=&amp;quot;start&amp;quot;
-        android:choiceMode=&amp;quot;singleChoice&amp;quot;
-        android:divider=&amp;quot;@android:color/transparent&amp;quot;
-        android:dividerHeight=&amp;quot;0dp&amp;quot;
-        android:background=&amp;quot;#111&amp;quot;/&amp;gt;
-&amp;lt;/android.support.v4.widget.DrawerLayout&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这个布局展示了一些重要的布局特性：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;主内容view必须是&lt;code&gt;DrawerLayout&lt;/code&gt;的&lt;strong&gt;第一个子view&lt;/strong&gt;，因为XML的顺序暗含着Z-ordering，抽屉必须在内容的顶上。&lt;/li&gt;
-&lt;li&gt;主内容view应该匹配父视图的宽和高，因为当抽屉隐藏时，它代表了整个UI。&lt;/li&gt;
-&lt;li&gt;抽屉view必须用&lt;code&gt;android:layout_gravity&lt;/code&gt;指明水平的重力方向。为了支持一些从右到左的语言，可以使用”start”代替”left”。&lt;/li&gt;
-&lt;li&gt;抽屉view的宽度用&lt;code&gt;dp&lt;/code&gt;单位指明，高度匹配父视图。抽屉的宽度应该不超过320dp，这样用户可以总能看到主内容的一部分。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h1 id=&quot;初始化抽屉列表&quot;&gt;&lt;a href=&quot;#初始化抽屉列表&quot; class=&quot;headerlink&quot; title=&quot;初始化抽屉列表&quot;&gt;&lt;/a&gt;初始化抽屉列表&lt;/h1&gt;&lt;p&gt;在activity中，初始化导航抽屉的列表是最开始要做的事情之一。具体如何实现取决于应用的内容，但导航抽屉一般都包含一个&lt;code&gt;ListView&lt;/code&gt;，所以列表应该由一个&lt;code&gt;Adapter&lt;/code&gt;来填充。&lt;/p&gt;
-&lt;p&gt;下面是使用字符串数组来初始化导航列表的例子：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public class MainActivity extends Activity {
-    private String[] mPlanetTitles;
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
-    ...
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        mPlanetTitles = getResources().getStringArray(R.array.planets_array);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
-        // Set the adapter for the list view
-        mDrawerList.setAdapter(new ArrayAdapter&amp;lt;String&amp;gt;(this,
-                R.layout.drawer_list_item, mPlanetTitles));
-        // Set the list&amp;apos;s click listener
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-        ...
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;上面的代码调用了&lt;code&gt;setOnItemClickListener()&lt;/code&gt;来接收列表中的点击事件。下面的部分将展示如何实现这个接口，并在用户选择时改变内容视图。&lt;/p&gt;
-&lt;h1 id=&quot;处理导航点击事件&quot;&gt;&lt;a href=&quot;#处理导航点击事件&quot; class=&quot;headerlink&quot; title=&quot;处理导航点击事件&quot;&gt;&lt;/a&gt;处理导航点击事件&lt;/h1&gt;&lt;p&gt;当用户选择了抽屉列表中的一个项目时，系统调用&lt;code&gt;onItemClick()&lt;/code&gt;方法。&lt;/p&gt;
-&lt;p&gt;在这个方法中所做的事情取决于如何实现应用的结构。下面的例子中，选择列表中的每个项目会往主内容视图中插入一个不同的&lt;code&gt;Fragment&lt;/code&gt;。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;private class DrawerItemClickListener implements ListView.OnItemClickListener {
-    @Override
-    public void onItemClick(AdapterView parent, View view, int position, long id) {
-        selectItem(position);
-    }
-}
-
-/** Swaps fragments in the main content view */
-private void selectItem(int position) {
-    // Create a new fragment and specify the planet to show based on position
-    Fragment fragment = new PlanetFragment();
-    Bundle args = new Bundle();
-    args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
-    fragment.setArguments(args);
-
-    // Insert the fragment by replacing any existing fragment
-    FragmentManager fragmentManager = getFragmentManager();
-    fragmentManager.beginTransaction()
-                   .replace(R.id.content_frame, fragment)
-                   .commit();
-
-    // Highlight the selected item, update the title, and close the drawer
-    mDrawerList.setItemChecked(position, true);
-    setTitle(mPlanetTitles[position]);
-    mDrawerLayout.closeDrawer(mDrawerList);
-}
-
-@Override
-public void setTitle(CharSequence title) {
-    mTitle = title;
-    getActionBar().setTitle(mTitle);
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&quot;侦听打开和关闭事件&quot;&gt;&lt;a href=&quot;#侦听打开和关闭事件&quot; class=&quot;headerlink&quot; title=&quot;侦听打开和关闭事件&quot;&gt;&lt;/a&gt;侦听打开和关闭事件&lt;/h1&gt;&lt;p&gt;要侦听抽屉的打开和关闭的事件，调用&lt;code&gt;DrawerLayout&lt;/code&gt;的&lt;code&gt;setDrawerListener()&lt;/code&gt;方法，并传入自己的实现。这个接口提供了抽屉打开和关闭的事件回调。&lt;/p&gt;
-&lt;p&gt;然而，如果activity包含了action bar,那么可以选择继承&lt;code&gt;ActionBarDrawerToggle&lt;/code&gt;类来替代。后者也实现了相同的接口，所以仍然可以重写这些回调。而且它使action bar图标与导航抽屉的互动更加便利。&lt;/p&gt;
-&lt;p&gt;当抽屉变得可见时，首先应该修改action bar的内容，比如改变标题，移除主内容相关的一些项目。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public class MainActivity extends Activity {
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mDrawerToggle;
-    private CharSequence mDrawerTitle;
-    private CharSequence mTitle;
-    ...
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ...
-
-        mTitle = mDrawerTitle = getTitle();
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
-
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                getActionBar().setTitle(mTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                getActionBar().setTitle(mDrawerTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-
-        // Set the drawer toggle as the DrawerListener
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-    }
-
-    /* Called whenever we call invalidateOptionsMenu() */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&quot;打开和关闭时的App图标&quot;&gt;&lt;a href=&quot;#打开和关闭时的App图标&quot; class=&quot;headerlink&quot; title=&quot;打开和关闭时的App图标&quot;&gt;&lt;/a&gt;打开和关闭时的App图标&lt;/h1&gt;&lt;p&gt;如果使用了action bar，那么应该允许用户通过点击应用图标来打开或关闭抽屉。而且应用应该通过一个特殊的图标来展示导航抽屉的存在。这可以通过&lt;code&gt;ActionBarDrawerToggle&lt;/code&gt;来实现。&lt;/p&gt;
-&lt;p&gt;为了使其工作，使用其构造方法创建一个实例，要求下面的参数：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;drawer所在的&lt;code&gt;Activity&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;DrawerLayout&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;作为抽屉标识的drawable资源。&lt;/li&gt;
-&lt;li&gt;一个描述打开抽屉动作的字符串资源（为了无障碍使用）&lt;/li&gt;
-&lt;li&gt;一个描述关闭抽屉动作的字符串资源（为了无障碍使用）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;然后，无论是否创建一个&lt;code&gt;ActionBarDrawerToggle&lt;/code&gt;子类作为抽屉的侦听器，都需要在贯穿activity的生命周期中的一些地方调用它。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public class MainActivity extends Activity {
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mDrawerToggle;
-    ...
-
-    public void onCreate(Bundle savedInstanceState) {
-        ...
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                mDrawerLayout,         /* DrawerLayout object */
-                R.drawable.ic_drawer,  /* nav drawer icon to replace &amp;apos;Up&amp;apos; caret */
-                R.string.drawer_open,  /* &amp;quot;open drawer&amp;quot; description */
-                R.string.drawer_close  /* &amp;quot;close drawer&amp;quot; description */
-                ) {
-
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                getActionBar().setTitle(mTitle);
-            }
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                getActionBar().setTitle(mDrawerTitle);
-            }
-        };
-
-        // Set the drawer toggle as the DrawerListener
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-          return true;
-        }
-        // Handle your other action bar items...
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    ...
-}
-&lt;/code&gt;&lt;/pre&gt;</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;导航抽屉式一个屏幕左侧展示应用主要导航选项的面板。它一般隐藏起来，当用户从左侧滑动屏幕或在应用最顶级层面上点击应用图标时会出现。&lt;/p&gt;
-&lt;h1 id=&quot;创建DrawerLayout&quot;&gt;&lt;a href=&quot;#创建DrawerLayout&quot; class=&quot;headerlink&quot; title=&quot;创建DrawerLayout&quot;&gt;&lt;/a&gt;创建DrawerLayout&lt;/h1&gt;&lt;p&gt;要添加导航抽屉，首先在布局的根视图上添加一个&lt;code&gt;DrawerLayout&lt;/code&gt;。在&lt;code&gt;DrawerLayout&lt;/code&gt;中添加显示一个屏幕主要内容的view，和一个显示抽屉内容的view。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
-    
-      <category term="Navigation" scheme="http://yoursite.com/tags/Navigation/"/>
     
   </entry>
   

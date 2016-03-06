@@ -1,0 +1,715 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android Wear," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="调用数据层API时，可以在完成时获取调用的状态，也可以侦听调用引起的任何改变。
+等待数据层调用的状态数据层API有时返回一个PendingResult，比如putDataItem()。一旦PendingResult创建，操作会在后台被入队。如果在这之后什么也不做，操作最终会静默地完成。然而，一般情况下都想在操作完成后根据结果做些什么，所以PendingResult可以让你等待结果的状态，同步或异步">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Wear 开发 （十四） 处理数据层事件">
+<meta property="og:url" content="http://yoursite.com/2016/03/05/wear-dev-14/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="调用数据层API时，可以在完成时获取调用的状态，也可以侦听调用引起的任何改变。
+等待数据层调用的状态数据层API有时返回一个PendingResult，比如putDataItem()。一旦PendingResult创建，操作会在后台被入队。如果在这之后什么也不做，操作最终会静默地完成。然而，一般情况下都想在操作完成后根据结果做些什么，所以PendingResult可以让你等待结果的状态，同步或异步">
+<meta property="og:updated_time" content="2016-03-06T05:42:00.499Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Wear 开发 （十四） 处理数据层事件">
+<meta name="twitter:description" content="调用数据层API时，可以在完成时获取调用的状态，也可以侦听调用引起的任何改变。
+等待数据层调用的状态数据层API有时返回一个PendingResult，比如putDataItem()。一旦PendingResult创建，操作会在后台被入队。如果在这之后什么也不做，操作最终会静默地完成。然而，一般情况下都想在操作完成后根据结果做些什么，所以PendingResult可以让你等待结果的状态，同步或异步">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Android Wear 开发 （十四） 处理数据层事件 | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android Wear 开发 （十四） 处理数据层事件
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-05T23:11:19+08:00" content="2016-03-05">
+              2016-03-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>调用数据层API时，可以在完成时获取调用的状态，也可以侦听调用引起的任何改变。</p>
+<h1 id="等待数据层调用的状态"><a href="#等待数据层调用的状态" class="headerlink" title="等待数据层调用的状态"></a>等待数据层调用的状态</h1><p>数据层API有时返回一个<code>PendingResult</code>，比如<code>putDataItem()</code>。一旦<code>PendingResult</code>创建，操作会在后台被入队。如果在这之后什么也不做，操作最终会静默地完成。然而，一般情况下都想在操作完成后根据结果做些什么，所以<code>PendingResult</code>可以让你等待结果的状态，同步或异步地。<br><a id="more"></a></p>
+<h2 id="异步调用"><a href="#异步调用" class="headerlink" title="异步调用"></a>异步调用</h2><p>如果代码运行在UI线程，不要调用数据层API的阻塞方法。可以通过向<code>PendingResult</code>添加一个回调方法来运行异步调用，它将在操作完成后启用。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pendingResult.setResultCallback(<span class="keyword">new</span> ResultCallback&lt;DataItemResult&gt;() &#123;</span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onResult</span><span class="params">(<span class="keyword">final</span> DataItemResult result)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(result.getStatus().isSuccess()) &#123;</span><br><span class="line">            Log.d(TAG, <span class="string">"Data item set: "</span> + result.getDataItem().getUri());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h2 id="同步调用"><a href="#同步调用" class="headerlink" title="同步调用"></a>同步调用</h2><p>如果代码运行在后台服务里单独的handler线程，如<code>WearableListenerService</code>，那么调用阻塞的方法没有问题。这种情况下，应该调用<code>PendingResult</code>的<code>await()</code>方法，它将阻塞直到请求完成，并返回一个<code>Result</code>对象。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DataItemResult result = pendingResult.await();</span><br><span class="line"><span class="keyword">if</span>(result.getStatus().isSuccess()) &#123;</span><br><span class="line">    Log.d(TAG, <span class="string">"Data item set: "</span> + result.getDataItem().getUri());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="侦听数据层事件"><a href="#侦听数据层事件" class="headerlink" title="侦听数据层事件"></a>侦听数据层事件</h1><p>因为数据层在手机和手表间同步并且发送数据，一般需要侦听一些重要的事件，比如数据项被创建时，消息被接收时，或者手表或手机被连接时。</p>
+<p>要侦听数据层事件，有两种选择：</p>
+<ul>
+<li>创建一个service继承<code>WearableListenerService</code>。</li>
+<li>创建一个activity实现<code>DataApi.DataListener</code>。</li>
+</ul>
+<p>两种方法都可以重写希望处理的数据事件回调方法。</p>
+<h2 id="WearableListenerService"><a href="#WearableListenerService" class="headerlink" title="WearableListenerService"></a>WearableListenerService</h2><p>一般在手机和手表中都需要创建service的实例。如果对其中的一个中的数据事件不感兴趣，那么不需要实现相应的service。</p>
+<p>例如，手机应用可以设置和获取数据项对象，而手表应用可以侦听这些更新来刷新自己的UI。这个手表永远都不会更新任何的数据项，所以手机应用无需侦听手表应用的数据项事件。</p>
+<p>可以用<code>WearableListenerService</code>侦听下面的事件：</p>
+<ul>
+<li><code>onDataChanged()</code> - 当数据项对象被创建，改变或删除时调用。连接一侧的事件会在两侧都触发调用。</li>
+<li><code>onMessageReceived()</code> - 从连接一侧发送的消息在连接的另一侧触发回调。</li>
+<li><code>onPeerConnected()</code>和<code>onPeerDisconnected()</code> - 连接建立或断开时调用。连接一侧的连接状态的改变在两侧都触发回调。</li>
+</ul>
+<p>要创建一个<code>WearableListenerService</code>：</p>
+<ol>
+<li>创建一个继承<code>WearableListenerService</code>的类；</li>
+<li>侦听感兴趣的事件，比如<code>onDataChanged()</code>；</li>
+<li><p>在manifest中生命一个intent filter来告知系统自己的<code>WearableListenerService</code>。这将允许系统按需要绑定service。</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataLayerListenerService</span> <span class="keyword">extends</span> <span class="title">WearableListenerService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TAG = <span class="string">"DataLayerSample"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String START_ACTIVITY_PATH = <span class="string">"/start-activity"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String DATA_ITEM_RECEIVED_PATH = <span class="string">"/data-item-received"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDataChanged</span><span class="params">(DataEventBuffer dataEvents)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (Log.isLoggable(TAG, Log.DEBUG)) &#123;</span><br><span class="line">            Log.d(TAG, <span class="string">"onDataChanged: "</span> + dataEvents);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">final</span> List events = FreezableUtils</span><br><span class="line">                .freezeIterable(dataEvents);</span><br><span class="line"></span><br><span class="line">        GoogleApiClient googleApiClient = <span class="keyword">new</span> GoogleApiClient.Builder(<span class="keyword">this</span>)</span><br><span class="line">                .addApi(Wearable.API)</span><br><span class="line">                .build();</span><br><span class="line"></span><br><span class="line">        ConnectionResult connectionResult =</span><br><span class="line">                googleApiClient.blockingConnect(<span class="number">30</span>, TimeUnit.SECONDS);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!connectionResult.isSuccess()) &#123;</span><br><span class="line">            Log.e(TAG, <span class="string">"Failed to connect to GoogleApiClient."</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Loop through the events and send a message</span></span><br><span class="line">        <span class="comment">// to the node that created the data item.</span></span><br><span class="line">        <span class="keyword">for</span> (DataEvent event : events) &#123;</span><br><span class="line">            Uri uri = event.getDataItem().getUri();</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Get the node id from the host value of the URI</span></span><br><span class="line">            String nodeId = uri.getHost();</span><br><span class="line">            <span class="comment">// Set the data of the message to be the bytes of the URI</span></span><br><span class="line">            <span class="keyword">byte</span>[] payload = uri.toString().getBytes();</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Send the RPC</span></span><br><span class="line">            Wearable.MessageApi.sendMessage(googleApiClient, nodeId,</span><br><span class="line">                    DATA_ITEM_RECEIVED_PATH, payload);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面是manifest中对应的intent filter：</p>
+ <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;service android:name=".DataLayerListenerService"&gt;</span><br><span class="line">  &lt;intent-filter&gt;</span><br><span class="line">      &lt;action android:name="com.google.android.gms.wearable.BIND_LISTENER" /&gt;</span><br><span class="line">  &lt;/intent-filter&gt;</span><br><span class="line">&lt;/service&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="数据层回调的权限"><a href="#数据层回调的权限" class="headerlink" title="数据层回调的权限"></a>数据层回调的权限</h2><p>要向应用发送数据层事件的回调，Google Play服务绑定至<code>WearableListenerService</code>，并且通过IPC调用回调。这导致了回调继承了调用进程的权限。</p>
+</li>
+</ol>
+<p>如果试图在回调中执行特权的操作，安全检查可能会失败。因为回调以调用进程的身份运行，而非应用的进程。</p>
+<p>要解决这个问题，调用<code>clearCallingIdentity()</code>以在穿过IPC边界后重置身份，并且在完成了特权操作后调用<code>restoreCallingIdentity()</code>以恢复身份。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">long</span> token = Binder.clearCallingIdentity();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    performOperationRequiringPermissions();</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    Binder.restoreCallingIdentity(token);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Listener-Activity"><a href="#Listener-Activity" class="headerlink" title="Listener Activity"></a>Listener Activity</h2><p>如果应用只有当用户与应用交互时关心数据层事件，不需要使用长期运行的service来处理所有数据改变，可以在activity中通过实现下面的一个或多个接口来侦听事件：</p>
+<ul>
+<li><code>DataApi.DataListener</code></li>
+<li><code>MessageApi.MessageListener</code></li>
+<li><code>NodeApi.NodeListener</code></li>
+</ul>
+<p>要创造一个侦听数据事件的activity：</p>
+<ol>
+<li>实现想要的接口；</li>
+<li>在<code>onCreate(Bundle)</code>中创建<code>GoogleApiClient</code>的一个实例来使用数据层API；</li>
+<li>在<code>onStart()</code>调用<code>connect()</code>来连接客户端至Google Play服务；</li>
+<li>连接至Google Play服务之后，系统调用<code>onConnected()</code>。在这里调用<code>DataApi.addListener()</code>, <code>MessageApi.addListener()</code>, 或 <code>NodeApi.addListener()</code>来告知Google Play服务，当面activity希望侦听数据层事件。</li>
+<li>在<code>onStop()</code>中调用<code>DataApi.removeListener()</code>, <code>MessageApi.removeListener()</code>, 或 <code>NodeApi.removeListener()</code>注销任意的侦听器。</li>
+<li><p>根据实现的接口实现<code>onDataChanged()</code>, <code>onMessageReceived()</code>, <code>onPeerConnected()</code>, 和<code>onPeerDisconnected()</code>. </p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> <span class="keyword">implements</span></span><br><span class="line">        <span class="title">DataApi</span>.<span class="title">DataListener</span>, <span class="title">ConnectionCallbacks</span>, <span class="title">OnConnectionFailedListener</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> GoogleApiClient mGoogleApiClient;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line"></span><br><span class="line">        setContentView(R.layout.main);</span><br><span class="line">        mGoogleApiClient = <span class="keyword">new</span> GoogleApiClient.Builder(<span class="keyword">this</span>)</span><br><span class="line">                .addApi(Wearable.API)</span><br><span class="line">                .addConnectionCallbacks(<span class="keyword">this</span>)</span><br><span class="line">                .addOnConnectionFailedListener(<span class="keyword">this</span>)</span><br><span class="line">                .build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onStart</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onStart();</span><br><span class="line">        <span class="keyword">if</span> (!mResolvingError) &#123;</span><br><span class="line">            mGoogleApiClient.connect();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onConnected</span><span class="params">(Bundle connectionHint)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (Log.isLoggable(TAG, Log.DEBUG)) &#123;</span><br><span class="line">            Log.d(TAG, <span class="string">"Connected to Google Api Service"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        Wearable.DataApi.addListener(mGoogleApiClient, <span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onStop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> != mGoogleApiClient &amp;&amp; mGoogleApiClient.isConnected()) &#123;</span><br><span class="line">            Wearable.DataApi.removeListener(mGoogleApiClient, <span class="keyword">this</span>);</span><br><span class="line">            mGoogleApiClient.disconnect();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">super</span>.onStop();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDataChanged</span><span class="params">(DataEventBuffer dataEvents)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (DataEvent event : dataEvents) &#123;</span><br><span class="line">            <span class="keyword">if</span> (event.getType() == DataEvent.TYPE_DELETED) &#123;</span><br><span class="line">                Log.d(TAG, <span class="string">"DataItem deleted: "</span> + event.getDataItem().getUri());</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (event.getType() == DataEvent.TYPE_CHANGED) &#123;</span><br><span class="line">                Log.d(TAG, <span class="string">"DataItem changed: "</span> + event.getDataItem().getUri());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android-Wear/" rel="tag">#Android Wear</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/05/wear-dev-13/" rel="next" title="Android Wear 开发 （十三） 发送接收消息">
+                <i class="fa fa-chevron-left"></i> Android Wear 开发 （十三） 发送接收消息
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">97</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#等待数据层调用的状态"><span class="nav-number">1.</span> <span class="nav-text">等待数据层调用的状态</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#异步调用"><span class="nav-number">1.1.</span> <span class="nav-text">异步调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同步调用"><span class="nav-number">1.2.</span> <span class="nav-text">同步调用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#侦听数据层事件"><span class="nav-number">2.</span> <span class="nav-text">侦听数据层事件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#WearableListenerService"><span class="nav-number">2.1.</span> <span class="nav-text">WearableListenerService</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据层回调的权限"><span class="nav-number">2.2.</span> <span class="nav-text">数据层回调的权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Listener-Activity"><span class="nav-number">2.3.</span> <span class="nav-text">Listener Activity</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

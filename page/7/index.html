@@ -224,6 +224,543 @@
             
               
                 
+                <a class="post-title-link" href="/2015/09/22/higher-order-functions/" itemprop="url">
+                  函数式编程 - 高阶函数
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-22T19:46:29+08:00" content="2015-09-22">
+              2015-09-22
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>函数式编程与面向对象编程最大的不同就是，FP当中，函数是first class的，可以方便地进行传递和进行更高层的处理。比如在安卓中，为了给某个View提供一个侦听的行为，必须为其绑定一个<code>OnClickListener</code>接口的侦听器，而实际上需要只有一个方法签名<code>onClick(View view)</code>。这种单一方法接口的本质就是那个方法所代表的函数，或者说映射，的本身。在Java8中，可以方便地直接将一个函数传递过去，如</p>
+<pre><code>view.setOnClickListener(view -&gt; { // do something here })
+</code></pre><p>实际传递的就是一个view参数的映射。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/22/higher-order-functions/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/20/Creating-a-View-Class/" itemprop="url">
+                  创造自定义View并在XML中使用自定义特性
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-20T19:58:44+08:00" content="2015-09-20">
+              2015-09-20
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>好的自定义view应该将功能封装为方便的接口，高效使用CPU和内存。另外还要做到：</p>
+<ul>
+<li>适应安卓标准</li>
+<li>提供自定义的风格属性，兼容安卓的XML布局</li>
+<li>发送无障碍事件</li>
+<li>兼容多个安卓平台</li>
+</ul>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/20/Creating-a-View-Class/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/19/spinners/" itemprop="url">
+                  使用Spinner下拉列表
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-19T11:00:12+08:00" content="2015-09-19">
+              2015-09-19
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Spinner提供了一种从集合中选择元素的快速方式。默认状态下，spinner显示当前选中的值。触碰spinner会显示包含所有值的下拉目录，供用户选择。  </p>
+<h2 id="为Spinner填充数据"><a href="#为Spinner填充数据" class="headerlink" title="为Spinner填充数据"></a>为Spinner填充数据</h2><p>Spinner中的选项可以来自任何地方，但必须通过<code>SpinnerAdapter</code>提供。如果选项是数组的形式，可以使用<code>ArrayAdapter</code>，如果来自数据库，可以使用<code>CursorAdapter</code>。  </p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/19/spinners/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/19/Animating-Layout-Changes/" itemprop="url">
+                  安卓动画学习笔记（七） 布局变更动画
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-19T10:25:30+08:00" content="2015-09-19">
+              2015-09-19
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>布局动画是每当改变布局配置时执行的预加载的动画。所需要做的只是在布局中设置相应的属性来告诉安卓系统执行动画，这样布局变更时就会执行默认的动画。</p>
+<blockquote>
+<p><strong>贴士</strong>：如果想实现自定义布局变更动画，创造<code>LayoutTransition</code>对象，并通过<code>setLayoutTransition</code>提供给布局。</p>
+</blockquote>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/19/Animating-Layout-Changes/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/16/layout-behavior-bug/" itemprop="url">
+                  Layout_behavior属性造成的布局异常
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-16T20:05:21+08:00" content="2015-09-16">
+              2015-09-16
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>前两天发现了一个布局的bug，怎么都找不到原因，今天总算是解决掉了。<br>很多异步加载的页面都会做一个”empty view”来表示加载过程，其中最常用的就是<code>ProgressBar</code>了。实现方法很简单，在布局中添加一个<code>ProgressBar</code>并在适当的时候使其可见或不可见就可以了。</p>
+<pre><code>&lt;ProgressBar android:id=&quot;@+id/loading_spinner&quot;
+             style=&quot;?android:progressBarStyleLarge&quot;
+             android:layout_width=&quot;wrap_content&quot;
+             android:layout_height=&quot;wrap_content&quot;
+             android:layout_gravity=&quot;center&quot; xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;/&gt;
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/16/layout-behavior-bug/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/15/Intent-Filter-Match-URL/" itemprop="url">
+                  Intent Filter匹配URL的实例
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-15T20:24:52+08:00" content="2015-09-15">
+              2015-09-15
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>上篇文章对Intent Filter整体的用法作了总结。现在来着重研究一下<code>&lt;data&gt;</code>标签的匹配方法，尤其是经常用到的URL链接。</p>
+<p>很多网站的客户端应用都对应一些具体的网址，经常会希望用户在其他应用打开这些网址后能够跳转到自己的应用中来。</p>
+<p>接下来结合自己的一个例子来讲解如何匹配URL，要匹配的网址是：<br><a href="http://www.sphia.com/java/android/intent-filter.html">http://www.sphia.com/java/android/intent-filter.html</a><br><a href="http://www.sphia.com/java/android/match-url.html">http://www.sphia.com/java/android/match-url.html</a><br>也就是 www.sphia.com/java/android/ 目录下的所有链接。</p>
+<p>首先放出实现的方法：<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/15/Intent-Filter-Match-URL/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/09/14/Intent-Filters/" itemprop="url">
                   Intent Filter总结
                 </a>
@@ -553,540 +1090,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/13/Animating-with-ValueAnimator/" itemprop="url">
-                  安卓动画学习笔记（四） 属性动画（续）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-13T16:09:59+08:00" content="2015-09-13">
-              2015-09-13
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="用AnimatorSet编排多个动画"><a href="#用AnimatorSet编排多个动画" class="headerlink" title="用AnimatorSet编排多个动画"></a>用AnimatorSet编排多个动画</h2><p>很多时候，播放动画的时机取决于其他动画的开始和结束。安卓系统可以将多个动画捆绑在一个<code>AnimatorSet</code>中，以指定同时播放动画，按顺序播放动画或者延迟一定时间后播放。<code>AnimatorSet</code>对象也可以互相嵌套。<br>下面的例子取自一个弹球游戏，播放下面的顺序播放<code>Animator</code>对象：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/13/Animating-with-ValueAnimator/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/13/Property-Animation/" itemprop="url">
-                  安卓动画学习笔记（三） 属性动画
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-13T14:27:32+08:00" content="2015-09-13">
-              2015-09-13
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>学习了上两节发现其中的代码有很多看不懂的地方，所以接下来从动画本身来学起。  </p>
-<p>属性动画是一个几乎能为任何东西实现动画的健壮框架。可以定义动画来随时间改变对象属性，无论是否绘制在屏幕上。属性动画在一段时间内改变一个属性（对象的域）。必须指定想要进行动画的对象属性，比如其位置，动画的时长，动画起止的属性值。<br>属性动画系统允许设定以下几个特性：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/13/Property-Animation/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/13/Using-ViewPager-for-Screen-Slides/" itemprop="url">
-                  安卓动画学习笔记（二） 自定义ViewPager动画
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-13T13:30:49+08:00" content="2015-09-13">
-              2015-09-13
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="使用PageTransformer自定义动画"><a href="#使用PageTransformer自定义动画" class="headerlink" title="使用PageTransformer自定义动画"></a>使用PageTransformer自定义动画</h2><p>可以实现<code>ViewPager.PageTransformer</code>接口来实现自定义的滑动动画。这个接口只有一个方法<code>transformPage()</code>。在屏幕切换的每一个点上，这个方法为当前可见的页面和相邻的页面各调用一次。比如，当前显示第三页，用户滑动到第四页，<code>transformPage()</code>在手势的每一步都为第二，三，四页所调用。<br>实现<code>transformPage()</code>时，可以创建自定义的滑动动画。根据页面在屏幕上的位置（通过方法的<code>position</code>参数获取），决定哪一个页面需要被变形。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/13/Using-ViewPager-for-Screen-Slides/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/13/Crossfading-Two-Views/" itemprop="url">
-                  安卓动画学习笔记（一） 淡入淡出
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-13T13:03:08+08:00" content="2015-09-13">
-              2015-09-13
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>淡入淡出动画指的是渐渐隐去一个UI组件的同时逐渐显示出另一个，经常用在用户切换内容或视图的时候。没有淡入淡出效果的话，切换的过程会有些突兀。</p>
-<h2 id="创建视图"><a href="#创建视图" class="headerlink" title="创建视图"></a>创建视图</h2><p>首先创建两个相关的视图。下面创建一个进度指示器和一个可滚动的文本：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/13/Crossfading-Two-Views/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/13/pull-to-refresh-recyler/" itemprop="url">
-                  为RecyclerView实现PullToRefresh
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-13T10:34:54+08:00" content="2015-09-13">
-              2015-09-13
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><code>chrisbanes/ActionBar-PullToRefresh</code>是一个很好用的下拉刷新库。与常用的另一个PullToRefresh库不同，这个库的特点就是轻量级，方便集成到自己的项目中。下拉刷新经常用在列表中，<code>ActionBar-PullToRefresh</code>默认支持<code>ListView</code>，而不支持<code>RecyclerView</code>。要让其支持<code>RecyclerView</code>就要自己用<code>ViewDelegate</code>来实现。另外，使用Github主页中注入<code>ListFragment</code>的方法也不行。<br>（实现代码在这里 <a href="https://github.com/SphiaTower/ActionBar-PullToRefresh">https://github.com/SphiaTower/ActionBar-PullToRefresh</a> ）<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/13/pull-to-refresh-recyler/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/12/picasso-performance/" itemprop="url">
-                  提高Picasso的缩放速度
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-12T13:52:27+08:00" content="2015-09-12">
-              2015-09-12
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在Piccaso中按比例缩放图片很容易，只需要下面的代码即可：</p>
-<pre><code>Picasso.with(context).load(url).resize(SCREEN_WIDTH,SCREEN_WIDTH).centerCrop().into(imageView);
-</code></pre><p>然而，实际操作中发现，这种方法明显有一些延迟（因为项目中要加载的图片已经在内存中，所以不是图片加载的问题），导致用户体验不太好，屏幕要黑屏一小段时间。所以试着用自己的代码实现了缩放，效果比上面的实现要好上很多：</p>
-<pre><code>Picasso.with(this).load(url).into(imageView, new Callback() {
-            @Override
-            public void onSuccess() {
-                Drawable drawable = imageView.getDrawable();
-                drawable = zoomDrawable(drawable, SCREEN_WIDTH);
-                imageView.setImageDrawable(drawable);
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/12/picasso-performance/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1133,7 +1136,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">91</span>
+              <span class="site-state-item-count">97</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

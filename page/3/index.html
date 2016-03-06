@@ -224,6 +224,548 @@
             
               
                 
+                <a class="post-title-link" href="/2016/02/05/learning-preferences-2/" itemprop="url">
+                  使用Preferences API（二）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-02-05T18:48:59+08:00" content="2016-02-05">
+              2016-02-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="使用pref-header"><a href="#使用pref-header" class="headerlink" title="使用pref header"></a>使用pref header</h1><p>某些情况下，可能需要设计设置页面来使第一个屏幕展示一列子屏幕。在3.0以上版本中，应该使用新的header特性，而非使用嵌套的<code>PreferenceScreen</code>元素。</p>
+<ol>
+<li>分离各组设置至不同的PF实例。每组设置需要单独的XML文件。</li>
+<li>创建XML header文件，列出每个设置组，声明含有对应设置列表的fragment。</li>
+<li>继承PA类来持有设置。</li>
+<li>实现<code>onBuildHeaderes()</code>回调来指定header文件。</li>
+</ol>
+<p>这样做的一个好处是，PA可以自动在大屏幕中使用双面板布局呈现设定。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/05/learning-preferences-2/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/02/05/learning-preferences/" itemprop="url">
+                  使用Preferences API（一）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-02-05T15:43:43+08:00" content="2016-02-05">
+              2016-02-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>应用一般都包含一些用户可以自定义的设置，比如是否推送通知，更新数据的频率等等。</p>
+<p>如果想要为应用提供设置，应该使用安卓的<code>Preference</code>API来创建一致的用户体验。</p>
+<h1 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h1><p>与使用<code>View</code>创造界面不同，设置是由xml文件中声明的各种<code>Preference</code>的子类组成。</p>
+<p>一个<code>Preference</code>对象构成一个设置。每个<code>Preference</code>显示为列表中的一个子项，并提供合适的UI供用户交互。例如，<code>CheckBoxPreference</code>创造一个勾选框子项，<code>ListPreference</code>创造一个弹出选择列表对话框的子项。</p>
+<p>每个<code>Preference</code>在系统使用的默认的<code>SharedPreferences</code>文件中存在一个对应的键值对。用户更改设置后，系统在SP文件中更新相应的值。只有当需要从SP中读取值以决定应用行为时，才需要直接与SP相交互。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/05/learning-preferences/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/01/04/Bug-of-TabLayout/" itemprop="url">
+                  A Bug of TabLayout
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-01-04T00:26:01+08:00" content="2016-01-04">
+              2016-01-04
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>In Google’s design support library, there is a bug for version 22.2.1 that the <code>TabLayout</code> in <code>Toolbar</code> may not display. I spent neary an hour debugging for this problem. There is a work-around for this bug:</p>
+<pre><code>tabLayout.post(new Runnable() {
+    @Override
+    public void run() {
+        tabLayout.setupWithViewPager(viewPager);
+    }
+});
+</code></pre><p>But the easiest way is to upgrade the design library to version 23.</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/01/03/Providing-Proper-Back-Navigation/" itemprop="url">
+                  安卓导航 - 提供合适的后退导航
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-01-03T18:50:14+08:00" content="2016-01-03">
+              2016-01-03
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>后退导航是指用户如何从访问过的屏幕中向后移动。所有的安卓设备都提供有一个后退键，所以<strong>你的应用不应该再增加一个后退按钮。</strong></p>
+<p>在大多数的情况中，系统在用户导航时维持着一个后退栈。这使得系统能够再用户按下后退键之后合适地向后导航。然而，有一些情况下，你需要手动指明后退行为，以提供更好的用户体验。</p>
+<p>需要手动指明后退行为的导航模式有：</p>
+<ul>
+<li>用户通过一条通知、一个桌面挂件或导航抽屉直接进入到一个深层次的activity时。</li>
+<li>用户在fragment见导航的某些情况。</li>
+<li>用户在<code>WebView</code>的网页中导航时。</li>
+</ul>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/01/03/Providing-Proper-Back-Navigation/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/01/03/Providing-Up-Navigation/" itemprop="url">
+                  安卓导航 - 提供Up导航
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-01-03T18:21:31+08:00" content="2016-01-03">
+              2016-01-03
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>所有不是主入口的屏幕都应该为用户提供一个通过action bar的Up按钮导航至逻辑父屏幕的方式。</p>
+<h1 id="明确父Activity"><a href="#明确父Activity" class="headerlink" title="明确父Activity"></a>明确父Activity</h1><p>要实现Up导航，第一步是为每个activity声明合适的父activity。这样系统就可以在manifest中获得activity的逻辑父页面，方便实现导航模式。</p>
+<p>从安卓4.1开始，可以通过在<code>&lt;activity&gt;</code>中指明<code>android:parentActivityName</code>属性来声明逻辑父activity。 4.0以下的版本这里略去。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/01/03/Providing-Up-Navigation/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/01/03/Creating-a-Navigation-Drawer/" itemprop="url">
+                  安卓导航 - 创建导航抽屉
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-01-03T14:46:01+08:00" content="2016-01-03">
+              2016-01-03
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>导航抽屉式一个屏幕左侧展示应用主要导航选项的面板。它一般隐藏起来，当用户从左侧滑动屏幕或在应用最顶级层面上点击应用图标时会出现。</p>
+<h1 id="创建DrawerLayout"><a href="#创建DrawerLayout" class="headerlink" title="创建DrawerLayout"></a>创建DrawerLayout</h1><p>要添加导航抽屉，首先在布局的根视图上添加一个<code>DrawerLayout</code>。在<code>DrawerLayout</code>中添加显示一个屏幕主要内容的view，和一个显示抽屉内容的view。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/01/03/Creating-a-Navigation-Drawer/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/01/03/Glide-image-size/" itemprop="url">
                   A Glide Sizing Problem
                 </a>
@@ -550,537 +1092,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/11/16/notes-about-ContentProviders-2/" itemprop="url">
-                  Notes on Content Providers (II) Creating a Content Provider
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-11-16T23:12:32+08:00" content="2015-11-16">
-              2015-11-16
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Before-You-Start-Building"><a href="#Before-You-Start-Building" class="headerlink" title="Before You Start Building"></a>Before You Start Building</h1><p>You need to build a content provider if you want to provide one or more of the following features:</p>
-<ul>
-<li>You want to offer complex data or files to other applications.</li>
-<li>You want to allow users to copy complex data from your app into other apps.</li>
-<li>You want to provide custom search suggestions using the search framework.</li>
-</ul>
-<p>Follow these steps to build your provider:</p>
-<ol>
-<li>Design the raw storage for your data. A content provider offers data in two ways:  File data or  “Structured” data.</li>
-<li>Define a concrete implementation of the ContentProvider class and its required methods. </li>
-<li>Define the provider’s authority string, its content URIs, and column names. If you want the provider’s application to handle intents, also define intent actions, extras data, and flags. Also define the permissions that you will require for applications that want to access your data. You should consider defining all of these values as constants in a separate contract class; later, you can expose this class to other developers.</li>
-<li>Add other optional pieces, such as sample data or an implementation of <code>AbstractThreadedSyncAdapter</code> that can synchronize data between the provider and cloud-based data.
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/11/16/notes-about-ContentProviders-2/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/11/16/notes-about-ContentProviders/" itemprop="url">
-                  Notes on Content Providers (I) Content Provider Basics
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-11-16T22:03:55+08:00" content="2015-11-16">
-              2015-11-16
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Content-Provider-Basics"><a href="#Content-Provider-Basics" class="headerlink" title="Content Provider Basics"></a>Content Provider Basics</h1><p>A provider isn’t required to have a primary key, and it isn’t required to use <code>_ID</code> as the column name of a primary key if one is present. However, if you want to bind data from a provider to a <code>ListView</code>, one of the column names has to be <code>_ID</code>.</p>
-<p>The <code>ContentResolver</code> object in the client application’s process and the <code>ContentProvider</code> object in the application that owns the provider automatically handle inter-process communication. <code>ContentProvider</code> also acts as an abstraction layer between its repository of data and the external appearance of data as tables.</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/11/16/notes-about-ContentProviders/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/11/16/notes-about-the-activity-lifecycle/" itemprop="url">
-                  Notes on the Activity Lifecycle
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-11-16T20:52:33+08:00" content="2015-11-16">
-              2015-11-16
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Starting-an-Activity"><a href="#Starting-an-Activity" class="headerlink" title="Starting an Activity"></a>Starting an Activity</h1><p>Technically, the activity becomes visible to the user when <code>onStart()</code> is called, but <code>onResume()</code> quickly follows and the activity remains in the Resumed state until something occurs to change that, such as when a phone call is received, the user navigates to another activity, or the device screen turns off.</p>
-<p>Most apps don’t need to implement this method because local class references are destroyed with the activity and your activity should perform most cleanup during <code>onPause()</code> and <code>onStop()</code>. However, if your activity includes background threads that you created during <code>onCreate()</code> or other long-running resources that could potentially leak memory if not properly closed, you should kill them during <code>onDestroy()</code>.<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/11/16/notes-about-the-activity-lifecycle/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/11/11/clion-encoding/" itemprop="url">
-                  An Encoding Problem in Clion
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-11-11T23:52:20+08:00" content="2015-11-11">
-              2015-11-11
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Clion is a great IDE of C/C++, made by JetBrain. But I found a problem that when the output of console is Chinese, it can’t be displayed correctly.</p>
-<p>I tried to use the same method as Intellij IDEA, changing the encoding from GBK to UTF-8 at the right bottom corner. However, it didn’t work like IDEA 14.</p>
-<p>After a lot of attempts modifying different settings, I have found the solution: In <code>File &gt; Settings &gt; Editor &gt; File Encoding</code>, modify both <code>IDE Encoding</code> and <code>Project Encoding</code> into UTF-8. After applied, click the console dock and then change the right bottom corner from UTF-8 to GBK. Then the console can output Chinese now.</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/21/top-bottom-toolbar/" itemprop="url">
-                  Layout and Animation with Both Top & Bottom Bars
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-21T22:10:58+08:00" content="2015-10-21">
-              2015-10-21
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Some apps have a layout containing both a top Toolbar/Actionbar and a bottom toolbar-like view. And when you scroll a <code>RecyclerView</code>, both the top and bottom toolbar will enter/exit the screen with animation.</p>
-<p>It’s not difficult for the top toolbar. The solution is using <code>CoordinatorLayout</code> in the android material design library with a <code>Toolbar</code> and a <code>RecyclerView</code>. If the <code>RecyclerView</code> is added dynamically at runtime, you can add a <code>FrameLayout</code> as the container, and set scroll flags on it.<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/21/top-bottom-toolbar/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/21/include-local-library-using-gradle/" itemprop="url">
-                  Including Local Libraries Using Gradle
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-21T21:59:29+08:00" content="2015-10-21">
-              2015-10-21
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>After you have written or downloaded a android library, you may want to use it in your existing gradle-based project. It’s very easy to integrate an online library using gradle, but how to integrate a local library?</p>
-<p>The solution is very easy, because gradle supports importing local libraries just like online libraries. But you have to modify some setting files to make it work.<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/21/include-local-library-using-gradle/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1127,7 +1138,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">91</span>
+              <span class="site-state-item-count">97</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
