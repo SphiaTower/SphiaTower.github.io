@@ -59,16 +59,34 @@
 
 
 
-<meta name="description">
+<meta name="description" content="使用MessageApi来发送消息，并将下面的子项附给消息：
+
+一个任意的payload（可选）
+一个标识了消息动作的路径
+
+与数据项不同，手机和手表应用之间没有同步。消息是单方向的通讯机制，适合RPC操作，比如向手表发送一条消息以启动一个activity。
+许多手表设备可以被连接至用户的手机。网络中每个被连接的设备都可以看作一个节点。有多个连接的设备时，必须考虑由哪个节点来接受消息。例如，一个在">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android Wear 开发 （十三） 发送接收消息">
 <meta property="og:url" content="http://yoursite.com/2016/03/05/wear-dev-13/index.html">
 <meta property="og:site_name" content="Welcome to SPHIA">
-<meta property="og:description">
-<meta property="og:updated_time" content="2016-03-05T11:23:21.568Z">
+<meta property="og:description" content="使用MessageApi来发送消息，并将下面的子项附给消息：
+
+一个任意的payload（可选）
+一个标识了消息动作的路径
+
+与数据项不同，手机和手表应用之间没有同步。消息是单方向的通讯机制，适合RPC操作，比如向手表发送一条消息以启动一个activity。
+许多手表设备可以被连接至用户的手机。网络中每个被连接的设备都可以看作一个节点。有多个连接的设备时，必须考虑由哪个节点来接受消息。例如，一个在">
+<meta property="og:updated_time" content="2016-03-06T06:18:24.433Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Wear 开发 （十三） 发送接收消息">
-<meta name="twitter:description">
+<meta name="twitter:description" content="使用MessageApi来发送消息，并将下面的子项附给消息：
+
+一个任意的payload（可选）
+一个标识了消息动作的路径
+
+与数据项不同，手机和手表应用之间没有同步。消息是单方向的通讯机制，适合RPC操作，比如向手表发送一条消息以启动一个activity。
+许多手表设备可以被连接至用户的手机。网络中每个被连接的设备都可以看作一个节点。有多个连接的设备时，必须考虑由哪个节点来接受消息。例如，一个在">
 
 
 
@@ -254,7 +272,41 @@
       
 
       
-        
+        <p>使用<code>MessageApi</code>来发送消息，并将下面的子项附给消息：</p>
+<ul>
+<li>一个任意的payload（可选）</li>
+<li>一个标识了消息动作的路径</li>
+</ul>
+<p>与数据项不同，手机和手表应用之间没有同步。消息是单方向的通讯机制，适合RPC操作，比如向手表发送一条消息以启动一个activity。</p>
+<p>许多手表设备可以被连接至用户的手机。网络中每个被连接的设备都可以看作一个节点。有多个连接的设备时，必须考虑由哪个节点来接受消息。例如，一个在手表上接收语音数据进行转录的应用，必须将消息发送至有足够处理能力和电池容量的节点来处理请求，比如一台手机。<br><a id="more"></a></p>
+<h1 id="发送消息"><a href="#发送消息" class="headerlink" title="发送消息"></a>发送消息</h1><p>用户可以对手表的麦克风讲话，然后转换成为一条笔记。因为手表一般没有足够的处理能力和电池容量，所以转录的任务应该交给更加强力的连接的设备。</p>
+<h2 id="宣告能力"><a href="#宣告能力" class="headerlink" title="宣告能力"></a>宣告能力</h2><p>要通过手表在手机上启动一个activity，需要使用<code>MessageApi</code>类来发送请求。因为多个手表可能连接至手机，手表应用需要判定一个节点是否有能力启动activity。在手机上，宣告本节点运行的设备提供指定的能力。</p>
+<p>要宣告手机应用的能力：</p>
+<ol>
+<li>在<code>res/values</code>目录中创建一个XML配置文件，命名为<code>wear.xml</code>。</li>
+<li>在其中添加一个<code>android_wear_capabilities</code>资源。</li>
+<li>定义设备提供的能力。</li>
+</ol>
+<blockquote>
+<p>能力是你所自定义的字符串，必须在应用中独一无二。</p>
+</blockquote>
+<pre><code>&lt;resources&gt;
+    &lt;string-array name=&quot;android_wear_capabilities&quot;&gt;
+        &lt;item&gt;voice_transcription&lt;/item&gt;
+    &lt;/string-array&gt;
+&lt;/resources&gt;    
+</code></pre><h2 id="获取有能力的节点"><a href="#获取有能力的节点" class="headerlink" title="获取有能力的节点"></a>获取有能力的节点</h2><p>首先，可以通过调用<code>CapabilityApi.getCapability()</code>方法来探测可用的节点。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String</span><br><span class="line">        VOICE_TRANSCRIPTION_CAPABILITY_NAME = <span class="string">"voice_transcription"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> GoogleApiClient mGoogleApiClient;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setupVoiceTranscription</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    CapabilityApi.GetCapabilityResult result =</span><br><span class="line">            Wearable.CapabilityApi.getCapability(</span><br><span class="line">                    mGoogleApiClient, VOICE_TRANSCRIPTION_CAPABILITY_NAME,</span><br><span class="line">                    CapabilityApi.FILTER_REACHABLE).await();</span><br><span class="line"></span><br><span class="line">    updateTranscriptionCapability(result.getCapability());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>要在连接到手表上时探测可用的节点，可以向<code>GoogleApiClient</code>注册一个<code>CapabilityApi.CapabilityListener()</code>实例。<br>    <figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">void</span> <span class="title">setupVoiceTranscription</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    CapabilityApi.CapabilityListener capabilityListener =</span><br><span class="line">            <span class="keyword">new</span> CapabilityApi.CapabilityListener() &#123;</span><br><span class="line">                <span class="annotation">@Override</span></span><br><span class="line">                <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onCapabilityChanged</span><span class="params">(CapabilityInfo capabilityInfo)</span> </span>&#123;</span><br><span class="line">                    updateTranscriptionCapability(capabilityInfo);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">    Wearable.CapabilityApi.addCapabilityListener(</span><br><span class="line">            mGoogleApiClient,</span><br><span class="line">            capabilityListener,</span><br><span class="line">            VOICE_TRANSCRIPTION_CAPABILITY_NAME);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>如果创建一个继承<code>WearableListenerService</code>的服务来探测能力变动，可以重写<code>onConnectedNodes()</code>方法来侦听详细的连接细节，比如当一个手表从wifi切换至蓝牙连接时。</p>
+</blockquote>
+<p>探测可用节点之后，决定发送消息的对象。应该选择一个最临近的节点以缩短消息发送的路径。直接连接到设备的节点定义为邻近节点。调用<code>Node.isNearby()</code>方法可以判定是否为邻近节点。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String transcriptionNodeId = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">updateTranscriptionCapability</span><span class="params">(CapabilityInfo capabilityInfo)</span> </span>&#123;</span><br><span class="line">    Set&lt;Node&gt; connectedNodes = capabilityInfo.getNodes();</span><br><span class="line"></span><br><span class="line">    transcriptionNodeId = pickBestNodeId(connectedNodes);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> String <span class="title">pickBestNodeId</span><span class="params">(Set&lt;Node&gt; nodes)</span> </span>&#123;</span><br><span class="line">    String bestNodeId = <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">// Find a nearby node or pick one arbitrarily</span></span><br><span class="line">    <span class="keyword">for</span> (Node node : nodes) &#123;</span><br><span class="line">        <span class="keyword">if</span> (node.isNearby()) &#123;</span><br><span class="line">            <span class="keyword">return</span> node.getId();</span><br><span class="line">         &#125;</span><br><span class="line">         bestNodeId = node.getId();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> bestNodeId;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="发送消息-1"><a href="#发送消息-1" class="headerlink" title="发送消息"></a>发送消息</h2><p>一旦判定了最合适的节点，就可以用<code>MessageApi</code>类来发送消息了。</p>
+<p>下面的例子展示了如果将消息从手表发送至一个可转录的节点。在试图发送消息之前，首先验证节点可用。这个调用是同步的，并且在系统将要发送的消息入队之前会阻塞处理。</p>
+<blockquote>
+<p>一个成功的结果码不保证消息成功送达。应用可以使用<code>DataItem</code>对象或<code>ChannelApi</code>类来在设备间传送消息。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String VOICE_TRANSCRIPTION_MESSAGE_PATH = <span class="string">"/voice_transcription"</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">requestTranscription</span><span class="params">(<span class="keyword">byte</span>[] voiceData)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (transcriptionNodeId != <span class="keyword">null</span>) &#123;</span><br><span class="line">        Wearable.MessageApi.sendMessage(googleApiClient, transcriptionNodeId,</span><br><span class="line">            VOICE_TRANSCRIPTION_MESSAGE_PATH, voiceData).setResultCallback(</span><br><span class="line">                  <span class="keyword">new</span> ResultCallback() &#123;</span><br><span class="line">                      <span class="annotation">@Override</span></span><br><span class="line">                      <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onResult</span><span class="params">(SendMessageResult sendMessageResult)</span> </span>&#123;</span><br><span class="line">                          <span class="keyword">if</span> (!sendMessageResult.getStatus().isSuccess()) &#123;</span><br><span class="line">                              <span class="comment">// Failed to send message</span></span><br><span class="line">                          &#125;</span><br><span class="line">                      &#125;</span><br><span class="line">                  &#125;</span><br><span class="line">            );</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Unable to retrieve node with transcription capability</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>也可以广播消息至所有连接的节点。要取回所有可发送消息至的节点，只需实现下面的代码：<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Collection&lt;String&gt; <span class="title">getNodes</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    HashSet &lt;String&gt;results = <span class="keyword">new</span> HashSet&lt;String&gt;();</span><br><span class="line">    NodeApi.GetConnectedNodesResult nodes =</span><br><span class="line">            Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).await();</span><br><span class="line">    <span class="keyword">for</span> (Node node : nodes.getNodes()) &#123;</span><br><span class="line">        results.add(node.getId());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> results;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h1 id="接收消息"><a href="#接收消息" class="headerlink" title="接收消息"></a>接收消息</h1><p>要被告知接收的消息，实现<code>MessageListener</code>接口来为消息事件提供侦听器。然后，用<code>MessageApi.addListener()</code>方法注册侦听器。下面的例子显示，可以实现侦听器来检查<code>VOICE_TRANSCRIPTION_MESSAGE_PATH</code>。如果条件为<code>true</code>，启动一个activity来处理语音数据。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onMessageReceived</span><span class="params">(MessageEvent messageEvent)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (messageEvent.getPath().equals(VOICE_TRANSCRIPTION_MESSAGE_PATH)) &#123;</span><br><span class="line">        Intent startIntent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, MainActivity.class);</span><br><span class="line">        startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</span><br><span class="line">        startIntent.putExtra(<span class="string">"VOICE_DATA"</span>, messageEvent.getData());</span><br><span class="line">        startActivity(startIntent);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
       
     </div>
 
@@ -399,7 +451,7 @@
               
             
             
-              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#发送消息"><span class="nav-number">1.</span> <span class="nav-text">发送消息</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#宣告能力"><span class="nav-number">1.1.</span> <span class="nav-text">宣告能力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取有能力的节点"><span class="nav-number">1.2.</span> <span class="nav-text">获取有能力的节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发送消息-1"><span class="nav-number">1.3.</span> <span class="nav-text">发送消息</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#接收消息"><span class="nav-number">2.</span> <span class="nav-text">接收消息</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
