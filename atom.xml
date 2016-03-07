@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-03-06T05:42:00.499Z</updated>
+  <updated>2016-03-07T06:09:52.758Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,31 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>AudioRecord</title>
+    <link href="http://yoursite.com/2016/03/06/AudioRecord/"/>
+    <id>http://yoursite.com/2016/03/06/AudioRecord/</id>
+    <published>2016-03-06T07:59:33.000Z</published>
+    <updated>2016-03-07T06:09:52.758Z</updated>
+    
+    <content type="html">&lt;p&gt;I want to make an audio recorder app for my Android Wear device. In order to get familiar with the recording APIs of the Android platform, I will start with a simple mobile app, and then move it into my moto 360.&lt;/p&gt;
+&lt;h1 id=&quot;APIs&quot;&gt;&lt;a href=&quot;#APIs&quot; class=&quot;headerlink&quot; title=&quot;APIs&quot;&gt;&lt;/a&gt;APIs&lt;/h1&gt;&lt;p&gt;There are two sets of audio recording APIs, &lt;code&gt;MediaRecorder&lt;/code&gt; and &lt;code&gt;AudioRecord&lt;/code&gt;.&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;I want to make an audio recorder app for my Android Wear device. In order to get familiar with the recording APIs of the Android platform
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
     <title>Android Wear 开发 （十四） 处理数据层事件</title>
     <link href="http://yoursite.com/2016/03/05/wear-dev-14/"/>
     <id>http://yoursite.com/2016/03/05/wear-dev-14/</id>
     <published>2016-03-05T15:11:19.000Z</published>
-    <updated>2016-03-06T05:42:00.499Z</updated>
+    <updated>2016-03-06T07:23:02.460Z</updated>
     
     <content type="html">&lt;p&gt;调用数据层API时，可以在完成时获取调用的状态，也可以侦听调用引起的任何改变。&lt;/p&gt;
 &lt;h1 id=&quot;等待数据层调用的状态&quot;&gt;&lt;a href=&quot;#等待数据层调用的状态&quot; class=&quot;headerlink&quot; title=&quot;等待数据层调用的状态&quot;&gt;&lt;/a&gt;等待数据层调用的状态&lt;/h1&gt;&lt;p&gt;数据层API有时返回一个&lt;code&gt;PendingResult&lt;/code&gt;，比如&lt;code&gt;putDataItem()&lt;/code&gt;。一旦&lt;code&gt;PendingResult&lt;/code&gt;创建，操作会在后台被入队。如果在这之后什么也不做，操作最终会静默地完成。然而，一般情况下都想在操作完成后根据结果做些什么，所以&lt;code&gt;PendingResult&lt;/code&gt;可以让你等待结果的状态，同步或异步地。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
@@ -53,7 +73,7 @@
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;如果试图在回调中执行特权的操作，安全检查可能会失败。因为回调以调用进程的身份运行，而非应用的进程。&lt;/p&gt;
-&lt;p&gt;要解决这个问题，调用&lt;code&gt;clearCallingIdentity()&lt;/code&gt;以在穿过IPC边界后重置身份，并且在完成了特权操作后调用&lt;code&gt;restoreCallingIdentity()&lt;/code&gt;以恢复身份。&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;long&lt;/span&gt; token = Binder.clearCallingIdentity();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    performOperationRequiringPermissions();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125; &lt;span class=&quot;keyword&quot;&gt;finally&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Binder.restoreCallingIdentity(token);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;要解决这个问题，调用&lt;code&gt;clearCallingIdentity()&lt;/code&gt;，在穿过IPC边界后重置身份，并且在完成了特权操作后调用&lt;code&gt;restoreCallingIdentity()&lt;/code&gt;以恢复身份。&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;long&lt;/span&gt; token = Binder.clearCallingIdentity();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    performOperationRequiringPermissions();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125; &lt;span class=&quot;keyword&quot;&gt;finally&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Binder.restoreCallingIdentity(token);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
 &lt;h2 id=&quot;Listener-Activity&quot;&gt;&lt;a href=&quot;#Listener-Activity&quot; class=&quot;headerlink&quot; title=&quot;Listener Activity&quot;&gt;&lt;/a&gt;Listener Activity&lt;/h2&gt;&lt;p&gt;如果应用只有当用户与应用交互时关心数据层事件，不需要使用长期运行的service来处理所有数据改变，可以在activity中通过实现下面的一个或多个接口来侦听事件：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;DataApi.DataListener&lt;/code&gt;&lt;/li&gt;
@@ -89,7 +109,7 @@
     <link href="http://yoursite.com/2016/03/05/wear-dev-13/"/>
     <id>http://yoursite.com/2016/03/05/wear-dev-13/</id>
     <published>2016-03-05T11:22:30.000Z</published>
-    <updated>2016-03-06T06:18:24.433Z</updated>
+    <updated>2016-03-06T07:21:22.798Z</updated>
     
     <content type="html">&lt;p&gt;使用&lt;code&gt;MessageApi&lt;/code&gt;来发送消息，并将下面的子项附给消息：&lt;/p&gt;
 &lt;ul&gt;
@@ -122,8 +142,10 @@
 &lt;h2 id=&quot;发送消息-1&quot;&gt;&lt;a href=&quot;#发送消息-1&quot; class=&quot;headerlink&quot; title=&quot;发送消息&quot;&gt;&lt;/a&gt;发送消息&lt;/h2&gt;&lt;p&gt;一旦判定了最合适的节点，就可以用&lt;code&gt;MessageApi&lt;/code&gt;类来发送消息了。&lt;/p&gt;
 &lt;p&gt;下面的例子展示了如果将消息从手表发送至一个可转录的节点。在试图发送消息之前，首先验证节点可用。这个调用是同步的，并且在系统将要发送的消息入队之前会阻塞处理。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;一个成功的结果码不保证消息成功送达。应用可以使用&lt;code&gt;DataItem&lt;/code&gt;对象或&lt;code&gt;ChannelApi&lt;/code&gt;类来在设备间传送消息。&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; String VOICE_TRANSCRIPTION_MESSAGE_PATH = &lt;span class=&quot;string&quot;&gt;&quot;/voice_transcription&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;requestTranscription&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;byte&lt;/span&gt;[] voiceData)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (transcriptionNodeId != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Wearable.MessageApi.sendMessage(googleApiClient, transcriptionNodeId,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            VOICE_TRANSCRIPTION_MESSAGE_PATH, voiceData).setResultCallback(&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                  &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ResultCallback() &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                      &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                      &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onResult&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(SendMessageResult sendMessageResult)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                          &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (!sendMessageResult.getStatus().isSuccess()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                              &lt;span class=&quot;comment&quot;&gt;// Failed to send message&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                          &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                      &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            );&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125; &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;comment&quot;&gt;// Unable to retrieve node with transcription capability&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;br&gt;也可以广播消息至所有连接的节点。要取回所有可发送消息至的节点，只需实现下面的代码：&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Collection&amp;lt;String&amp;gt; &lt;span class=&quot;title&quot;&gt;getNodes&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    HashSet &amp;lt;String&amp;gt;results = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; HashSet&amp;lt;String&amp;gt;();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    NodeApi.GetConnectedNodesResult nodes =&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).await();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (Node node : nodes.getNodes()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        results.add(node.getId());&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; results;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;一个成功的结果码不保证消息成功送达。应用可以使用&lt;code&gt;DataItem&lt;/code&gt;对象或&lt;code&gt;ChannelApi&lt;/code&gt;类来在设备间传送消息。&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; String VOICE_TRANSCRIPTION_MESSAGE_PATH = &lt;span class=&quot;string&quot;&gt;&quot;/voice_transcription&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;requestTranscription&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;byte&lt;/span&gt;[] voiceData)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (transcriptionNodeId != &lt;span class=&quot;keyword&quot;&gt;null&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Wearable.MessageApi.sendMessage(googleApiClient, transcriptionNodeId,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            VOICE_TRANSCRIPTION_MESSAGE_PATH, voiceData).setResultCallback(&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                  &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ResultCallback() &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                      &lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                      &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onResult&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(SendMessageResult sendMessageResult)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                          &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (!sendMessageResult.getStatus().isSuccess()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                              &lt;span class=&quot;comment&quot;&gt;// Failed to send message&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                          &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                      &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            );&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125; &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;comment&quot;&gt;// Unable to retrieve node with transcription capability&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;也可以广播消息至所有连接的节点。要取回所有可发送消息至的节点，只需实现下面的代码：&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; Collection&amp;lt;String&amp;gt; &lt;span class=&quot;title&quot;&gt;getNodes&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    HashSet &amp;lt;String&amp;gt;results = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; HashSet&amp;lt;String&amp;gt;();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    NodeApi.GetConnectedNodesResult nodes =&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).await();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (Node node : nodes.getNodes()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        results.add(node.getId());&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; results;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
 &lt;h1 id=&quot;接收消息&quot;&gt;&lt;a href=&quot;#接收消息&quot; class=&quot;headerlink&quot; title=&quot;接收消息&quot;&gt;&lt;/a&gt;接收消息&lt;/h1&gt;&lt;p&gt;要被告知接收的消息，实现&lt;code&gt;MessageListener&lt;/code&gt;接口来为消息事件提供侦听器。然后，用&lt;code&gt;MessageApi.addListener()&lt;/code&gt;方法注册侦听器。下面的例子显示，可以实现侦听器来检查&lt;code&gt;VOICE_TRANSCRIPTION_MESSAGE_PATH&lt;/code&gt;。如果条件为&lt;code&gt;true&lt;/code&gt;，启动一个activity来处理语音数据。&lt;br&gt;    &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onMessageReceived&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(MessageEvent messageEvent)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (messageEvent.getPath().equals(VOICE_TRANSCRIPTION_MESSAGE_PATH)) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Intent startIntent = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Intent(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;, MainActivity.class);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        startIntent.putExtra(&lt;span class=&quot;string&quot;&gt;&quot;VOICE_DATA&quot;&lt;/span&gt;, messageEvent.getData());&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        startActivity(startIntent);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
 </content>
     
@@ -179,7 +201,7 @@
     <link href="http://yoursite.com/2016/03/05/wear-dev-11/"/>
     <id>http://yoursite.com/2016/03/05/wear-dev-11/</id>
     <published>2016-03-05T09:06:21.000Z</published>
-    <updated>2016-03-05T09:27:45.924Z</updated>
+    <updated>2016-03-06T07:36:02.646Z</updated>
     
     <content type="html">&lt;p&gt;&lt;code&gt;DataItem&lt;/code&gt;定义了系统用来在手机和手表间同步数据的数据接口。它通常包含了：&lt;/p&gt;
 &lt;ul&gt;
@@ -193,6 +215,9 @@
 &lt;li&gt;如果同步的延迟会影响用户体验，调用&lt;code&gt;setUrgent()&lt;/code&gt;。&lt;/li&gt;
 &lt;li&gt;调用&lt;code&gt;DataApi.putDataItem()&lt;/code&gt;。&lt;/li&gt;
 &lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;实测表明，不调用&lt;code&gt;setUrgent()&lt;/code&gt;的话，手机向手表发送请求时，双方响应非常快。而手表向手机发送时，只有手表处马上响应，手机处则非常慢。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;在请求数据项时，系统返回正确实现了&lt;code&gt;DataItem&lt;/code&gt;接口的对象。然而，并不推荐使用&lt;code&gt;setData()&lt;/code&gt;直接设置原生的字节，建议使用data map，它用一个容易使用的类似&lt;code&gt;Bundle&lt;/code&gt;的接口来暴露数据。&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h1 id=&quot;用data-map同步数据&quot;&gt;&lt;a href=&quot;#用data-map同步数据&quot; class=&quot;headerlink&quot; title=&quot;用data map同步数据&quot;&gt;&lt;/a&gt;用data map同步数据&lt;/h1&gt;&lt;p&gt;尽可能使用&lt;code&gt;DataMap&lt;/code&gt;类。系统会自动进行对象的序列化和反序列化，像&lt;code&gt;Bundle&lt;/code&gt;一样。&lt;/p&gt;
 &lt;ol&gt;
@@ -230,6 +255,9 @@
 &lt;li&gt;如果同步的延迟会影响用户体验，调用&lt;code&gt;setUrgent()&lt;/code&gt;。&lt;/li&gt;
 &lt;li&gt;调用&lt;code&gt;DataApi.putDataItem()&lt;/code&gt;。&lt;/li&gt;
 &lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;实测表明，不调用&lt;code&gt;setUrgent()&lt;/code&gt;的话，手机向手表发送请求时，双方响应非常快。而手表向手机发送时，只有手表处马上响应，手机处则非常慢。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;在请求数据项时，系统返回正确实现了&lt;code&gt;DataItem&lt;/code&gt;接口的对象。然而，并不推荐使用&lt;code&gt;setData()&lt;/code&gt;直接设置原生的字节，建议使用data map，它用一个容易使用的类似&lt;code&gt;Bundle&lt;/code&gt;的接口来暴露数据。&lt;br&gt;
     
     </summary>
@@ -378,7 +406,7 @@ no connection could be made because the target machine actively refused it (1006
     <link href="http://yoursite.com/2016/03/05/wear-dev-7/"/>
     <id>http://yoursite.com/2016/03/05/wear-dev-7/</id>
     <published>2016-03-05T03:32:23.000Z</published>
-    <updated>2016-03-05T06:51:52.805Z</updated>
+    <updated>2016-03-06T07:23:24.751Z</updated>
     
     <content type="html">&lt;p&gt;一些手表应用需要对用户一直保持可见。比如，正在跑步的用户可以看一眼手表以知道跑过的距离和时间。在超市购物时，记录了购物清单后，可以很快地看一眼还有那些清单上还有那些没有购买。制作一个一直可见的应用会减少电池寿命，所以添加这个功能时一定要谨慎。&lt;/p&gt;
 &lt;p&gt;Android Wear允许应用保留在前台，同时节省电源。应用可以在手表进入低功耗环境模式的同时，控制手表屏幕显示的内容。同时运行在环境模式和交互模式的应用称作常驻应用。&lt;/p&gt;
@@ -386,9 +414,9 @@ no connection could be made because the target machine actively refused it (1006
 &lt;h2 id=&quot;配置开发项目&quot;&gt;&lt;a href=&quot;#配置开发项目&quot; class=&quot;headerlink&quot; title=&quot;配置开发项目&quot;&gt;&lt;/a&gt;配置开发项目&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;在手表应用的manifest添加手表共享库：  &lt;figure class=&quot;highlight applescript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;&lt;span class=&quot;type&quot;&gt;application&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;lt;uses-library android:&lt;span class=&quot;property&quot;&gt;name&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;com.google.android.wearable&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                android:required=&lt;span class=&quot;string&quot;&gt;&quot;false&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/&lt;span class=&quot;type&quot;&gt;application&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
 &lt;li&gt;在手机和手表应用上添加&lt;code&gt;WAKE_LOCK&lt;/code&gt;权限：  &lt;figure class=&quot;highlight applescript&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;uses-permission android:&lt;span class=&quot;property&quot;&gt;name&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;android.permission.WAKE_LOCK&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h2 id=&quot;创建支持环境模式的activity&quot;&gt;&lt;a href=&quot;#创建支持环境模式的activity&quot; class=&quot;headerlink&quot; title=&quot;创建支持环境模式的activity&quot;&gt;&lt;/a&gt;创建支持环境模式的activity&lt;/h2&gt;&lt;/li&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
-&lt;ol&gt;
+&lt;h2 id=&quot;创建支持环境模式的activity&quot;&gt;&lt;a href=&quot;#创建支持环境模式的activity&quot; class=&quot;headerlink&quot; title=&quot;创建支持环境模式的activity&quot;&gt;&lt;/a&gt;创建支持环境模式的activity&lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;创建一个&lt;code&gt;WearableActivity&lt;/code&gt;的子类；&lt;/li&gt;
 &lt;li&gt;在&lt;code&gt;onCreate()&lt;/code&gt;方法中调用&lt;code&gt;setAmbientEnabled()&lt;/code&gt;。 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;MainActivity&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;WearableActivity&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;annotation&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;onCreate&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(Bundle savedInstanceState)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	    &lt;span class=&quot;keyword&quot;&gt;super&lt;/span&gt;.onCreate(savedInstanceState);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	    setAmbientEnabled();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	    ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;/li&gt;
@@ -881,228 +909,6 @@ npm install
       &lt;h1 id=&quot;过去&quot;&gt;&lt;a href=&quot;#过去&quot; class=&quot;headerlink&quot; title=&quot;过去&quot;&gt;&lt;/a&gt;过去&lt;/h1&gt;&lt;p&gt;在安卓3.0前，很多应用经常出现无法响应的bug。最主要的原因，便是在UI线程执行查询或加载数据。虽然文档一直强调即使回馈的重要性，之前的API并不鼓励这样的行为。过去通常使用activity的方法以管理Cursor。而且这些方法在UI线程中操作，并不跨越配置变更。&lt;/p&gt;
 &lt;h1 id=&quot;理解LoaderManager&quot;&gt;&lt;a href=&quot;#理解LoaderManager&quot; class=&quot;headerlink&quot; title=&quot;理解LoaderManager&quot;&gt;&lt;/a&gt;理解LoaderManager&lt;/h1&gt;&lt;p&gt;LoaderManager的一些事件会有activity或fragment的生命周期事件触发。比如activity销毁时，会通知LoaderManager销毁并关闭所有所有Loader。&lt;/p&gt;
 &lt;p&gt;LoaderManager不知道也不需要知道数据如何载入。它只是告诉Loader何时开始、结束或复位加载，保持状态通过配置变更，并提供简单的接口为客户端传送结果。&lt;br&gt;
-    
-    </summary>
-    
-    
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
-    
-      <category term="Loader" scheme="http://yoursite.com/tags/Loader/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>重探Loader（一）</title>
-    <link href="http://yoursite.com/2016/02/13/review-loaders/"/>
-    <id>http://yoursite.com/2016/02/13/review-loaders/</id>
-    <published>2016-02-13T12:52:41.000Z</published>
-    <updated>2016-02-14T17:11:12.388Z</updated>
-    
-    <content type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;Loader是安卓中非常好用的一个pattern，也是我个人非常喜欢用的一个。Loader最方便之处，就是免除了手动保存数据之苦。但在长期的使用之中，总觉得对loader的理解还是存在一些偏差。所以，这里重新复习一下loader的基本知识。&lt;/p&gt;
-&lt;p&gt;Loader自安卓3.0引入，它的出现使得在activity或fragment中异步载入数据更加容易，有以下特性：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;每个activity或fragment都可使用&lt;/li&gt;
-&lt;li&gt;异步载入数据&lt;/li&gt;
-&lt;li&gt;监视数据源的变化，并获取新的数据&lt;/li&gt;
-&lt;li&gt;配置变更后自动重连之前的loader cursor。无需重新获取数据&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;h1 id=&quot;Loader-API-总结&quot;&gt;&lt;a href=&quot;#Loader-API-总结&quot; class=&quot;headerlink&quot; title=&quot;Loader API 总结&quot;&gt;&lt;/a&gt;Loader API 总结&lt;/h1&gt;LoaderMangager: activity或fragment关联的抽象类，可管理一个或多个Loader。使应用管理与生命周期相关的长期操作，最常用的是&lt;code&gt;CursorLoader&lt;/code&gt;，不过应用可以任意创建载入其他类型的Loader。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;LoaderManager.LoaderCallbacks: 与LoaderManager交互的回调接口。&lt;/p&gt;
-&lt;p&gt;Loader: 执行异步加载数据的抽象类。是Loader的基类。一般使用CursorLoader，但也可以实现自己的子类。当loader活动时，应该监视数据源的变化并获取新的结果。&lt;/p&gt;
-&lt;p&gt;AsyncTaskLoader: 提供了&lt;code&gt;AsyncTask&lt;/code&gt;来执行任务的抽象Loader。&lt;/p&gt;
-&lt;p&gt;CursorLoader: &lt;code&gt;AsyncTaskLoader&lt;/code&gt;的子类，查询&lt;code&gt;ContentResolver&lt;/code&gt;，返回&lt;code&gt;Cursor&lt;/code&gt;。这个类以标准的方式实现了Loader协议以查询cursor，继承&lt;code&gt;AsyncTaskLoader&lt;/code&gt;以在后台线程执行查询，避免阻碍应用UI。使用这个Loader是从Content Provider中异步载入数据的最好方式，而非通过fragment或activity的API来执行查询。&lt;/p&gt;
-&lt;h1 id=&quot;在应用中使用Loader&quot;&gt;&lt;a href=&quot;#在应用中使用Loader&quot; class=&quot;headerlink&quot; title=&quot;在应用中使用Loader&quot;&gt;&lt;/a&gt;在应用中使用Loader&lt;/h1&gt;&lt;h2 id=&quot;启动Loader&quot;&gt;&lt;a href=&quot;#启动Loader&quot; class=&quot;headerlink&quot; title=&quot;启动Loader&quot;&gt;&lt;/a&gt;启动Loader&lt;/h2&gt;&lt;p&gt;在activity或fragment中LoaderManager管理着一个或多个Loader实例，每个activity或fragment中只有一个LoaderManager。&lt;/p&gt;
-&lt;p&gt;一般在activity的&lt;code&gt;onCreate()&lt;/code&gt;或fragment的&lt;code&gt;onactivityCreated()&lt;/code&gt;方法初始化Loader。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;// Prepare the loader.  Either re-connect with an existing one,
-// or start a new one.
-getLoaderManager().initLoader(0, null, this);
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;initLoader()&lt;/code&gt;方法需要以下参数：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;一个独特的ID，如0.&lt;/li&gt;
-&lt;li&gt;提供给Loader用以创建的额外参数，如null。&lt;/li&gt;
-&lt;li&gt;一个&lt;code&gt;LoaderManager.LoaderCallbacks&lt;/code&gt;实现，LoaderManager调用其以报告Loader事件。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;调用&lt;code&gt;initLoader()&lt;/code&gt;方法保证一个loader被初始化并且活跃，它有两个可能的结果：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;如果该ID已经存在，重用上次创建的Loader。&lt;/li&gt;
-&lt;li&gt;否则，调用回调接口中的&lt;code&gt;onCreateLoader()&lt;/code&gt;。在这里实现初始化新loader的代码。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;注意，&lt;code&gt;initLoader()&lt;/code&gt;方法返回创建的Loader，但是你不必去保存其引用。LoaderManager自动管理Loader的生命。LoaderManager在需要时启动和终止载入，并维护Loader的状态和关联的内容。这意味着，一般不需要与Loader直接交互。一般使用回调方法在特定事件发生时干预加载进程。&lt;/p&gt;
-&lt;h2 id=&quot;重启Loader&quot;&gt;&lt;a href=&quot;#重启Loader&quot; class=&quot;headerlink&quot; title=&quot;重启Loader&quot;&gt;&lt;/a&gt;重启Loader&lt;/h2&gt;&lt;p&gt;有时我们需要丢弃旧数据，重新启动Loader。要丢弃旧数据，调用&lt;code&gt;restartLoader()&lt;/code&gt;方法。例如，&lt;code&gt;SearchView.OnQueryTextListener&lt;/code&gt;的实现在用户改变查询时重启Loader。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public boolean onQueryTextChanged(String newText) {
-    // Called when the ACTION bar search text has changed.  Update
-    // the search filter, and restart the loader to do a new query
-    // with this filter.
-    mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
-    getLoaderManager().restartLoader(0, null, this);
-    return true;
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&quot;使用LoaderManager回调&quot;&gt;&lt;a href=&quot;#使用LoaderManager回调&quot; class=&quot;headerlink&quot; title=&quot;使用LoaderManager回调&quot;&gt;&lt;/a&gt;使用LoaderManager回调&lt;/h2&gt;&lt;p&gt;Loader，尤其是CursorLoader，一般会在停止后保留数据。这使得应用可以跨越activity或fragment的&lt;code&gt;onStop()&lt;/code&gt;和&lt;code&gt;onStart()&lt;/code&gt;方法保留数据。当用户返回应用时，无需等待数据重新载入。&lt;/p&gt;
-&lt;h3 id=&quot;onCreateLoader&quot;&gt;&lt;a href=&quot;#onCreateLoader&quot; class=&quot;headerlink&quot; title=&quot;onCreateLoader&quot;&gt;&lt;/a&gt;onCreateLoader&lt;/h3&gt;&lt;p&gt;访问loader时，首先检查该id是否存在。如果不存在，调用&lt;code&gt;onCreateLoader()&lt;/code&gt;方法，在这里创建新的Loader。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt; // If non-null, this is the current filter the user has provided.
-String mCurFilter;
-...
-public Loader&amp;lt;Cursor&amp;gt; onCreateLoader(int id, Bundle args) {
-    // This is called when a new Loader needs to be created.  This
-    // sample only has one Loader, so we don&amp;apos;t care about the ID.
-    // First, pick the base URI to use depending on whether we are
-    // currently filtering.
-    Uri baseUri;
-    if (mCurFilter != null) {
-        baseUri = Uri.withAppendedPath(Contactivitys.CONTENT_FILTER_URI,
-                  Uri.encode(mCurFilter));
-    } else {
-        baseUri = Contactivitys.CONTENT_URI;
-    }
-
-    // Now create and return a CursorLoader that will take care of
-    // creating a Cursor for the data being displayed.
-    String select = &amp;quot;((&amp;quot; + Contactivitys.DISPLAY_NAME + &amp;quot; NOTNULL) AND (&amp;quot;
-            + Contactivitys.HAS_PHONE_NUMBER + &amp;quot;=1) AND (&amp;quot;
-            + Contactivitys.DISPLAY_NAME + &amp;quot; != &amp;apos;&amp;apos; ))&amp;quot;;
-    return new CursorLoader(getactivity(), baseUri,
-            CONTactivityS_SUMMARY_PROJECTION, select, null,
-            Contactivitys.DISPLAY_NAME + &amp;quot; COLLATE LOCALIZED ASC&amp;quot;);
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&quot;onLoadFinished&quot;&gt;&lt;a href=&quot;#onLoadFinished&quot; class=&quot;headerlink&quot; title=&quot;onLoadFinished&quot;&gt;&lt;/a&gt;onLoadFinished&lt;/h3&gt;&lt;p&gt;当Loader完成一次加载后调用该方法。这个方法保证了在旧数据被释放前调用。在这一点，应该移除所有旧数据的使用（因为马上会被释放），但是不应该自己释放数据，因为Loader拥有并管理它。&lt;/p&gt;
-&lt;p&gt;一旦获知应用不再使用数据，Loader就会将其释放。例如，如果数据是CursorLoader中获取的cursor，不要手动调用&lt;code&gt;CursorLoaderose()&lt;/code&gt;。如果cursor被放置在一个&lt;code&gt;CursorAdapter&lt;/code&gt;中，应该使用&lt;code&gt;swapCursor()&lt;/code&gt;方法，而旧&lt;code&gt;Cursor&lt;/code&gt;不被关闭。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;// This is the Adapter being used to display the list&amp;apos;s data.
-SimpleCursorAdapter mAdapter;
-...
-
-public void onLoadFinished(Loader&amp;lt;Cursor&amp;gt; loader, Cursor data) {
-    // Swap the new cursor in.  (The framework will take care of CursorLoaderosing the
-    // oLoader cursor once we return.)
-    mAdapter.swapCursor(data);
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&quot;onLoaderReset&quot;&gt;&lt;a href=&quot;#onLoaderReset&quot; class=&quot;headerlink&quot; title=&quot;onLoaderReset&quot;&gt;&lt;/a&gt;onLoaderReset&lt;/h3&gt;&lt;p&gt;当复位原来创建的Loader时调用，使原数据无效。这个回调告知你数据将被释放，所以可以在此时移除对其的引用。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;// This is the Adapter being used to display the list&amp;apos;s data.
-SimpleCursorAdapter mAdapter;
-...
-
-public void onLoaderReset(Loader&amp;lt;Cursor&amp;gt; loader) {
-    // This is called when the last Cursor provided to onLoadFinished()
-    // above is about to be CursorLoaderosed.  We need to make sure we are no
-    // longer using it.
-    mAdapter.swapCursor(null);
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&quot;例子&quot;&gt;&lt;a href=&quot;#例子&quot; class=&quot;headerlink&quot; title=&quot;例子&quot;&gt;&lt;/a&gt;例子&lt;/h1&gt;&lt;p&gt;下面是一个fragment的完整实现，它展示了一个&lt;code&gt;ListView&lt;/code&gt;，包含着联系人的查询结果。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public static class CursorLoaderListFragment extends ListFragment
-        implements OnQueryTextListener, LoaderManager.LoaderCallbacks&amp;lt;Cursor&amp;gt; {
-
-    // This is the Adapter being used to display the list&amp;apos;s data.
-    SimpleCursorAdapter mAdapter;
-
-    // If non-null, this is the current filter the user has provided.
-    String mCurFilter;
-
-    @Override public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        // Give some text to display if there is no data.  In a real
-        // application this would come from a resource.
-        setEmptyText(&amp;quot;No phone numbers&amp;quot;);
-
-        // We have a menu item to show in action bar.
-        setHasOptionsMenu(true);
-
-        // Create an empty adapter we will use to display the loaded data.
-        mAdapter = new SimpleCursorAdapter(getActivity(),
-                android.R.layout.simple_list_item_2, null,
-                new String[] { Contacts.DISPLAY_NAME, Contacts.CONTACT_STATUS },
-                new int[] { android.R.id.text1, android.R.id.text2 }, 0);
-        setListAdapter(mAdapter);
-
-        // Prepare the loader.  Either re-connect with an existing one,
-        // or start a new one.
-        getLoaderManager().initLoader(0, null, this);
-    }
-
-    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Place an action bar item for searching.
-        MenuItem item = menu.add(&amp;quot;Search&amp;quot;);
-        item.setIcon(android.R.drawable.ic_menu_search);
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-        SearchView sv = new SearchView(getActivity());
-        sv.setOnQueryTextListener(this);
-        item.setActionView(sv);
-    }
-
-    public boolean onQueryTextChange(String newText) {
-        // Called when the action bar search text has changed.  Update
-        // the search filter, and restart the loader to do a new query
-        // with this filter.
-        mCurFilter = !TextUtils.isEmpty(newText) ? newText : null;
-        getLoaderManager().restartLoader(0, null, this);
-        return true;
-    }
-
-    @Override public boolean onQueryTextSubmit(String query) {
-        // Don&amp;apos;t care about this.
-        return true;
-    }
-
-    @Override public void onListItemClick(ListView l, View v, int position, long id) {
-        // Insert desired behavior here.
-        Log.i(&amp;quot;FragmentComplexList&amp;quot;, &amp;quot;Item clicked: &amp;quot; + id);
-    }
-
-    // These are the Contacts rows that we will retrieve.
-    static final String[] CONTACTS_SUMMARY_PROJECTION = new String[] {
-        Contacts._ID,
-        Contacts.DISPLAY_NAME,
-        Contacts.CONTACT_STATUS,
-        Contacts.CONTACT_PRESENCE,
-        Contacts.PHOTO_ID,
-        Contacts.LOOKUP_KEY,
-    };
-    public Loader&amp;lt;Cursor&amp;gt; onCreateLoader(int id, Bundle args) {
-        // This is called when a new Loader needs to be created.  This
-        // sample only has one Loader, so we don&amp;apos;t care about the ID.
-        // First, pick the base URI to use depending on whether we are
-        // currently filtering.
-        Uri baseUri;
-        if (mCurFilter != null) {
-            baseUri = Uri.withAppendedPath(Contacts.CONTENT_FILTER_URI,
-                    Uri.encode(mCurFilter));
-        } else {
-            baseUri = Contacts.CONTENT_URI;
-        }
-
-        // Now create and return a CursorLoader that will take care of
-        // creating a Cursor for the data being displayed.
-        String select = &amp;quot;((&amp;quot; + Contacts.DISPLAY_NAME + &amp;quot; NOTNULL) AND (&amp;quot;
-                + Contacts.HAS_PHONE_NUMBER + &amp;quot;=1) AND (&amp;quot;
-                + Contacts.DISPLAY_NAME + &amp;quot; != &amp;apos;&amp;apos; ))&amp;quot;;
-        return new CursorLoader(getActivity(), baseUri,
-                CONTACTS_SUMMARY_PROJECTION, select, null,
-                Contacts.DISPLAY_NAME + &amp;quot; COLLATE LOCALIZED ASC&amp;quot;);
-    }
-
-    public void onLoadFinished(Loader&amp;lt;Cursor&amp;gt; loader, Cursor data) {
-        // Swap the new cursor in.  (The framework will take care of closing the
-        // old cursor once we return.)
-        mAdapter.swapCursor(data);
-    }
-
-    public void onLoaderReset(Loader&amp;lt;Cursor&amp;gt; loader) {
-        // This is called when the last Cursor provided to onLoadFinished()
-        // above is about to be closed.  We need to make sure we are no
-        // longer using it.
-        mAdapter.swapCursor(null);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;</content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;Loader是安卓中非常好用的一个pattern，也是我个人非常喜欢用的一个。Loader最方便之处，就是免除了手动保存数据之苦。但在长期的使用之中，总觉得对loader的理解还是存在一些偏差。所以，这里重新复习一下loader的基本知识。&lt;/p&gt;
-&lt;p&gt;Loader自安卓3.0引入，它的出现使得在activity或fragment中异步载入数据更加容易，有以下特性：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;每个activity或fragment都可使用&lt;/li&gt;
-&lt;li&gt;异步载入数据&lt;/li&gt;
-&lt;li&gt;监视数据源的变化，并获取新的数据&lt;/li&gt;
-&lt;li&gt;配置变更后自动重连之前的loader cursor。无需重新获取数据
     
     </summary>
     

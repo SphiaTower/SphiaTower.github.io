@@ -67,7 +67,7 @@ Android Wear允许应用保留在前台，同时节省电源。应用可以在�
 <meta property="og:site_name" content="Welcome to SPHIA">
 <meta property="og:description" content="一些手表应用需要对用户一直保持可见。比如，正在跑步的用户可以看一眼手表以知道跑过的距离和时间。在超市购物时，记录了购物清单后，可以很快地看一眼还有那些清单上还有那些没有购买。制作一个一直可见的应用会减少电池寿命，所以添加这个功能时一定要谨慎。
 Android Wear允许应用保留在前台，同时节省电源。应用可以在手表进入低功耗环境模式的同时，控制手表屏幕显示的内容。同时运行在环境模式和交互模式的应用">
-<meta property="og:updated_time" content="2016-03-05T06:51:52.805Z">
+<meta property="og:updated_time" content="2016-03-06T07:23:24.751Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Wear 开发 （七） 保持应用可见">
 <meta name="twitter:description" content="一些手表应用需要对用户一直保持可见。比如，正在跑步的用户可以看一眼手表以知道跑过的距离和时间。在超市购物时，记录了购物清单后，可以很快地看一眼还有那些清单上还有那些没有购买。制作一个一直可见的应用会减少电池寿命，所以添加这个功能时一定要谨慎。
@@ -263,9 +263,9 @@ Android Wear允许应用保留在前台，同时节省电源。应用可以在�
 <h2 id="配置开发项目"><a href="#配置开发项目" class="headerlink" title="配置开发项目"></a>配置开发项目</h2><ul>
 <li>在手表应用的manifest添加手表共享库：  <figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="type">application</span>&gt;</span><br><span class="line">  &lt;uses-library android:<span class="property">name</span>=<span class="string">"com.google.android.wearable"</span></span><br><span class="line">                android:required=<span class="string">"false"</span> /&gt;</span><br><span class="line">  ...</span><br><span class="line">&lt;/<span class="type">application</span>&gt;</span><br></pre></td></tr></table></figure></li>
 <li>在手机和手表应用上添加<code>WAKE_LOCK</code>权限：  <figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;uses-permission android:<span class="property">name</span>=<span class="string">"android.permission.WAKE_LOCK"</span> /&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="创建支持环境模式的activity"><a href="#创建支持环境模式的activity" class="headerlink" title="创建支持环境模式的activity"></a>创建支持环境模式的activity</h2></li>
+</li>
 </ul>
-<ol>
+<h2 id="创建支持环境模式的activity"><a href="#创建支持环境模式的activity" class="headerlink" title="创建支持环境模式的activity"></a>创建支持环境模式的activity</h2><ol>
 <li>创建一个<code>WearableActivity</code>的子类；</li>
 <li>在<code>onCreate()</code>方法中调用<code>setAmbientEnabled()</code>。 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">WearableActivity</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="annotation">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">	    <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">	</span><br><span class="line">	    setAmbientEnabled();</span><br><span class="line">	    ...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
@@ -388,7 +388,7 @@ Android Wear允许应用保留在前台，同时节省电源。应用可以在�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">97</span>
+              <span class="site-state-item-count">99</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -398,7 +398,7 @@ Android Wear允许应用保留在前台，同时节省电源。应用可以在�
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

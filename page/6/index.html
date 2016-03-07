@@ -201,6 +201,191 @@
 
     
     
+      
+      
+
+      
+    
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/28/singleton-in-android/" itemprop="url">
+                  安卓中使用Singleton的问题
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-28T21:48:42+08:00" content="2015-09-28">
+              2015-09-28
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在<a href="http://sphiatower.github.io/2015/09/23/wrong-use-of-application/" title="之前的文章">http://sphiatower.github.io/2015/09/23/wrong-use-of-application/</a>中提到了，安卓官方文档中，不建议使用<code>Application</code>子类来支持全局访问。而应使用静态单例，但是在静态单例的使用中也有一些问题。标准的使用方法是这样的：</p>
+<pre><code>private Singleton sInstance;
+public Singleton getInstance(Context context){
+    if(sInstance == null) {
+        sInstance = new Singleton(context.getApplicationContext());
+    }
+    retrun sInstance:
+}
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/28/singleton-in-android/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/28/source-code-of-AsyncTask/" itemprop="url">
+                  源码解析 - AsyncTask
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-28T19:50:12+08:00" content="2015-09-28">
+              2015-09-28
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><code>AsyncTask</code>是安卓中非常常用的一个类，它避免了每次都手动通过<code>Handler</code>与UI线程通讯。但也有很多人认为应该尽量避免使用<code>AsyncTask</code>，那么这个类到底该不该用呢？接下来就从源码层面上来看一看。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/28/source-code-of-AsyncTask/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -909,182 +1094,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/23/wrong-use-of-application/" itemprop="url">
-                  继承Application类的误区
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-23T19:41:22+08:00" content="2015-09-23">
-              2015-09-23
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><code>Application</code>类是安卓中一个维持整个应用全局状态的类。经常可以看到一些建议，将全局的内容全部放在<code>Application</code>子类中，那么这样做究竟是否正确呢？<br>今天看到了官网上是这么说的：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/23/wrong-use-of-application/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/22/currying/" itemprop="url">
-                  函数式编程 - Currying
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-22T20:27:48+08:00" content="2015-09-22">
-              2015-09-22
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>上篇文章中，数列高阶函数的签名原本是</p>
-<pre><code>array_func = lambda func,array1,array2: [func(array1[i],array2[i]) for i in range(len(array1))]
-</code></pre><p>即函数接收一个函数，两个数列作为参数。而在接下来将函数高阶化后，变成了针对两个数列的函数:</p>
-<pre><code>array_operator = lambda func:lambda array1,array2:[func(array1[i],array2[i]) for i in range(len(array1))]
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/22/currying/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1131,7 +1140,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">97</span>
+              <span class="site-state-item-count">99</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1141,7 +1150,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

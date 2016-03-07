@@ -79,7 +79,7 @@ Path - 一个独特的字符串，必须以一个前斜杠开始，如(/path/to/
 一般不需要直接实现DataItem。只需：
 
 创建一个PutDataRequest对象，指定一个字符串路径来标识该">
-<meta property="og:updated_time" content="2016-03-05T09:27:45.924Z">
+<meta property="og:updated_time" content="2016-03-06T07:36:02.646Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android Wear 开发 （十一） 同步数据项">
 <meta name="twitter:description" content="DataItem定义了系统用来在手机和手表间同步数据的数据接口。它通常包含了：
@@ -287,6 +287,9 @@ Path - 一个独特的字符串，必须以一个前斜杠开始，如(/path/to/
 <li>如果同步的延迟会影响用户体验，调用<code>setUrgent()</code>。</li>
 <li>调用<code>DataApi.putDataItem()</code>。</li>
 </ol>
+<blockquote>
+<p>实测表明，不调用<code>setUrgent()</code>的话，手机向手表发送请求时，双方响应非常快。而手表向手机发送时，只有手表处马上响应，手机处则非常慢。</p>
+</blockquote>
 <p>在请求数据项时，系统返回正确实现了<code>DataItem</code>接口的对象。然而，并不推荐使用<code>setData()</code>直接设置原生的字节，建议使用data map，它用一个容易使用的类似<code>Bundle</code>的接口来暴露数据。<br><a id="more"></a></p>
 <h1 id="用data-map同步数据"><a href="#用data-map同步数据" class="headerlink" title="用data map同步数据"></a>用data map同步数据</h1><p>尽可能使用<code>DataMap</code>类。系统会自动进行对象的序列化和反序列化，像<code>Bundle</code>一样。</p>
 <ol>
@@ -403,7 +406,7 @@ Path - 一个独特的字符串，必须以一个前斜杠开始，如(/path/to/
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">97</span>
+              <span class="site-state-item-count">99</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -413,7 +416,7 @@ Path - 一个独特的字符串，必须以一个前斜杠开始，如(/path/to/
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

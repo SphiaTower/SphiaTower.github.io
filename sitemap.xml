@@ -2,16 +2,51 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/2016/03/05/wear-dev-13/</loc>
+    <loc>http://yoursite.com/2016/03/06/AudioRecord/</loc>
     
-    <lastmod>2016-03-06T06:18:24.433Z</lastmod>
+    <lastmod>2016-03-07T06:09:52.758Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/10/11/Saving-Data-in-SQL-Databases/</loc>
+    
+    <lastmod>2016-03-07T06:06:44.555Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/10/14/Saving-Data/</loc>
+    
+    <lastmod>2016-03-07T05:53:53.357Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/03/05/wear-dev-11/</loc>
+    
+    <lastmod>2016-03-06T07:36:02.646Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/03/05/wear-dev-7/</loc>
+    
+    <lastmod>2016-03-06T07:23:24.751Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://yoursite.com/2016/03/05/wear-dev-14/</loc>
     
-    <lastmod>2016-03-06T05:42:00.499Z</lastmod>
+    <lastmod>2016-03-06T07:23:02.460Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/03/05/wear-dev-13/</loc>
+    
+    <lastmod>2016-03-06T07:21:22.798Z</lastmod>
     
   </url>
   
@@ -19,13 +54,6 @@
     <loc>http://yoursite.com/2016/03/05/wear-dev-12/</loc>
     
     <lastmod>2016-03-05T09:42:05.766Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2016/03/05/wear-dev-11/</loc>
-    
-    <lastmod>2016-03-05T09:27:45.924Z</lastmod>
     
   </url>
   
@@ -40,13 +68,6 @@
     <loc>http://yoursite.com/2016/03/05/wear-dev-bluetooth/</loc>
     
     <lastmod>2016-03-05T07:50:53.612Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2016/03/05/wear-dev-7/</loc>
-    
-    <lastmod>2016-03-05T06:51:52.805Z</lastmod>
     
   </url>
   
@@ -103,13 +124,6 @@
     <loc>http://yoursite.com/2016/02/27/Wear-Dev-1/</loc>
     
     <lastmod>2016-02-27T12:52:50.753Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2015/10/11/Saving-Data-in-SQL-Databases/</loc>
-    
-    <lastmod>2016-02-27T08:15:06.105Z</lastmod>
     
   </url>
   
