@@ -67,7 +67,7 @@
 <meta property="og:site_name" content="Welcome to SPHIA">
 <meta property="og:description" content="导航抽屉式一个屏幕左侧展示应用主要导航选项的面板。它一般隐藏起来，当用户从左侧滑动屏幕或在应用最顶级层面上点击应用图标时会出现。
 创建DrawerLayout要添加导航抽屉，首先在布局的根视图上添加一个DrawerLayout。在DrawerLayout中添加显示一个屏幕主要内容的view，和一个显示抽屉内容的view。">
-<meta property="og:updated_time" content="2016-01-03T11:37:14.891Z">
+<meta property="og:updated_time" content="2016-03-11T06:58:51.932Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="安卓导航 - 创建导航抽屉">
 <meta name="twitter:description" content="导航抽屉式一个屏幕左侧展示应用主要导航选项的面板。它一般隐藏起来，当用户从左侧滑动屏幕或在应用最顶级层面上点击应用图标时会出现。
@@ -289,116 +289,13 @@
 <li>抽屉view的宽度用<code>dp</code>单位指明，高度匹配父视图。抽屉的宽度应该不超过320dp，这样用户可以总能看到主内容的一部分。</li>
 </ul>
 <h1 id="初始化抽屉列表"><a href="#初始化抽屉列表" class="headerlink" title="初始化抽屉列表"></a>初始化抽屉列表</h1><p>在activity中，初始化导航抽屉的列表是最开始要做的事情之一。具体如何实现取决于应用的内容，但导航抽屉一般都包含一个<code>ListView</code>，所以列表应该由一个<code>Adapter</code>来填充。</p>
-<p>下面是使用字符串数组来初始化导航列表的例子：</p>
-<pre><code>public class MainActivity extends Activity {
-    private String[] mPlanetTitles;
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
-    ...
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        mPlanetTitles = getResources().getStringArray(R.array.planets_array);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
-        // Set the adapter for the list view
-        mDrawerList.setAdapter(new ArrayAdapter&lt;String&gt;(this,
-                R.layout.drawer_list_item, mPlanetTitles));
-        // Set the list&apos;s click listener
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-        ...
-    }
-}
-</code></pre><p>上面的代码调用了<code>setOnItemClickListener()</code>来接收列表中的点击事件。下面的部分将展示如何实现这个接口，并在用户选择时改变内容视图。</p>
+<p>下面是使用字符串数组来初始化导航列表的例子：<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String[] mPlanetTitles;</span><br><span class="line">    <span class="keyword">private</span> DrawerLayout mDrawerLayout;</span><br><span class="line">    <span class="keyword">private</span> ListView mDrawerList;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line"></span><br><span class="line">        mPlanetTitles = getResources().getStringArray(R.array.planets_array);</span><br><span class="line">        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);</span><br><span class="line">        mDrawerList = (ListView) findViewById(R.id.left_drawer);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Set the adapter for the list view</span></span><br><span class="line">        mDrawerList.setAdapter(<span class="keyword">new</span> ArrayAdapter&lt;String&gt;(<span class="keyword">this</span>,</span><br><span class="line">                R.layout.drawer_list_item, mPlanetTitles));</span><br><span class="line">        <span class="comment">// Set the list's click listener</span></span><br><span class="line">        mDrawerList.setOnItemClickListener(<span class="keyword">new</span> DrawerItemClickListener());</span><br><span class="line"></span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>上面的代码调用了<code>setOnItemClickListener()</code>来接收列表中的点击事件。下面的部分将展示如何实现这个接口，并在用户选择时改变内容视图。</p>
 <h1 id="处理导航点击事件"><a href="#处理导航点击事件" class="headerlink" title="处理导航点击事件"></a>处理导航点击事件</h1><p>当用户选择了抽屉列表中的一个项目时，系统调用<code>onItemClick()</code>方法。</p>
-<p>在这个方法中所做的事情取决于如何实现应用的结构。下面的例子中，选择列表中的每个项目会往主内容视图中插入一个不同的<code>Fragment</code>。</p>
-<pre><code>private class DrawerItemClickListener implements ListView.OnItemClickListener {
-    @Override
-    public void onItemClick(AdapterView parent, View view, int position, long id) {
-        selectItem(position);
-    }
-}
-
-/** Swaps fragments in the main content view */
-private void selectItem(int position) {
-    // Create a new fragment and specify the planet to show based on position
-    Fragment fragment = new PlanetFragment();
-    Bundle args = new Bundle();
-    args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
-    fragment.setArguments(args);
-
-    // Insert the fragment by replacing any existing fragment
-    FragmentManager fragmentManager = getFragmentManager();
-    fragmentManager.beginTransaction()
-                   .replace(R.id.content_frame, fragment)
-                   .commit();
-
-    // Highlight the selected item, update the title, and close the drawer
-    mDrawerList.setItemChecked(position, true);
-    setTitle(mPlanetTitles[position]);
-    mDrawerLayout.closeDrawer(mDrawerList);
-}
-
-@Override
-public void setTitle(CharSequence title) {
-    mTitle = title;
-    getActionBar().setTitle(mTitle);
-}
-</code></pre><h1 id="侦听打开和关闭事件"><a href="#侦听打开和关闭事件" class="headerlink" title="侦听打开和关闭事件"></a>侦听打开和关闭事件</h1><p>要侦听抽屉的打开和关闭的事件，调用<code>DrawerLayout</code>的<code>setDrawerListener()</code>方法，并传入自己的实现。这个接口提供了抽屉打开和关闭的事件回调。</p>
+<p>在这个方法中所做的事情取决于如何实现应用的结构。下面的例子中，选择列表中的每个项目会往主内容视图中插入一个不同的<code>Fragment</code>。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">DrawerItemClickListener</span> <span class="keyword">implements</span> <span class="title">ListView</span>.<span class="title">OnItemClickListener</span> </span>&#123;</span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onItemClick</span><span class="params">(AdapterView parent, View view, <span class="keyword">int</span> position, <span class="keyword">long</span> id)</span> </span>&#123;</span><br><span class="line">        selectItem(position);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** Swaps fragments in the main content view */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">selectItem</span><span class="params">(<span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Create a new fragment and specify the planet to show based on position</span></span><br><span class="line">    Fragment fragment = <span class="keyword">new</span> PlanetFragment();</span><br><span class="line">    Bundle args = <span class="keyword">new</span> Bundle();</span><br><span class="line">    args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);</span><br><span class="line">    fragment.setArguments(args);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Insert the fragment by replacing any existing fragment</span></span><br><span class="line">    FragmentManager fragmentManager = getFragmentManager();</span><br><span class="line">    fragmentManager.beginTransaction()</span><br><span class="line">                   .replace(R.id.content_frame, fragment)</span><br><span class="line">                   .commit();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Highlight the selected item, update the title, and close the drawer</span></span><br><span class="line">    mDrawerList.setItemChecked(position, <span class="keyword">true</span>);</span><br><span class="line">    setTitle(mPlanetTitles[position]);</span><br><span class="line">    mDrawerLayout.closeDrawer(mDrawerList);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTitle</span><span class="params">(CharSequence title)</span> </span>&#123;</span><br><span class="line">    mTitle = title;</span><br><span class="line">    getActionBar().setTitle(mTitle);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="侦听打开和关闭事件"><a href="#侦听打开和关闭事件" class="headerlink" title="侦听打开和关闭事件"></a>侦听打开和关闭事件</h1><p>要侦听抽屉的打开和关闭的事件，调用<code>DrawerLayout</code>的<code>setDrawerListener()</code>方法，并传入自己的实现。这个接口提供了抽屉打开和关闭的事件回调。</p>
 <p>然而，如果activity包含了action bar,那么可以选择继承<code>ActionBarDrawerToggle</code>类来替代。后者也实现了相同的接口，所以仍然可以重写这些回调。而且它使action bar图标与导航抽屉的互动更加便利。</p>
-<p>当抽屉变得可见时，首先应该修改action bar的内容，比如改变标题，移除主内容相关的一些项目。</p>
-<pre><code>public class MainActivity extends Activity {
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mDrawerToggle;
-    private CharSequence mDrawerTitle;
-    private CharSequence mTitle;
-    ...
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ...
-
-        mTitle = mDrawerTitle = getTitle();
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
-
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                getActionBar().setTitle(mTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                getActionBar().setTitle(mDrawerTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-
-        // Set the drawer toggle as the DrawerListener
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-    }
-
-    /* Called whenever we call invalidateOptionsMenu() */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
-    }
-}
-</code></pre><h1 id="打开和关闭时的App图标"><a href="#打开和关闭时的App图标" class="headerlink" title="打开和关闭时的App图标"></a>打开和关闭时的App图标</h1><p>如果使用了action bar，那么应该允许用户通过点击应用图标来打开或关闭抽屉。而且应用应该通过一个特殊的图标来展示导航抽屉的存在。这可以通过<code>ActionBarDrawerToggle</code>来实现。</p>
+<p>当抽屉变得可见时，首先应该修改action bar的内容，比如改变标题，移除主内容相关的一些项目。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> DrawerLayout mDrawerLayout;</span><br><span class="line">    <span class="keyword">private</span> ActionBarDrawerToggle mDrawerToggle;</span><br><span class="line">    <span class="keyword">private</span> CharSequence mDrawerTitle;</span><br><span class="line">    <span class="keyword">private</span> CharSequence mTitle;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        mTitle = mDrawerTitle = getTitle();</span><br><span class="line">        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);</span><br><span class="line">        mDrawerToggle = <span class="keyword">new</span> ActionBarDrawerToggle(<span class="keyword">this</span>, mDrawerLayout,</span><br><span class="line">                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">/** Called when a drawer has settled in a completely closed state. */</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDrawerClosed</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">super</span>.onDrawerClosed(view);</span><br><span class="line">                getActionBar().setTitle(mTitle);</span><br><span class="line">                invalidateOptionsMenu(); <span class="comment">// creates call to onPrepareOptionsMenu()</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">/** Called when a drawer has settled in a completely open state. */</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDrawerOpened</span><span class="params">(View drawerView)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">super</span>.onDrawerOpened(drawerView);</span><br><span class="line">                getActionBar().setTitle(mDrawerTitle);</span><br><span class="line">                invalidateOptionsMenu(); <span class="comment">// creates call to onPrepareOptionsMenu()</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Set the drawer toggle as the DrawerListener</span></span><br><span class="line">        mDrawerLayout.setDrawerListener(mDrawerToggle);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Called whenever we call invalidateOptionsMenu() */</span></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onPrepareOptionsMenu</span><span class="params">(Menu menu)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// If the nav drawer is open, hide action items related to the content view</span></span><br><span class="line">        <span class="keyword">boolean</span> drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);</span><br><span class="line">        menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.onPrepareOptionsMenu(menu);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="打开和关闭时的App图标"><a href="#打开和关闭时的App图标" class="headerlink" title="打开和关闭时的App图标"></a>打开和关闭时的App图标</h1><p>如果使用了action bar，那么应该允许用户通过点击应用图标来打开或关闭抽屉。而且应用应该通过一个特殊的图标来展示导航抽屉的存在。这可以通过<code>ActionBarDrawerToggle</code>来实现。</p>
 <p>为了使其工作，使用其构造方法创建一个实例，要求下面的参数：</p>
 <ul>
 <li>drawer所在的<code>Activity</code></li>
@@ -407,72 +304,8 @@ public void setTitle(CharSequence title) {
 <li>一个描述打开抽屉动作的字符串资源（为了无障碍使用）</li>
 <li>一个描述关闭抽屉动作的字符串资源（为了无障碍使用）</li>
 </ul>
-<p>然后，无论是否创建一个<code>ActionBarDrawerToggle</code>子类作为抽屉的侦听器，都需要在贯穿activity的生命周期中的一些地方调用它。</p>
-<pre><code>public class MainActivity extends Activity {
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mDrawerToggle;
-    ...
+<p>然后，无论是否创建一个<code>ActionBarDrawerToggle</code>子类作为抽屉的侦听器，都需要在贯穿activity的生命周期中的一些地方调用它。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> DrawerLayout mDrawerLayout;</span><br><span class="line">    <span class="keyword">private</span> ActionBarDrawerToggle mDrawerToggle;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);</span><br><span class="line">        mDrawerToggle = <span class="keyword">new</span> ActionBarDrawerToggle(</span><br><span class="line">                <span class="keyword">this</span>,                  <span class="comment">/* host Activity */</span></span><br><span class="line">                mDrawerLayout,         <span class="comment">/* DrawerLayout object */</span></span><br><span class="line">                R.drawable.ic_drawer,  <span class="comment">/* nav drawer icon to replace 'Up' caret */</span></span><br><span class="line">                R.string.drawer_open,  <span class="comment">/* "open drawer" description */</span></span><br><span class="line">                R.string.drawer_close  <span class="comment">/* "close drawer" description */</span></span><br><span class="line">                ) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">/** Called when a drawer has settled in a completely closed state. */</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDrawerClosed</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">super</span>.onDrawerClosed(view);</span><br><span class="line">                getActionBar().setTitle(mTitle);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">/** Called when a drawer has settled in a completely open state. */</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDrawerOpened</span><span class="params">(View drawerView)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">super</span>.onDrawerOpened(drawerView);</span><br><span class="line">                getActionBar().setTitle(mDrawerTitle);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Set the drawer toggle as the DrawerListener</span></span><br><span class="line">        mDrawerLayout.setDrawerListener(mDrawerToggle);</span><br><span class="line"></span><br><span class="line">        getActionBar().setDisplayHomeAsUpEnabled(<span class="keyword">true</span>);</span><br><span class="line">        getActionBar().setHomeButtonEnabled(<span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPostCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onPostCreate(savedInstanceState);</span><br><span class="line">        <span class="comment">// Sync the toggle state after onRestoreInstanceState has occurred.</span></span><br><span class="line">        mDrawerToggle.syncState();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onConfigurationChanged</span><span class="params">(Configuration newConfig)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onConfigurationChanged(newConfig);</span><br><span class="line">        mDrawerToggle.onConfigurationChanged(newConfig);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onOptionsItemSelected</span><span class="params">(MenuItem item)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Pass the event to ActionBarDrawerToggle, if it returns</span></span><br><span class="line">        <span class="comment">// true, then it has handled the app icon touch event</span></span><br><span class="line">        <span class="keyword">if</span> (mDrawerToggle.onOptionsItemSelected(item)) &#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Handle your other action bar items...</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.onOptionsItemSelected(item);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
-    public void onCreate(Bundle savedInstanceState) {
-        ...
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                mDrawerLayout,         /* DrawerLayout object */
-                R.drawable.ic_drawer,  /* nav drawer icon to replace &apos;Up&apos; caret */
-                R.string.drawer_open,  /* &quot;open drawer&quot; description */
-                R.string.drawer_close  /* &quot;close drawer&quot; description */
-                ) {
-
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                getActionBar().setTitle(mTitle);
-            }
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                getActionBar().setTitle(mDrawerTitle);
-            }
-        };
-
-        // Set the drawer toggle as the DrawerListener
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-          return true;
-        }
-        // Handle your other action bar items...
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    ...
-}
-</code></pre>
       
     </div>
 
@@ -569,7 +402,7 @@ public void setTitle(CharSequence title) {
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">99</span>
+              <span class="site-state-item-count">100</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

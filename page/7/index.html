@@ -201,11 +201,99 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/23/Taking-Photos-Simply/" itemprop="url">
+                  安卓拍摄和保存照片
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-23T19:58:10+08:00" content="2015-09-23">
+              2015-09-23
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          <p>在应用中可能会用到拍摄照片的功能，而这部分功能在整个应用中可能只是一小部分，所以开发时没有必要花精力去处理到底如何拍照。幸运的是，可以使用安卓设备中的其他相机应用来帮你处理。</p>
+<h2 id="要求相机权限"><a href="#要求相机权限" class="headerlink" title="要求相机权限"></a>要求相机权限</h2><p>如果拍照时应用的核心内容，那么需要限制安装应用的手机必须有相机。在manifest中可以如下处理：</p>
+<pre><code>&lt;manifest ... &gt;
+    &lt;uses-feature android:name=&quot;android.hardware.camera&quot;
+                  android:required=&quot;true&quot; /&gt;
+    ...
+&lt;/manifest&gt;
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/23/Taking-Photos-Simply/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1011,93 +1099,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/14/GridView/" itemprop="url">
-                  初探GridView
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-14T20:47:46+08:00" content="2015-09-14">
-              2015-09-14
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>自己的项目中还从来没有用过<code>GridView</code>，这次有机会使用了，首先系统地学习一下。</p>
-<p><code>GridView</code>是一个二维展示子项的可滚动的<code>ViewGroup</code>。使用<code>ListAdapter</code>可以自动将每个格子插入至布局。  </p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/14/GridView/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1144,7 +1145,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">99</span>
+              <span class="site-state-item-count">100</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

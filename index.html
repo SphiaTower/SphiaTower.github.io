@@ -224,8 +224,95 @@
             
               
                 
+                <a class="post-title-link" href="/2016/03/11/implementing-nav-drawer/" itemprop="url">
+                  Summary on Implementing a Navigation Drawer
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-11T13:37:46+08:00" content="2016-03-11">
+              2016-03-11
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>The navigation drawer is an indispensable component in Android apps under the guidance of Material Design. It’s very convenient to implement a navigation drawer by creating a <code>DrawerLayout</code> with a <code>NavigationView</code> in it with the material design support library. However, when it comes to ‘navigation’, you should consider carefully how to implement the navigation action with drawer menu items.</p>
+<h1 id="A-Base-Activity-vs-Fragments"><a href="#A-Base-Activity-vs-Fragments" class="headerlink" title="A Base Activity vs Fragments"></a>A Base Activity vs Fragments</h1><p>Should we implement different pages as different activities, or just an Activity with dynamically loaded fragments? In my opinion, both ways are okay.<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/11/implementing-nav-drawer/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/03/06/AudioRecord/" itemprop="url">
-                  AudioRecord
+                  Recording with AudioRecord APIs in Android
                 </a>
               
             
@@ -265,11 +352,13 @@
 
       
         
-          
-            <p>I want to make an audio recorder app for my Android Wear device. In order to get familiar with the recording APIs of the Android platform, I will start with a simple mobile app, and then move it into my moto 360.</p>
-<h1 id="APIs"><a href="#APIs" class="headerlink" title="APIs"></a>APIs</h1><p>There are two sets of audio recording APIs, <code>MediaRecorder</code> and <code>AudioRecord</code>.</p>
-
-          
+          <p>I want to make an audio recorder app for my Android Wear device. In order to get familiar with the recording APIs of the Android platform, I will start with a simple mobile app, and then move it into my moto 360.</p>
+<h1 id="APIs"><a href="#APIs" class="headerlink" title="APIs"></a>APIs</h1><p>Two sets of audio recording APIs, <code>MediaRecorder</code> and <code>AudioRecord</code>, are available for developing handheld apps. <code>MediaRecorder</code> is much easy to use, however it’s unavailable for wearable devices. So you must process the raw data from <code>AudioRecord</code> by yourself.<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/06/AudioRecord/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -1020,98 +1109,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/05/wear-dev-6/" itemprop="url">
-                  Android Wear 开发 （六） 创建自定义布局
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-03-05T11:10:05+08:00" content="2016-03-05">
-              2016-03-05
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="使用手表UI库创建布局"><a href="#使用手表UI库创建布局" class="headerlink" title="使用手表UI库创建布局"></a>使用手表UI库创建布局</h1><p>在Android Studio中应用向导创建应用时会自动引入手表UI库。此外也可以在<code>build.gradle</code>中手动添加依赖声明：</p>
-<pre><code>dependencies {
-    compile fileTree(dir: &apos;libs&apos;, include: [&apos;*.jar&apos;])
-    compile &apos;com.google.android.support:wearable:+&apos;
-    compile &apos;com.google.android.gms:play-services-wearable:+&apos;
-}
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/05/wear-dev-6/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1158,7 +1155,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">99</span>
+              <span class="site-state-item-count">100</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

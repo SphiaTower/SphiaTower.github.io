@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Android,Audio," />
 
 
 
@@ -61,13 +61,13 @@
 
 <meta name="description" content="I want to make an audio recorder app for my Android Wear device. In order to get familiar with the recording APIs of the Android platform, I will start with a simple mobile app, and then move it into">
 <meta property="og:type" content="article">
-<meta property="og:title" content="AudioRecord">
+<meta property="og:title" content="Recording with AudioRecord APIs in Android">
 <meta property="og:url" content="http://yoursite.com/2016/03/06/AudioRecord/index.html">
 <meta property="og:site_name" content="Welcome to SPHIA">
 <meta property="og:description" content="I want to make an audio recorder app for my Android Wear device. In order to get familiar with the recording APIs of the Android platform, I will start with a simple mobile app, and then move it into">
-<meta property="og:updated_time" content="2016-03-07T06:09:52.758Z">
+<meta property="og:updated_time" content="2016-03-11T07:39:51.651Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="AudioRecord">
+<meta name="twitter:title" content="Recording with AudioRecord APIs in Android">
 <meta name="twitter:description" content="I want to make an audio recorder app for my Android Wear device. In order to get familiar with the recording APIs of the Android platform, I will start with a simple mobile app, and then move it into">
 
 
@@ -86,7 +86,7 @@
   };
 </script>
 
-  <title> AudioRecord | Welcome to SPHIA </title>
+  <title> Recording with AudioRecord APIs in Android | Welcome to SPHIA </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -216,7 +216,7 @@
             
             
               
-                AudioRecord
+                Recording with AudioRecord APIs in Android
               
             
           </h1>
@@ -255,12 +255,21 @@
 
       
         <p>I want to make an audio recorder app for my Android Wear device. In order to get familiar with the recording APIs of the Android platform, I will start with a simple mobile app, and then move it into my moto 360.</p>
-<h1 id="APIs"><a href="#APIs" class="headerlink" title="APIs"></a>APIs</h1><p>There are two sets of audio recording APIs, <code>MediaRecorder</code> and <code>AudioRecord</code>.</p>
-
+<h1 id="APIs"><a href="#APIs" class="headerlink" title="APIs"></a>APIs</h1><p>Two sets of audio recording APIs, <code>MediaRecorder</code> and <code>AudioRecord</code>, are available for developing handheld apps. <code>MediaRecorder</code> is much easy to use, however it’s unavailable for wearable devices. So you must process the raw data from <code>AudioRecord</code> by yourself.<br><a id="more"></a></p>
+<h1 id="Find-a-Proper-Audio-Configuration"><a href="#Find-a-Proper-Audio-Configuration" class="headerlink" title="Find a Proper Audio Configuration"></a>Find a Proper Audio Configuration</h1><p>You must get a proper set of arguments to initialize an <code>AudioRecord</code> object. Different devices support different configurations, however, there’s not any method to get the supported configuration of your device directly. You must query all possible combinations to find an valid one.<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span>[] mSampleRates = <span class="keyword">new</span> <span class="keyword">int</span>[] &#123; <span class="number">8000</span>, <span class="number">11025</span>, <span class="number">22050</span>, <span class="number">44100</span> &#125;;</span><br><span class="line"><span class="function"><span class="keyword">public</span> AudioRecord <span class="title">findAudioRecord</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> rate : mSampleRates) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">short</span> audioFormat : <span class="keyword">new</span> <span class="keyword">short</span>[] &#123; AudioFormat.ENCODING_PCM_8BIT, AudioFormat.ENCODING_PCM_16BIT &#125;) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">short</span> channelConfig : <span class="keyword">new</span> <span class="keyword">short</span>[] &#123; AudioFormat.CHANNEL_IN_MONO, AudioFormat.CHANNEL_IN_STEREO &#125;) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Log.d(C.TAG, <span class="string">"Attempting rate "</span> + rate + <span class="string">"Hz, bits: "</span> + audioFormat + <span class="string">", channel: "</span></span><br><span class="line">                            + channelConfig);</span><br><span class="line">                    <span class="keyword">int</span> bufferSize = AudioRecord.getMinBufferSize(rate, channelConfig, audioFormat);</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (bufferSize != AudioRecord.ERROR_BAD_VALUE) &#123;</span><br><span class="line">                        <span class="comment">// check if we can instantiate and have a success</span></span><br><span class="line">                        AudioRecord recorder = <span class="keyword">new</span> AudioRecord(AudioSource.DEFAULT, rate, channelConfig, audioFormat, bufferSize);</span><br><span class="line"></span><br><span class="line">                        <span class="keyword">if</span> (recorder.getState() == AudioRecord.STATE_INITIALIZED)</span><br><span class="line">                            <span class="keyword">return</span> recorder;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                    Log.e(C.TAG, rate + <span class="string">"Exception, keep trying."</span>,e);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="To-Be-Continued"><a href="#To-Be-Continued" class="headerlink" title="To Be Continued"></a>To Be Continued</h1>
       
     </div>
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+            <a href="/tags/Audio/" rel="tag">#Audio</a>
+          
+        </div>
       
 
       
@@ -274,6 +283,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/03/11/implementing-nav-drawer/" rel="prev" title="Summary on Implementing a Navigation Drawer">
+                Summary on Implementing a Navigation Drawer <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -341,7 +354,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">99</span>
+              <span class="site-state-item-count">100</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -391,7 +404,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#APIs"><span class="nav-number">1.</span> <span class="nav-text">APIs</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#APIs"><span class="nav-number">1.</span> <span class="nav-text">APIs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Find-a-Proper-Audio-Configuration"><span class="nav-number">2.</span> <span class="nav-text">Find a Proper Audio Configuration</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#To-Be-Continued"><span class="nav-number">3.</span> <span class="nav-text">To Be Continued</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

@@ -73,7 +73,7 @@
 需要手动指明后退行为的导航模式有：
 
 用户通过一条通知、一个桌面挂件或导航抽屉直接进入到一个深层次的activ">
-<meta property="og:updated_time" content="2016-01-03T11:37:13.407Z">
+<meta property="og:updated_time" content="2016-03-11T07:09:29.129Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="安卓导航 - 提供合适的后退导航">
 <meta name="twitter:description" content="后退导航是指用户如何从访问过的屏幕中向后移动。所有的安卓设备都提供有一个后退键，所以你的应用不应该再增加一个后退按钮。
@@ -278,53 +278,13 @@
 <h1 id="为深链接合成新的后退栈"><a href="#为深链接合成新的后退栈" class="headerlink" title="为深链接合成新的后退栈"></a>为深链接合成新的后退栈</h1><p>一般，系统在用户不断导航的过程中逐步地构建起后退栈。然而，当用户通过一个深层链接直接进入应用时，有必要去合成一个新的后退栈，因为activity处在一个新的任务中，根本没有任何后退栈。</p>
 <h2 id="在manifest中明确父activity"><a href="#在manifest中明确父activity" class="headerlink" title="在manifest中明确父activity"></a>在manifest中明确父activity</h2><p>// 见上一篇文章</p>
 <h2 id="启动activity时创造后退栈"><a href="#启动activity时创造后退栈" class="headerlink" title="启动activity时创造后退栈"></a>启动activity时创造后退栈</h2><p>向后退栈中添加activity发生在将用户带入应用的事件的一开始。也就是说，使用<code>TaskStackBuilder</code>API而非<code>startActivity()</code>来定义应该放入新后退栈的每个activity。然后，通过调用<code>startActivities()</code>来启动目标activity，或者创建调用<code>getPendingIntent()</code>合适的<code>PendingIntent</code>。</p>
-<p>例如，当某个通知将用户带入至应用阶层中的一个深层activity时，可以使用下面的代码来创建一个<code>PendingIntent</code>来启动activity，并为目标任务插入一个新的后退栈。</p>
-<pre><code>// Intent for the activity to open when user selects the notification
-Intent detailsIntent = new Intent(this, DetailsActivity.class);
-
-// Use TaskStackBuilder to build the back stack and get the PendingIntent
-PendingIntent pendingIntent =
-        TaskStackBuilder.create(this)
-                        // add all of DetailsActivity&apos;s parents to the stack,
-                        // followed by DetailsActivity itself
-                        .addNextIntentWithParentStack(upIntent)
-                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-builder.setContentIntent(pendingIntent);
-...
-</code></pre><p>获得的<code>PendingIntent</code>不仅指明了将要启动的activity（在<code>detailsIntent</code>中定义），而且指明了应该插入至任务重的后退栈（<code>DetailsActivity</code>的所有父亲）。所以当该activity启动后，按下后退键会在其父activity中向后导航。</p>
-<h1 id="为Fragment实现向后导航"><a href="#为Fragment实现向后导航" class="headerlink" title="为Fragment实现向后导航"></a>为Fragment实现向后导航</h1><p>在应用中使用fragment时，独立的<code>FragmentTransaction</code>对象可能代表了应该添加至后退栈的上下文变化。例如，通过交换fragment实现master/detail flow时，应该确保在detail屏幕按下后退键时能够回到master屏幕。要实现的话，在commit之前调用<code>addToBackStack()</code>。</p>
-<pre><code>// Works with either the framework FragmentManager or the
-// support package FragmentManager (getSupportFragmentManager).
-getSupportFragmentManager().beginTransaction()
-                           .add(detailFragment, &quot;detail&quot;)
-                           // Add this transaction to the back stack
-                           .addToBackStack()
-                           .commit();
-</code></pre><p>当后退栈中存在<code>FragmentTransaction</code>对象时，用户按下后退键后，<code>FragmentManager</code>将会弹出后退栈中最近的一次transaction，并执行相反的操作（比如移除某个fragment，如果该transaction增添了它）。</p>
+<p>例如，当某个通知将用户带入至应用阶层中的一个深层activity时，可以使用下面的代码来创建一个<code>PendingIntent</code>来启动activity，并为目标任务插入一个新的后退栈。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Intent for the activity to open when user selects the notification</span></span><br><span class="line">Intent detailsIntent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, DetailsActivity.class);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Use TaskStackBuilder to build the back stack and get the PendingIntent</span></span><br><span class="line">PendingIntent pendingIntent =</span><br><span class="line">        TaskStackBuilder.create(<span class="keyword">this</span>)</span><br><span class="line">                        <span class="comment">// add all of DetailsActivity's parents to the stack,</span></span><br><span class="line">                        <span class="comment">// followed by DetailsActivity itself</span></span><br><span class="line">                        .addNextIntentWithParentStack(upIntent)</span><br><span class="line">                        .getPendingIntent(<span class="number">0</span>, PendingIntent.FLAG_UPDATE_CURRENT);</span><br><span class="line"></span><br><span class="line">NotificationCompat.Builder builder = <span class="keyword">new</span> NotificationCompat.Builder(<span class="keyword">this</span>);</span><br><span class="line">builder.setContentIntent(pendingIntent);</span><br><span class="line">...</span><br></pre></td></tr></table></figure><br>获得的<code>PendingIntent</code>不仅指明了将要启动的activity（在<code>detailsIntent</code>中定义），而且指明了应该插入至任务重的后退栈（<code>DetailsActivity</code>的所有父亲）。所以当该activity启动后，按下后退键会在其父activity中向后导航。</p>
+<h1 id="为Fragment实现向后导航"><a href="#为Fragment实现向后导航" class="headerlink" title="为Fragment实现向后导航"></a>为Fragment实现向后导航</h1><p>在应用中使用fragment时，独立的<code>FragmentTransaction</code>对象可能代表了应该添加至后退栈的上下文变化。例如，通过交换fragment实现master/detail flow时，应该确保在detail屏幕按下后退键时能够回到master屏幕。要实现的话，在commit之前调用<code>addToBackStack()</code>。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Works with either the framework FragmentManager or the</span></span><br><span class="line"><span class="comment">// support package FragmentManager (getSupportFragmentManager).</span></span><br><span class="line">getSupportFragmentManager().beginTransaction()</span><br><span class="line">                           .add(detailFragment, <span class="string">"detail"</span>)</span><br><span class="line">                           <span class="comment">// Add this transaction to the back stack</span></span><br><span class="line">                           .addToBackStack()</span><br><span class="line">                           .commit();</span><br></pre></td></tr></table></figure><br>当后退栈中存在<code>FragmentTransaction</code>对象时，用户按下后退键后，<code>FragmentManager</code>将会弹出后退栈中最近的一次transaction，并执行相反的操作（比如移除某个fragment，如果该transaction增添了它）。</p>
 <blockquote>
 <p>注意：当transaction是水平导航（如切换tab）时，或者修改内容表现（如调整过滤器）时，不应该将其添加至后退栈。</p>
 </blockquote>
-<p>如果应用更新更新了其他用户界面元素，以反应fragment的当前状态，比如action bar，记得在commit的时候更新UI。当通过后退栈返回的时候，同样应该更新UI。可以通过设置<code>FragmentManager.OnBackStackChangedListener</code>来侦听<code>FragmentTransaction</code>被反转的事件。</p>
-<pre><code>getSupportFragmentManager().addOnBackStackChangedListener(
-        new FragmentManager.OnBackStackChangedListener() {
-            public void onBackStackChanged() {
-                // Update your UI here.
-            }
-        });
-</code></pre><h1 id="为WebView实现后退栈"><a href="#为WebView实现后退栈" class="headerlink" title="为WebView实现后退栈"></a>为WebView实现后退栈</h1><p>如果应用的一部分包含在<code>WebView</code>之中，可能适合使用后退键来遍历浏览历史。可以覆盖<code>onBackPressed()</code>方法，来代理<code>WebView</code>。</p>
-<pre><code>@Override
-public void onBackPressed() {
-    if (mWebView.canGoBack()) {
-        mWebView.goBack();
-        return;
-    }
-
-    // Otherwise defer to system default behavior.
-    super.onBackPressed();
-}
-</code></pre><p>注意，当网页高度动态的时候可能产生大量的历史记录。</p>
+<p>如果应用更新更新了其他用户界面元素，以反应fragment的当前状态，比如action bar，记得在commit的时候更新UI。当通过后退栈返回的时候，同样应该更新UI。可以通过设置<code>FragmentManager.OnBackStackChangedListener</code>来侦听<code>FragmentTransaction</code>被反转的事件。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">getSupportFragmentManager().addOnBackStackChangedListener(</span><br><span class="line">        <span class="keyword">new</span> FragmentManager.OnBackStackChangedListener() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBackStackChanged</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="comment">// Update your UI here.</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure></p>
+<h1 id="为WebView实现后退栈"><a href="#为WebView实现后退栈" class="headerlink" title="为WebView实现后退栈"></a>为WebView实现后退栈</h1><p>如果应用的一部分包含在<code>WebView</code>之中，可能适合使用后退键来遍历浏览历史。可以覆盖<code>onBackPressed()</code>方法，来代理<code>WebView</code>。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onBackPressed</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mWebView.canGoBack()) &#123;</span><br><span class="line">        mWebView.goBack();</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Otherwise defer to system default behavior.</span></span><br><span class="line">    <span class="keyword">super</span>.onBackPressed();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>注意，当网页高度动态的时候可能产生大量的历史记录。</p>
 
       
     </div>
@@ -422,7 +382,7 @@ public void onBackPressed() {
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">99</span>
+              <span class="site-state-item-count">100</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
