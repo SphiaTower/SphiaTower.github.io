@@ -224,6 +224,107 @@
             
               
                 
+                <a class="post-title-link" href="/2015/10/14/Saving-Data/" itemprop="url">
+                  安卓文件存储总结
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-14T21:32:19+08:00" content="2015-10-14">
+              2015-10-14
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>安卓使用的文件系统与其他平台的磁盘文件系统相似。这里总结如何使用<code>File</code>API读写文件。</p>
+<p><code>File</code>对象适合一次性读写大量数据，如图片文件或其他来自网络的数据。</p>
+<h1 id="选择内部或外部存储"><a href="#选择内部或外部存储" class="headerlink" title="选择内部或外部存储"></a>选择内部或外部存储</h1><p>所有安卓设备都有两个存储区域：内部存储和外部存储。这些名称来自安卓的早期时候，当时大多数设备即提供了内置的固定存储，也提供了可移动的存储媒介（比如SD卡）。一些设备将永久存储空间分为内部和外部两部分，所以即使不存在可移动媒介，也总是有两个存储空间，而且无论外部空间可否移动，API的行为都保持一致。</p>
+<p><strong>内部存储</strong>：</p>
+<ul>
+<li>总是可用</li>
+<li>应用默认可以访问存储的文件</li>
+<li>用户卸载应用后，系统移除所有内部存储中的文件</li>
+</ul>
+<p><strong>外部存储</strong>：</p>
+<ul>
+<li>并非总是可用，因为用户可能移除外部存储</li>
+<li>全局可读，所以存储的文件可能未经自己控制就被读取</li>
+<li>只有使用<code>getExternalFilesDir()</code>存储时，用户卸载应用后，系统才会删掉应用的文件。</li>
+</ul>
+<p>外部存储最适合存储不需要访问限制的文件、希望与其他应用共享的文件以及循序用户使用电脑访问的文件。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/14/Saving-Data/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/10/11/Saving-Data-in-SQL-Databases/" itemprop="url">
                   安卓SQL数据库总结
                 </a>
@@ -1010,108 +1111,12 @@ saxParser.parse(inputSource, defaultHandler);
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/30/Scheduling-Repeating-Alarms/" itemprop="url">
-                  安卓调度重复闹钟
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-30T21:24:15+08:00" content="2015-09-30">
-              2015-09-30
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><code>AlarmManager</code>类实现的闹钟可以执行在应用的生命周期之外执行基于时间的操作。例如，可以设定一个闹钟来初始化一个长期运行的操作，比如每天启动一次下载天气预报的服务。</p>
-<p>闹钟有以下特性：</p>
-<ul>
-<li>可以在指定时间或时间间隔发射Intent</li>
-<li>可以与broadcast receiver一起使用来启动服务或者执行其他服务</li>
-<li>可以在应用之外进行触发事件或动作，即使应用未启动或者设备在睡眠状态中</li>
-<li>可以最小化应用要求的资源。无需依赖定时器或者连续运行的后台服务就可以调度操作。</li>
-</ul>
-<blockquote>
-<p>对确保在应用生命周期内发生的定时操作而言，考虑使用将<code>Handler</code>与<code>Timer</code>、<code>Thread</code>联合使用。这样可以使安卓更好地控制系统资源。</p>
-</blockquote>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/30/Scheduling-Repeating-Alarms/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1152,7 +1157,7 @@ saxParser.parse(inputSource, defaultHandler);
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">100</span>
+              <span class="site-state-item-count">101</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

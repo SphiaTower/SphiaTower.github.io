@@ -224,6 +224,94 @@
             
               
                 
+                <a class="post-title-link" href="/2016/03/14/wear-recorder/" itemprop="url">
+                  Record Audio on Wearable Devices
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-14T13:03:59+08:00" content="2016-03-14">
+              2016-03-14
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Wearable devices have great potential in our everyday life. For example, you can simply tap the watch screen or speak a command to wake up the watch and start recording, and then transmit the recorded clip to the phone for storage. This article will put down the procedures of developing a watch recorder.</p>
+<h1 id="Create-a-Recorder"><a href="#Create-a-Recorder" class="headerlink" title="Create a Recorder"></a>Create a Recorder</h1><hr>
+<p>Recording on wearable devices is basically the same as handheld devices, except that you cannot use <code>MediaRecorder</code> APIs for wearable devices. Instead, you must use <code>AudioRecord</code> to record voice. The implementation of <code>AudioRecord</code> is completely same as handheld devices. You can see my article for reference, <a href="http://sphiatower.github.io/2016/03/06/AudioRecord/" title=" Recording with AudioRecord APIs in Android ">Recording with AudioRecord APIs in Android </a><br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/14/wear-recorder/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/03/11/implementing-nav-drawer/" itemprop="url">
                   Summary on Implementing a Navigation Drawer
                 </a>
@@ -618,18 +706,16 @@
 
       
         
-          
-            <p>要通过蓝牙发送较大的二进制数据块，比如图片，可以为数据项附加一个<code>Asset</code>，并将数据项添加至复制的数据商店。</p>
+          <p>要通过蓝牙发送较大的二进制数据块，比如图片，可以为数据项附加一个<code>Asset</code>，并将数据项添加至复制的数据商店。</p>
 <p>Assets自动处理数据的缓存，来阻止重复传送，并节省蓝牙带宽。一个通用的模式是，在手机应用上下载图片，缩小至适合手表显示的尺寸，然后作为asset传送至手表上。</p>
 <blockquote>
 <p>数据项的大小限制在100KB，而asset则可以尽可能的大。然而，传输大asset会影响用户体验，所以传输时一定要做好测试工作来确保其表现。</p>
 </blockquote>
-<h1 id="传输Asset"><a href="#传输Asset" class="headerlink" title="传输Asset"></a>传输Asset</h1><p>使用<code>Asset</code>类的<code>create...()</code>方法来创建asset。这里，我们将一个bitmap转化为字节流，并调用<code>createFromBytes()</code>来创建asset。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Asset <span class="title">createAssetFromBitmap</span><span class="params">(Bitmap bitmap)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> ByteArrayOutputStream byteStream = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">    bitmap.compress(Bitmap.CompressFormat.PNG, <span class="number">100</span>, byteStream);</span><br><span class="line">    <span class="keyword">return</span> Asset.createFromBytes(byteStream.toByteArray());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>有了一个asset后，通过<code>DataMap</code>或<code>PutDataRequest</code>的<code>putAsset()</code>方法将它附加到数据项中。</p>
-<p><strong>使用PutDataRequest</strong><br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image);</span><br><span class="line">Asset asset = createAssetFromBitmap(bitmap);</span><br><span class="line">PutDataRequest request = PutDataRequest.create(<span class="string">"/image"</span>);</span><br><span class="line">request.putAsset(<span class="string">"profileImage"</span>, asset);</span><br><span class="line">Wearable.DataApi.putDataItem(mGoogleApiClient, request);</span><br></pre></td></tr></table></figure></p>
-<p><strong>使用PutDataMapRequest</strong><br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image);</span><br><span class="line">Asset asset = createAssetFromBitmap(bitmap);</span><br><span class="line">PutDataMapRequest dataMap = PutDataMapRequest.create(<span class="string">"/image"</span>);</span><br><span class="line">dataMap.getDataMap().putAsset(<span class="string">"profileImage"</span>, asset)</span><br><span class="line">PutDataRequest request = dataMap.asPutDataRequest();</span><br><span class="line">PendingResult&lt;DataApi.DataItemResult&gt; pendingResult = Wearable.DataApi</span><br><span class="line">        .putDataItem(mGoogleApiClient, request);</span><br></pre></td></tr></table></figure></p>
-<h1 id="接收assets"><a href="#接收assets" class="headerlink" title="接收assets"></a>接收assets</h1><p>Asset被创建后，可能想要在连接的另一侧进行读取。这里是一个实现回调来探测asset变化并提取asset的例子：<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDataChanged</span><span class="params">(DataEventBuffer dataEvents)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (DataEvent event : dataEvents) &#123;</span><br><span class="line">    <span class="keyword">if</span> (event.getType() == DataEvent.TYPE_CHANGED &amp;&amp;</span><br><span class="line">        event.getDataItem().getUri().getPath().equals(<span class="string">"/image"</span>)) &#123;</span><br><span class="line">      DataMapItem dataMapItem = DataMapItem.fromDataItem(event.getDataItem());</span><br><span class="line">      Asset profileAsset = dataMapItem.getDataMap().getAsset(<span class="string">"profileImage"</span>);</span><br><span class="line">      Bitmap bitmap = loadBitmapFromAsset(profileAsset);</span><br><span class="line">      <span class="comment">// Do something with the bitmap</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> Bitmap <span class="title">loadBitmapFromAsset</span><span class="params">(Asset asset)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (asset == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Asset must be non-null"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    ConnectionResult result =</span><br><span class="line">           mGoogleApiClient.blockingConnect(TIMEOUT_MS, TimeUnit.MILLISECONDS);</span><br><span class="line">    <span class="keyword">if</span> (!result.isSuccess()) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// convert asset into a file descriptor and block until it's ready</span></span><br><span class="line">    InputStream assetInputStream = Wearable.DataApi.getFdForAsset(</span><br><span class="line">            mGoogleApiClient, asset).await().getInputStream();</span><br><span class="line">            mGoogleApiClient.disconnect();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (assetInputStream == <span class="keyword">null</span>) &#123;</span><br><span class="line">        Log.w(TAG, <span class="string">"Requested an unknown Asset."</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// decode the stream into a bitmap</span></span><br><span class="line">    <span class="keyword">return</span> BitmapFactory.decodeStream(assetInputStream);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/05/wear-dev-12/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -1021,100 +1107,12 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/05/wear-dev-7/" itemprop="url">
-                  Android Wear 开发 （七） 保持应用可见
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-03-05T11:32:23+08:00" content="2016-03-05">
-              2016-03-05
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>一些手表应用需要对用户一直保持可见。比如，正在跑步的用户可以看一眼手表以知道跑过的距离和时间。在超市购物时，记录了购物清单后，可以很快地看一眼还有那些清单上还有那些没有购买。制作一个一直可见的应用会减少电池寿命，所以添加这个功能时一定要谨慎。</p>
-<p>Android Wear允许应用保留在前台，同时节省电源。应用可以在手表进入低功耗环境模式的同时，控制手表屏幕显示的内容。同时运行在环境模式和交互模式的应用称作常驻应用。</p>
-<h1 id="启用Ambient模式"><a href="#启用Ambient模式" class="headerlink" title="启用Ambient模式"></a>启用Ambient模式</h1><p>完成项目配置后，继承<code>WearableActivity</code>，他提供了可以启用环境模式的所有方法。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/05/wear-dev-7/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1155,7 +1153,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">100</span>
+              <span class="site-state-item-count">101</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

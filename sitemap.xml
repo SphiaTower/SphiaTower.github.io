@@ -2,16 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/2016/03/06/AudioRecord/</loc>
+    <loc>http://yoursite.com/2016/03/14/wear-recorder/</loc>
     
-    <lastmod>2016-03-11T10:03:08.832Z</lastmod>
+    <lastmod>2016-03-14T06:21:29.507Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://yoursite.com/2016/03/11/implementing-nav-drawer/</loc>
     
-    <lastmod>2016-03-11T07:32:45.946Z</lastmod>
+    <lastmod>2016-03-14T05:02:55.424Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/03/05/wear-dev-12/</loc>
+    
+    <lastmod>2016-03-12T13:50:08.328Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/03/05/wear-dev-13/</loc>
+    
+    <lastmod>2016-03-12T08:22:01.444Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/03/06/AudioRecord/</loc>
+    
+    <lastmod>2016-03-11T11:00:23.271Z</lastmod>
     
   </url>
   
@@ -61,20 +82,6 @@
     <loc>http://yoursite.com/2016/03/05/wear-dev-14/</loc>
     
     <lastmod>2016-03-06T07:23:02.460Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2016/03/05/wear-dev-13/</loc>
-    
-    <lastmod>2016-03-06T07:21:22.798Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2016/03/05/wear-dev-12/</loc>
-    
-    <lastmod>2016-03-05T09:42:05.766Z</lastmod>
     
   </url>
   
