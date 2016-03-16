@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/03/05/check-savedStateInstance-when-adding-frag/</loc>
+    
+    <lastmod>2016-03-14T13:56:14.933Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/03/06/AudioRecord/</loc>
+    
+    <lastmod>2016-03-14T11:57:30.984Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/03/14/wear-recorder/</loc>
     
     <lastmod>2016-03-14T11:53:57.560Z</lastmod>
@@ -26,13 +40,6 @@
     <loc>http://yoursite.com/2016/03/05/wear-dev-13/</loc>
     
     <lastmod>2016-03-12T08:22:01.444Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2016/03/06/AudioRecord/</loc>
-    
-    <lastmod>2016-03-11T11:00:23.271Z</lastmod>
     
   </url>
   
@@ -117,13 +124,6 @@
     <loc>http://yoursite.com/2016/03/02/wear-dev-5/</loc>
     
     <lastmod>2016-03-05T03:09:36.898Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2016/03/05/check-savedStateInstance-when-adding-frag/</loc>
-    
-    <lastmod>2016-03-05T03:05:28.120Z</lastmod>
     
   </url>
   
