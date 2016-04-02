@@ -201,11 +201,6 @@
 
     
     
-      
-      
-
-      
-    
 
     
       
@@ -779,6 +774,278 @@
             
               
                 
+                <a class="post-title-link" href="/2015/10/05/multiscreen-2-bitmap/" itemprop="url">
+                  适配不同屏幕（二） 准备不同像素的位图
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-05T14:22:12+08:00" content="2015-10-05">
+              2015-10-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="提供备用位图"><a href="#提供备用位图" class="headerlink" title="提供备用位图"></a>提供备用位图</h1><p>因为安卓运行在多种密度的屏幕上，应该将位图资源裁剪使之适合各种密度，如低，中，高和超高密度。要产生这些图片，可以使用下面的尺度缩放矢量格式的原始资源：</p>
+<ul>
+<li>xhdpi: 2.0</li>
+<li>hdpi: 1.5</li>
+<li>mdpi: 1.0（基准）</li>
+<li>ldpi: 0.75</li>
+</ul>
+<p>也就是说，为<code>xhdpi</code>设备产生200x200的图片的同时，应该同样为<code>hdpi</code>产生150x150的图片，为<code>mdpi</code>产生100x100的图片等等。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/05/multiscreen-2-bitmap/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/05/multiscreen-3-viewstub/" itemprop="url">
+                  使用ViewStub
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-05T12:21:52+08:00" content="2015-10-05">
+              2015-10-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="ViewStub"><a href="#ViewStub" class="headerlink" title="ViewStub"></a>ViewStub</h1><p><code>ViewStub</code>是个不具有尺寸，不进行绘制，不加入布局的轻量级view。所以在view层级中，非常容易填充和舍弃。每个<code>ViewStub</code>只需要简单地包含<code>android:layout</code>属性来指明需要填充的布局。</p>
+<h1 id="加载ViewStub布局"><a href="#加载ViewStub布局" class="headerlink" title="加载ViewStub布局"></a>加载ViewStub布局</h1><p>想要加载<code>ViewStub</code>的布局时，只需要调用<code>setVisible(View.VISIBLE)</code>或者<code>inflate()</code>即可。<code>inflate()</code>返回的结果就是所填充的view。</p>
+<p>一旦可见或填充后，<code>ViewStub</code>就不再是view阶层的一部分。它被所填充的布局替换，而且该布局的根view的ID成为<code>android:inflatedId</code>属性指明的ID。而<code>ViewStub</code>的<code>android:id</code>仅仅在这之前有效。</p>
+<blockquote>
+<p>注意：<code>ViewStub</code>的一大缺陷就是它目前不支持将要填充的布局中的<merge>标签。</merge></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/05/understanding-dp/" itemprop="url">
+                  适配不同屏幕（一） 理解安卓测量单位
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-05T11:47:23+08:00" content="2015-10-05">
+              2015-10-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="术语和概念"><a href="#术语和概念" class="headerlink" title="术语和概念"></a>术语和概念</h1><p>屏幕尺寸：实际的物理尺寸。为了方便，所有尺寸被分为四组：small, normal, large和extra-large。</p>
+<p>屏幕密度：屏幕的单位物理区域中所包含的像素的量，一般使用dpi（每英尺点数）描述。所有密度被分为六种泛化的密度：low, medium, high, extra-high, extra-extra-high, extra-extra-extra-high。</p>
+<p>分辨率：屏幕上物理像素的总数目。支持多屏幕时，应用只需要关心泛化的屏幕尺寸和密度，而不需要关心分辨率。</p>
+<p>密度无关像素（dp)：定义UI布局时应该使用的虚拟像素单位，用来以一种密度无关的方式表达布局尺寸或位置。</p>
+<p>密度无关像素与160dpi屏幕上的一个物理像素等同，它是medium密度屏幕的基线密度。运行时，系统根据屏幕的实际密度来处理dp单位的变换。从dp至屏幕像素的转换很简单：<code>px = dp * (dpi / 160)</code>。例如，在240dpi屏幕上，1dp=1.5物理像素。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/05/understanding-dp/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/10/03/Volley-UTF-8/" itemprop="url">
                   Volley解析UTF-8产生乱码的解决方法
                 </a>
@@ -847,275 +1114,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/03/SaxParser/" itemprop="url">
-                  使用SAXParser解析XML
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-03T13:51:06+08:00" content="2015-10-03">
-              2015-10-03
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><code>SAXParser</code>是一个用来解析XML文件的工具，相比起使用正则表达式，效率更高，可操作性更强。使用起来有一些问题需要注意。</p>
-<h2 id="创建解析器"><a href="#创建解析器" class="headerlink" title="创建解析器"></a>创建解析器</h2><p>首先通过工厂方法拿到<code>SAXParser</code>的实例，接下来用<code>InputSource</code>类来包裹XML文件，然后再调用<code>parse</code>解析时，传入一个<code>DefaultHandler</code>的子类，来告诉parser解析的方式，并存储解析的结果。</p>
-<pre><code>SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
-InputSource inputSource = new InputSource();
-inputSource.setEncoding(&quot;UTF-8&quot;);
-inputSource.setCharacterStream(new StringReader(xml));
-XmlHandler defaultHandler = new XmlHandler();
-
-saxParser.parse(inputSource, defaultHandler);
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/03/SaxParser/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/01/IntentService-Reporting-Work-Status/" itemprop="url">
-                  Service学习笔记（八） 报告工作状态
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-01T12:50:49+08:00" content="2015-10-01">
-              2015-10-01
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>本文探讨如何将后台服务的结果发送到前台UI。推荐的方法是使用<code>LocalBroadcastManager</code>来发送和接收状态，它将广播<code>Intent</code>限制在自己的应用中。</p>
-<h2 id="IntentService报告状态"><a href="#IntentService报告状态" class="headerlink" title="IntentService报告状态"></a>IntentService报告状态</h2><p>为了在<code>IntentService</code>中发送工作状态到其他组件，首先创建<code>Intent</code>，在其附加data中包含当前状态。作为选项，可以添加一个动作和数据URI。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/01/IntentService-Reporting-Work-Status/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/01/Keeping-the-Device-Awake/" itemprop="url">
-                  安卓保持设备唤醒
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-01T12:02:25+08:00" content="2015-10-01">
-              2015-10-01
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>为了避免耗尽电池，闲置状态的安卓设备，很快会进入睡眠状态。然而，有时应用需要唤醒屏幕或CPU并保持唤醒状态来完成一些工作。</p>
-<p>使用的方法取决于应用本身的需求。然而，通用的原则是，应该尽量使用轻量级的方法，来减少应用对系统资源的冲击。下面将探讨当设备的默认睡眠行为无法满足应用需求时的处理方法。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/01/Keeping-the-Device-Awake/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1162,7 +1160,7 @@ saxParser.parse(inputSource, defaultHandler);
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">101</span>
+              <span class="site-state-item-count">104</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1172,7 +1170,7 @@ saxParser.parse(inputSource, defaultHandler);
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-count">32</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

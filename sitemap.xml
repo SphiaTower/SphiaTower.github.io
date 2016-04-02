@@ -2,6 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2015/10/05/multiscreen-3-viewstub/</loc>
+    
+    <lastmod>2016-04-02T04:12:31.944Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/10/05/multiscreen-2-bitmap/</loc>
+    
+    <lastmod>2016-04-02T04:04:26.786Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/10/05/understanding-dp/</loc>
+    
+    <lastmod>2016-04-02T04:02:50.324Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/09/05/Looper-and-HandlerThread/</loc>
+    
+    <lastmod>2016-03-28T02:34:08.789Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/03/05/check-savedStateInstance-when-adding-frag/</loc>
     
     <lastmod>2016-03-14T13:56:14.933Z</lastmod>
@@ -432,13 +460,6 @@
     <loc>http://yoursite.com/2015/09/05/creating-a-started-service-2/</loc>
     
     <lastmod>2015-10-01T06:23:28.531Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2015/09/05/Looper-and-HandlerThread/</loc>
-    
-    <lastmod>2015-10-01T06:23:18.039Z</lastmod>
     
   </url>
   

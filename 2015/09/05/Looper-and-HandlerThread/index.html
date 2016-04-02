@@ -67,7 +67,7 @@ HandlerThread官网的概括是这么写的：一个用来创建含有looper的�
 <meta property="og:site_name" content="Welcome to SPHIA">
 <meta property="og:description" content="在上一篇的最后，官网的通过继承Service类来实现类似IntentService行为的例子中，出现了Looper和HandlerThread这两个以前没有用过的类。所以在此研究一下两个类的基本用法。
 HandlerThread官网的概括是这么写的：一个用来创建含有looper的新线程的工具类。其中的looper可以用来创建handler类。start()方法必须被调用。看到这里还是一头雾水。查看">
-<meta property="og:updated_time" content="2015-10-01T06:23:18.039Z">
+<meta property="og:updated_time" content="2016-03-28T02:34:08.789Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Service学习笔记（三） Looper, Handler and HandlerThread">
 <meta name="twitter:description" content="在上一篇的最后，官网的通过继承Service类来实现类似IntentService行为的例子中，出现了Looper和HandlerThread这两个以前没有用过的类。所以在此研究一下两个类的基本用法。
@@ -259,23 +259,7 @@ HandlerThread官网的概括是这么写的：一个用来创建含有looper的�
       
         <p>在上一篇的最后，官网的通过继承Service类来实现类似IntentService行为的例子中，出现了Looper和HandlerThread这两个以前没有用过的类。所以在此研究一下两个类的基本用法。</p>
 <h2 id="HandlerThread"><a href="#HandlerThread" class="headerlink" title="HandlerThread"></a>HandlerThread</h2><p>官网的概括是这么写的：一个用来创建含有looper的新线程的工具类。其中的looper可以用来创建handler类。start()方法必须被调用。<br>看到这里还是一头雾水。查看了一下它的方法列表，发现其主要功能还是与looper进行互动，所以关键的问题就是looper类的作用。  </p>
-<h2 id="Looper"><a href="#Looper" class="headerlink" title="Looper"></a>Looper</h2><p>Looper类用来为一个线程运行消息循环。默认情况下，线程没有与之关联的消息循环；在线程中调用<code>prepare()</code>方法可以创建一个消息循环，然后调用<code>loop()</code>方法来处理消息直到循环终止。<br>大多数与消息循环的互动式通过<code>Handler</code>类进行的。<br>下面是一个Looper线程的典型实现，创建了一个Handler来与Looper进行通讯：<br><a id="more"></a>  </p>
-<pre><code>class LooperThread extends Thread {
-    public Handler mHandler;
-
-    public void run() {
-        Looper.prepare();
-
-        mHandler = new Handler() {
-            public void handleMessage(Message msg) {
-                // process incoming messages here
-            }
-        };
-
-        Looper.loop();
-    }
-}
-</code></pre><p>看到这里发现，以前对Handler的理解也不够全面。所知道的Handler的用法仅仅是，继承Handler重写handleMsg(Message)方法，在主线程处理收到的消息，通过sendMsg(Message)在后台线程中发送消息。  所以接下来还要深入学习一下Handler类。</p>
+<h2 id="Looper"><a href="#Looper" class="headerlink" title="Looper"></a>Looper</h2><p>Looper类用来为一个线程运行消息循环。默认情况下，线程没有与之关联的消息循环；在线程中调用<code>prepare()</code>方法可以创建一个消息循环，然后调用<code>loop()</code>方法来处理消息直到循环终止。<br>大多数与消息循环的互动式通过<code>Handler</code>类进行的。<br>下面是一个Looper线程的典型实现，创建了一个Handler来与Looper进行通讯：<br><a id="more"></a><br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LooperThread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">  <span class="keyword">public</span> Handler mHandler;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      Looper.prepare();</span><br><span class="line"></span><br><span class="line">      mHandler = <span class="keyword">new</span> Handler() &#123;</span><br><span class="line">          <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">              <span class="comment">// process incoming messages here</span></span><br><span class="line">          &#125;</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line">      Looper.loop();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>看到这里发现，以前对Handler的理解也不够全面。所知道的Handler的用法仅仅是，继承Handler重写handleMsg(Message)方法，在主线程处理收到的消息，通过sendMsg(Message)在后台线程中发送消息。  所以接下来还要深入学习一下Handler类。</p>
 <h2 id="Handler"><a href="#Handler" class="headerlink" title="Handler"></a>Handler</h2><p>Handler可以发送和处理与线程的消息队列相关联的<code>Message</code>和Runnable对象。每一个Handler实例都和一个单独的线程及其<code>MessageQueue</code>相关联。新的Handler在创建时，被绑定到创建它的线程或其消息队列。Hanlder将message和runnable发送到消息队列中，并在它们出队的时候执行。<br>Handler主要用在：</p>
 <ul>
 <li>规划msg和runnable使其在未来某个时点执行</li>
@@ -293,81 +277,7 @@ HandlerThread官网的概括是这么写的：一个用来创建含有looper的�
 <li><code>HandlerThread</code>类简化了为线程创建<code>Looper</code>的过程。</li>
 </ol>
 <h2 id="MessageQueue"><a href="#MessageQueue" class="headerlink" title="MessageQueue"></a>MessageQueue</h2><p>在上一节中，基本上明白了<code>Looper</code>，<code>Handler</code>和线程互相之间的关系。稍微有些疑惑的是，究竟<code>Looper</code>和消息队列之间是什么关系？<br><code>MessageQueue</code>是一个low-level的类，持有将被<code>Looper</code>分发的消息的列表。消息并非直接添加到消息队列当中，而是通过与<code>Looper</code>相关联的<code>Handler</code>对象。可以通过<code>Looper.myQueue</code>方法获得当前线程的消息队列。<br>通过查看源码很容易发现，<code>Looper</code>对象持有<code>MessageQueue</code>对象的引用。基本可以认为<code>Looper</code>类作用的一部分是为底层的<code>MessageQueue</code>类提供delegation。</p>
-<h2 id="启动直接继承自Service类的子类"><a href="#启动直接继承自Service类的子类" class="headerlink" title="启动直接继承自Service类的子类"></a>启动直接继承自Service类的子类</h2><p>回过头来看上一节留下的代码就很容易了。现在把它重新贴上来，并加上一些注释。</p>
-<pre><code>public class HelloService extends Service {
-    private Looper mServiceLooper;
-    private ServiceHandler mServiceHandler;
-
-    // Handler that receives messages from the thread
-    private final class ServiceHandler extends Handler {
-        // Handler创建时必须获取Looper
-        public ServiceHandler(Looper looper) {
-            super(looper);
-        }
-        // 处理消息队列中出队的消息
-        @Override
-        public void handleMessage(Message msg) {
-            // Normally we would do some work here, like download a file.
-            // For our sample, we just sleep for 5 seconds.
-            long endTime = System.currentTimeMillis() + 5*1000;
-            while (System.currentTimeMillis() &lt; endTime) {
-                synchronized (this) {
-                    try {
-                        wait(endTime - System.currentTimeMillis());
-                    } catch (Exception e) {
-                    }
-                }
-            }
-            // Stop the service using the startId, so that we don&apos;t stop
-            // the service in the middle of handling another job
-            stopSelf(msg.arg1);
-        }
-    }
-
-    @Override
-    public void onCreate() {
-        // Start up the thread running the service.  Note that we create a
-        // separate thread because the service normally runs in the process&apos;s
-        // main thread, which we don&apos;t want to block.  We also make it
-        // background priority so CPU-intensive work will not disrupt our UI.
-        HandlerThread thread = new HandlerThread(&quot;ServiceStartArguments&quot;,
-                Process.THREAD_PRIORITY_BACKGROUND);
-        thread.start();
-
-        // Get the HandlerThread&apos;s Looper and use it for our Handler
-        mServiceLooper = thread.getLooper();
-        mServiceHandler = new ServiceHandler(mServiceLooper);
-        // 因为handleMsg的过程将阻塞主线程，所以利用HandlerThread类创建一个新的后台线程来处理消息。这个HandlerThread
-        // 简化了Looper的准备工作。ServiceHandler可以获取新后台线程的Looper来发送和处理消息。
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, &quot;service starting&quot;, Toast.LENGTH_SHORT).show();
-
-        // For each start request, send a message to start a job and deliver the
-        // start ID so we know which request we&apos;re stopping when we finish the job
-        Message msg = mServiceHandler.obtainMessage();
-        msg.arg1 = startId;
-        // 消息被发送至后台的HandlerThread的消息队列中，而非主线程
-        mServiceHandler.sendMessage(msg);
-
-        // If we get killed, after returning from here, restart
-        return START_STICKY;
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        // We don&apos;t provide binding, so return null
-        return null;
-    }
-
-    @Override
-    public void onDestroy() {
-        Toast.makeText(this, &quot;service done&quot;, Toast.LENGTH_SHORT).show();
-    }
-}
-</code></pre><p>通过查看<code>IntentService</code>的源码可以发现，其实现与上面的代码非常接近。基本原理就是，<strong><code>onStartCommand()</code>中得到的<code>Intent</code>被赋给一个Message对象，经由Handler发送到后台HandlerThread线程的消息队列中，处理这些消息的过程<code>onHandleIntent()</code>被放在了后台线程中避免阻塞，并通过消息队列解决了多线程的安全问题。</strong></p>
+<h2 id="启动直接继承自Service类的子类"><a href="#启动直接继承自Service类的子类" class="headerlink" title="启动直接继承自Service类的子类"></a>启动直接继承自Service类的子类</h2><p>回过头来看上一节留下的代码就很容易了。现在把它重新贴上来，并加上一些注释。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloService</span> <span class="keyword">extends</span> <span class="title">Service</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Looper mServiceLooper;</span><br><span class="line">    <span class="keyword">private</span> ServiceHandler mServiceHandler;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Handler that receives messages from the thread</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">ServiceHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Handler创建时必须获取Looper</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">ServiceHandler</span><span class="params">(Looper looper)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>(looper);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 处理消息队列中出队的消息</span></span><br><span class="line">        <span class="annotation">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// Normally we would do some work here, like download a file.</span></span><br><span class="line">            <span class="comment">// For our sample, we just sleep for 5 seconds.</span></span><br><span class="line">            <span class="keyword">long</span> endTime = System.currentTimeMillis() + <span class="number">5</span>*<span class="number">1000</span>;</span><br><span class="line">            <span class="keyword">while</span> (System.currentTimeMillis() &lt; endTime) &#123;</span><br><span class="line">                <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        wait(endTime - System.currentTimeMillis());</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// Stop the service using the startId, so that we don't stop</span></span><br><span class="line">            <span class="comment">// the service in the middle of handling another job</span></span><br><span class="line">            stopSelf(msg.arg1);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Start up the thread running the service.  Note that we create a</span></span><br><span class="line">        <span class="comment">// separate thread because the service normally runs in the process's</span></span><br><span class="line">        <span class="comment">// main thread, which we don't want to block.  We also make it</span></span><br><span class="line">        <span class="comment">// background priority so CPU-intensive work will not disrupt our UI.</span></span><br><span class="line">        HandlerThread thread = <span class="keyword">new</span> HandlerThread(<span class="string">"ServiceStartArguments"</span>,</span><br><span class="line">                Process.THREAD_PRIORITY_BACKGROUND);</span><br><span class="line">        thread.start();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Get the HandlerThread's Looper and use it for our Handler</span></span><br><span class="line">        mServiceLooper = thread.getLooper();</span><br><span class="line">        mServiceHandler = <span class="keyword">new</span> ServiceHandler(mServiceLooper);</span><br><span class="line">        <span class="comment">// 因为handleMsg的过程将阻塞主线程，所以利用HandlerThread类创建一个新的后台线程来处理消息。这个HandlerThread</span></span><br><span class="line">        <span class="comment">// 简化了Looper的准备工作。ServiceHandler可以获取新后台线程的Looper来发送和处理消息。</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">onStartCommand</span><span class="params">(Intent intent, <span class="keyword">int</span> flags, <span class="keyword">int</span> startId)</span> </span>&#123;</span><br><span class="line">        Toast.makeText(<span class="keyword">this</span>, <span class="string">"service starting"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// For each start request, send a message to start a job and deliver the</span></span><br><span class="line">        <span class="comment">// start ID so we know which request we're stopping when we finish the job</span></span><br><span class="line">        Message msg = mServiceHandler.obtainMessage();</span><br><span class="line">        msg.arg1 = startId;</span><br><span class="line">        <span class="comment">// 消息被发送至后台的HandlerThread的消息队列中，而非主线程</span></span><br><span class="line">        mServiceHandler.sendMessage(msg);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// If we get killed, after returning from here, restart</span></span><br><span class="line">        <span class="keyword">return</span> START_STICKY;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IBinder <span class="title">onBind</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// We don't provide binding, so return null</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Toast.makeText(<span class="keyword">this</span>, <span class="string">"service done"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>通过查看<code>IntentService</code>的源码可以发现，其实现与上面的代码非常接近。基本原理就是，<strong><code>onStartCommand()</code>中得到的<code>Intent</code>被赋给一个Message对象，经由Handler发送到后台HandlerThread线程的消息队列中，处理这些消息的过程<code>onHandleIntent()</code>被放在了后台线程中避免阻塞，并通过消息队列解决了多线程的安全问题。</strong></p>
 
       
     </div>
@@ -467,7 +377,7 @@ HandlerThread官网的概括是这么写的：一个用来创建含有looper的�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">101</span>
+              <span class="site-state-item-count">104</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -477,7 +387,7 @@ HandlerThread官网的概括是这么写的：一个用来创建含有looper的�
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-count">32</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

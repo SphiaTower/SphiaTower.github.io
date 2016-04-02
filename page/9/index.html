@@ -201,11 +201,281 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/13/Crossfading-Two-Views/" itemprop="url">
+                  安卓动画学习笔记（一） 淡入淡出
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-13T13:03:08+08:00" content="2015-09-13">
+              2015-09-13
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
+        
+          <p>淡入淡出动画指的是渐渐隐去一个UI组件的同时逐渐显示出另一个，经常用在用户切换内容或视图的时候。没有淡入淡出效果的话，切换的过程会有些突兀。</p>
+<h2 id="创建视图"><a href="#创建视图" class="headerlink" title="创建视图"></a>创建视图</h2><p>首先创建两个相关的视图。下面创建一个进度指示器和一个可滚动的文本：<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/13/Crossfading-Two-Views/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/13/pull-to-refresh-recyler/" itemprop="url">
+                  为RecyclerView实现PullToRefresh
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-13T10:34:54+08:00" content="2015-09-13">
+              2015-09-13
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><code>chrisbanes/ActionBar-PullToRefresh</code>是一个很好用的下拉刷新库。与常用的另一个PullToRefresh库不同，这个库的特点就是轻量级，方便集成到自己的项目中。下拉刷新经常用在列表中，<code>ActionBar-PullToRefresh</code>默认支持<code>ListView</code>，而不支持<code>RecyclerView</code>。要让其支持<code>RecyclerView</code>就要自己用<code>ViewDelegate</code>来实现。另外，使用Github主页中注入<code>ListFragment</code>的方法也不行。<br>（实现代码在这里 <a href="https://github.com/SphiaTower/ActionBar-PullToRefresh">https://github.com/SphiaTower/ActionBar-PullToRefresh</a> ）<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/13/pull-to-refresh-recyler/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/12/picasso-performance/" itemprop="url">
+                  提高Picasso的缩放速度
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-12T13:52:27+08:00" content="2015-09-12">
+              2015-09-12
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在Piccaso中按比例缩放图片很容易，只需要下面的代码即可：</p>
+<pre><code>Picasso.with(context).load(url).resize(SCREEN_WIDTH,SCREEN_WIDTH).centerCrop().into(imageView);
+</code></pre><p>然而，实际操作中发现，这种方法明显有一些延迟（因为项目中要加载的图片已经在内存中，所以不是图片加载的问题），导致用户体验不太好，屏幕要黑屏一小段时间。所以试着用自己的代码实现了缩放，效果比上面的实现要好上很多：</p>
+<pre><code>Picasso.with(this).load(url).into(imageView, new Callback() {
+            @Override
+            public void onSuccess() {
+                Drawable drawable = imageView.getDrawable();
+                drawable = zoomDrawable(drawable, SCREEN_WIDTH);
+                imageView.setImageDrawable(drawable);
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/12/picasso-performance/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -840,278 +1110,6 @@ dependencies {
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/08/ni-scope-bugs/" itemprop="url">
-                  NI-SCOPE套件中C#与LabVIEW范例的一些错误
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-08T20:42:34+08:00" content="2015-09-08">
-              2015-09-08
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>最近在使用NI的驱动编程时，出现了很多问题。现在把这些问题记录下来，以后如果有人用到了可以避免这些错误。<br>NI-SCOPE是美国国家仪器（NI）的一套操作高速数据采集卡的驱动。NI-SCOPE编程有几个特点：</p>
-<ul>
-<li>速度采集速率极高，为了避免采集卡的缓存被覆盖，需要快速处理采集到的数据；</li>
-<li>数据采集量极大，因为高速采集，所以仅仅几秒钟采集的数据量就可能达到几百M的大小，很容易出现内存不足等问题；</li>
-</ul>
-<p>编程时使用了先后使用了NI官方的两套范例程序，一套LabVIEW版本的，一套C#版本的。遗憾的是，两套范例都有问题。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/08/ni-scope-bugs/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/08/viewpager/" itemprop="url">
-                  ViewPager使用总结
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-08T19:14:22+08:00" content="2015-09-08">
-              2015-09-08
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>ViewPager是非常常用的一个控件，使用起来也还算简单。但是ViewPager使用时会经常出现一些细微的问题，所以在此总结一下ViewPager的相关内容。</p>
-<h2 id="实现滑动视图"><a href="#实现滑动视图" class="headerlink" title="实现滑动视图"></a>实现滑动视图</h2><p>可以使用<code>ViewPager</code>实现滑动视图，如果每个页面都占满整个布局，可以在xml中如下表示：</p>
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-&lt;android.support.v4.view.ViewPager
-    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
-    android:id=&quot;@+id/pager&quot;
-    android:layout_width=&quot;match_parent&quot;
-    android:layout_height=&quot;match_parent&quot; /&gt;
-</code></pre><p>要插入每个页面的子视图，需要把布局与<code>PagerAdapter</code>进行挂钩，有两种<code>PagerAdapter</code>可供使用：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/08/viewpager/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/07/threads-leak/" itemprop="url">
-                  安卓内存泄露问题（二） Thread
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-07T22:19:34+08:00" content="2015-09-07">
-              2015-09-07
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>本文探讨安卓中长期任务引发的Context泄露问题，文章主要翻译和总结自<br><a href="http://www.androiddesignpatterns.com/2013/04/activitys-threads-memory-leaks.html">http://www.androiddesignpatterns.com/2013/04/activitys-threads-memory-leaks.html</a>   </p>
-<p>将长时间运行的任务与activity的生命周期相协调，同时避免隐含的内存泄露，是开发中的一大难点。先来看下面的例子，在activity创建时启动并循环一个新线程：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/07/threads-leak/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1158,7 +1156,7 @@ dependencies {
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">101</span>
+              <span class="site-state-item-count">104</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1168,7 +1166,7 @@ dependencies {
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-count">32</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
