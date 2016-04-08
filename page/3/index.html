@@ -229,6 +229,96 @@
             
               
                 
+                <a class="post-title-link" href="/2016/02/27/Wear-Dev-2/" itemprop="url">
+                  Android Wear 开发 （二） 在通知中接收语音输入
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-02-27T20:53:14+08:00" content="2016-02-27">
+              2016-02-27
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在手机上，有需要输入文字的通知时，一般会启动一个activity以供输入。然而在手表上没有键盘输入，可以让用户通过语音回复或者通过<code>RemoteInput</code>选择预先定义的文字消息。</p>
+<p>用户使用语音回复或者选择某条消息时，系统将文字回应附在为通知指定的<code>Intent</code>上，发送至手机应用中。</p>
+<h1 id="定义语音输入"><a href="#定义语音输入" class="headerlink" title="定义语音输入"></a>定义语音输入</h1><p>要创建一个支持语音输入的动作，首先创建一个<code>RemoteInput.Builder</code>的实例，它可以添加至通知动作中。这个类的构造器接受一个字符串，系统使用它作为语音输入的key，之后使用它在手机上取回输入的文字。</p>
+<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Key for the string that's delivered in the action's intent</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String EXTRA_VOICE_REPLY = <span class="string">"extra_voice_reply"</span>;</span><br><span class="line"></span><br><span class="line">String replyLabel = getResources().getString(R.string.reply_label);</span><br><span class="line"></span><br><span class="line">RemoteInput remoteInput = <span class="keyword">new</span> RemoteInput.Builder(EXTRA_VOICE_REPLY)</span><br><span class="line">        .setLabel(replyLabel)</span><br><span class="line">        .build();</span><br></pre></td></tr></table></figure>
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/27/Wear-Dev-2/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/02/27/Wear-Dev-1/" itemprop="url">
                   Android Wear 开发 （一） 创建手表通知
                 </a>
@@ -1017,99 +1107,6 @@ npm install
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/01/03/Providing-Proper-Back-Navigation/" itemprop="url">
-                  安卓导航 - 提供合适的后退导航
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-01-03T18:50:14+08:00" content="2016-01-03">
-              2016-01-03
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>后退导航是指用户如何从访问过的屏幕中向后移动。所有的安卓设备都提供有一个后退键，所以<strong>你的应用不应该再增加一个后退按钮。</strong></p>
-<p>在大多数的情况中，系统在用户导航时维持着一个后退栈。这使得系统能够再用户按下后退键之后合适地向后导航。然而，有一些情况下，你需要手动指明后退行为，以提供更好的用户体验。</p>
-<p>需要手动指明后退行为的导航模式有：</p>
-<ul>
-<li>用户通过一条通知、一个桌面挂件或导航抽屉直接进入到一个深层次的activity时。</li>
-<li>用户在fragment见导航的某些情况。</li>
-<li>用户在<code>WebView</code>的网页中导航时。</li>
-</ul>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/01/03/Providing-Proper-Back-Navigation/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1156,7 +1153,7 @@ npm install
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">107</span>
+              <span class="site-state-item-count">108</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

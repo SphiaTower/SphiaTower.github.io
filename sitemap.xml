@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/04/08/dependency-injection-1/</loc>
+    
+    <lastmod>2016-04-08T14:23:29.889Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/04/08/dependency-injection-4/</loc>
     
     <lastmod>2016-04-08T14:20:15.608Z</lastmod>

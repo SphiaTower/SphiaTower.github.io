@@ -229,6 +229,97 @@
             
               
                 
+                <a class="post-title-link" href="/2015/09/06/java-passing-value/" itemprop="url">
+                  Java的值传递与C#的ref/out
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-06T19:03:27+08:00" content="2015-09-06">
+              2015-09-06
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>最近用到了一个C#写成的桌面程序，并需要对其修改。C#作为一个静态的高级语言，很多特征与Java类似，当然也有大量的不同。在看代码时，发现有的函数签名的参数中出现了<code>out</code>关键字，便搜索了一下，结果得知这个关键字涉及了值传递与引用传递的问题。要学习明白这个关键字，首先要理解值传递和引用传递的问题，不妨先从更加熟悉的Java入手。  </p>
+<h2 id="Java的传递方式"><a href="#Java的传递方式" class="headerlink" title="Java的传递方式"></a>Java的传递方式</h2><p>乍一看，很容易认为Java使用引用传递，原因是Java中无处不在的“引用”，<code>Reference</code>。在Java中，可以将一个引用传入方法，在方法中修改对象的属性，比如：  </p>
+<pre><code>static void paintWhite(Car car){
+    car.setColor(Color.WHITE);
+}
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/06/java-passing-value/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/09/06/context-leak/" itemprop="url">
                   安卓内存泄露问题（一） Handler
                 </a>
@@ -885,7 +976,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">107</span>
+              <span class="site-state-item-count">108</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

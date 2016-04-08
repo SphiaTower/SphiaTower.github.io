@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Android," />
+  <meta name="keywords" content="Dependency Injection," />
 
 
 
@@ -59,25 +59,16 @@
 
 
 
-<meta name="description" content="本文探讨如何使用手势拖动和缩放，用onTouchEvent()来拦截触屏事件。
-拖动对象如果使用3.0以上版本，可以使用内置的拖放事件侦听器View.OnDragListener。拖动是一个很常用的操作：
-
-在拖动（或滚动）操作中，应用必须跟踪原始的触点（手指），即使其他手指也触摸了屏幕。例如，拖动图片时，用户将第二根手指放在了屏幕上，并抬起了第一根。如果应用只跟踪单独的触点，它会认为第二个触点为">
+<meta name="description" content="I’m developing a complex desktop client with C#, which is mainly for some scientific analysis work. The class hierarchy of my project is very complicated. The problem is that, a large amount of parame">
 <meta property="og:type" content="article">
-<meta property="og:title" content="安卓手势学习笔记（四） 拖动与缩放">
-<meta property="og:url" content="http://yoursite.com/2015/09/12/Dragging-and-Scaling/index.html">
+<meta property="og:title" content="Dependency Injection - Handle A Large Amount of Params with A Complex Class Hierarchy">
+<meta property="og:url" content="http://yoursite.com/2016/04/08/dependency-injection-1/index.html">
 <meta property="og:site_name" content="Welcome to SPHIA">
-<meta property="og:description" content="本文探讨如何使用手势拖动和缩放，用onTouchEvent()来拦截触屏事件。
-拖动对象如果使用3.0以上版本，可以使用内置的拖放事件侦听器View.OnDragListener。拖动是一个很常用的操作：
-
-在拖动（或滚动）操作中，应用必须跟踪原始的触点（手指），即使其他手指也触摸了屏幕。例如，拖动图片时，用户将第二根手指放在了屏幕上，并抬起了第一根。如果应用只跟踪单独的触点，它会认为第二个触点为">
-<meta property="og:updated_time" content="2015-09-12T04:32:52.615Z">
+<meta property="og:description" content="I’m developing a complex desktop client with C#, which is mainly for some scientific analysis work. The class hierarchy of my project is very complicated. The problem is that, a large amount of parame">
+<meta property="og:updated_time" content="2016-04-08T14:23:29.889Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="安卓手势学习笔记（四） 拖动与缩放">
-<meta name="twitter:description" content="本文探讨如何使用手势拖动和缩放，用onTouchEvent()来拦截触屏事件。
-拖动对象如果使用3.0以上版本，可以使用内置的拖放事件侦听器View.OnDragListener。拖动是一个很常用的操作：
-
-在拖动（或滚动）操作中，应用必须跟踪原始的触点（手指），即使其他手指也触摸了屏幕。例如，拖动图片时，用户将第二根手指放在了屏幕上，并抬起了第一根。如果应用只跟踪单独的触点，它会认为第二个触点为">
+<meta name="twitter:title" content="Dependency Injection - Handle A Large Amount of Params with A Complex Class Hierarchy">
+<meta name="twitter:description" content="I’m developing a complex desktop client with C#, which is mainly for some scientific analysis work. The class hierarchy of my project is very complicated. The problem is that, a large amount of parame">
 
 
 
@@ -95,7 +86,7 @@
   };
 </script>
 
-  <title> 安卓手势学习笔记（四） 拖动与缩放 | Welcome to SPHIA </title>
+  <title> Dependency Injection - Handle A Large Amount of Params with A Complex Class Hierarchy | Welcome to SPHIA </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -225,7 +216,7 @@
             
             
               
-                安卓手势学习笔记（四） 拖动与缩放
+                Dependency Injection - Handle A Large Amount of Params with A Complex Class Hierarchy
               
             
           </h1>
@@ -237,8 +228,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-12T12:16:46+08:00" content="2015-09-12">
-              2015-09-12
+            <time itemprop="dateCreated" datetime="2016-04-08T19:41:28+08:00" content="2016-04-08">
+              2016-04-08
             </time>
           </span>
 
@@ -263,15 +254,19 @@
       
 
       
-        <p>本文探讨如何使用手势拖动和缩放，用<code>onTouchEvent()</code>来拦截触屏事件。</p>
-<h2 id="拖动对象"><a href="#拖动对象" class="headerlink" title="拖动对象"></a>拖动对象</h2><p><em>如果使用3.0以上版本，可以使用内置的拖放事件侦听器<code>View.OnDragListener</code>。</em><br>拖动是一个很常用的操作：</p>
-<ul>
-<li>在拖动（或滚动）操作中，应用必须跟踪原始的触点（手指），即使其他手指也触摸了屏幕。例如，拖动图片时，用户将第二根手指放在了屏幕上，并抬起了第一根。如果应用只跟踪单独的触点，它会认为第二个触点为默认触点并将图片移动至那个位置。</li>
-<li>为了避免这种问题，应用需要辨别原始触点和后来出现的其他触点。可以通过跟踪<code>ACTION_POINTER_DOWN</code>和<code>ACTION_POINTER_UP</code>来实现。当次要触点按下或抬起时它们会被传送到<code>onTouchEvent()</code>中。</li>
-<li><code>ACTION_POINTER_UP</code>的情况下。。。</li>
-</ul>
-<a id="more"></a>
-<p>未完待续</p>
+        <p>I’m developing a complex desktop client with C#, which is mainly for some scientific analysis work. The class hierarchy of my project is very complicated. The problem is that, a large amount of parameters should <strong>be able to be modified by the user at the entrance of the client</strong>.</p>
+<p>However, many parameters are very deep in the class hierarchy (I mean the composition hierarchy, not inheritance). As a result, classes closed to the top levels must take a lot of arguments in the constructor, because they are passed all the way up from different classes at the bottom levels.<br><a id="more"></a><br>What’s the best practices to handle problems like this? I have 3 ideas.</p>
+<ol>
+<li>Global static variables: Just create a <code>Constants</code> class and store these params as static fields, like <code>Constants.FOO</code>, <code>Constants.BAR</code>. </li>
+<li>Singleton class: Create a singleton class, and initialize it at the entrance of program. Get these params like <code>Constants.GetInstance().FOO</code>. </li>
+<li>For every class, receive lower-level params in the constructor, which makes the constructor signature verbose and complicated. For example, a mid-level frequently-used class may take 15 arguments in the constructor.</li>
+</ol>
+<p>If I use global variables or a singleton too often, the code will become very coupled. But if I do not use them, lots of params must be passed and received along the class hierarchy again and again. So how would a complicated commercial software do to solve this problem?</p>
+<hr>
+<p>For example, the program creates a <code>LevelOne</code> object at the topmost level. The <code>LevelOne</code> contains fields like <code>LevelTwoA</code> and <code>LevelTwoB</code>. And a <code>LevelTwoA</code> object contains fields like <code>LevelThree</code> and so on. Then if the user wants to specify the value of a <code>LevelTen</code> field when creating the <code>LevelOne</code>, the value of <code>LevelTen</code> must be passed from the constructor of <code>LevelOne</code> to <code>LevelNine</code>.</p>
+<p>And take a <code>Car</code> as an example, what if the user want to specify the <code>Radius</code> of a certian <code>Gear</code> <strong>when creating a <code>Car</code></strong>? The <code>Gear</code> object must be at the bottom level of the whole hierarchy. However, a <code>Car</code> should not take a <code>double radiusOfACertianGear</code> as an argument in its constructor, because it’s too trivial.</p>
+<hr>
+<p>The solution is <strong>dependency injection</strong>. I will introduce it in the next post.</p>
 
       
     </div>
@@ -280,7 +275,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Android/" rel="tag">#Android</a>
+            <a href="/tags/Dependency-Injection/" rel="tag">#Dependency Injection</a>
           
         </div>
       
@@ -289,16 +284,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/12/Handling-Multi-Touch-Gestures/" rel="next" title="安卓手势学习笔记（三） 多点触控">
-                <i class="fa fa-chevron-left"></i> 安卓手势学习笔记（三） 多点触控
+              <a href="/2016/03/14/wear-recorder/" rel="next" title="Record Audio on Wearable Devices">
+                <i class="fa fa-chevron-left"></i> Record Audio on Wearable Devices
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/09/12/photoview/" rel="prev" title="安卓手势学习笔记（五） 使用PhotoView缩放图片">
-                安卓手势学习笔记（五） 使用PhotoView缩放图片 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/04/08/dependency-injection-2/" rel="prev" title="Dependency Injection - 概览">
+                Dependency Injection - 概览 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -417,7 +412,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#拖动对象"><span class="nav-number">1.</span> <span class="nav-text">拖动对象</span></a></li></ol></div>
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
