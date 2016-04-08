@@ -1,0 +1,712 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Dependency Injection," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="上一篇我的英文文章中，提到了解决复杂对象层级中暴露大量参数的办法是依赖注入，这篇文章就先对依赖注入进行一下了解。
+本文主要内容翻译自https://en.wikipedia.org/wiki/Dependency_injection
+软件工程中，依赖注入是一种实现了控制反转的软件设计模式，用以解决依赖问题。依赖指的是一个可以被使用的对象，也称作服务。注入指的是将依赖传递给一个依靠它的对象（客户），">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dependency Injection - 概览">
+<meta property="og:url" content="http://yoursite.com/2016/04/08/dependency-injection-2/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="上一篇我的英文文章中，提到了解决复杂对象层级中暴露大量参数的办法是依赖注入，这篇文章就先对依赖注入进行一下了解。
+本文主要内容翻译自https://en.wikipedia.org/wiki/Dependency_injection
+软件工程中，依赖注入是一种实现了控制反转的软件设计模式，用以解决依赖问题。依赖指的是一个可以被使用的对象，也称作服务。注入指的是将依赖传递给一个依靠它的对象（客户），">
+<meta property="og:updated_time" content="2016-04-08T13:08:43.038Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dependency Injection - 概览">
+<meta name="twitter:description" content="上一篇我的英文文章中，提到了解决复杂对象层级中暴露大量参数的办法是依赖注入，这篇文章就先对依赖注入进行一下了解。
+本文主要内容翻译自https://en.wikipedia.org/wiki/Dependency_injection
+软件工程中，依赖注入是一种实现了控制反转的软件设计模式，用以解决依赖问题。依赖指的是一个可以被使用的对象，也称作服务。注入指的是将依赖传递给一个依靠它的对象（客户），">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Dependency Injection - 概览 | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Dependency Injection - 概览
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-04-08T19:56:47+08:00" content="2016-04-08">
+              2016-04-08
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>上一篇我的英文文章中，提到了解决复杂对象层级中暴露大量参数的办法是依赖注入，这篇文章就先对依赖注入进行一下了解。</p>
+<p>本文主要内容翻译自<a href="https://en.wikipedia.org/wiki/Dependency_injection" target="_blank" rel="external">https://en.wikipedia.org/wiki/Dependency_injection</a></p>
+<p>软件工程中，依赖注入是一种实现了控制反转的软件设计模式，用以解决依赖问题。依赖指的是一个可以被使用的对象，也称作服务。注入指的是将依赖传递给一个依靠它的对象（客户），即使用服务的对象。服务成为客户的状态的一部分。将服务传递给客户，而非允许客户创建或寻找服务，是这个模式的基本要求。</p>
+<p>依赖注入允许程序设计遵循依赖反转原则。客户将提供依赖的责任委托给外部代码（注射器）。而客户不可以调用注射器代码。<strong>注射代码</strong>构造了服务，并调用客户将服务注入。这意味着客户代码无需知晓注射代码。客户无需知道如何创建服务。客户也无需知道实际使用的是哪个服务。这将使用和创建的责任分离开。</p>
+<p>客户有三种常用的方法以接受依赖注入：setter注入，interface注入，constructor注入。setter和构造器注入主要的区别是他们被使用的时机。而接口注入有所不同的是，依赖可以获取控制其注入的机会。他们都要求单独的构造代码（注射器）负责引入客户和互相之间的依赖。<br><a id="more"></a></p>
+<h1 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h1><p>依赖注入将客户的依赖的创建和客户的行为分离，使得程序设计实现松耦合，并遵从依赖反转和单一责任原则。它与服务定位模式正好相反，后者允许客户知晓查找依赖时使用的系统。</p>
+<p>注入是依赖注入的基本单元，但它并非一个新的或自定义的机理。它与“参数传递”的工作方式相同。将“参数传递”看作一个注入，暗示了这个过程将把客户从细节隔离开。</p>
+<p>注入也与控制着传递的事物（一定不是客户）有关，并且总是与传递是如何完成的无关，无论是传递引用还是指针。</p>
+<p>依赖注入包括四个角色：</p>
+<ul>
+<li>一个或多个将被使用的<strong>服务</strong>对象</li>
+<li>一个依赖（使用）服务的<strong>客户</strong>对象</li>
+<li>一些定义了客户可能如何使用服务的<strong>接口</strong></li>
+<li>一个负责创建服务并注入至客户的注射器</li>
+</ul>
+<p>任何可能被使用的对象都可以被看作是一个服务。任何使用了其他对象的对象都可以看作是一个客户。这些名称与对象实际的作用无关，一切都与对象在一次注入中扮演的角色有关。</p>
+<p>接口是客户所期待的依赖的类型。关键的问题是这些接口使什么成为可访问的。他们可能是服务所实现的真正的接口类型，也可能是抽象类，甚至是具体的服务自身。虽然后者会违反DIP，并且牺牲测试时需要的动态解耦。唯一要求的是，客户不知道他们是什么，从而不将他们视为具体类型，不创建或继承他们。</p>
+<p>注射器将服务引入至客户。经常地，它也创建客户。注射器可能将非常复杂的对象图连接起来，通过将对象视作一个客户，并随后视作另一个客户所需的服务。注射器可能实际是许多在一起工作的对象，但不可以是客户。注射器可能被称作其他名称，如：assembler, provider, container, factory, builder, spring, construction code, main。</p>
+<p>依赖注入可以被应用为一项原则，它要求所有对象分离创建创造和行为。依靠依赖注入框架来执行创建可以禁止使用<strong>new</strong>关键字，或者不严格地，只允许直接创建值对象。</p>
+<h2 id="Taxonomy"><a href="#Taxonomy" class="headerlink" title="Taxonomy"></a>Taxonomy</h2><p>控制反转比依赖注入更加广泛。简单的说，控制反转意味着让其他代码调用你，而非总是执行调用。一个使用控制反转却没有使用依赖注入的例子是模板模式。这里通过子类实现了多态，也就是继承。</p>
+<p>依赖注入通过组合实现了控制反转，所以常常与策略模式等同。但是策略模式主要是为了那些可以在对象的生命周期内进行变更的依赖，而依赖注入可能只有依赖的单个实例会被使用。这也实现了多态，但是是通过代理和组合。</p>
+<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><ul>
+<li>依赖注入为客户提供了可配置的灵活性。只有客户的行为是固定的。客户可以使用任何支持所期待的接口的事物。</li>
+<li>依赖注入可以用来将系统的配置细节外置到配置文件中，使系统可以在不重新编译的情况下重新配置。可以为需要不同组件实现的不同的情景提供不同的配置。包括测试时。</li>
+<li>依赖注入并不要求改变代码行为，可以通过重构应用到旧的代码中。客户端会更加独立，而且更容易进行单元测试。</li>
+<li>依赖注入允许客户完全不知晓所需使用的服务的具体实现。这可以将客户与设计的改变和缺陷隔离开。它提升了重用性，可测试性和可维护性。</li>
+<li>减少了应用对象中的重复使用的模式化的代码。因为初始化或设立依赖的工作都由提供者进行处理。</li>
+<li>依赖注入允许并发或独立开发。两个开发者可以独立地开发互相调用的类，只需知道类之间通讯的接口。比如插件常常由第三方开发者开发，而无需与创建产品并使用插件的开发者进行沟通。</li>
+<li>依赖注入减少了类和其依赖之间的耦合。</li>
+</ul>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><ul>
+<li>依赖注入创建的客户要求通过构造代码提供配置细节。而当存在明显的默认值时，会显得很繁琐。</li>
+<li>依赖注入可能会使得代码难以追踪，因为它将行为与创建分离开。开发者必须查阅更多的文件以获知系统如何工作。</li>
+<li>依赖注入要求更多的预先的开发工作，因为无法在需要某对象的时候和场景直接获取对象，而必须要求它进行注入，并确保已经完成注入。</li>
+<li>依赖注入可以造成类型的爆炸，尤其是拥有显式接口类型的语言，如Java和C#。</li>
+<li>依赖注入将复杂度强制移出类内，并放进类与类之间的联系之中，可能会导致管理的困难。</li>
+<li>讽刺的是，依赖注入鼓励了对依赖注入框架的依赖。</li>
+</ul>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Dependency-Injection/" rel="tag">#Dependency Injection</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/14/wear-recorder/" rel="next" title="Record Audio on Wearable Devices">
+                <i class="fa fa-chevron-left"></i> Record Audio on Wearable Devices
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/08/dependency-injection-3/" rel="prev" title="Dependency Injection - 实现">
+                Dependency Injection - 实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">107</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概览"><span class="nav-number">1.</span> <span class="nav-text">概览</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Taxonomy"><span class="nav-number">1.1.</span> <span class="nav-text">Taxonomy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优点"><span class="nav-number">1.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缺点"><span class="nav-number">1.3.</span> <span class="nav-text">缺点</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

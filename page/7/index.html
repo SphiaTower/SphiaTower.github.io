@@ -224,6 +224,271 @@
             
               
                 
+                <a class="post-title-link" href="/2015/09/27/phototask-summary/" itemprop="url">
+                  安卓多线程（五） PhotoTask例子的总结
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-27T18:43:48+08:00" content="2015-09-27">
+              2015-09-27
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>接下来，总结一下前几篇中的PhotoTask的例子，例子的源代码可以在官网下载。  </p>
+<h2 id="PhotoDecodeRunnable"><a href="#PhotoDecodeRunnable" class="headerlink" title="PhotoDecodeRunnable"></a>PhotoDecodeRunnable</h2><p>这个类是照片解码的任务，创建时获得<code>PhotoTask</code>的引用，并在执行时调用<code>mPhotoTask.setImageDecodeThread(Thread.currentThread());</code>来让<code>PhotoTask</code>获得解码线程的引用。</p>
+<p>在解码工作完成后，调用<code>PhotoTask.setImage()</code>方法传递<code>Bitmap</code>的引用，调用<code>PhotoTask.handleDecodeState()</code>方法来报告状态。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/27/phototask-summary/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/27/popupwindows/" itemprop="url">
+                  DialogFragmnet与PopupWindow
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-27T11:10:43+08:00" content="2015-09-27">
+              2015-09-27
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>安卓中弹出窗口其实算是一个有些复杂的问题，其复杂在，弹窗的很多特性与平常的UI控件都不一样，有点像不在一个系统中的问题。这次想做一个“更多”按钮，点击后弹出一个窗口来选择更多的操作。下面记录一下整个实现的过程。</p>
+<h2 id="尝试DialogFragment"><a href="#尝试DialogFragment" class="headerlink" title="尝试DialogFragment"></a>尝试DialogFragment</h2><p>一开始想到的是使用<code>DialogFragment</code>来创建一个对话框，这个类的使用非常便捷。但最后弹出的对话框却一直不能满足要求。我想做一个横向的包含多个按钮的对话框，就像</p>
+<pre><code>|按钮1|按钮2|按钮3|
+</code></pre><p>这样的，可<code>DialogFragment</code>不管怎么调整风格和主题，最后的布局总是会出现问题。比如，在这排按钮的下方出现空条，或者在最后一个按钮的右边出现，而且窗口大小也很难控制。最后是通过重写<code>onStart</code>方法实现的。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/27/popupwindows/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/27/Communicating-with-the-UI-Thread/" itemprop="url">
+                  安卓多线程（四） 与UI线程通讯
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-27T09:56:39+08:00" content="2015-09-27">
+              2015-09-27
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>本篇讲述如何将任务中的数据发送至UI线程中。</p>
+<p>每个应用都有自己的独特的线程来运行UI对象，称作UI线程。只有UI线程中的对象可以访问其中其他的对象。因为线程池中线程的任务不在UI线程中，所以无法访问UI对象。要将后台数据发送到UI线程中，使用UI线程中运行的<code>Handler</code>。</p>
+<h2 id="在UI线程中定义Handler"><a href="#在UI线程中定义Handler" class="headerlink" title="在UI线程中定义Handler"></a>在UI线程中定义Handler</h2><p><code>Handler</code>是安卓系统框架的一部分，用来管理线程。<code>Handler</code>对象接收消息，并执行代码来处理消息。一般，为新线程创造<code>Handler</code>但也可以创造一个连接已存在线程的<code>Handler</code>。当连接<code>Handler</code>至UI线程时，处理消息的代码将运行在UI线程中。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/27/Communicating-with-the-UI-Thread/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/09/27/Running-Code-on-a-Thread-Pool-Thread/" itemprop="url">
                   安卓多线程（三） 使用线程池中的线程执行代码
                 </a>
@@ -820,273 +1085,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/22/higher-order-functions/" itemprop="url">
-                  函数式编程 - 高阶函数
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-22T19:46:29+08:00" content="2015-09-22">
-              2015-09-22
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>函数式编程与面向对象编程最大的不同就是，FP当中，函数是first class的，可以方便地进行传递和进行更高层的处理。比如在安卓中，为了给某个View提供一个侦听的行为，必须为其绑定一个<code>OnClickListener</code>接口的侦听器，而实际上需要只有一个方法签名<code>onClick(View view)</code>。这种单一方法接口的本质就是那个方法所代表的函数，或者说映射，的本身。在Java8中，可以方便地直接将一个函数传递过去，如</p>
-<pre><code>view.setOnClickListener(view -&gt; { // do something here })
-</code></pre><p>实际传递的就是一个view参数的映射。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/22/higher-order-functions/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/20/Creating-a-View-Class/" itemprop="url">
-                  创造自定义View并在XML中使用自定义特性
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-20T19:58:44+08:00" content="2015-09-20">
-              2015-09-20
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>好的自定义view应该将功能封装为方便的接口，高效使用CPU和内存。另外还要做到：</p>
-<ul>
-<li>适应安卓标准</li>
-<li>提供自定义的风格属性，兼容安卓的XML布局</li>
-<li>发送无障碍事件</li>
-<li>兼容多个安卓平台</li>
-</ul>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/20/Creating-a-View-Class/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/19/spinners/" itemprop="url">
-                  使用Spinner下拉列表
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-19T11:00:12+08:00" content="2015-09-19">
-              2015-09-19
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Spinner提供了一种从集合中选择元素的快速方式。默认状态下，spinner显示当前选中的值。触碰spinner会显示包含所有值的下拉目录，供用户选择。  </p>
-<h2 id="为Spinner填充数据"><a href="#为Spinner填充数据" class="headerlink" title="为Spinner填充数据"></a>为Spinner填充数据</h2><p>Spinner中的选项可以来自任何地方，但必须通过<code>SpinnerAdapter</code>提供。如果选项是数组的形式，可以使用<code>ArrayAdapter</code>，如果来自数据库，可以使用<code>CursorAdapter</code>。  </p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/19/spinners/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1133,7 +1131,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">104</span>
+              <span class="site-state-item-count">107</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1143,7 +1141,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

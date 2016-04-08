@@ -224,6 +224,268 @@
             
               
                 
+                <a class="post-title-link" href="/2015/10/21/top-bottom-toolbar/" itemprop="url">
+                  Layout and Animation with Both Top & Bottom Bars
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-21T22:10:58+08:00" content="2015-10-21">
+              2015-10-21
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Some apps have a layout containing both a top Toolbar/Actionbar and a bottom toolbar-like view. And when you scroll a <code>RecyclerView</code>, both the top and bottom toolbar will enter/exit the screen with animation.</p>
+<p>It’s not difficult for the top toolbar. The solution is using <code>CoordinatorLayout</code> in the android material design library with a <code>Toolbar</code> and a <code>RecyclerView</code>. If the <code>RecyclerView</code> is added dynamically at runtime, you can add a <code>FrameLayout</code> as the container, and set scroll flags on it.<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/21/top-bottom-toolbar/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/21/include-local-library-using-gradle/" itemprop="url">
+                  Including Local Libraries Using Gradle
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-21T21:59:29+08:00" content="2015-10-21">
+              2015-10-21
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>After you have written or downloaded a android library, you may want to use it in your existing gradle-based project. It’s very easy to integrate an online library using gradle, but how to integrate a local library?</p>
+<p>The solution is very easy, because gradle supports importing local libraries just like online libraries. But you have to modify some setting files to make it work.<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/21/include-local-library-using-gradle/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/15/EmptyView-in-ViewPager/" itemprop="url">
+                  EmptyView in ViewPager
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-15T22:40:48+08:00" content="2015-10-15">
+              2015-10-15
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Today I encountered a very subtle bug that the <code>Fragment</code>s restored from a <code>ViewPager</code> show its empty view with their data already loaded.</p>
+<p>My <code>CustomFragment</code> shows an empty view when initialized, and switch to the <code>RecyclerView</code> once data is loaded. The process of animation has been summarized in one of my old articles(<a href="http://sphiatower.github.io/2015/09/08/viewpager/">http://sphiatower.github.io/2015/09/08/viewpager/</a>). In short, it hides the <code>RecyclerView</code> and shows the empty view in the <code>onCreateView</code> callback. </p>
+<p>Every time the data of <code>RecyclerView</code> is updated, it will check an <code>empty</code> flag whether it’s the first time of loading data. If true, the cross fade animation is played to show the content and the flag is updated to remember that data has been loaded.</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/15/EmptyView-in-ViewPager/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/10/14/Saving-Data/" itemprop="url">
                   安卓文件存储总结
                 </a>
@@ -846,274 +1108,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/05/multiscreen-3-viewstub/" itemprop="url">
-                  使用ViewStub
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-05T12:21:52+08:00" content="2015-10-05">
-              2015-10-05
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="ViewStub"><a href="#ViewStub" class="headerlink" title="ViewStub"></a>ViewStub</h1><p><code>ViewStub</code>是个不具有尺寸，不进行绘制，不加入布局的轻量级view。所以在view层级中，非常容易填充和舍弃。每个<code>ViewStub</code>只需要简单地包含<code>android:layout</code>属性来指明需要填充的布局。</p>
-<h1 id="加载ViewStub布局"><a href="#加载ViewStub布局" class="headerlink" title="加载ViewStub布局"></a>加载ViewStub布局</h1><p>想要加载<code>ViewStub</code>的布局时，只需要调用<code>setVisible(View.VISIBLE)</code>或者<code>inflate()</code>即可。<code>inflate()</code>返回的结果就是所填充的view。</p>
-<p>一旦可见或填充后，<code>ViewStub</code>就不再是view阶层的一部分。它被所填充的布局替换，而且该布局的根view的ID成为<code>android:inflatedId</code>属性指明的ID。而<code>ViewStub</code>的<code>android:id</code>仅仅在这之前有效。</p>
-<blockquote>
-<p>注意：<code>ViewStub</code>的一大缺陷就是它目前不支持将要填充的布局中的<merge>标签。</merge></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/05/understanding-dp/" itemprop="url">
-                  适配不同屏幕（一） 理解安卓测量单位
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-05T11:47:23+08:00" content="2015-10-05">
-              2015-10-05
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="术语和概念"><a href="#术语和概念" class="headerlink" title="术语和概念"></a>术语和概念</h1><p>屏幕尺寸：实际的物理尺寸。为了方便，所有尺寸被分为四组：small, normal, large和extra-large。</p>
-<p>屏幕密度：屏幕的单位物理区域中所包含的像素的量，一般使用dpi（每英尺点数）描述。所有密度被分为六种泛化的密度：low, medium, high, extra-high, extra-extra-high, extra-extra-extra-high。</p>
-<p>分辨率：屏幕上物理像素的总数目。支持多屏幕时，应用只需要关心泛化的屏幕尺寸和密度，而不需要关心分辨率。</p>
-<p>密度无关像素（dp)：定义UI布局时应该使用的虚拟像素单位，用来以一种密度无关的方式表达布局尺寸或位置。</p>
-<p>密度无关像素与160dpi屏幕上的一个物理像素等同，它是medium密度屏幕的基线密度。运行时，系统根据屏幕的实际密度来处理dp单位的变换。从dp至屏幕像素的转换很简单：<code>px = dp * (dpi / 160)</code>。例如，在240dpi屏幕上，1dp=1.5物理像素。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/05/understanding-dp/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/03/Volley-UTF-8/" itemprop="url">
-                  Volley解析UTF-8产生乱码的解决方法
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-03T14:11:54+08:00" content="2015-10-03">
-              2015-10-03
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在使用Volley的<code>StringRequest</code>获取字符串的时候遇到了一个问题，返回的中文部分全部都是乱码，查找了一下原因，<a href="http://my.oschina.net/u/1247737/blog/393959">在这篇文章</a>中找到了答案：</p>
-<blockquote>
-<p>如果在服务器的返回数据的header中没有指定字符集那么就会默认使用 ISO-8859-1 字符集。<br>ISO-8859-1的别名叫做Latin1。这个字符集支持部分是用于欧洲的语言，不支持中文。</p>
-</blockquote>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/03/Volley-UTF-8/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1160,7 +1154,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">104</span>
+              <span class="site-state-item-count">107</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1170,7 +1164,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

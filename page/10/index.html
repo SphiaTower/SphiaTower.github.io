@@ -224,6 +224,273 @@
             
               
                 
+                <a class="post-title-link" href="/2015/09/11/Detecting-Common-Gestures/" itemprop="url">
+                  安卓手势学习笔记（一） 检测常用手势
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-11T23:27:23+08:00" content="2015-09-11">
+              2015-09-11
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>当用户触摸屏幕时，应用会试图把这些触摸翻译成为某种手势，整个过程分为两个阶段：  </p>
+<ol>
+<li>收集触摸事件的数据；</li>
+<li>检测数据是否满足应用支持的某种手势。</li>
+</ol>
+<h3 id="Support-Library-Classes"><a href="#Support-Library-Classes" class="headerlink" title="Support Library Classes"></a>Support Library Classes</h3><p>本文的例子中使用<code>GestureDetectorCompat</code>和 <code>MotionEventCompat</code>类。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/11/Detecting-Common-Gestures/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/10/RecyclerView-divider/" itemprop="url">
+                  RecyclerView添加Divider
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-10T21:03:23+08:00" content="2015-09-10">
+              2015-09-10
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>与ListView不同，RecyclerView的默认实现没有Divider，需要手动添加。自己以前的做法，是把item的最外层View重写，用canvas画图来实现divider。这种做法从解耦合的角度上非常差，而且经常会出现一些莫名其妙画不出来的问题。所以在这里好好研究一下为RecyclerView添加分割线的方法。  </p>
+<h2 id="ItemDecoration"><a href="#ItemDecoration" class="headerlink" title="ItemDecoration"></a>ItemDecoration</h2><p>首先我们注意到<code>RecyclerView</code>有一个<code>addItemDecoration(ItemDecoration)</code>的方法，方法的描述是<code>ItemDecoration</code>可以影响item view的测量和绘制。接下来研究一下这个类。</p>
+<h3 id="Class-Overview"><a href="#Class-Overview" class="headerlink" title="Class Overview"></a>Class Overview</h3><p>一个ItemDecoration可以为特定的item view添加特殊的绘制和布局偏置。可以用来绘制分隔线，高亮，分组边界等等。<br>所有的ItemDecoration按照添加的顺序来绘制，在item view之前（<code>onDraw()</code>），在item view之后（<code>onDrawOver(Canvas, RecyclerView, RecyclerView.State)</code>）。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/10/RecyclerView-divider/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/09/my-bug-picasso/" itemprop="url">
+                  Picasso获取异常信息与正则匹配时的一个低级错误
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-09T22:53:04+08:00" content="2015-09-09">
+              2015-09-09
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>我的正在做的一个应用里，有一部分需要获取一段字符串，并解析其中的特殊格式标签，以获取其中的文字和图片。一开始使用了正则表达式对标签做了简单的处理，转换成html标签，然后使用<code>Html.fromHtml()</code>获取其中的图片（与文字混排）。今天决定换成使用Picasso实现时，出现了一个错误纠结了很长时间才解决。代码很简单：  </p>
+<pre><code>Picasso.with(getContext()).load(url).into(imageView);
+</code></pre><p>其中的url是通过正则匹配获得的。<br>运行时一直获取不到图片，imageView上显示error状态的占位图。在网络上搜索了一下，找到了获取error信息的方法：<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/09/my-bug-picasso/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/09/08/ni-scope-bugs/" itemprop="url">
                   NI-SCOPE套件中C#与LabVIEW范例的一些错误
                 </a>
@@ -830,283 +1097,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/06/context-leak/" itemprop="url">
-                  安卓内存泄露问题（一） Handler
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-06T13:58:55+08:00" content="2015-09-06">
-              2015-09-06
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>本篇文章探讨安卓中内部类和Handler引发的Context泄露问题，文章主要翻译和总结自<br><a href="http://www.androiddesignpatterns.com/2013/01/inner-class-handler-memory-leak.html">http://www.androiddesignpatterns.com/2013/01/inner-class-handler-memory-leak.html</a></p>
-<p>首先来看以下的代码：</p>
-<pre><code>public class SampleActivity extends Activity {
-
-  private final Handler mLeakyHandler = new Handler() {
-    @Override
-    public void handleMessage(Message msg) {
-      // ... 
-    }
-  }
-}
-</code></pre><p>上面的代码会隐蔽地造成严重的内存泄露。安卓lint会给出警告：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/06/context-leak/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/05/PendingIntent/" itemprop="url">
-                  Service学习笔记（五） PendingIntent
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-05T19:25:46+08:00" content="2015-09-05">
-              2015-09-05
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>上一篇中，被启动的service通过<code>PendingIntent</code>和广播将结果返回给服务的启动者。印象中，在<code>Notification</code>相关的地方也用到了这个类，那么这一篇文章就来学习一下<code>PendingIntent</code>。  </p>
-<h2 id="Class-Overview"><a href="#Class-Overview" class="headerlink" title="Class Overview"></a>Class Overview</h2><p>描述一个Intent和与之相关的一个目标动作。类的实例通过<code>getActivity(Context, int, Intent, int)</code>, <code>getActivities(Context, int, Intent[], int)</code>, <code>getBroadcast(Context, int, Intent, int)</code>, and <code>getService(Context, int, Intent, int)</code>这些方法创建；返回的对象可以被传送给其他应用，并在稍后为自己的应用执行操作。<br>通过为其他的应用传送PendingIntent，可以让其他应用执行自己所特定的操作，就如是自己应用的一部分一样。</p>
-<h2 id="使用PendingIntent"><a href="#使用PendingIntent" class="headerlink" title="使用PendingIntent"></a>使用PendingIntent</h2><p><code>PendingIntent</code>对象是<code>Intent</code>对象的一个wrapper。主要的目的是为了给外部应用提供使用其包裹的<code>Intent</code>的权限，使其好像在自己应用的进程中执行一样。<br>主要的用途包括：  </p>
-<ul>
-<li>当用户对通知进行操作时，声明一个intent交由系统的<code>NotificationManager</code>执行。</li>
-<li>当用户对小部件进行操作时，声明一个intent交由Home屏幕应用执行。</li>
-<li>声明一个将在未来某个时间交由系统的<code>AlarmManager</code>执行的intent。</li>
-</ul>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/05/PendingIntent/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/05/creating-a-started-service-2/" itemprop="url">
-                  Service学习笔记（四） 启动Service（续）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-05T15:52:16+08:00" content="2015-09-05">
-              2015-09-05
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>搞明白了第二节的那段代码，接下来继续学习用start方式启动service的细节问题。  </p>
-<h2 id="onStartCommand-的返回值"><a href="#onStartCommand-的返回值" class="headerlink" title="onStartCommand()的返回值"></a>onStartCommand()的返回值</h2><p><code>onStartCommand()</code>方法返回一个整型常量，用来描述当service被杀掉后，系统应该如何处理。其返回值必须为以下几个常量之一：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/05/creating-a-started-service-2/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1153,7 +1143,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">104</span>
+              <span class="site-state-item-count">107</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1163,7 +1153,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
