@@ -201,11 +201,96 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/02/27/Wear-Dev-3/" itemprop="url">
+                  Android Wear 开发 （三） 在通知中添加页面
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-02-27T21:27:51+08:00" content="2016-02-27">
+              2016-02-27
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          
+            <p>要创建多页面的通知：</p>
+<ol>
+<li>使用<code>NotificationCompat.Builder</code>创建主通知（第一页），就像在手机上呈现一样。</li>
+<li>同样使用<code>NotificationCompat.Builder</code>创建其他页面。</li>
+<li><p>通过<code>addPage()</code>将这些页面添加至主通知，或添加<code>Collection</code>中的页面。</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Create builder for the main notification</span></span><br><span class="line">NotificationCompat.Builder notificationBuilder =</span><br><span class="line">        <span class="keyword">new</span> NotificationCompat.Builder(<span class="keyword">this</span>)</span><br><span class="line">        .setSmallIcon(R.drawable.new_message)</span><br><span class="line">        .setContentTitle(<span class="string">"Page 1"</span>)</span><br><span class="line">        .setContentText(<span class="string">"Short message"</span>)</span><br><span class="line">        .setContentIntent(viewPendingIntent);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create a big text style for the second page</span></span><br><span class="line">BigTextStyle secondPageStyle = <span class="keyword">new</span> NotificationCompat.BigTextStyle();</span><br><span class="line">secondPageStyle.setBigContentTitle(<span class="string">"Page 2"</span>)</span><br><span class="line">               .bigText(<span class="string">"A lot of text..."</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create second page notification</span></span><br><span class="line">Notification secondPageNotification =</span><br><span class="line">        <span class="keyword">new</span> NotificationCompat.Builder(<span class="keyword">this</span>)</span><br><span class="line">        .setStyle(secondPageStyle)</span><br><span class="line">        .build();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Extend the notification builder with the second page</span></span><br><span class="line">Notification notification = notificationBuilder</span><br><span class="line">        .extend(<span class="keyword">new</span> NotificationCompat.WearableExtender()</span><br><span class="line">                .addPage(secondPageNotification))</span><br><span class="line">        .build();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Issue the notification</span></span><br><span class="line">notificationManager =</span><br><span class="line">        NotificationManagerCompat.from(<span class="keyword">this</span>);</span><br><span class="line">notificationManager.notify(notificationId, notification);</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1016,97 +1101,6 @@ npm install
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/01/04/Bug-of-TabLayout/" itemprop="url">
-                  A Bug of TabLayout
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-01-04T00:26:01+08:00" content="2016-01-04">
-              2016-01-04
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>In Google’s design support library, there is a bug for version 22.2.1 that the <code>TabLayout</code> in <code>Toolbar</code> may not display. I spent neary an hour debugging for this problem. There is a work-around for this bug:</p>
-<pre><code>tabLayout.post(new Runnable() {
-    @Override
-    public void run() {
-        tabLayout.setupWithViewPager(viewPager);
-    }
-});
-</code></pre><p>But the easiest way is to upgrade the design library to version 23.</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1153,7 +1147,7 @@ npm install
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">108</span>
+              <span class="site-state-item-count">109</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1163,7 +1157,7 @@ npm install
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-count">34</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

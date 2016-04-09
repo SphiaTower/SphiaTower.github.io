@@ -65,7 +65,7 @@
 <meta property="og:url" content="http://yoursite.com/2015/11/16/notes-about-the-activity-lifecycle/index.html">
 <meta property="og:site_name" content="Welcome to SPHIA">
 <meta property="og:description" content="Starting an ActivityTechnically, the activity becomes visible to the user when onStart() is called, but onResume() quickly follows and the activity remains in the Resumed state until something occurs">
-<meta property="og:updated_time" content="2016-02-16T10:04:38.975Z">
+<meta property="og:updated_time" content="2016-04-09T02:14:39.238Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Notes on the Activity Lifecycle">
 <meta name="twitter:description" content="Starting an ActivityTechnically, the activity becomes visible to the user when onStart() is called, but onResume() quickly follows and the activity remains in the Resumed state until something occurs">
@@ -255,7 +255,7 @@
 
       
         <h1 id="Starting-an-Activity"><a href="#Starting-an-Activity" class="headerlink" title="Starting an Activity"></a>Starting an Activity</h1><p>Technically, the activity becomes visible to the user when <code>onStart()</code> is called, but <code>onResume()</code> quickly follows and the activity remains in the Resumed state until something occurs to change that, such as when a phone call is received, the user navigates to another activity, or the device screen turns off.</p>
-<p>Most apps don’t need to implement this method because local class references are destroyed with the activity and your activity should perform most cleanup during <code>onPause()</code> and <code>onStop()</code>. However, if your activity includes background threads that you created during <code>onCreate()</code> or other long-running resources that could potentially leak memory if not properly closed, you should kill them during <code>onDestroy()</code>.<br><a id="more"></a></p>
+<p>Most apps don’t need to implement this method (<code>onDestroy()</code>) because local class references are destroyed with the activity and your activity should perform most cleanup during <code>onPause()</code> and <code>onStop()</code>. However, if your activity includes background threads that you created during <code>onCreate()</code> or other long-running resources that could potentially leak memory if not properly closed, you should kill them during <code>onDestroy()</code>.<br><a id="more"></a></p>
 <p>The system calls <code>onDestroy()</code> after it has already called <code>onPause()</code> and <code>onStop()</code> in all situations except one: when you call <code>finish()</code> from within the <code>onCreate()</code> method. In some cases, such as when your activity operates as a temporary decision maker to launch another activity, you might call <code>finish()</code> from within <code>onCreate()</code> to destroy the activity. In this case, the system immediately calls <code>onDestroy()</code> without calling any of the other lifecycle methods.</p>
 <h1 id="Pausing-and-Resuming-an-Activity"><a href="#Pausing-and-Resuming-an-Activity" class="headerlink" title="Pausing and Resuming an Activity"></a>Pausing and Resuming an Activity</h1><p>When the system calls <code>onPause()</code> for your activity, it technically means your activity is still partially visible, but most often is an indication that the user is leaving the activity and it will soon enter the Stopped state. You should usually use the <code>onPause()</code> callback to:</p>
 <ul>
@@ -368,7 +368,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">108</span>
+              <span class="site-state-item-count">109</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -378,7 +378,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-count">34</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

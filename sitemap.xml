@@ -2,16 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/2016/04/08/dependency-injection-1/</loc>
+    <loc>http://yoursite.com/2016/04/09/mvp/</loc>
     
-    <lastmod>2016-04-08T14:23:29.889Z</lastmod>
+    <lastmod>2016-04-09T08:03:04.195Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://yoursite.com/2016/04/08/dependency-injection-4/</loc>
     
-    <lastmod>2016-04-08T14:20:15.608Z</lastmod>
+    <lastmod>2016-04-09T02:47:00.625Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/11/16/notes-about-the-activity-lifecycle/</loc>
+    
+    <lastmod>2016-04-09T02:14:39.238Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/04/08/dependency-injection-1/</loc>
+    
+    <lastmod>2016-04-08T14:23:29.889Z</lastmod>
     
   </url>
   
@@ -320,13 +334,6 @@
     <loc>http://yoursite.com/2015/11/16/notes-about-ContentProviders-2/</loc>
     
     <lastmod>2016-02-16T11:13:24.135Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2015/11/16/notes-about-the-activity-lifecycle/</loc>
-    
-    <lastmod>2016-02-16T10:04:38.975Z</lastmod>
     
   </url>
   
