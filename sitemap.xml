@@ -2,9 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/04/17/mvp-and-others/</loc>
+    
+    <lastmod>2016-04-17T06:36:14.690Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2015/10/16/support-different-screen/</loc>
+    
+    <lastmod>2016-04-17T05:54:27.252Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/04/16/Arrays-asList/</loc>
+    
+    <lastmod>2016-04-16T15:57:41.317Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/04/09/mvp/</loc>
     
-    <lastmod>2016-04-09T08:03:04.195Z</lastmod>
+    <lastmod>2016-04-09T08:05:17.090Z</lastmod>
     
   </url>
   

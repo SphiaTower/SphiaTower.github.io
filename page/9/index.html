@@ -201,6 +201,277 @@
 
     
     
+      
+      
+
+      
+    
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/15/Intent-Filter-Match-URL/" itemprop="url">
+                  Intent Filter匹配URL的实例
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-15T20:24:52+08:00" content="2015-09-15">
+              2015-09-15
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>上篇文章对Intent Filter整体的用法作了总结。现在来着重研究一下<code>&lt;data&gt;</code>标签的匹配方法，尤其是经常用到的URL链接。</p>
+<p>很多网站的客户端应用都对应一些具体的网址，经常会希望用户在其他应用打开这些网址后能够跳转到自己的应用中来。</p>
+<p>接下来结合自己的一个例子来讲解如何匹配URL，要匹配的网址是：<br><a href="http://www.sphia.com/java/android/intent-filter.html">http://www.sphia.com/java/android/intent-filter.html</a><br><a href="http://www.sphia.com/java/android/match-url.html">http://www.sphia.com/java/android/match-url.html</a><br>也就是 www.sphia.com/java/android/ 目录下的所有链接。</p>
+<p>首先放出实现的方法：<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/15/Intent-Filter-Match-URL/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/14/Intent-Filters/" itemprop="url">
+                  Intent Filter总结
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-14T23:12:17+08:00" content="2015-09-14">
+              2015-09-14
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Intent filter是安卓中非常有用的一个组件。以我的经验，它主要用在两处，一是BroadcastReceiver接收特定的Intent时，二是Activity接收隐式Intent来让其他应用或者自己应用的其他组件进行调用。现在就来系统学习一下，特别是传输数据的部分。</p>
+<h2 id="接收隐式Intent"><a href="#接收隐式Intent" class="headerlink" title="接收隐式Intent"></a>接收隐式Intent</h2><p>为了说明app能够接受哪些隐式intent，需要在manifest的应用组件中声明一个或多个<code>&lt;intent-filter&gt;</code>。每个intent filter根据intent的action，data和category指定它能够接收的intent的类型。只有intent可以通过intent filter的过滤，系统才会将隐式intent传送给相应的应用组件。</p>
+<blockquote>
+<p><strong>注意</strong>：显式的intent总是被传送给目标，无视其声明的filter。</p>
+</blockquote>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/14/Intent-Filters/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/14/GridView/" itemprop="url">
+                  初探GridView
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-14T20:47:46+08:00" content="2015-09-14">
+              2015-09-14
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>自己的项目中还从来没有用过<code>GridView</code>，这次有机会使用了，首先系统地学习一下。</p>
+<p><code>GridView</code>是一个二维展示子项的可滚动的<code>ViewGroup</code>。使用<code>ListAdapter</code>可以自动将每个格子插入至布局。  </p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/14/GridView/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -808,301 +1079,12 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/12/picasso-performance/" itemprop="url">
-                  提高Picasso的缩放速度
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-12T13:52:27+08:00" content="2015-09-12">
-              2015-09-12
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在Piccaso中按比例缩放图片很容易，只需要下面的代码即可：</p>
-<pre><code>Picasso.with(context).load(url).resize(SCREEN_WIDTH,SCREEN_WIDTH).centerCrop().into(imageView);
-</code></pre><p>然而，实际操作中发现，这种方法明显有一些延迟（因为项目中要加载的图片已经在内存中，所以不是图片加载的问题），导致用户体验不太好，屏幕要黑屏一小段时间。所以试着用自己的代码实现了缩放，效果比上面的实现要好上很多：</p>
-<pre><code>Picasso.with(this).load(url).into(imageView, new Callback() {
-            @Override
-            public void onSuccess() {
-                Drawable drawable = imageView.getDrawable();
-                drawable = zoomDrawable(drawable, SCREEN_WIDTH);
-                imageView.setImageDrawable(drawable);
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/12/picasso-performance/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/12/photoview/" itemprop="url">
-                  安卓手势学习笔记（五） 使用PhotoView缩放图片
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-12T12:58:52+08:00" content="2015-09-12">
-              2015-09-12
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>学习了安卓中多点触控的部分，发现全部自己来写还是比较复杂的。如果不是需要对手势进行专门处理的应用，其实没有太大必要花时间在这个上面，所以决定学习一些开源控件。在学习PhotoView的时候，发现了几个问题，在此记录一下。  </p>
-<h2 id="Gradle"><a href="#Gradle" class="headerlink" title="Gradle"></a>Gradle</h2><p>首先，Github上的gradle配置是无效的，无法完成同步，需要将版本号下调成1.2.3才可以。</p>
-<pre><code>repositories {
-  mavenCentral()
-}
-
-dependencies {
-  compile &apos;com.github.chrisbanes.photoview:library:1.2.3&apos;
-}
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/12/photoview/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/12/Dragging-and-Scaling/" itemprop="url">
-                  安卓手势学习笔记（四） 拖动与缩放
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-12T12:16:46+08:00" content="2015-09-12">
-              2015-09-12
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>本文探讨如何使用手势拖动和缩放，用<code>onTouchEvent()</code>来拦截触屏事件。</p>
-<h2 id="拖动对象"><a href="#拖动对象" class="headerlink" title="拖动对象"></a>拖动对象</h2><p><em>如果使用3.0以上版本，可以使用内置的拖放事件侦听器<code>View.OnDragListener</code>。</em><br>拖动是一个很常用的操作：</p>
-<ul>
-<li>在拖动（或滚动）操作中，应用必须跟踪原始的触点（手指），即使其他手指也触摸了屏幕。例如，拖动图片时，用户将第二根手指放在了屏幕上，并抬起了第一根。如果应用只跟踪单独的触点，它会认为第二个触点为默认触点并将图片移动至那个位置。</li>
-<li>为了避免这种问题，应用需要辨别原始触点和后来出现的其他触点。可以通过跟踪<code>ACTION_POINTER_DOWN</code>和<code>ACTION_POINTER_UP</code>来实现。当次要触点按下或抬起时它们会被传送到<code>onTouchEvent()</code>中。</li>
-<li><code>ACTION_POINTER_UP</code>的情况下。。。</li>
-</ul>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/12/Dragging-and-Scaling/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1143,7 +1125,7 @@ dependencies {
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">109</span>
+              <span class="site-state-item-count">112</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

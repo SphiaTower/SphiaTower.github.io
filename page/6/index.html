@@ -201,6 +201,284 @@
 
     
     
+      
+      
+
+      
+    
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/10/ImageGetter-with-Picasso/" itemprop="url">
+                  A Failed Attempt to Implement Html.ImageGetter with Picasso
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-10T19:48:19+08:00" content="2015-10-10">
+              2015-10-10
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>Picasso is an very powerful for handling image downloading and caching operations. However, sometimes we need to display an image in a <code>TextView</code> by calling <code>Html.fromHtml</code>, which need a <code>ImageGetter</code> passed as a parameter.</p>
+<p>Essentially speaking, <code>ImageGetter</code> is a function interface used to wrap a single function <code>getDrawable(String source)</code>. The <code>getDrawable()</code> function is called by <code>Html.fromHtml</code> as a sync process. So <code>getDrawable()</code> could not be executed from the UI thread. And the problem is how to get a <code>Drawable</code> instance using Picasso synchronously, since an async process could not return a <code>Drawable</code> in a the method body of <code>getDrawable()</code>.</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/10/ImageGetter-with-Picasso/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/08/Requesting-Permissions-at-Run-Time/" itemprop="url">
+                  Android M 运行时权限
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-08T22:26:56+08:00" content="2015-10-08">
+              2015-10-08
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>从API 23开始，用户将在应用运行时授予权限而非安装时。用户可以在应用的设置屏幕中重新设置权限。</p>
+<p>系统权限被分为两类：<em>普通</em>和<em>危险</em>。</p>
+<ul>
+<li>普通权限不直接危及用户的隐私。如果应用在manifest中列出普通权限，系统将自动授予。</li>
+<li>危险权限会允许应用访问用户的私密数据。如果列出在manifest中，用户必须显示批准权限。</li>
+</ul>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/08/Requesting-Permissions-at-Run-Time/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/07/notifyDataSetChanged/" itemprop="url">
+                  A Problem about notifyDataSetChanged()
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-07T12:23:37+08:00" content="2015-10-07">
+              2015-10-07
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>I found a problem when using <code>adapter</code> of a <code>RecyclerView</code>. The <code>notifyDataSetChanged()</code> method did not work because I wrapped it in a recursive method which never returns.</p>
+<p>And I found that the <code>notifyDataSetChanged()</code> method could only work after the wrapped method returned. For example, if a sleep is added after <code>notifyDataSetChanged()</code>, it won’t take effect before the sleep is finished.</p>
+<pre><code>void wrapper(){
+    mAdapter.notifyDataSetChanged();
+    try{
+        TimeUnit.Seconds.sleep(5);
+    }catch(Exception ignored){
+    }
+}
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/07/notifyDataSetChanged/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -835,282 +1113,12 @@ saxParser.parse(inputSource, defaultHandler);
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/01/Keeping-the-Device-Awake/" itemprop="url">
-                  安卓保持设备唤醒
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-01T12:02:25+08:00" content="2015-10-01">
-              2015-10-01
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>为了避免耗尽电池，闲置状态的安卓设备，很快会进入睡眠状态。然而，有时应用需要唤醒屏幕或CPU并保持唤醒状态来完成一些工作。</p>
-<p>使用的方法取决于应用本身的需求。然而，通用的原则是，应该尽量使用轻量级的方法，来减少应用对系统资源的冲击。下面将探讨当设备的默认睡眠行为无法满足应用需求时的处理方法。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/01/Keeping-the-Device-Awake/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/30/Scheduling-Repeating-Alarms/" itemprop="url">
-                  安卓调度重复闹钟
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-30T21:24:15+08:00" content="2015-09-30">
-              2015-09-30
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><code>AlarmManager</code>类实现的闹钟可以执行在应用的生命周期之外执行基于时间的操作。例如，可以设定一个闹钟来初始化一个长期运行的操作，比如每天启动一次下载天气预报的服务。</p>
-<p>闹钟有以下特性：</p>
-<ul>
-<li>可以在指定时间或时间间隔发射Intent</li>
-<li>可以与broadcast receiver一起使用来启动服务或者执行其他服务</li>
-<li>可以在应用之外进行触发事件或动作，即使应用未启动或者设备在睡眠状态中</li>
-<li>可以最小化应用要求的资源。无需依赖定时器或者连续运行的后台服务就可以调度操作。</li>
-</ul>
-<blockquote>
-<p>对确保在应用生命周期内发生的定时操作而言，考虑使用将<code>Handler</code>与<code>Timer</code>、<code>Thread</code>联合使用。这样可以使安卓更好地控制系统资源。</p>
-</blockquote>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/30/Scheduling-Repeating-Alarms/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/29/source-code-of-volley/" itemprop="url">
-                  源码解析 - Volley
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-29T19:45:23+08:00" content="2015-09-29">
-              2015-09-29
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Volley是安卓中处理网络请求的一个包。虽然从来没有使用过，但从文档来看使用起来还是很容易的。但一直疑惑的一点就是为什么要使用这个包来进行网络操作。接下来就从源代码看起。</p>
-<h2 id="Volley-newRequestQueue"><a href="#Volley-newRequestQueue" class="headerlink" title="Volley.newRequestQueue()"></a>Volley.newRequestQueue()</h2><p>使用Volley首先要创建一个请求队列，接下来就先看这个方法。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/29/source-code-of-volley/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1151,7 +1159,7 @@ saxParser.parse(inputSource, defaultHandler);
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">109</span>
+              <span class="site-state-item-count">112</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

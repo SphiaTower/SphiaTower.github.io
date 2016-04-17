@@ -201,6 +201,300 @@
 
     
     
+      
+      
+
+      
+    
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/12/picasso-performance/" itemprop="url">
+                  提高Picasso的缩放速度
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-12T13:52:27+08:00" content="2015-09-12">
+              2015-09-12
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在Piccaso中按比例缩放图片很容易，只需要下面的代码即可：</p>
+<pre><code>Picasso.with(context).load(url).resize(SCREEN_WIDTH,SCREEN_WIDTH).centerCrop().into(imageView);
+</code></pre><p>然而，实际操作中发现，这种方法明显有一些延迟（因为项目中要加载的图片已经在内存中，所以不是图片加载的问题），导致用户体验不太好，屏幕要黑屏一小段时间。所以试着用自己的代码实现了缩放，效果比上面的实现要好上很多：</p>
+<pre><code>Picasso.with(this).load(url).into(imageView, new Callback() {
+            @Override
+            public void onSuccess() {
+                Drawable drawable = imageView.getDrawable();
+                drawable = zoomDrawable(drawable, SCREEN_WIDTH);
+                imageView.setImageDrawable(drawable);
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/12/picasso-performance/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/12/photoview/" itemprop="url">
+                  安卓手势学习笔记（五） 使用PhotoView缩放图片
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-12T12:58:52+08:00" content="2015-09-12">
+              2015-09-12
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>学习了安卓中多点触控的部分，发现全部自己来写还是比较复杂的。如果不是需要对手势进行专门处理的应用，其实没有太大必要花时间在这个上面，所以决定学习一些开源控件。在学习PhotoView的时候，发现了几个问题，在此记录一下。  </p>
+<h2 id="Gradle"><a href="#Gradle" class="headerlink" title="Gradle"></a>Gradle</h2><p>首先，Github上的gradle配置是无效的，无法完成同步，需要将版本号下调成1.2.3才可以。</p>
+<pre><code>repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile &apos;com.github.chrisbanes.photoview:library:1.2.3&apos;
+}
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/12/photoview/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/12/Dragging-and-Scaling/" itemprop="url">
+                  安卓手势学习笔记（四） 拖动与缩放
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-12T12:16:46+08:00" content="2015-09-12">
+              2015-09-12
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>本文探讨如何使用手势拖动和缩放，用<code>onTouchEvent()</code>来拦截触屏事件。</p>
+<h2 id="拖动对象"><a href="#拖动对象" class="headerlink" title="拖动对象"></a>拖动对象</h2><p><em>如果使用3.0以上版本，可以使用内置的拖放事件侦听器<code>View.OnDragListener</code>。</em><br>拖动是一个很常用的操作：</p>
+<ul>
+<li>在拖动（或滚动）操作中，应用必须跟踪原始的触点（手指），即使其他手指也触摸了屏幕。例如，拖动图片时，用户将第二根手指放在了屏幕上，并抬起了第一根。如果应用只跟踪单独的触点，它会认为第二个触点为默认触点并将图片移动至那个位置。</li>
+<li>为了避免这种问题，应用需要辨别原始触点和后来出现的其他触点。可以通过跟踪<code>ACTION_POINTER_DOWN</code>和<code>ACTION_POINTER_UP</code>来实现。当次要触点按下或抬起时它们会被传送到<code>onTouchEvent()</code>中。</li>
+<li><code>ACTION_POINTER_UP</code>的情况下。。。</li>
+</ul>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/12/Dragging-and-Scaling/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -833,276 +1127,12 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/07/threads-leak/" itemprop="url">
-                  安卓内存泄露问题（二） Thread
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-07T22:19:34+08:00" content="2015-09-07">
-              2015-09-07
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>本文探讨安卓中长期任务引发的Context泄露问题，文章主要翻译和总结自<br><a href="http://www.androiddesignpatterns.com/2013/04/activitys-threads-memory-leaks.html">http://www.androiddesignpatterns.com/2013/04/activitys-threads-memory-leaks.html</a>   </p>
-<p>将长时间运行的任务与activity的生命周期相协调，同时避免隐含的内存泄露，是开发中的一大难点。先来看下面的例子，在activity创建时启动并循环一个新线程：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/07/threads-leak/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/07/creating-a-bound-service-2/" itemprop="url">
-                  Service学习笔记（七） 绑定Service（续）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-07T21:33:53+08:00" content="2015-09-07">
-              2015-09-07
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>上一篇已经基本介绍完毕了绑定Service的主要内容，这一篇来补充一下其他需要注意的问题。  </p>
-<h2 id="与生命周期相配合"><a href="#与生命周期相配合" class="headerlink" title="与生命周期相配合"></a>与生命周期相配合</h2><p>将绑定和解绑的过程与客户端生命周期的产生和销毁相配合，比如：  </p>
-<ul>
-<li>如果只在activity可见时与服务交互，应该在<code>onStart()</code>中绑定，在<code>onStop()</code>中解绑。</li>
-<li>如果希望activity停止在后台的时候也可以接受响应，可以在<code>onCreate()</code>中绑定，在<code>onDestroy()</code>中解绑。注意，这意味着activity整个运行期间（包括在后台）都需要使用服务，如果服务在不同的进程中，那个进程的权重会被增加，会更容易被系统杀掉。</li>
-<li><strong>不可以</strong>在activity的<code>onResume()</code>和<code>onPause()</code>期间绑定或者解绑，因为这两个回调在所有生命周期变化中都会发生，而在这些变化中执行的处理应该尽量做到最小。如果应用中多个activity绑定同一个service，在切换activity时，前一个activity解绑而后一个还没有绑定时，服务可能被销毁重建。
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/07/creating-a-bound-service-2/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/06/creating-a-bound-service/" itemprop="url">
-                  Service学习笔记（六） 绑定Service
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-06T21:37:07+08:00" content="2015-09-06">
-              2015-09-06
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="创建绑定的Service"><a href="#创建绑定的Service" class="headerlink" title="创建绑定的Service"></a>创建绑定的Service</h2><p>绑定的服务是指允许应用组件通过调用<code>bindService()</code>来绑定的服务，可以创建一个长期维持的连接（通常不允许调用<code>startService()</code>启动。<br>当需要使用Activity或者其他组件与服务进行互动的时候，或者是通过IPC将应用的一部分功能暴露给其他应用的时候，适合创建绑定的服务。<br>创建绑定的服务时，必须实现<code>onBind()</code>回调方法以返回一个定义了与服务通讯接口的<code>IBinder</code>。其他应用可以通过调用<code>bindService()</code>方法来获取这个接口，并调用服务中的方法。这种service仅仅为了绑定的控件而服务，所以一旦没有控件绑定，系统会立即将其销毁（无需像在启动模式一样手动停止服务）。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/06/creating-a-bound-service/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1143,7 +1173,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">109</span>
+              <span class="site-state-item-count">112</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

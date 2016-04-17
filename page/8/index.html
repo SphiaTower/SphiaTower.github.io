@@ -201,6 +201,279 @@
 
     
     
+      
+      
+
+      
+    
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/26/Specifying-the-Code-to-Run-on-a-Thread/" itemprop="url">
+                  安卓多线程（一） 在后台运行
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-26T23:01:34+08:00" content="2015-09-26">
+              2015-09-26
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>安卓中使用多线程本身并不难，但安卓平台本身性能有限，所以有很多细节需要注意。这一系列的文章将总结一下多线程方面的一些问题。</p>
+<p>可以在单独的线程中执行<code>Runnable</code>，也可以将之传送给其他的可以把它附到线程上并运行的对象。执行特定操作的一个或多个<code>Runnable</code>有时称作<em>任务</em>。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/26/Specifying-the-Code-to-Run-on-a-Thread/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/23/Generalized-Target-Type-Inference/" itemprop="url">
+                  Java 8泛型方法的自动推导
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-23T21:40:08+08:00" content="2015-09-23">
+              2015-09-23
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>今天在一个工程中写下面的语句时产生了疑问：</p>
+<pre><code>imageView.setImageBitmap(getIntent().getExtras().getParcelable());
+</code></pre><p>编译器居然没有对这个语句的类型错误进行提醒。<code>setImageBitmap()</code>接收一个<code>Bitmap</code>对象，而<code>getParcelable()</code>方法返回的应该是一个<code>Parcelable</code>对象。其中<code>Bitmap</code>类实现了<code>Parcelable</code>接口，所以这里存在一个向下转型，理应出现类型转换的问题，却没有报错。这是为什么呢？<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/23/Generalized-Target-Type-Inference/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/23/Taking-Photos-Simply/" itemprop="url">
+                  安卓拍摄和保存照片
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-23T19:58:10+08:00" content="2015-09-23">
+              2015-09-23
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在应用中可能会用到拍摄照片的功能，而这部分功能在整个应用中可能只是一小部分，所以开发时没有必要花精力去处理到底如何拍照。幸运的是，可以使用安卓设备中的其他相机应用来帮你处理。</p>
+<h2 id="要求相机权限"><a href="#要求相机权限" class="headerlink" title="要求相机权限"></a>要求相机权限</h2><p>如果拍照时应用的核心内容，那么需要限制安装应用的手机必须有相机。在manifest中可以如下处理：</p>
+<pre><code>&lt;manifest ... &gt;
+    &lt;uses-feature android:name=&quot;android.hardware.camera&quot;
+                  android:required=&quot;true&quot; /&gt;
+    ...
+&lt;/manifest&gt;
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/23/Taking-Photos-Simply/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -827,278 +1100,12 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/15/Intent-Filter-Match-URL/" itemprop="url">
-                  Intent Filter匹配URL的实例
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-15T20:24:52+08:00" content="2015-09-15">
-              2015-09-15
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>上篇文章对Intent Filter整体的用法作了总结。现在来着重研究一下<code>&lt;data&gt;</code>标签的匹配方法，尤其是经常用到的URL链接。</p>
-<p>很多网站的客户端应用都对应一些具体的网址，经常会希望用户在其他应用打开这些网址后能够跳转到自己的应用中来。</p>
-<p>接下来结合自己的一个例子来讲解如何匹配URL，要匹配的网址是：<br><a href="http://www.sphia.com/java/android/intent-filter.html">http://www.sphia.com/java/android/intent-filter.html</a><br><a href="http://www.sphia.com/java/android/match-url.html">http://www.sphia.com/java/android/match-url.html</a><br>也就是 www.sphia.com/java/android/ 目录下的所有链接。</p>
-<p>首先放出实现的方法：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/15/Intent-Filter-Match-URL/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/14/Intent-Filters/" itemprop="url">
-                  Intent Filter总结
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-14T23:12:17+08:00" content="2015-09-14">
-              2015-09-14
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Intent filter是安卓中非常有用的一个组件。以我的经验，它主要用在两处，一是BroadcastReceiver接收特定的Intent时，二是Activity接收隐式Intent来让其他应用或者自己应用的其他组件进行调用。现在就来系统学习一下，特别是传输数据的部分。</p>
-<h2 id="接收隐式Intent"><a href="#接收隐式Intent" class="headerlink" title="接收隐式Intent"></a>接收隐式Intent</h2><p>为了说明app能够接受哪些隐式intent，需要在manifest的应用组件中声明一个或多个<code>&lt;intent-filter&gt;</code>。每个intent filter根据intent的action，data和category指定它能够接收的intent的类型。只有intent可以通过intent filter的过滤，系统才会将隐式intent传送给相应的应用组件。</p>
-<blockquote>
-<p><strong>注意</strong>：显式的intent总是被传送给目标，无视其声明的filter。</p>
-</blockquote>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/14/Intent-Filters/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/14/GridView/" itemprop="url">
-                  初探GridView
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-14T20:47:46+08:00" content="2015-09-14">
-              2015-09-14
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>自己的项目中还从来没有用过<code>GridView</code>，这次有机会使用了，首先系统地学习一下。</p>
-<p><code>GridView</code>是一个二维展示子项的可滚动的<code>ViewGroup</code>。使用<code>ListAdapter</code>可以自动将每个格子插入至布局。  </p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/14/GridView/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1139,7 +1146,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">109</span>
+              <span class="site-state-item-count">112</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
