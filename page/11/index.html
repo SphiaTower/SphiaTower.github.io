@@ -201,11 +201,100 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/08/viewpager/" itemprop="url">
+                  ViewPager使用总结
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-08T19:14:22+08:00" content="2015-09-08">
+              2015-09-08
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          <p>ViewPager是非常常用的一个控件，使用起来也还算简单。但是ViewPager使用时会经常出现一些细微的问题，所以在此总结一下ViewPager的相关内容。</p>
+<h2 id="实现滑动视图"><a href="#实现滑动视图" class="headerlink" title="实现滑动视图"></a>实现滑动视图</h2><p>可以使用<code>ViewPager</code>实现滑动视图，如果每个页面都占满整个布局，可以在xml中如下表示：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;android.support.v4.view.ViewPager
+    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:id=&quot;@+id/pager&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot; /&gt;
+</code></pre><p>要插入每个页面的子视图，需要把布局与<code>PagerAdapter</code>进行挂钩，有两种<code>PagerAdapter</code>可供使用：<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/08/viewpager/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1015,93 +1104,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/05/creating-a-started-service/" itemprop="url">
-                  Service学习笔记（二） 启动Service
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-05T11:42:33+08:00" content="2015-09-05">
-              2015-09-05
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>继续上一篇总结service的用法，本篇文章主要总结start方法启动的service。内容还是主要来自官网，但也并不全是翻译。  </p>
-<h2 id="创建可启动的service"><a href="#创建可启动的service" class="headerlink" title="创建可启动的service"></a>创建可启动的service</h2><p>其他组件通过调用<code>startService()</code>来启动service，并传送给它一个指定service和提供数据的<code>Intent</code>。被启动后service的<code>onStartCommand()</code>方法被调用，并接收到所传送的<code>Intent</code>。<br>service被启动后，其生命周期与启动它的组件无关，在后台无限期运行。当任务完成后，应当通过调用<code>stopSelf</code>或由其他组件调用<code>stopService()</code>的方式终止运行。<br>有两个父类可以用来被继承来创造一个可以被启动的service。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/05/creating-a-started-service/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1148,7 +1150,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">112</span>
+              <span class="site-state-item-count">113</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

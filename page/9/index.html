@@ -201,11 +201,98 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/16/layout-behavior-bug/" itemprop="url">
+                  Layout_behavior属性造成的布局异常
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-16T20:05:21+08:00" content="2015-09-16">
+              2015-09-16
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          <p>前两天发现了一个布局的bug，怎么都找不到原因，今天总算是解决掉了。<br>很多异步加载的页面都会做一个”empty view”来表示加载过程，其中最常用的就是<code>ProgressBar</code>了。实现方法很简单，在布局中添加一个<code>ProgressBar</code>并在适当的时候使其可见或不可见就可以了。</p>
+<pre><code>&lt;ProgressBar android:id=&quot;@+id/loading_spinner&quot;
+             style=&quot;?android:progressBarStyleLarge&quot;
+             android:layout_width=&quot;wrap_content&quot;
+             android:layout_height=&quot;wrap_content&quot;
+             android:layout_gravity=&quot;center&quot; xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;/&gt;
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/16/layout-behavior-bug/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -993,92 +1080,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/13/pull-to-refresh-recyler/" itemprop="url">
-                  为RecyclerView实现PullToRefresh
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-13T10:34:54+08:00" content="2015-09-13">
-              2015-09-13
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><code>chrisbanes/ActionBar-PullToRefresh</code>是一个很好用的下拉刷新库。与常用的另一个PullToRefresh库不同，这个库的特点就是轻量级，方便集成到自己的项目中。下拉刷新经常用在列表中，<code>ActionBar-PullToRefresh</code>默认支持<code>ListView</code>，而不支持<code>RecyclerView</code>。要让其支持<code>RecyclerView</code>就要自己用<code>ViewDelegate</code>来实现。另外，使用Github主页中注入<code>ListFragment</code>的方法也不行。<br>（实现代码在这里 <a href="https://github.com/SphiaTower/ActionBar-PullToRefresh">https://github.com/SphiaTower/ActionBar-PullToRefresh</a> ）<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/13/pull-to-refresh-recyler/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1125,7 +1126,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">112</span>
+              <span class="site-state-item-count">113</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

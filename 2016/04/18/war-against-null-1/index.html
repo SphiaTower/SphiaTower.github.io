@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo," />
+  <meta name="keywords" content="Functional Programming,Java,Java 8," />
 
 
 
@@ -59,16 +59,19 @@
 
 
 
-<meta name="description" content="Today I spent an entire morning fixing a bug of hexo. However, I failed to fix it and leaving my blog unable to update. After trying various solutions, I decided to reconstruct my blog. Now I will rec">
+<meta name="description" content="A Billion-Dollar Mistake
+I call it my billion-dollar mistake. It was the invention of the null reference in 1965. At that time, I was designing the first comprehensive type system for references in an">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Procedures of Restoring My Blog with Hexo">
-<meta property="og:url" content="http://yoursite.com/2016/02/27/resetting-hexo/index.html">
+<meta property="og:title" content="War Against Null I - Simulate Optional Class in Java 7">
+<meta property="og:url" content="http://yoursite.com/2016/04/18/war-against-null-1/index.html">
 <meta property="og:site_name" content="Welcome to SPHIA">
-<meta property="og:description" content="Today I spent an entire morning fixing a bug of hexo. However, I failed to fix it and leaving my blog unable to update. After trying various solutions, I decided to reconstruct my blog. Now I will rec">
-<meta property="og:updated_time" content="2016-02-27T03:22:09.615Z">
+<meta property="og:description" content="A Billion-Dollar Mistake
+I call it my billion-dollar mistake. It was the invention of the null reference in 1965. At that time, I was designing the first comprehensive type system for references in an">
+<meta property="og:updated_time" content="2016-04-18T14:49:25.493Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Procedures of Restoring My Blog with Hexo">
-<meta name="twitter:description" content="Today I spent an entire morning fixing a bug of hexo. However, I failed to fix it and leaving my blog unable to update. After trying various solutions, I decided to reconstruct my blog. Now I will rec">
+<meta name="twitter:title" content="War Against Null I - Simulate Optional Class in Java 7">
+<meta name="twitter:description" content="A Billion-Dollar Mistake
+I call it my billion-dollar mistake. It was the invention of the null reference in 1965. At that time, I was designing the first comprehensive type system for references in an">
 
 
 
@@ -86,7 +89,7 @@
   };
 </script>
 
-  <title> Procedures of Restoring My Blog with Hexo | Welcome to SPHIA </title>
+  <title> War Against Null I - Simulate Optional Class in Java 7 | Welcome to SPHIA </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -216,7 +219,7 @@
             
             
               
-                Procedures of Restoring My Blog with Hexo
+                War Against Null I - Simulate Optional Class in Java 7
               
             
           </h1>
@@ -228,8 +231,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-27T10:49:22+08:00" content="2016-02-27">
-              2016-02-27
+            <time itemprop="dateCreated" datetime="2016-04-18T00:37:25+08:00" content="2016-04-18">
+              2016-04-18
             </time>
           </span>
 
@@ -254,30 +257,13 @@
       
 
       
-        <p>Today I spent an entire morning fixing a bug of hexo. However, I failed to fix it and leaving my blog unable to update. After trying various solutions, I decided to reconstruct my blog. Now I will record the process of resetting my blog.</p>
-<h1 id="Initialize-Hexo"><a href="#Initialize-Hexo" class="headerlink" title="Initialize Hexo"></a>Initialize Hexo</h1><p>First, delete the old repo in Github, and re-init a hexo directory:</p>
-<pre><code>hexo init my-hexo-website
-
-cd my-hexo-website
-npm install
-</code></pre><h1 id="Configure-Git"><a href="#Configure-Git" class="headerlink" title="Configure Git"></a>Configure Git</h1><p>Inside your hexo-website folder, use the command</p>
-<pre><code>git init 
-</code></pre><a id="more"></a>
-<p>Add the important files to Git and then commit those files as the first change:</p>
-<pre><code>git add _config.yml packages.json .gitignore scaffolds/*.md 
-git commit -m &quot;Adding a new Hexo website&quot;
-</code></pre><h1 id="Create-a-Repository-on-Github"><a href="#Create-a-Repository-on-Github" class="headerlink" title="Create a Repository on Github"></a>Create a Repository on Github</h1><p>Sign into your account on Github and create a new repository.</p>
-<p>Choose SSH in quick setup.</p>
-<p>Add this new repository to your local git repository</p>
-<pre><code>git remote add origin git@github.com:sphiatower/sphiatower.github.io.git
-</code></pre><p>Then I copied all articles and themes back to my new directory. However I got an error when deploying:</p>
-<pre><code>deployer not found github
-</code></pre><p>This solution is changing <code>type: github</code> into <code>type: git</code></p>
-<pre><code>deploy:
-  type: git
-  repository: https://github.com/username/username.github.com.git
-  branch: master
-</code></pre><p>Finally, my blog managed to work as before.</p>
+        <h1 id="A-Billion-Dollar-Mistake"><a href="#A-Billion-Dollar-Mistake" class="headerlink" title="A Billion-Dollar Mistake"></a>A Billion-Dollar Mistake</h1><blockquote>
+<p>I call it my billion-dollar mistake. It was the invention of the null reference in 1965. At that time, I was designing the first comprehensive type system for references in an object oriented language (ALGOL W). My goal was to ensure that all use of references should be absolutely safe, with checking performed automatically by the compiler. But I couldn’t resist the temptation to put in a null reference, simply because it was so easy to implement. This has led to innumerable errors, vulnerabilities, and system crashes, which have probably caused a billion dollars of pain and damage in the last forty years. - Tony Hoare</p>
+</blockquote>
+<h1 id="Optional-in-Java-8"><a href="#Optional-in-Java-8" class="headerlink" title="Optional in Java 8"></a>Optional in Java 8</h1><p>As is stated by its inventor, Tony Hoare, <code>null</code> reference has caused innumerable errors. In Android, <code>NPE</code> is like a lurking demon which appears here and there and crashes the app. There have been lots of methods to avoid potential <code>null</code> problems in compile time. From Java 8 and on, you can create an <code>Optional&lt;T&gt;</code> class to wrap the object may be null, and execute code inside the lambda expression.<br><a id="more"></a><br>For example, below is a method which delegates <code>Map.get()</code> which returns <code>Optional&lt;String&gt;</code>:<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Map&lt;Integer, String&gt; map;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Optional&lt;String&gt; <span class="title">findNameById</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Optional.ofNullable(map.get(id));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>And for the client, you use the result like this:<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> id = <span class="number">12345</span>;</span><br><span class="line">Optional&lt;String&gt; nullableName = findNameById(id);</span><br><span class="line">nullableName.ifPresent(name -&gt; System.out.print(<span class="string">"The name of "</span> + id + <span class="string">"is "</span> + name));</span><br></pre></td></tr></table></figure></p>
+<h1 id="Simulate-One-in-Java-7"><a href="#Simulate-One-in-Java-7" class="headerlink" title="Simulate One in Java 7"></a>Simulate One in Java 7</h1><p>In this example, you print the name of a specified id if it’s not null. In Android, there are lots of methods returning null and producing potential exceptions like <code>findViewById()</code>, <code>findFragmentByTag()</code> and so on. However, the Android sdk doesn’t support features in Java 8, except you use a plugin to get over it. To solve this problem, you can simulate the lambda function by a functional interface, and use anonymous inner classes to pass the function body. The function is called <code>Consumer</code>.<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Consumer</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">consume</span><span class="params">(@NonNull T val)</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><br>Below is a simplest <code>Optional</code> implementation:<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Optional</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="annotation">@Nullable</span></span><br><span class="line">    <span class="keyword">private</span> T mVal;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Optional</span><span class="params">(@Nullable T object)</span> </span>&#123;</span><br><span class="line">        mVal = object;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isPresent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mVal != <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ifPresent</span><span class="params">(@NonNull Consumer&lt;T&gt; consumer)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (mVal != <span class="keyword">null</span>) &#123;</span><br><span class="line">            consumer.consume(mVal);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Consumer</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">consume</span><span class="params">(@NonNull T val)</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>In Android, you can use this class to wrap a listener, like:<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@NonNull</span></span><br><span class="line">   <span class="keyword">private</span> Optional&lt;OnClickListener&gt; mListener = <span class="keyword">new</span> Optional&lt;&gt;(<span class="keyword">null</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">()</span></span>&#123;</span><br><span class="line">        mListener.ifPresent(<span class="keyword">new</span> Optional.Consumer&lt;OnClickListener&gt;() &#123;</span><br><span class="line">                       <span class="annotation">@Override</span></span><br><span class="line">                       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">consume</span><span class="params">(@NonNull OnClickListener listener)</span> </span>&#123;</span><br><span class="line">                           listener.onClick();</span><br><span class="line">                       &#125;</span><br><span class="line">                   &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>In this way, you forward the event to the nullable listener, which will only handle the event when presenting.</p>
+<h1 id="The-Benefits"><a href="#The-Benefits" class="headerlink" title="The Benefits"></a>The Benefits</h1><p>Why do we use a lambda expression or an anonymous inner class to handle the null cases, instead of straightfoward <code>!=null</code> check? Or should we use <code>Optional.isPresent()</code> to check if the object exists? The key of this approach is that the calling of a lambda expression or an anonymous inner class is like an atomic operation. You <strong>have to</strong> check the nullity and execute the operation in one step and you have not any chance to forget. This is the true power of <code>Optional</code> class.</p>
+<p>However, there are also some problems for this approach to deal with null references. I will introduce them in future articles.</p>
 
       
     </div>
@@ -286,7 +272,11 @@ git commit -m &quot;Adding a new Hexo website&quot;
       
         <div class="post-tags">
           
-            <a href="/tags/Hexo/" rel="tag">#Hexo</a>
+            <a href="/tags/Functional-Programming/" rel="tag">#Functional Programming</a>
+          
+            <a href="/tags/Java/" rel="tag">#Java</a>
+          
+            <a href="/tags/Java-8/" rel="tag">#Java 8</a>
           
         </div>
       
@@ -295,17 +285,13 @@ git commit -m &quot;Adding a new Hexo website&quot;
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/02/15/visitor-double-dispatch/" rel="next" title="Understanding the Visitor Pattern - Double Dispatch">
-                <i class="fa fa-chevron-left"></i> Understanding the Visitor Pattern - Double Dispatch
+              <a href="/2016/04/17/mvp-and-others/" rel="next" title="Fuse Android Components with MVP">
+                <i class="fa fa-chevron-left"></i> Fuse Android Components with MVP
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/02/27/testing/" rel="prev" title="testing">
-                testing <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -423,7 +409,7 @@ git commit -m &quot;Adding a new Hexo website&quot;
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Initialize-Hexo"><span class="nav-number">1.</span> <span class="nav-text">Initialize Hexo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Configure-Git"><span class="nav-number">2.</span> <span class="nav-text">Configure Git</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Create-a-Repository-on-Github"><span class="nav-number">3.</span> <span class="nav-text">Create a Repository on Github</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#A-Billion-Dollar-Mistake"><span class="nav-number">1.</span> <span class="nav-text">A Billion-Dollar Mistake</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Optional-in-Java-8"><span class="nav-number">2.</span> <span class="nav-text">Optional in Java 8</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Simulate-One-in-Java-7"><span class="nav-number">3.</span> <span class="nav-text">Simulate One in Java 7</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-Benefits"><span class="nav-number">4.</span> <span class="nav-text">The Benefits</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

@@ -201,11 +201,92 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/26/Creating-a-Manager-for-Multiple-Threads/" itemprop="url">
+                  安卓多线程（二） 创造多线程管理者
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-26T23:20:00+08:00" content="2015-09-26">
+              2015-09-26
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          <p>上一篇文章介绍的方法适合只运行一次的任务。如果需要针对不同的数据重复运行任务，但同一时间只有一个在执行，可以使用<code>IntentService</code>。要自动在资源可用的时候运行任务，或者允许多个任务同时运行，则需要提供一个受管理的线程集合。这时应该使用<code>ThreadPoolExecutor</code>，当在池中有线程自由时从队列中取出一个任务执行。要运行一个任务，只需要添加到队列中。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/26/Creating-a-Manager-for-Multiple-Threads/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1008,98 +1089,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/16/layout-behavior-bug/" itemprop="url">
-                  Layout_behavior属性造成的布局异常
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-16T20:05:21+08:00" content="2015-09-16">
-              2015-09-16
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>前两天发现了一个布局的bug，怎么都找不到原因，今天总算是解决掉了。<br>很多异步加载的页面都会做一个”empty view”来表示加载过程，其中最常用的就是<code>ProgressBar</code>了。实现方法很简单，在布局中添加一个<code>ProgressBar</code>并在适当的时候使其可见或不可见就可以了。</p>
-<pre><code>&lt;ProgressBar android:id=&quot;@+id/loading_spinner&quot;
-             style=&quot;?android:progressBarStyleLarge&quot;
-             android:layout_width=&quot;wrap_content&quot;
-             android:layout_height=&quot;wrap_content&quot;
-             android:layout_gravity=&quot;center&quot; xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;/&gt;
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/16/layout-behavior-bug/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1146,7 +1135,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">112</span>
+              <span class="site-state-item-count">113</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

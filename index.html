@@ -201,15 +201,95 @@
 
     
     
+
+    
       
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/04/18/war-against-null-1/" itemprop="url">
+                  War Against Null I - Simulate Optional Class in Java 7
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-04-18T00:37:25+08:00" content="2016-04-18">
+              2016-04-18
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        
-        
-        
       
 
       
-    
+        
+          <h1 id="A-Billion-Dollar-Mistake"><a href="#A-Billion-Dollar-Mistake" class="headerlink" title="A Billion-Dollar Mistake"></a>A Billion-Dollar Mistake</h1><blockquote>
+<p>I call it my billion-dollar mistake. It was the invention of the null reference in 1965. At that time, I was designing the first comprehensive type system for references in an object oriented language (ALGOL W). My goal was to ensure that all use of references should be absolutely safe, with checking performed automatically by the compiler. But I couldn’t resist the temptation to put in a null reference, simply because it was so easy to implement. This has led to innumerable errors, vulnerabilities, and system crashes, which have probably caused a billion dollars of pain and damage in the last forty years. - Tony Hoare</p>
+</blockquote>
+<h1 id="Optional-in-Java-8"><a href="#Optional-in-Java-8" class="headerlink" title="Optional in Java 8"></a>Optional in Java 8</h1><p>As is stated by its inventor, Tony Hoare, <code>null</code> reference has caused innumerable errors. In Android, <code>NPE</code> is like a lurking demon which appears here and there and crashes the app. There have been lots of methods to avoid potential <code>null</code> problems in compile time. From Java 8 and on, you can create an <code>Optional&lt;T&gt;</code> class to wrap the object may be null, and execute code inside the lambda expression.<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/18/war-against-null-1/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1000,93 +1080,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/06/AudioRecord/" itemprop="url">
-                  Record with AudioRecord APIs in Android
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-03-06T15:59:33+08:00" content="2016-03-06">
-              2016-03-06
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>I want to make an audio recorder app for my Android Wear device. In order to get familiar with the recording APIs of the Android platform, I will start with a simple mobile app, and then move it into my moto 360.</p>
-<h1 id="APIs"><a href="#APIs" class="headerlink" title="APIs"></a>APIs</h1><p>Two sets of audio recording APIs, <code>MediaRecorder</code> and <code>AudioRecord</code>, are available for developing handheld apps. <code>MediaRecorder</code> is much easy to use, however it’s unavailable for wearable devices. So you must process the raw data from <code>AudioRecord</code> by yourself.<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/06/AudioRecord/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1133,7 +1126,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">112</span>
+              <span class="site-state-item-count">113</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
