@@ -224,6 +224,179 @@
             
               
                 
+                <a class="post-title-link" href="/2016/04/19/war-against-null-3/" itemprop="url">
+                  War Against Null III - If Not Present Part 2
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-04-19T22:06:09+08:00" content="2016-04-19">
+              2016-04-19
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="OrElseGet"><a href="#OrElseGet" class="headerlink" title="OrElseGet"></a>OrElseGet</h1><p>My last post introduced a way to deal with <code>Optional&lt;T&gt;</code> instances for both possible situations, null or non-null. Sometimes, it’s not enough to map a nullable object to different non-null values. You may want to execute different code based on whether it’s null or not. One solution is calling <code>orElseGet()</code> to invoke a “null consumer”.<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> id = <span class="number">12345</span>;</span><br><span class="line">Optional&lt;String&gt; nullableName = findNameById(id);</span><br><span class="line">nullableName.ifPresent(name -&gt; &#123;</span><br><span class="line">    System.out.println(<span class="string">"found"</span>);</span><br><span class="line">    System.out.println(<span class="string">"name is "</span> + name);</span><br><span class="line">&#125;);</span><br><span class="line">nullableName.orElseGet(() -&gt; &#123;</span><br><span class="line">    System.out.print(<span class="string">"id not found"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br>In this way, you can deal with an empty <code>Optional&lt;T&gt;</code> instance. However, there’s one drawback that the returned value of the lambda expression you pass to <code>orElseGet()</code> is not always meaningful. In the snippet above, you return a <code>null</code> to deal with the <code>null</code> cases. It’s a little ironic.<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/19/war-against-null-3/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/04/19/war-against-null-2/" itemprop="url">
+                  War Against Null II - If Not Present
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-04-19T20:15:11+08:00" content="2016-04-19">
+              2016-04-19
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>As is mentioned in my last post, <code>Optional&lt;T&gt;.ifPresent()</code> could combine the check of nullity and the use of wrapped content in one step, which avoid the possibility of raising <code>NPE</code>s. However, there’s some trouble when the <code>Optional</code> object wraps a <code>null</code>.</p>
+<h1 id="OrElse"><a href="#OrElse" class="headerlink" title="OrElse"></a>OrElse</h1><p>There is a <code>Optional&lt;T&gt;.orElse(T other)</code> method which returns the wrapped value if it presents or returns the default value. However, remember the example of my last post? I need to print the name of a specified id or output “id not found” now. We can call <code>nullableName.orElse(&quot;id not found&quot;</code> to return the msg if it’s not present. However, is there a way to work for both situations, as the traditional code snippet below does?
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/19/war-against-null-2/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/04/18/war-against-null-1/" itemprop="url">
                   War Against Null I - Simulate Optional Class in Java 7
                 </a>
@@ -905,181 +1078,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/14/wear-recorder/" itemprop="url">
-                  Record Audio on Wearable Devices
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-03-14T13:03:59+08:00" content="2016-03-14">
-              2016-03-14
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Wearable devices have great potential in our everyday life. For example, you can simply tap the watch screen or speak a command to wake up the watch and start recording, and then transmit the recorded clip to the phone for storage. This article will put down the procedures of developing a watch recorder.</p>
-<hr>
-<h1 id="Create-a-Recorder"><a href="#Create-a-Recorder" class="headerlink" title="Create a Recorder"></a>Create a Recorder</h1><p>Recording on wearable devices is basically the same as handheld devices, except that you cannot use <code>MediaRecorder</code> APIs for wearable devices. Instead, you must use <code>AudioRecord</code> to record voice. The implementation of <code>AudioRecord</code> is completely same as handheld devices. You can read my article for reference, <a href="http://sphiatower.github.io/2016/03/06/AudioRecord/" title=" Recording with AudioRecord APIs in Android ">Recording with AudioRecord APIs in Android </a><br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/14/wear-recorder/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/11/implementing-nav-drawer/" itemprop="url">
-                  Summary on Implementing a Navigation Drawer
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-03-11T13:37:46+08:00" content="2016-03-11">
-              2016-03-11
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>The navigation drawer is an indispensable component in Android apps under the guidance of Material Design. It’s very convenient to implement a navigation drawer by creating a <code>DrawerLayout</code> with a <code>NavigationView</code> in it with the material design support library. However, when it comes to ‘navigation’, you should consider carefully how to implement the navigation action with drawer menu items.</p>
-<h1 id="A-Base-Activity-vs-Fragments"><a href="#A-Base-Activity-vs-Fragments" class="headerlink" title="A Base Activity vs Fragments"></a>A Base Activity vs Fragments</h1><p>Should we implement different pages as different activities, or just an Activity with dynamically loaded fragments? In my opinion, both ways are okay.<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/11/implementing-nav-drawer/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1126,7 +1124,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">113</span>
+              <span class="site-state-item-count">115</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

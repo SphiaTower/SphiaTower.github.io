@@ -224,6 +224,182 @@
             
               
                 
+                <a class="post-title-link" href="/2016/02/15/visitor-double-dispatch/" itemprop="url">
+                  Understanding the Visitor Pattern - Double Dispatch
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-02-15T21:28:29+08:00" content="2016-02-15">
+              2016-02-15
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>For the visitor pattern, it’s not difficult to remember its syntax or use it. But why we must use a visitor pattern instead of a static method (a function) or other workarounds?</p>
+<h1 id="Static-methods"><a href="#Static-methods" class="headerlink" title="Static methods"></a>Static methods</h1><p>For a specified class hierarchy, when it comes to adding a method for every class without modifying themselves, what comes into my mind at first is to create a set of functions, i.e. a static method in java, each taking an instance of that class.</p>
+<p>For example, if I want to add a method to <code>ICarElement</code> and its implementations, <code>Wheel</code>, <code>Engine</code> and <code>Body</code>, I could write such a class as a set of functions:<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/15/visitor-double-dispatch/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/02/13/review-loaders-2/" itemprop="url">
+                  重探Loader（二）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-02-13T21:58:48+08:00" content="2016-02-13">
+              2016-02-13
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="过去"><a href="#过去" class="headerlink" title="过去"></a>过去</h1><p>在安卓3.0前，很多应用经常出现无法响应的bug。最主要的原因，便是在UI线程执行查询或加载数据。虽然文档一直强调即使回馈的重要性，之前的API并不鼓励这样的行为。过去通常使用activity的方法以管理Cursor。而且这些方法在UI线程中操作，并不跨越配置变更。</p>
+<h1 id="理解LoaderManager"><a href="#理解LoaderManager" class="headerlink" title="理解LoaderManager"></a>理解LoaderManager</h1><p>LoaderManager的一些事件会有activity或fragment的生命周期事件触发。比如activity销毁时，会通知LoaderManager销毁并关闭所有所有Loader。</p>
+<p>LoaderManager不知道也不需要知道数据如何载入。它只是告诉Loader何时开始、结束或复位加载，保持状态通过配置变更，并提供简单的接口为客户端传送结果。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/13/review-loaders-2/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/02/13/review-loaders/" itemprop="url">
                   重探Loader（一）
                 </a>
@@ -923,179 +1099,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/12/20/loader-compares-reference/" itemprop="url">
-                  LoaderManager Compares References
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-12-20T00:02:58+08:00" content="2015-12-20">
-              2015-12-20
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Today, one of my <code>Loader</code> implementations behaved totally weird after I modified its code. The <code>Loader</code> loaded successfully at the 1st time, but failed on all following attempts. The <code>loadInBackground()</code> method returned, but <code>onLoadFinished()</code> was not called.</p>
-<p>The <code>LoaderManager</code> class compares the new loaded data and old retained data by code like <code>if(oldData!=newData)</code> to decide whether to update the data or not. Note that it uses <code>==</code> operator to compare them. In my case, my <code>Loader</code> retains a same <code>TreeMap</code> object and add/update entries into it, resulting that they’re identified as the same reference, so the loader won’t deliver the new result.</p>
-<p>To solve this problem, you have to create a new <code>TreeMap</code> and add back all the old data.</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/12/16/jcenter-peer-not-authenticated/" itemprop="url">
-                  Jcenter peer not authenticated
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-12-16T00:27:34+08:00" content="2015-12-16">
-              2015-12-16
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Today my gradle failed to sync because the following error:</p>
-<pre><code>Error: peer not authenticated
-</code></pre><p>I found lots of solutions but none of them take effects, only to know it is caused by the problem of certificate of <code>jCenter()</code>.</p>
-<p>Finally, it was fixed by replacing all the <code>jCenter()</code> into <code>mavenCentral()</code> in all <code>build.gradle</code> files. Surprisingly, the local gradle repos work without modification.</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1142,7 +1145,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">113</span>
+              <span class="site-state-item-count">115</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

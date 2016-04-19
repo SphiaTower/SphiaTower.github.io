@@ -224,6 +224,179 @@
             
               
                 
+                <a class="post-title-link" href="/2015/12/20/loader-compares-reference/" itemprop="url">
+                  LoaderManager Compares References
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-12-20T00:02:58+08:00" content="2015-12-20">
+              2015-12-20
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Today, one of my <code>Loader</code> implementations behaved totally weird after I modified its code. The <code>Loader</code> loaded successfully at the 1st time, but failed on all following attempts. The <code>loadInBackground()</code> method returned, but <code>onLoadFinished()</code> was not called.</p>
+<p>The <code>LoaderManager</code> class compares the new loaded data and old retained data by code like <code>if(oldData!=newData)</code> to decide whether to update the data or not. Note that it uses <code>==</code> operator to compare them. In my case, my <code>Loader</code> retains a same <code>TreeMap</code> object and add/update entries into it, resulting that they’re identified as the same reference, so the loader won’t deliver the new result.</p>
+<p>To solve this problem, you have to create a new <code>TreeMap</code> and add back all the old data.</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/12/16/jcenter-peer-not-authenticated/" itemprop="url">
+                  Jcenter peer not authenticated
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-12-16T00:27:34+08:00" content="2015-12-16">
+              2015-12-16
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Today my gradle failed to sync because the following error:</p>
+<pre><code>Error: peer not authenticated
+</code></pre><p>I found lots of solutions but none of them take effects, only to know it is caused by the problem of certificate of <code>jCenter()</code>.</p>
+<p>Finally, it was fixed by replacing all the <code>jCenter()</code> into <code>mavenCentral()</code> in all <code>build.gradle</code> files. Surprisingly, the local gradle repos work without modification.</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/11/18/How-Android-Draws-Views/" itemprop="url">
                   安卓绘制View的过程
                 </a>
@@ -920,195 +1093,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/15/EmptyView-in-ViewPager/" itemprop="url">
-                  EmptyView in ViewPager
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-15T22:40:48+08:00" content="2015-10-15">
-              2015-10-15
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Today I encountered a very subtle bug that the <code>Fragment</code>s restored from a <code>ViewPager</code> show its empty view with their data already loaded.</p>
-<p>My <code>CustomFragment</code> shows an empty view when initialized, and switch to the <code>RecyclerView</code> once data is loaded. The process of animation has been summarized in one of my old articles(<a href="http://sphiatower.github.io/2015/09/08/viewpager/">http://sphiatower.github.io/2015/09/08/viewpager/</a>). In short, it hides the <code>RecyclerView</code> and shows the empty view in the <code>onCreateView</code> callback. </p>
-<p>Every time the data of <code>RecyclerView</code> is updated, it will check an <code>empty</code> flag whether it’s the first time of loading data. If true, the cross fade animation is played to show the content and the flag is updated to remember that data has been loaded.</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/15/EmptyView-in-ViewPager/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/14/Saving-Data/" itemprop="url">
-                  安卓文件存储总结
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-14T21:32:19+08:00" content="2015-10-14">
-              2015-10-14
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>安卓使用的文件系统与其他平台的磁盘文件系统相似。这里总结如何使用<code>File</code>API读写文件。</p>
-<p><code>File</code>对象适合一次性读写大量数据，如图片文件或其他来自网络的数据。</p>
-<h1 id="选择内部或外部存储"><a href="#选择内部或外部存储" class="headerlink" title="选择内部或外部存储"></a>选择内部或外部存储</h1><p>所有安卓设备都有两个存储区域：内部存储和外部存储。这些名称来自安卓的早期时候，当时大多数设备即提供了内置的固定存储，也提供了可移动的存储媒介（比如SD卡）。一些设备将永久存储空间分为内部和外部两部分，所以即使不存在可移动媒介，也总是有两个存储空间，而且无论外部空间可否移动，API的行为都保持一致。</p>
-<p><strong>内部存储</strong>：</p>
-<ul>
-<li>总是可用</li>
-<li>应用默认可以访问存储的文件</li>
-<li>用户卸载应用后，系统移除所有内部存储中的文件</li>
-</ul>
-<p><strong>外部存储</strong>：</p>
-<ul>
-<li>并非总是可用，因为用户可能移除外部存储</li>
-<li>全局可读，所以存储的文件可能未经自己控制就被读取</li>
-<li>只有使用<code>getExternalFilesDir()</code>存储时，用户卸载应用后，系统才会删掉应用的文件。</li>
-</ul>
-<p>外部存储最适合存储不需要访问限制的文件、希望与其他应用共享的文件以及循序用户使用电脑访问的文件。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/14/Saving-Data/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1155,7 +1139,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">113</span>
+              <span class="site-state-item-count">115</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

@@ -224,6 +224,179 @@
             
               
                 
+                <a class="post-title-link" href="/2015/09/13/Using-ViewPager-for-Screen-Slides/" itemprop="url">
+                  安卓动画学习笔记（二） 自定义ViewPager动画
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-13T13:30:49+08:00" content="2015-09-13">
+              2015-09-13
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="使用PageTransformer自定义动画"><a href="#使用PageTransformer自定义动画" class="headerlink" title="使用PageTransformer自定义动画"></a>使用PageTransformer自定义动画</h2><p>可以实现<code>ViewPager.PageTransformer</code>接口来实现自定义的滑动动画。这个接口只有一个方法<code>transformPage()</code>。在屏幕切换的每一个点上，这个方法为当前可见的页面和相邻的页面各调用一次。比如，当前显示第三页，用户滑动到第四页，<code>transformPage()</code>在手势的每一步都为第二，三，四页所调用。<br>实现<code>transformPage()</code>时，可以创建自定义的滑动动画。根据页面在屏幕上的位置（通过方法的<code>position</code>参数获取），决定哪一个页面需要被变形。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/13/Using-ViewPager-for-Screen-Slides/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/13/Crossfading-Two-Views/" itemprop="url">
+                  安卓动画学习笔记（一） 淡入淡出
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-13T13:03:08+08:00" content="2015-09-13">
+              2015-09-13
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>淡入淡出动画指的是渐渐隐去一个UI组件的同时逐渐显示出另一个，经常用在用户切换内容或视图的时候。没有淡入淡出效果的话，切换的过程会有些突兀。</p>
+<h2 id="创建视图"><a href="#创建视图" class="headerlink" title="创建视图"></a>创建视图</h2><p>首先创建两个相关的视图。下面创建一个进度指示器和一个可滚动的文本：<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/13/Crossfading-Two-Views/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/09/13/pull-to-refresh-recyler/" itemprop="url">
                   为RecyclerView实现PullToRefresh
                 </a>
@@ -935,185 +1108,6 @@ dependencies {
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/09/my-bug-picasso/" itemprop="url">
-                  Picasso获取异常信息与正则匹配时的一个低级错误
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-09T22:53:04+08:00" content="2015-09-09">
-              2015-09-09
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>我的正在做的一个应用里，有一部分需要获取一段字符串，并解析其中的特殊格式标签，以获取其中的文字和图片。一开始使用了正则表达式对标签做了简单的处理，转换成html标签，然后使用<code>Html.fromHtml()</code>获取其中的图片（与文字混排）。今天决定换成使用Picasso实现时，出现了一个错误纠结了很长时间才解决。代码很简单：  </p>
-<pre><code>Picasso.with(getContext()).load(url).into(imageView);
-</code></pre><p>其中的url是通过正则匹配获得的。<br>运行时一直获取不到图片，imageView上显示error状态的占位图。在网络上搜索了一下，找到了获取error信息的方法：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/09/my-bug-picasso/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/08/ni-scope-bugs/" itemprop="url">
-                  NI-SCOPE套件中C#与LabVIEW范例的一些错误
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-08T20:42:34+08:00" content="2015-09-08">
-              2015-09-08
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>最近在使用NI的驱动编程时，出现了很多问题。现在把这些问题记录下来，以后如果有人用到了可以避免这些错误。<br>NI-SCOPE是美国国家仪器（NI）的一套操作高速数据采集卡的驱动。NI-SCOPE编程有几个特点：</p>
-<ul>
-<li>速度采集速率极高，为了避免采集卡的缓存被覆盖，需要快速处理采集到的数据；</li>
-<li>数据采集量极大，因为高速采集，所以仅仅几秒钟采集的数据量就可能达到几百M的大小，很容易出现内存不足等问题；</li>
-</ul>
-<p>编程时使用了先后使用了NI官方的两套范例程序，一套LabVIEW版本的，一套C#版本的。遗憾的是，两套范例都有问题。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/08/ni-scope-bugs/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1160,7 +1154,7 @@ dependencies {
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">113</span>
+              <span class="site-state-item-count">115</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

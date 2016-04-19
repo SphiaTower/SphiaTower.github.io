@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Android,Multiple Threads," />
+  <meta name="keywords" content="Functional Programming,Java,Java 8," />
 
 
 
@@ -59,19 +59,16 @@
 
 
 
-<meta name="description" content="上一篇文章展示了如何定义一个管理线程池和任务的类。这一篇将展示如何在线程池中运行任务：将任务添加至工作队列，当有线程可用时，ThreadPoolExecutor从中取走任务并在线程中执行。
-同时也将展示如果停止一个运行中的任务。可能会在任务启动后发现其不必要执行的时候这样做。与其浪费处理器的时间，可以取消任务所在的线程。比如，从网络中下载图片，并使用缓存时，如果发现图片已经在缓存中了，可能需要将任">
+<meta name="description" content="As is mentioned in my last post, Optional&amp;lt;T&amp;gt;.ifPresent() could combine the check of nullity and the use of wrapped content in one step, which avoid the possibility of raising NPEs. However, ther">
 <meta property="og:type" content="article">
-<meta property="og:title" content="安卓多线程（三） 使用线程池中的线程执行代码">
-<meta property="og:url" content="http://yoursite.com/2015/09/27/Running-Code-on-a-Thread-Pool-Thread/index.html">
+<meta property="og:title" content="War Against Null II - If Not Present">
+<meta property="og:url" content="http://yoursite.com/2016/04/19/war-against-null-2/index.html">
 <meta property="og:site_name" content="Welcome to SPHIA">
-<meta property="og:description" content="上一篇文章展示了如何定义一个管理线程池和任务的类。这一篇将展示如何在线程池中运行任务：将任务添加至工作队列，当有线程可用时，ThreadPoolExecutor从中取走任务并在线程中执行。
-同时也将展示如果停止一个运行中的任务。可能会在任务启动后发现其不必要执行的时候这样做。与其浪费处理器的时间，可以取消任务所在的线程。比如，从网络中下载图片，并使用缓存时，如果发现图片已经在缓存中了，可能需要将任">
-<meta property="og:updated_time" content="2015-09-27T01:50:15.898Z">
+<meta property="og:description" content="As is mentioned in my last post, Optional&amp;lt;T&amp;gt;.ifPresent() could combine the check of nullity and the use of wrapped content in one step, which avoid the possibility of raising NPEs. However, ther">
+<meta property="og:updated_time" content="2016-04-19T14:04:18.328Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="安卓多线程（三） 使用线程池中的线程执行代码">
-<meta name="twitter:description" content="上一篇文章展示了如何定义一个管理线程池和任务的类。这一篇将展示如何在线程池中运行任务：将任务添加至工作队列，当有线程可用时，ThreadPoolExecutor从中取走任务并在线程中执行。
-同时也将展示如果停止一个运行中的任务。可能会在任务启动后发现其不必要执行的时候这样做。与其浪费处理器的时间，可以取消任务所在的线程。比如，从网络中下载图片，并使用缓存时，如果发现图片已经在缓存中了，可能需要将任">
+<meta name="twitter:title" content="War Against Null II - If Not Present">
+<meta name="twitter:description" content="As is mentioned in my last post, Optional&amp;lt;T&amp;gt;.ifPresent() could combine the check of nullity and the use of wrapped content in one step, which avoid the possibility of raising NPEs. However, ther">
 
 
 
@@ -89,7 +86,7 @@
   };
 </script>
 
-  <title> 安卓多线程（三） 使用线程池中的线程执行代码 | Welcome to SPHIA </title>
+  <title> War Against Null II - If Not Present | Welcome to SPHIA </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -219,7 +216,7 @@
             
             
               
-                安卓多线程（三） 使用线程池中的线程执行代码
+                War Against Null II - If Not Present
               
             
           </h1>
@@ -231,8 +228,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-27T00:06:38+08:00" content="2015-09-27">
-              2015-09-27
+            <time itemprop="dateCreated" datetime="2016-04-19T20:15:11+08:00" content="2016-04-19">
+              2016-04-19
             </time>
           </span>
 
@@ -257,80 +254,11 @@
       
 
       
-        <p>上一篇文章展示了如何定义一个管理线程池和任务的类。这一篇将展示如何在线程池中运行任务：将任务添加至工作队列，当有线程可用时，<code>ThreadPoolExecutor</code>从中取走任务并在线程中执行。</p>
-<p>同时也将展示如果停止一个运行中的任务。可能会在任务启动后发现其不必要执行的时候这样做。与其浪费处理器的时间，可以取消任务所在的线程。比如，从网络中下载图片，并使用缓存时，如果发现图片已经在缓存中了，可能需要将任务停止。有时可能无法在下载开始发现这个问题。<br><a id="more"></a>  </p>
-<h2 id="在线程池中的线程上执行任务"><a href="#在线程池中的线程上执行任务" class="headerlink" title="在线程池中的线程上执行任务"></a>在线程池中的线程上执行任务</h2><p>要在某个特定的线程池中的线程上启动任务，传送<code>Runnable</code>给<code>ThreadPoolExecutor.execute()</code>。这个调用将任务添加至线程池的工作队列中。当idle的线程可用时，管理者从中取走已等待时间最长的任务，并在线程中执行。</p>
-<pre><code>public class PhotoManager {
-    public void handleState(PhotoTask photoTask, int state) {
-        switch (state) {
-            // The task finished downloading the image
-            case DOWNLOAD_COMPLETE:
-            // Decodes the image
-                mDecodeThreadPool.execute(
-                        photoTask.getPhotoDecodeRunnable());
-            ...
-        }
-        ...
-    }
-    ...
-}
-</code></pre><p><code>ThreadPoolExecutor</code>在线程中启动<code>Runnable</code>时，自动调用其<code>run</code>方法。</p>
-<h2 id="中断执行中的代码"><a href="#中断执行中的代码" class="headerlink" title="中断执行中的代码"></a>中断执行中的代码</h2><p>要停止一个任务，需要中断其所在的线程。作为准备工作，需要在创建任务时存储一个任务线程的句柄。</p>
-<pre><code>class PhotoDecodeRunnable implements Runnable {
-    // Defines the code to run for this task
-    public void run() {
-        /*
-         * Stores the current Thread in the
-         * object that contains PhotoDecodeRunnable
-         */
-        mPhotoTask.setImageDecodeThread(Thread.currentThread());
-        ...
-    }
-    ...
-}
-</code></pre><p>调用<code>Thread.interrupt()</code>来中断线程。注意<code>Thread</code>对象由系统进行控制，并可在应用进程之外进行修改。所以在中断线程之前，需要将访问放置在同步块以锁定对其访问。</p>
-<pre><code>public class PhotoManager {
-    public static void cancelAll() {
-        /*
-         * Creates an array of Runnables that&apos;s the same size as the
-         * thread pool work queue
-         */
-        Runnable[] runnableArray = new Runnable[mDecodeWorkQueue.size()];
-        // Populates the array with the Runnables in the queue
-        mDecodeWorkQueue.toArray(runnableArray);
-        // Stores the array length in order to iterate over the array
-        int len = runnableArray.length;
-        /*
-         * Iterates over the array of Runnables and interrupts each one&apos;s Thread.
-         */
-        synchronized (sInstance) {
-            // Iterates over the array of tasks
-            for (int runnableIndex = 0; runnableIndex &lt; len; runnableIndex++) {
-                // Gets the current thread
-                Thread thread = runnableArray[taskArrayIndex].mThread;
-                // if the Thread exists, post an interrupt to it
-                if (null != thread) {
-                    thread.interrupt();
-                }
-            }
-        }
-    }
-    ...
-}
-</code></pre><p>大多数情况下，<code>Thread.interrupt()</code>方法立即停止线程。然而，它仅仅停止等待中的线程，不会中断CPU或网络密集任务。为了避免拖慢或死锁系统，应该在执行操作前测试所有即将发生的中断请求。</p>
-<pre><code>/*
- * Before continuing, checks to see that the Thread hasn&apos;t
- * been interrupted
- */
-if (Thread.interrupted()) {
-    return;
-}
-...
-// Decodes a byte array into a Bitmap (CPU-intensive)
-BitmapFactory.decodeByteArray(
-        imageBuffer, 0, imageBuffer.length, bitmapOptions);
-...
-</code></pre>
+        <p>As is mentioned in my last post, <code>Optional&lt;T&gt;.ifPresent()</code> could combine the check of nullity and the use of wrapped content in one step, which avoid the possibility of raising <code>NPE</code>s. However, there’s some trouble when the <code>Optional</code> object wraps a <code>null</code>.</p>
+<h1 id="OrElse"><a href="#OrElse" class="headerlink" title="OrElse"></a>OrElse</h1><p>There is a <code>Optional&lt;T&gt;.orElse(T other)</code> method which returns the wrapped value if it presents or returns the default value. However, remember the example of my last post? I need to print the name of a specified id or output “id not found” now. We can call <code>nullableName.orElse(&quot;id not found&quot;</code> to return the msg if it’s not present. However, is there a way to work for both situations, as the traditional code snippet below does?<a id="more"></a><br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(name!=<span class="keyword">null</span>)&#123;</span><br><span class="line">	System.out.println(<span class="string">"name is "</span> + name);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	System.out.println(<span class="string">"id not found"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="Map-Plus-OrElse"><a href="#Map-Plus-OrElse" class="headerlink" title="Map Plus OrElse"></a>Map Plus OrElse</h1><p>If you analyze the code snippet above, it represents a mapping from a nullable <code>String name</code> to a non-null <code>String msg</code>. Let’s change a way of understanding, you can break the mapping into 2 parts. First, map nullable <code>String name</code> to nullable <code>String msgIfPresent</code>, and then map nullable <code>String msgIfPresent</code> to non-null <code>String msg</code>. The second mapping is exactly what <code>orElse()</code> does. So you only need to complete the first mapping. <code>Optional&lt;T&gt;.map()</code> is the solution we need.<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> id = <span class="number">12345</span>;</span><br><span class="line">Optional&lt;String&gt; nullableName = findNameById(id);</span><br><span class="line">String msg = nullableName.map(name -&gt; <span class="string">"name is "</span> + name).orElse(<span class="string">"id not found"</span>);</span><br><span class="line">System.out.print(msg);</span><br></pre></td></tr></table></figure><br>The code above first map <code>Optinal&lt;String&gt; nullableName</code> to another <code>Optional&lt;String&gt;</code> object. The lambda expression in the <code>map()</code> methods means that if name presents, you get a new <code>Optional&lt;String&gt;</code> whose content is the value of the mapped expression. And if not, you will still get an empty <code>Optional&lt;String&gt;</code>. So the string you get after this mapping is “name is …” or <code>null</code>. And then <code>Optional&lt;T&gt;.orElse()</code> will handle with the <code>null</code> possibility. It returns a default value if the content is null, or the content itself. The <code>orElse()</code> call successfully map null and non-null possibilities into a concrete value.</p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>However, does this method work for every cases when you want to execute different code based on whether it’s null or non-null?</p>
+
       
     </div>
 
@@ -338,9 +266,11 @@ BitmapFactory.decodeByteArray(
       
         <div class="post-tags">
           
-            <a href="/tags/Android/" rel="tag">#Android</a>
+            <a href="/tags/Functional-Programming/" rel="tag">#Functional Programming</a>
           
-            <a href="/tags/Multiple-Threads/" rel="tag">#Multiple Threads</a>
+            <a href="/tags/Java/" rel="tag">#Java</a>
+          
+            <a href="/tags/Java-8/" rel="tag">#Java 8</a>
           
         </div>
       
@@ -349,16 +279,16 @@ BitmapFactory.decodeByteArray(
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/26/Creating-a-Manager-for-Multiple-Threads/" rel="next" title="安卓多线程（二） 创造多线程管理者">
-                <i class="fa fa-chevron-left"></i> 安卓多线程（二） 创造多线程管理者
+              <a href="/2016/04/18/war-against-null-1/" rel="next" title="War Against Null I - Simulate Optional Class in Java 7">
+                <i class="fa fa-chevron-left"></i> War Against Null I - Simulate Optional Class in Java 7
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/09/27/Communicating-with-the-UI-Thread/" rel="prev" title="安卓多线程（四） 与UI线程通讯">
-                安卓多线程（四） 与UI线程通讯 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/04/19/war-against-null-3/" rel="prev" title="War Against Null III - If Not Present Part 2">
+                War Against Null III - If Not Present Part 2 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -477,7 +407,7 @@ BitmapFactory.decodeByteArray(
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#在线程池中的线程上执行任务"><span class="nav-number">1.</span> <span class="nav-text">在线程池中的线程上执行任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中断执行中的代码"><span class="nav-number">2.</span> <span class="nav-text">中断执行中的代码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OrElse"><span class="nav-number">1.</span> <span class="nav-text">OrElse</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Map-Plus-OrElse"><span class="nav-number">2.</span> <span class="nav-text">Map Plus OrElse</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Question"><span class="nav-number">3.</span> <span class="nav-text">Question</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

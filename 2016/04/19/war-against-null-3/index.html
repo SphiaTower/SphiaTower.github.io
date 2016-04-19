@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Android,Multiple Threads," />
+  <meta name="keywords" content="Functional Programming,Java,Java 8," />
 
 
 
@@ -59,19 +59,16 @@
 
 
 
-<meta name="description" content="上一篇文章展示了如何定义一个管理线程池和任务的类。这一篇将展示如何在线程池中运行任务：将任务添加至工作队列，当有线程可用时，ThreadPoolExecutor从中取走任务并在线程中执行。
-同时也将展示如果停止一个运行中的任务。可能会在任务启动后发现其不必要执行的时候这样做。与其浪费处理器的时间，可以取消任务所在的线程。比如，从网络中下载图片，并使用缓存时，如果发现图片已经在缓存中了，可能需要将任">
+<meta name="description" content="OrElseGetMy last post introduced a way to deal with Optional&amp;lt;T&amp;gt; instances for both possible situations, null or non-null. Sometimes, it’s not enough to map a nullable object to different non-nul">
 <meta property="og:type" content="article">
-<meta property="og:title" content="安卓多线程（三） 使用线程池中的线程执行代码">
-<meta property="og:url" content="http://yoursite.com/2015/09/27/Running-Code-on-a-Thread-Pool-Thread/index.html">
+<meta property="og:title" content="War Against Null III - If Not Present Part 2">
+<meta property="og:url" content="http://yoursite.com/2016/04/19/war-against-null-3/index.html">
 <meta property="og:site_name" content="Welcome to SPHIA">
-<meta property="og:description" content="上一篇文章展示了如何定义一个管理线程池和任务的类。这一篇将展示如何在线程池中运行任务：将任务添加至工作队列，当有线程可用时，ThreadPoolExecutor从中取走任务并在线程中执行。
-同时也将展示如果停止一个运行中的任务。可能会在任务启动后发现其不必要执行的时候这样做。与其浪费处理器的时间，可以取消任务所在的线程。比如，从网络中下载图片，并使用缓存时，如果发现图片已经在缓存中了，可能需要将任">
-<meta property="og:updated_time" content="2015-09-27T01:50:15.898Z">
+<meta property="og:description" content="OrElseGetMy last post introduced a way to deal with Optional&amp;lt;T&amp;gt; instances for both possible situations, null or non-null. Sometimes, it’s not enough to map a nullable object to different non-nul">
+<meta property="og:updated_time" content="2016-04-19T14:31:48.799Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="安卓多线程（三） 使用线程池中的线程执行代码">
-<meta name="twitter:description" content="上一篇文章展示了如何定义一个管理线程池和任务的类。这一篇将展示如何在线程池中运行任务：将任务添加至工作队列，当有线程可用时，ThreadPoolExecutor从中取走任务并在线程中执行。
-同时也将展示如果停止一个运行中的任务。可能会在任务启动后发现其不必要执行的时候这样做。与其浪费处理器的时间，可以取消任务所在的线程。比如，从网络中下载图片，并使用缓存时，如果发现图片已经在缓存中了，可能需要将任">
+<meta name="twitter:title" content="War Against Null III - If Not Present Part 2">
+<meta name="twitter:description" content="OrElseGetMy last post introduced a way to deal with Optional&amp;lt;T&amp;gt; instances for both possible situations, null or non-null. Sometimes, it’s not enough to map a nullable object to different non-nul">
 
 
 
@@ -89,7 +86,7 @@
   };
 </script>
 
-  <title> 安卓多线程（三） 使用线程池中的线程执行代码 | Welcome to SPHIA </title>
+  <title> War Against Null III - If Not Present Part 2 | Welcome to SPHIA </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -219,7 +216,7 @@
             
             
               
-                安卓多线程（三） 使用线程池中的线程执行代码
+                War Against Null III - If Not Present Part 2
               
             
           </h1>
@@ -231,8 +228,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-27T00:06:38+08:00" content="2015-09-27">
-              2015-09-27
+            <time itemprop="dateCreated" datetime="2016-04-19T22:06:09+08:00" content="2016-04-19">
+              2016-04-19
             </time>
           </span>
 
@@ -257,80 +254,9 @@
       
 
       
-        <p>上一篇文章展示了如何定义一个管理线程池和任务的类。这一篇将展示如何在线程池中运行任务：将任务添加至工作队列，当有线程可用时，<code>ThreadPoolExecutor</code>从中取走任务并在线程中执行。</p>
-<p>同时也将展示如果停止一个运行中的任务。可能会在任务启动后发现其不必要执行的时候这样做。与其浪费处理器的时间，可以取消任务所在的线程。比如，从网络中下载图片，并使用缓存时，如果发现图片已经在缓存中了，可能需要将任务停止。有时可能无法在下载开始发现这个问题。<br><a id="more"></a>  </p>
-<h2 id="在线程池中的线程上执行任务"><a href="#在线程池中的线程上执行任务" class="headerlink" title="在线程池中的线程上执行任务"></a>在线程池中的线程上执行任务</h2><p>要在某个特定的线程池中的线程上启动任务，传送<code>Runnable</code>给<code>ThreadPoolExecutor.execute()</code>。这个调用将任务添加至线程池的工作队列中。当idle的线程可用时，管理者从中取走已等待时间最长的任务，并在线程中执行。</p>
-<pre><code>public class PhotoManager {
-    public void handleState(PhotoTask photoTask, int state) {
-        switch (state) {
-            // The task finished downloading the image
-            case DOWNLOAD_COMPLETE:
-            // Decodes the image
-                mDecodeThreadPool.execute(
-                        photoTask.getPhotoDecodeRunnable());
-            ...
-        }
-        ...
-    }
-    ...
-}
-</code></pre><p><code>ThreadPoolExecutor</code>在线程中启动<code>Runnable</code>时，自动调用其<code>run</code>方法。</p>
-<h2 id="中断执行中的代码"><a href="#中断执行中的代码" class="headerlink" title="中断执行中的代码"></a>中断执行中的代码</h2><p>要停止一个任务，需要中断其所在的线程。作为准备工作，需要在创建任务时存储一个任务线程的句柄。</p>
-<pre><code>class PhotoDecodeRunnable implements Runnable {
-    // Defines the code to run for this task
-    public void run() {
-        /*
-         * Stores the current Thread in the
-         * object that contains PhotoDecodeRunnable
-         */
-        mPhotoTask.setImageDecodeThread(Thread.currentThread());
-        ...
-    }
-    ...
-}
-</code></pre><p>调用<code>Thread.interrupt()</code>来中断线程。注意<code>Thread</code>对象由系统进行控制，并可在应用进程之外进行修改。所以在中断线程之前，需要将访问放置在同步块以锁定对其访问。</p>
-<pre><code>public class PhotoManager {
-    public static void cancelAll() {
-        /*
-         * Creates an array of Runnables that&apos;s the same size as the
-         * thread pool work queue
-         */
-        Runnable[] runnableArray = new Runnable[mDecodeWorkQueue.size()];
-        // Populates the array with the Runnables in the queue
-        mDecodeWorkQueue.toArray(runnableArray);
-        // Stores the array length in order to iterate over the array
-        int len = runnableArray.length;
-        /*
-         * Iterates over the array of Runnables and interrupts each one&apos;s Thread.
-         */
-        synchronized (sInstance) {
-            // Iterates over the array of tasks
-            for (int runnableIndex = 0; runnableIndex &lt; len; runnableIndex++) {
-                // Gets the current thread
-                Thread thread = runnableArray[taskArrayIndex].mThread;
-                // if the Thread exists, post an interrupt to it
-                if (null != thread) {
-                    thread.interrupt();
-                }
-            }
-        }
-    }
-    ...
-}
-</code></pre><p>大多数情况下，<code>Thread.interrupt()</code>方法立即停止线程。然而，它仅仅停止等待中的线程，不会中断CPU或网络密集任务。为了避免拖慢或死锁系统，应该在执行操作前测试所有即将发生的中断请求。</p>
-<pre><code>/*
- * Before continuing, checks to see that the Thread hasn&apos;t
- * been interrupted
- */
-if (Thread.interrupted()) {
-    return;
-}
-...
-// Decodes a byte array into a Bitmap (CPU-intensive)
-BitmapFactory.decodeByteArray(
-        imageBuffer, 0, imageBuffer.length, bitmapOptions);
-...
-</code></pre>
+        <h1 id="OrElseGet"><a href="#OrElseGet" class="headerlink" title="OrElseGet"></a>OrElseGet</h1><p>My last post introduced a way to deal with <code>Optional&lt;T&gt;</code> instances for both possible situations, null or non-null. Sometimes, it’s not enough to map a nullable object to different non-null values. You may want to execute different code based on whether it’s null or not. One solution is calling <code>orElseGet()</code> to invoke a “null consumer”.<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> id = <span class="number">12345</span>;</span><br><span class="line">Optional&lt;String&gt; nullableName = findNameById(id);</span><br><span class="line">nullableName.ifPresent(name -&gt; &#123;</span><br><span class="line">    System.out.println(<span class="string">"found"</span>);</span><br><span class="line">    System.out.println(<span class="string">"name is "</span> + name);</span><br><span class="line">&#125;);</span><br><span class="line">nullableName.orElseGet(() -&gt; &#123;</span><br><span class="line">    System.out.print(<span class="string">"id not found"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br>In this way, you can deal with an empty <code>Optional&lt;T&gt;</code> instance. However, there’s one drawback that the returned value of the lambda expression you pass to <code>orElseGet()</code> is not always meaningful. In the snippet above, you return a <code>null</code> to deal with the <code>null</code> cases. It’s a little ironic.<br><a id="more"></a></p>
+<h1 id="Chain-Style"><a href="#Chain-Style" class="headerlink" title="Chain Style"></a>Chain Style</h1><p>Is there any way to deal with the both cases in functional style, i.e, in a chain? If you utilize the <code>map()</code> method as my last post does, the returned type of <code>map()</code> will cause incompatibility with <code>orElseGet()</code>. I found a solution in <a href="http://stackoverflow.com/questions/23773024/functional-style-of-java-8s-optional-ifpresent-and-if-not-present" target="_blank" rel="external">StackOverFlow</a>. A wrapper class <code>OptionalConsumer&lt;T&gt;</code> is introduced to make chain invoking possible. It’s not very useful in practical coding but very interesting.<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OptionalConsumer</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Optional&lt;T&gt; optional;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">OptionalConsumer</span><span class="params">(Optional&lt;T&gt; optional)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.optional = optional;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">OptionalConsumer&lt;T&gt; <span class="title">of</span><span class="params">(Optional&lt;T&gt; optional)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> OptionalConsumer&lt;&gt;(optional);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> OptionalConsumer&lt;T&gt; <span class="title">ifPresent</span><span class="params">(Consumer&lt;T&gt; c)</span> </span>&#123;</span><br><span class="line">        optional.ifPresent(c);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> OptionalConsumer&lt;T&gt; <span class="title">ifNotPresent</span><span class="params">(Runnable r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!optional.isPresent())</span><br><span class="line">            r.run();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>An example for client:<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;Any&gt; o = Optional.of(...);</span><br><span class="line">OptionalConsumer.of(o).ifPresent(s -&gt;System.out.println(<span class="string">"isPresent "</span>+s))</span><br><span class="line">           .ifNotPresent(() -&gt; System.out.println(<span class="string">"! isPresent"</span>));</span><br></pre></td></tr></table></figure></p>
+
       
     </div>
 
@@ -338,9 +264,11 @@ BitmapFactory.decodeByteArray(
       
         <div class="post-tags">
           
-            <a href="/tags/Android/" rel="tag">#Android</a>
+            <a href="/tags/Functional-Programming/" rel="tag">#Functional Programming</a>
           
-            <a href="/tags/Multiple-Threads/" rel="tag">#Multiple Threads</a>
+            <a href="/tags/Java/" rel="tag">#Java</a>
+          
+            <a href="/tags/Java-8/" rel="tag">#Java 8</a>
           
         </div>
       
@@ -349,17 +277,13 @@ BitmapFactory.decodeByteArray(
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/26/Creating-a-Manager-for-Multiple-Threads/" rel="next" title="安卓多线程（二） 创造多线程管理者">
-                <i class="fa fa-chevron-left"></i> 安卓多线程（二） 创造多线程管理者
+              <a href="/2016/04/19/war-against-null-2/" rel="next" title="War Against Null II - If Not Present">
+                <i class="fa fa-chevron-left"></i> War Against Null II - If Not Present
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/09/27/Communicating-with-the-UI-Thread/" rel="prev" title="安卓多线程（四） 与UI线程通讯">
-                安卓多线程（四） 与UI线程通讯 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -477,7 +401,7 @@ BitmapFactory.decodeByteArray(
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#在线程池中的线程上执行任务"><span class="nav-number">1.</span> <span class="nav-text">在线程池中的线程上执行任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中断执行中的代码"><span class="nav-number">2.</span> <span class="nav-text">中断执行中的代码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OrElseGet"><span class="nav-number">1.</span> <span class="nav-text">OrElseGet</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Chain-Style"><span class="nav-number">2.</span> <span class="nav-text">Chain Style</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

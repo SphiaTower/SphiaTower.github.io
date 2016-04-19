@@ -224,6 +224,185 @@
             
               
                 
+                <a class="post-title-link" href="/2015/09/09/my-bug-picasso/" itemprop="url">
+                  Picasso获取异常信息与正则匹配时的一个低级错误
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-09T22:53:04+08:00" content="2015-09-09">
+              2015-09-09
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>我的正在做的一个应用里，有一部分需要获取一段字符串，并解析其中的特殊格式标签，以获取其中的文字和图片。一开始使用了正则表达式对标签做了简单的处理，转换成html标签，然后使用<code>Html.fromHtml()</code>获取其中的图片（与文字混排）。今天决定换成使用Picasso实现时，出现了一个错误纠结了很长时间才解决。代码很简单：  </p>
+<pre><code>Picasso.with(getContext()).load(url).into(imageView);
+</code></pre><p>其中的url是通过正则匹配获得的。<br>运行时一直获取不到图片，imageView上显示error状态的占位图。在网络上搜索了一下，找到了获取error信息的方法：<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/09/my-bug-picasso/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/08/ni-scope-bugs/" itemprop="url">
+                  NI-SCOPE套件中C#与LabVIEW范例的一些错误
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-08T20:42:34+08:00" content="2015-09-08">
+              2015-09-08
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>最近在使用NI的驱动编程时，出现了很多问题。现在把这些问题记录下来，以后如果有人用到了可以避免这些错误。<br>NI-SCOPE是美国国家仪器（NI）的一套操作高速数据采集卡的驱动。NI-SCOPE编程有几个特点：</p>
+<ul>
+<li>速度采集速率极高，为了避免采集卡的缓存被覆盖，需要快速处理采集到的数据；</li>
+<li>数据采集量极大，因为高速采集，所以仅仅几秒钟采集的数据量就可能达到几百M的大小，很容易出现内存不足等问题；</li>
+</ul>
+<p>编程时使用了先后使用了NI官方的两套范例程序，一套LabVIEW版本的，一套C#版本的。遗憾的是，两套范例都有问题。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/08/ni-scope-bugs/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/09/08/viewpager/" itemprop="url">
                   ViewPager使用总结
                 </a>
@@ -929,181 +1108,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/05/creating-a-started-service-2/" itemprop="url">
-                  Service学习笔记（四） 启动Service（续）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-05T15:52:16+08:00" content="2015-09-05">
-              2015-09-05
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>搞明白了第二节的那段代码，接下来继续学习用start方式启动service的细节问题。  </p>
-<h2 id="onStartCommand-的返回值"><a href="#onStartCommand-的返回值" class="headerlink" title="onStartCommand()的返回值"></a>onStartCommand()的返回值</h2><p><code>onStartCommand()</code>方法返回一个整型常量，用来描述当service被杀掉后，系统应该如何处理。其返回值必须为以下几个常量之一：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/05/creating-a-started-service-2/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/05/Looper-and-HandlerThread/" itemprop="url">
-                  Service学习笔记（三） Looper, Handler and HandlerThread
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-05T12:39:41+08:00" content="2015-09-05">
-              2015-09-05
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在上一篇的最后，官网的通过继承Service类来实现类似IntentService行为的例子中，出现了Looper和HandlerThread这两个以前没有用过的类。所以在此研究一下两个类的基本用法。</p>
-<h2 id="HandlerThread"><a href="#HandlerThread" class="headerlink" title="HandlerThread"></a>HandlerThread</h2><p>官网的概括是这么写的：一个用来创建含有looper的新线程的工具类。其中的looper可以用来创建handler类。start()方法必须被调用。<br>看到这里还是一头雾水。查看了一下它的方法列表，发现其主要功能还是与looper进行互动，所以关键的问题就是looper类的作用。  </p>
-<h2 id="Looper"><a href="#Looper" class="headerlink" title="Looper"></a>Looper</h2><p>Looper类用来为一个线程运行消息循环。默认情况下，线程没有与之关联的消息循环；在线程中调用<code>prepare()</code>方法可以创建一个消息循环，然后调用<code>loop()</code>方法来处理消息直到循环终止。<br>大多数与消息循环的互动式通过<code>Handler</code>类进行的。<br>下面是一个Looper线程的典型实现，创建了一个Handler来与Looper进行通讯：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/05/Looper-and-HandlerThread/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1150,7 +1154,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">113</span>
+              <span class="site-state-item-count">115</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

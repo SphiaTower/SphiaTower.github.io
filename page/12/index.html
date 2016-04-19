@@ -224,6 +224,181 @@
             
               
                 
+                <a class="post-title-link" href="/2015/09/05/creating-a-started-service-2/" itemprop="url">
+                  Service学习笔记（四） 启动Service（续）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-05T15:52:16+08:00" content="2015-09-05">
+              2015-09-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>搞明白了第二节的那段代码，接下来继续学习用start方式启动service的细节问题。  </p>
+<h2 id="onStartCommand-的返回值"><a href="#onStartCommand-的返回值" class="headerlink" title="onStartCommand()的返回值"></a>onStartCommand()的返回值</h2><p><code>onStartCommand()</code>方法返回一个整型常量，用来描述当service被杀掉后，系统应该如何处理。其返回值必须为以下几个常量之一：<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/05/creating-a-started-service-2/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/05/Looper-and-HandlerThread/" itemprop="url">
+                  Service学习笔记（三） Looper, Handler and HandlerThread
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-05T12:39:41+08:00" content="2015-09-05">
+              2015-09-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在上一篇的最后，官网的通过继承Service类来实现类似IntentService行为的例子中，出现了Looper和HandlerThread这两个以前没有用过的类。所以在此研究一下两个类的基本用法。</p>
+<h2 id="HandlerThread"><a href="#HandlerThread" class="headerlink" title="HandlerThread"></a>HandlerThread</h2><p>官网的概括是这么写的：一个用来创建含有looper的新线程的工具类。其中的looper可以用来创建handler类。start()方法必须被调用。<br>看到这里还是一头雾水。查看了一下它的方法列表，发现其主要功能还是与looper进行互动，所以关键的问题就是looper类的作用。  </p>
+<h2 id="Looper"><a href="#Looper" class="headerlink" title="Looper"></a>Looper</h2><p>Looper类用来为一个线程运行消息循环。默认情况下，线程没有与之关联的消息循环；在线程中调用<code>prepare()</code>方法可以创建一个消息循环，然后调用<code>loop()</code>方法来处理消息直到循环终止。<br>大多数与消息循环的互动式通过<code>Handler</code>类进行的。<br>下面是一个Looper线程的典型实现，创建了一个Handler来与Looper进行通讯：<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/05/Looper-and-HandlerThread/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/09/05/creating-a-started-service/" itemprop="url">
                   Service学习笔记（二） 启动Service
                 </a>
@@ -515,7 +690,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">113</span>
+              <span class="site-state-item-count">115</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
