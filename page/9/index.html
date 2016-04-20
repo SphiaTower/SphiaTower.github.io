@@ -224,6 +224,186 @@
             
               
                 
+                <a class="post-title-link" href="/2015/09/22/higher-order-functions/" itemprop="url">
+                  函数式编程 - 高阶函数
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-22T19:46:29+08:00" content="2015-09-22">
+              2015-09-22
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>函数式编程与面向对象编程最大的不同就是，FP当中，函数是first class的，可以方便地进行传递和进行更高层的处理。比如在安卓中，为了给某个View提供一个侦听的行为，必须为其绑定一个<code>OnClickListener</code>接口的侦听器，而实际上需要只有一个方法签名<code>onClick(View view)</code>。这种单一方法接口的本质就是那个方法所代表的函数，或者说映射，的本身。在Java8中，可以方便地直接将一个函数传递过去，如</p>
+<pre><code>view.setOnClickListener(view -&gt; { // do something here })
+</code></pre><p>实际传递的就是一个view参数的映射。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/22/higher-order-functions/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/20/Creating-a-View-Class/" itemprop="url">
+                  创造自定义View并在XML中使用自定义特性
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-20T19:58:44+08:00" content="2015-09-20">
+              2015-09-20
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>好的自定义view应该将功能封装为方便的接口，高效使用CPU和内存。另外还要做到：</p>
+<ul>
+<li>适应安卓标准</li>
+<li>提供自定义的风格属性，兼容安卓的XML布局</li>
+<li>发送无障碍事件</li>
+<li>兼容多个安卓平台</li>
+</ul>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/20/Creating-a-View-Class/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/09/19/spinners/" itemprop="url">
                   使用Spinner下拉列表
                 </a>
@@ -910,179 +1090,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/13/Animating-with-ValueAnimator/" itemprop="url">
-                  安卓动画学习笔记（四） 属性动画（续）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-13T16:09:59+08:00" content="2015-09-13">
-              2015-09-13
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="用AnimatorSet编排多个动画"><a href="#用AnimatorSet编排多个动画" class="headerlink" title="用AnimatorSet编排多个动画"></a>用AnimatorSet编排多个动画</h2><p>很多时候，播放动画的时机取决于其他动画的开始和结束。安卓系统可以将多个动画捆绑在一个<code>AnimatorSet</code>中，以指定同时播放动画，按顺序播放动画或者延迟一定时间后播放。<code>AnimatorSet</code>对象也可以互相嵌套。<br>下面的例子取自一个弹球游戏，播放下面的顺序播放<code>Animator</code>对象：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/13/Animating-with-ValueAnimator/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/13/Property-Animation/" itemprop="url">
-                  安卓动画学习笔记（三） 属性动画
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-13T14:27:32+08:00" content="2015-09-13">
-              2015-09-13
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>学习了上两节发现其中的代码有很多看不懂的地方，所以接下来从动画本身来学起。  </p>
-<p>属性动画是一个几乎能为任何东西实现动画的健壮框架。可以定义动画来随时间改变对象属性，无论是否绘制在屏幕上。属性动画在一段时间内改变一个属性（对象的域）。必须指定想要进行动画的对象属性，比如其位置，动画的时长，动画起止的属性值。<br>属性动画系统允许设定以下几个特性：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/13/Property-Animation/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1129,7 +1136,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">115</span>
+              <span class="site-state-item-count">117</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

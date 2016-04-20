@@ -224,6 +224,185 @@
             
               
                 
+                <a class="post-title-link" href="/2015/10/05/multiscreen-3-viewstub/" itemprop="url">
+                  使用ViewStub
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-05T12:21:52+08:00" content="2015-10-05">
+              2015-10-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="ViewStub"><a href="#ViewStub" class="headerlink" title="ViewStub"></a>ViewStub</h1><p><code>ViewStub</code>是个不具有尺寸，不进行绘制，不加入布局的轻量级view。所以在view层级中，非常容易填充和舍弃。每个<code>ViewStub</code>只需要简单地包含<code>android:layout</code>属性来指明需要填充的布局。</p>
+<h1 id="加载ViewStub布局"><a href="#加载ViewStub布局" class="headerlink" title="加载ViewStub布局"></a>加载ViewStub布局</h1><p>想要加载<code>ViewStub</code>的布局时，只需要调用<code>setVisible(View.VISIBLE)</code>或者<code>inflate()</code>即可。<code>inflate()</code>返回的结果就是所填充的view。</p>
+<p>一旦可见或填充后，<code>ViewStub</code>就不再是view阶层的一部分。它被所填充的布局替换，而且该布局的根view的ID成为<code>android:inflatedId</code>属性指明的ID。而<code>ViewStub</code>的<code>android:id</code>仅仅在这之前有效。</p>
+<blockquote>
+<p>注意：<code>ViewStub</code>的一大缺陷就是它目前不支持将要填充的布局中的<merge>标签。</merge></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/05/understanding-dp/" itemprop="url">
+                  适配不同屏幕（一） 理解安卓测量单位
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-05T11:47:23+08:00" content="2015-10-05">
+              2015-10-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="术语和概念"><a href="#术语和概念" class="headerlink" title="术语和概念"></a>术语和概念</h1><p>屏幕尺寸：实际的物理尺寸。为了方便，所有尺寸被分为四组：small, normal, large和extra-large。</p>
+<p>屏幕密度：屏幕的单位物理区域中所包含的像素的量，一般使用dpi（每英尺点数）描述。所有密度被分为六种泛化的密度：low, medium, high, extra-high, extra-extra-high, extra-extra-extra-high。</p>
+<p>分辨率：屏幕上物理像素的总数目。支持多屏幕时，应用只需要关心泛化的屏幕尺寸和密度，而不需要关心分辨率。</p>
+<p>密度无关像素（dp)：定义UI布局时应该使用的虚拟像素单位，用来以一种密度无关的方式表达布局尺寸或位置。</p>
+<p>密度无关像素与160dpi屏幕上的一个物理像素等同，它是medium密度屏幕的基线密度。运行时，系统根据屏幕的实际密度来处理dp单位的变换。从dp至屏幕像素的转换很简单：<code>px = dp * (dpi / 160)</code>。例如，在240dpi屏幕上，1dp=1.5物理像素。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/05/understanding-dp/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/10/03/Volley-UTF-8/" itemprop="url">
                   Volley解析UTF-8产生乱码的解决方法
                 </a>
@@ -924,183 +1103,6 @@ public Singleton getInstance(Context context){
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/27/phototask-summary/" itemprop="url">
-                  安卓多线程（五） PhotoTask例子的总结
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-27T18:43:48+08:00" content="2015-09-27">
-              2015-09-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>接下来，总结一下前几篇中的PhotoTask的例子，例子的源代码可以在官网下载。  </p>
-<h2 id="PhotoDecodeRunnable"><a href="#PhotoDecodeRunnable" class="headerlink" title="PhotoDecodeRunnable"></a>PhotoDecodeRunnable</h2><p>这个类是照片解码的任务，创建时获得<code>PhotoTask</code>的引用，并在执行时调用<code>mPhotoTask.setImageDecodeThread(Thread.currentThread());</code>来让<code>PhotoTask</code>获得解码线程的引用。</p>
-<p>在解码工作完成后，调用<code>PhotoTask.setImage()</code>方法传递<code>Bitmap</code>的引用，调用<code>PhotoTask.handleDecodeState()</code>方法来报告状态。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/27/phototask-summary/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/27/popupwindows/" itemprop="url">
-                  DialogFragmnet与PopupWindow
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-27T11:10:43+08:00" content="2015-09-27">
-              2015-09-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>安卓中弹出窗口其实算是一个有些复杂的问题，其复杂在，弹窗的很多特性与平常的UI控件都不一样，有点像不在一个系统中的问题。这次想做一个“更多”按钮，点击后弹出一个窗口来选择更多的操作。下面记录一下整个实现的过程。</p>
-<h2 id="尝试DialogFragment"><a href="#尝试DialogFragment" class="headerlink" title="尝试DialogFragment"></a>尝试DialogFragment</h2><p>一开始想到的是使用<code>DialogFragment</code>来创建一个对话框，这个类的使用非常便捷。但最后弹出的对话框却一直不能满足要求。我想做一个横向的包含多个按钮的对话框，就像</p>
-<pre><code>|按钮1|按钮2|按钮3|
-</code></pre><p>这样的，可<code>DialogFragment</code>不管怎么调整风格和主题，最后的布局总是会出现问题。比如，在这排按钮的下方出现空条，或者在最后一个按钮的右边出现，而且窗口大小也很难控制。最后是通过重写<code>onStart</code>方法实现的。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/27/popupwindows/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1147,7 +1149,7 @@ public Singleton getInstance(Context context){
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">115</span>
+              <span class="site-state-item-count">117</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

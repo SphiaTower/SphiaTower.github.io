@@ -2,9 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/04/20/closure-and-lexical-environment/</loc>
+    
+    <lastmod>2016-04-20T08:29:22.087Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/04/19/war-against-null-4/</loc>
+    
+    <lastmod>2016-04-19T16:36:46.122Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/04/19/war-against-null-3/</loc>
     
-    <lastmod>2016-04-19T14:31:48.799Z</lastmod>
+    <lastmod>2016-04-19T15:03:08.238Z</lastmod>
     
   </url>
   

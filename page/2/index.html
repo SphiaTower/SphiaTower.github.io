@@ -224,6 +224,183 @@
             
               
                 
+                <a class="post-title-link" href="/2016/04/08/dependency-injection-2/" itemprop="url">
+                  Dependency Injection - 概览
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-04-08T19:56:47+08:00" content="2016-04-08">
+              2016-04-08
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>上一篇我的英文文章中，提到了解决复杂对象层级中暴露大量参数的办法是依赖注入，这篇文章就先对依赖注入进行一下了解。</p>
+<p>本文主要内容翻译自<a href="https://en.wikipedia.org/wiki/Dependency_injection">https://en.wikipedia.org/wiki/Dependency_injection</a></p>
+<p>软件工程中，依赖注入是一种实现了控制反转的软件设计模式，用以解决依赖问题。依赖指的是一个可以被使用的对象，也称作服务。注入指的是将依赖传递给一个依靠它的对象（客户），即使用服务的对象。服务成为客户的状态的一部分。将服务传递给客户，而非允许客户创建或寻找服务，是这个模式的基本要求。</p>
+<p>依赖注入允许程序设计遵循依赖反转原则。客户将提供依赖的责任委托给外部代码（注射器）。而客户不可以调用注射器代码。<strong>注射代码</strong>构造了服务，并调用客户将服务注入。这意味着客户代码无需知晓注射代码。客户无需知道如何创建服务。客户也无需知道实际使用的是哪个服务。这将使用和创建的责任分离开。</p>
+<p>客户有三种常用的方法以接受依赖注入：setter注入，interface注入，constructor注入。setter和构造器注入主要的区别是他们被使用的时机。而接口注入有所不同的是，依赖可以获取控制其注入的机会。他们都要求单独的构造代码（注射器）负责引入客户和互相之间的依赖。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/08/dependency-injection-2/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/04/08/dependency-injection-1/" itemprop="url">
+                  Dependency Injection - Handle A Large Amount of Params with A Complex Class Hierarchy
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-04-08T19:41:28+08:00" content="2016-04-08">
+              2016-04-08
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>I’m developing a complex desktop client with C#, which is mainly for some scientific analysis work. The class hierarchy of my project is very complicated. The problem is that, a large amount of parameters should <strong>be able to be modified by the user at the entrance of the client</strong>.</p>
+<p>However, many parameters are very deep in the class hierarchy (I mean the composition hierarchy, not inheritance). As a result, classes closed to the top levels must take a lot of arguments in the constructor, because they are passed all the way up from different classes at the bottom levels.<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/08/dependency-injection-1/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/03/14/wear-recorder/" itemprop="url">
                   Record Audio on Wearable Devices
                 </a>
@@ -920,193 +1097,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/05/wear-dev-bluetooth/" itemprop="url">
-                  Android Wear 开发 （九） 通过蓝牙调试
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-03-05T15:36:31+08:00" content="2016-03-05">
-              2016-03-05
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>一些安卓手表可以通过USB接口连接至电脑进行尝试，而我的moto360只能通过蓝牙进行调试。在尝试用蓝牙调试的过程中，遇到了一些问题，一并记录下来。</p>
-<p>通过蓝牙可以将手表的debug输出发送至连接在开发机上的手机上。</p>
-<h1 id="为调试设置设备"><a href="#为调试设置设备" class="headerlink" title="为调试设置设备"></a>为调试设置设备</h1><ol>
-<li>启用手机的<strong>USB调试</strong>。</li>
-<li>启用手表的<strong>蓝牙调试</strong>：<ol>
-<li>触碰主屏幕两次打开手表目录。</li>
-<li>滑至底部，点击<strong>设置</strong>。</li>
-<li>滑至底部。如果没有<strong>开发者选项</strong>，点击<strong>关于</strong>，然后点击版本号七次。</li>
-<li>点击<strong>开发者目录</strong>。</li>
-<li>启用<strong>通过蓝牙调试</strong>。</li>
-</ol>
-</li>
-</ol>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/05/wear-dev-bluetooth/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/05/wear-dev-8/" itemprop="url">
-                  Android Wear 开发 （八） 添加语音功能
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-03-05T14:28:29+08:00" content="2016-03-05">
-              2016-03-05
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Wear提供两种语音动作：</p>
-<ul>
-<li>系统提供的：这些语音动作基于任务，并内置在Wear平台。在想要启动的activity中过滤出他们，比如“记笔记”或者“设定闹铃”。</li>
-<li>应用提供的：这些语音动作基于应用，声明他们就像启动图标一样。用户说“启动 ”来使用语音动作并启动一个指定的activity。
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/05/wear-dev-8/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1153,7 +1143,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">115</span>
+              <span class="site-state-item-count">117</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

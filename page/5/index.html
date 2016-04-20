@@ -224,6 +224,179 @@
             
               
                 
+                <a class="post-title-link" href="/2016/01/03/Creating-a-Navigation-Drawer/" itemprop="url">
+                  安卓导航 - 创建导航抽屉
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-01-03T14:46:01+08:00" content="2016-01-03">
+              2016-01-03
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>导航抽屉式一个屏幕左侧展示应用主要导航选项的面板。它一般隐藏起来，当用户从左侧滑动屏幕或在应用最顶级层面上点击应用图标时会出现。</p>
+<h1 id="创建DrawerLayout"><a href="#创建DrawerLayout" class="headerlink" title="创建DrawerLayout"></a>创建DrawerLayout</h1><p>要添加导航抽屉，首先在布局的根视图上添加一个<code>DrawerLayout</code>。在<code>DrawerLayout</code>中添加显示一个屏幕主要内容的view，和一个显示抽屉内容的view。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/01/03/Creating-a-Navigation-Drawer/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/01/03/Glide-image-size/" itemprop="url">
+                  A Glide Sizing Problem
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-01-03T00:02:01+08:00" content="2016-01-03">
+              2016-01-03
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Months ago, I encountered a very frustrating bug of Glide. I was using Glide to display images in a <code>RecyclerView</code>. The image was wrapped in a custom layout, and it was added dynamically. No matter how I adjust the code, images can’t be displayed  with its width matching parent. Sometimes it was even scaled into a pixel point!</p>
+<p>Until today, I found that the problem was because that Glide figured out the wrong dimensions, as is described here - “<a href="https://github.com/bumptech/glide/wiki/Transformations" target="_blank" rel="external">https://github.com/bumptech/glide/wiki/Transformations</a>“.</p>
+<p>I’m not sure about why Glide get the wrong dimension. But the solution is pretty easy: just call <code>.override(int,int)</code> to set the dimension by yourself. And a <code>.fitCenter()</code> call can then make sure that the scaling of width and height is not changed.</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/12/20/loader-compares-reference/" itemprop="url">
                   LoaderManager Compares References
                 </a>
@@ -908,191 +1081,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/21/include-local-library-using-gradle/" itemprop="url">
-                  Including Local Libraries Using Gradle
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-21T21:59:29+08:00" content="2015-10-21">
-              2015-10-21
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>After you have written or downloaded a android library, you may want to use it in your existing gradle-based project. It’s very easy to integrate an online library using gradle, but how to integrate a local library?</p>
-<p>The solution is very easy, because gradle supports importing local libraries just like online libraries. But you have to modify some setting files to make it work.<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/21/include-local-library-using-gradle/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/16/support-different-screen/" itemprop="url">
-                  适配不同屏幕（三） 使用标识符
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-16T13:52:32+08:00" content="2015-10-16">
-              2015-10-16
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>支持不同屏幕尺寸有以下几种方法：</p>
-<ul>
-<li>确保足够地缩放布局来适应屏幕；</li>
-<li>根据屏幕配置提供合适的UI布局；</li>
-<li>确保正确的布局应用在正确的屏幕；</li>
-<li>提供正确尺度的位图。</li>
-</ul>
-<h1 id="使用尺寸标识符"><a href="#使用尺寸标识符" class="headerlink" title="使用尺寸标识符"></a>使用尺寸标识符</h1><p>尺寸标识符可以为不同的屏幕配置提供合适的布局。比如，一些应用在大屏幕上使用双面板，在小屏幕上使用单面板，可以通过分别在：</p>
-<ul>
-<li><code>res/layout-large/main.xml</code></li>
-<li><code>res/lauout/main.xml</code></li>
-</ul>
-<p>中提供两个不同的布局来实现。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/16/support-different-screen/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1139,7 +1127,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">115</span>
+              <span class="site-state-item-count">117</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

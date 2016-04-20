@@ -224,6 +224,184 @@
             
               
                 
+                <a class="post-title-link" href="/2016/04/20/closure-and-lexical-environment/" itemprop="url">
+                  Closure and Lexical Environment
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-04-20T15:58:40+08:00" content="2016-04-20">
+              2016-04-20
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>From the previous post, we see that in Java local variables accessed within closure must be declared <code>final</code>. Why is Java designed this way? To understand this problem, you must learn about lexical environment first.</p>
+<blockquote>
+<p>As different languages do not always have a common definition of the lexical environment, their definitions of closure may vary also. The commonly held minimalist definition of the lexical environment defines it as a set of all bindings of variables in the scope, and that is also what closures in any language have to capture. However the meaning of a variable binding also differs. In imperative languages, variables bind to relative locations in memory that can store values. Although the relative location of a binding does not change at runtime, the value in the bound location can. In such languages, since closure captures the binding, any operation on the variable, whether done from the closure or not, are performed on the same relative memory location. This is often called capturing the variable “by reference”. </p>
+<p>On the other hand, many functional languages, such as ML, bind variables directly to values. In this case, since there is no way to change the value of the variable once it is bound, there is no need to share the state between closures—they just use the same values. This is often called capturing the variable “by value”. Java’s local and anonymous classes also fall into this category—they require captured local variables to be final, which also means there is no need to share state.<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/20/closure-and-lexical-environment/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/04/19/war-against-null-4/" itemprop="url">
+                  War Against Null IV - Closure In Consumer
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-04-19T23:07:29+08:00" content="2016-04-19">
+              2016-04-19
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>When you “consume” the <code>Optional</code> instance when it’s present, or call <code>map()</code> or <code>orElseGet()</code>, you have to create a lambda expression to be invoked. When it comes to passing a first-class function, you will encounter the concept of closure. In Java 8, variables you capture in the closure must be declared with <code>final</code>, which means there’s no way to modify it within the lambda expression. For example, the code below won’t compile:<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> id = <span class="number">12345</span>;</span><br><span class="line">Optional&lt;String&gt; nullableName = findNameById(id);</span><br><span class="line">String msg = <span class="string">"id not found"</span>;</span><br><span class="line">nullableName.ifPresent(name -&gt; &#123;</span><br><span class="line">    msg = <span class="string">"no! id is found"</span>; <span class="comment">// won't compile!</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br>You will get a tip from IDEA:</p>
+<blockquote>
+<p>Variables used in lambda expression should be final or effectively final.</p>
+</blockquote>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/19/war-against-null-4/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/04/19/war-against-null-3/" itemprop="url">
                   War Against Null III - If Not Present Part 2
                 </a>
@@ -265,7 +443,7 @@
 
       
         
-          <h1 id="OrElseGet"><a href="#OrElseGet" class="headerlink" title="OrElseGet"></a>OrElseGet</h1><p>My last post introduced a way to deal with <code>Optional&lt;T&gt;</code> instances for both possible situations, null or non-null. Sometimes, it’s not enough to map a nullable object to different non-null values. You may want to execute different code based on whether it’s null or not. One solution is calling <code>orElseGet()</code> to invoke a “null consumer”.<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> id = <span class="number">12345</span>;</span><br><span class="line">Optional&lt;String&gt; nullableName = findNameById(id);</span><br><span class="line">nullableName.ifPresent(name -&gt; &#123;</span><br><span class="line">    System.out.println(<span class="string">"found"</span>);</span><br><span class="line">    System.out.println(<span class="string">"name is "</span> + name);</span><br><span class="line">&#125;);</span><br><span class="line">nullableName.orElseGet(() -&gt; &#123;</span><br><span class="line">    System.out.print(<span class="string">"id not found"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br>In this way, you can deal with an empty <code>Optional&lt;T&gt;</code> instance. However, there’s one drawback that the returned value of the lambda expression you pass to <code>orElseGet()</code> is not always meaningful. In the snippet above, you return a <code>null</code> to deal with the <code>null</code> cases. It’s a little ironic.<br>
+          <h1 id="OrElseGet"><a href="#OrElseGet" class="headerlink" title="OrElseGet"></a>OrElseGet</h1><p>My last post introduced a way to deal with <code>Optional&lt;T&gt;</code> instances for both possible situations, null or non-null. Sometimes, it’s not enough to map a nullable object to different non-null values. You may want to execute different code based on whether it’s null or not. One solution is calling <code>orElseGet()</code> to invoke a “null consumer”.<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> id = <span class="number">12345</span>;</span><br><span class="line">Optional&lt;String&gt; nullableName = findNameById(id);</span><br><span class="line">nullableName.ifPresent(name -&gt; &#123;</span><br><span class="line">    System.out.println(<span class="string">"found"</span>);</span><br><span class="line">    System.out.println(<span class="string">"name is "</span> + name);</span><br><span class="line">&#125;);</span><br><span class="line">nullableName.orElseGet(() -&gt; &#123;</span><br><span class="line">    System.out.print(<span class="string">"id not found"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br>In this way, you can deal with an empty <code>Optional&lt;T&gt;</code> instance. However, there’s one drawback that the returned value of the lambda expression you pass to <code>orElseGet()</code> is not always meaningful. In the snippet above, you return a <code>null</code> to deal with the <code>null</code> cases, which is a little ironic.<br>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/04/19/war-against-null-3/#more" rel="contents">
               Read more &raquo;
@@ -901,183 +1079,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/04/08/dependency-injection-2/" itemprop="url">
-                  Dependency Injection - 概览
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-04-08T19:56:47+08:00" content="2016-04-08">
-              2016-04-08
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>上一篇我的英文文章中，提到了解决复杂对象层级中暴露大量参数的办法是依赖注入，这篇文章就先对依赖注入进行一下了解。</p>
-<p>本文主要内容翻译自<a href="https://en.wikipedia.org/wiki/Dependency_injection">https://en.wikipedia.org/wiki/Dependency_injection</a></p>
-<p>软件工程中，依赖注入是一种实现了控制反转的软件设计模式，用以解决依赖问题。依赖指的是一个可以被使用的对象，也称作服务。注入指的是将依赖传递给一个依靠它的对象（客户），即使用服务的对象。服务成为客户的状态的一部分。将服务传递给客户，而非允许客户创建或寻找服务，是这个模式的基本要求。</p>
-<p>依赖注入允许程序设计遵循依赖反转原则。客户将提供依赖的责任委托给外部代码（注射器）。而客户不可以调用注射器代码。<strong>注射代码</strong>构造了服务，并调用客户将服务注入。这意味着客户代码无需知晓注射代码。客户无需知道如何创建服务。客户也无需知道实际使用的是哪个服务。这将使用和创建的责任分离开。</p>
-<p>客户有三种常用的方法以接受依赖注入：setter注入，interface注入，constructor注入。setter和构造器注入主要的区别是他们被使用的时机。而接口注入有所不同的是，依赖可以获取控制其注入的机会。他们都要求单独的构造代码（注射器）负责引入客户和互相之间的依赖。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/08/dependency-injection-2/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/04/08/dependency-injection-1/" itemprop="url">
-                  Dependency Injection - Handle A Large Amount of Params with A Complex Class Hierarchy
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-04-08T19:41:28+08:00" content="2016-04-08">
-              2016-04-08
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>I’m developing a complex desktop client with C#, which is mainly for some scientific analysis work. The class hierarchy of my project is very complicated. The problem is that, a large amount of parameters should <strong>be able to be modified by the user at the entrance of the client</strong>.</p>
-<p>However, many parameters are very deep in the class hierarchy (I mean the composition hierarchy, not inheritance). As a result, classes closed to the top levels must take a lot of arguments in the constructor, because they are passed all the way up from different classes at the bottom levels.<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/08/dependency-injection-1/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1124,7 +1125,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">115</span>
+              <span class="site-state-item-count">117</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
