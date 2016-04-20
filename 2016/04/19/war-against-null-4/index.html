@@ -65,7 +65,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/04/19/war-against-null-4/index.html">
 <meta property="og:site_name" content="Welcome to SPHIA">
 <meta property="og:description" content="When you “consume” the Optional instance when it’s present, or call map() or orElseGet(), you have to create a lambda expression to be invoked. When it comes to passing a first-class function, you wil">
-<meta property="og:updated_time" content="2016-04-19T16:36:46.122Z">
+<meta property="og:updated_time" content="2016-04-20T08:32:44.837Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="War Against Null IV - Closure In Consumer">
 <meta name="twitter:description" content="When you “consume” the Optional instance when it’s present, or call map() or orElseGet(), you have to create a lambda expression to be invoked. When it comes to passing a first-class function, you wil">
@@ -264,7 +264,7 @@
 <p>Not quite true, Java does generate captures for the variables in question to capture their run-time values, its just they wanted to avoid a strange side-effect that is possible in .Net where by you capture the value in the delegate, change the value in the outer method, and now the delegate sees the new value see, stackoverflow.com/questions/271440/c-captured-variable-in-loop for the C# example of this behaviour that Java aims to avoid.</p>
 <p>Java does not, in fact, support closures. Languages that support closures do so by storing the entire local environment (that is, the set of local variables defined in the current stack frame) as a heap object. Java doesn’t have support for this (the language designers wanted to implement it but ran out of time), so as a workaround, whenever a local class is instantiated, the values of any local variables which it refers to are copied onto the heap. However, the JVM can’t then keep the values in sync with the local variables, which is why they have to be final. </p>
 <p>The explanation (or background) for this answer is wrong, stating that the objects created inside a method (local context) are destroyed after the method execution ends (and its context is removed from the stack) is not correct, local VARIABLES will be destroyed (removed from the stack), but the objects they reference (in the case of reference variables) will remain in the heap until the gc runs and there are no more strong references to this object. The reason this actually happens has to do with the way the java compiler works, please see my answer for an explanation.</p>
-<p>that explanation of things is misleading. There is no practical difference between “real” closures and Java’s workaround. It’s just more convenient to create closures in languages that have better support for them. The final requirement is an inconvenience, nothing more: it doesn’t mean the object can’t be mutable. A claim to the contrary should demonstrate what’s possible with “real” closures that isn’t possible in Java’s implementation. </p>
+<p>The explanation is misleading. There is no practical difference between “real” closures and Java’s workaround. It’s just more convenient to create closures in languages that have better support for them. The final requirement is an inconvenience, nothing more: it doesn’t mean the object can’t be mutable. A claim to the contrary should demonstrate what’s possible with “real” closures that isn’t possible in Java’s implementation. </p>
 </blockquote>
 
       
