@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2016/04/19/war-against-null-2/</loc>
+    
+    <lastmod>2016-04-27T06:18:09.669Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2016/04/08/dependency-injection-4/</loc>
+    
+    <lastmod>2016-04-27T06:17:25.291Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2016/04/19/war-against-null-4/</loc>
     
     <lastmod>2016-04-20T08:32:44.837Z</lastmod>
@@ -19,13 +33,6 @@
     <loc>http://yoursite.com/2016/04/19/war-against-null-3/</loc>
     
     <lastmod>2016-04-19T15:03:08.238Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2016/04/19/war-against-null-2/</loc>
-    
-    <lastmod>2016-04-19T14:04:18.328Z</lastmod>
     
   </url>
   
@@ -61,13 +68,6 @@
     <loc>http://yoursite.com/2016/04/09/mvp/</loc>
     
     <lastmod>2016-04-09T08:05:17.090Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2016/04/08/dependency-injection-4/</loc>
-    
-    <lastmod>2016-04-09T02:47:00.625Z</lastmod>
     
   </url>
   
