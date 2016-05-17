@@ -229,6 +229,92 @@
             
               
                 
+                <a class="post-title-link" href="/2015/09/12/tracking-movement/" itemprop="url">
+                  安卓手势学习笔记（二） 跟踪移动
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-12T09:41:29+08:00" content="2015-09-12">
+              2015-09-12
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>当触摸位置，压力，大小变化时，新的<code>onTouchEvent()</code>会被触发，并获得一个<code>ACTION_MOVE</code>事件。<br>手指触摸并不是一种精确的交互方式，检测触屏手势更多是根据一系列移动而非单一的操作。为了区分移动手势（如滑动）和非移动手势（如单击），安卓引入了”touch slop”的概念。它指的是在手势被判定为某个移动手势之前，手指可以随意移动的像素距离。<br>有几种办法可以跟踪手势中的移动：<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/12/tracking-movement/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/09/11/Detecting-Common-Gestures/" itemprop="url">
                   安卓手势学习笔记（一） 检测常用手势
                 </a>
@@ -1011,97 +1097,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/06/java-passing-value/" itemprop="url">
-                  Java的值传递与C#的ref/out
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-06T19:03:27+08:00" content="2015-09-06">
-              2015-09-06
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>最近用到了一个C#写成的桌面程序，并需要对其修改。C#作为一个静态的高级语言，很多特征与Java类似，当然也有大量的不同。在看代码时，发现有的函数签名的参数中出现了<code>out</code>关键字，便搜索了一下，结果得知这个关键字涉及了值传递与引用传递的问题。要学习明白这个关键字，首先要理解值传递和引用传递的问题，不妨先从更加熟悉的Java入手。  </p>
-<h2 id="Java的传递方式"><a href="#Java的传递方式" class="headerlink" title="Java的传递方式"></a>Java的传递方式</h2><p>乍一看，很容易认为Java使用引用传递，原因是Java中无处不在的“引用”，<code>Reference</code>。在Java中，可以将一个引用传入方法，在方法中修改对象的属性，比如：  </p>
-<pre><code>static void paintWhite(Car car){
-    car.setColor(Color.WHITE);
-}
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/06/java-passing-value/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1148,7 +1143,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">117</span>
+              <span class="site-state-item-count">118</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1158,7 +1153,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-count">36</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

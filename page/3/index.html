@@ -229,6 +229,91 @@
             
               
                 
+                <a class="post-title-link" href="/2016/03/05/wear-dev-10/" itemprop="url">
+                  Android Wear 开发 （十） 访问手表数据层
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-05T16:58:05+08:00" content="2016-03-05">
+              2016-03-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>要调用数据层API，首先创建一个<code>GoogleApiClient</code>的实例，作为所有Google Play服务API的入口。</p>
+<p><code>GoogleApiClient</code>提供了一个builder，最简单的实例如下：<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">GoogleApiClient mGoogleApiClient = <span class="keyword">new</span> GoogleApiClient.Builder(<span class="keyword">this</span>)</span><br><span class="line">        .addConnectionCallbacks(<span class="keyword">new</span> ConnectionCallbacks() &#123;</span><br><span class="line">                <span class="annotation">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onConnected</span><span class="params">(Bundle connectionHint)</span> </span>&#123;</span><br><span class="line">                    Log.d(TAG, <span class="string">"onConnected: "</span> + connectionHint);</span><br><span class="line">                    <span class="comment">// Now you can use the Data Layer API</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="annotation">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onConnectionSuspended</span><span class="params">(<span class="keyword">int</span> cause)</span> </span>&#123;</span><br><span class="line">                    Log.d(TAG, <span class="string">"onConnectionSuspended: "</span> + cause);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        .addOnConnectionFailedListener(<span class="keyword">new</span> OnConnectionFailedListener() &#123;</span><br><span class="line">                <span class="annotation">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onConnectionFailed</span><span class="params">(ConnectionResult result)</span> </span>&#123;</span><br><span class="line">                    Log.d(TAG, <span class="string">"onConnectionFailed: "</span> + result);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">        <span class="comment">// Request access only to the Wearable API</span></span><br><span class="line">        .addApi(Wearable.API)</span><br><span class="line">        .build();</span><br></pre></td></tr></table></figure><br>在使用数据层API之前，在客户端上调用<code>connect()</code>方法启动一个连接。系统为客户端调用<code>onConected()</code>回调时，就可以使用数据层API了。</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/03/05/wear-dev-bluetooth/" itemprop="url">
                   Android Wear 开发 （九） 通过蓝牙调试
                 </a>
@@ -1033,96 +1118,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/27/Wear-Dev-1/" itemprop="url">
-                  Android Wear 开发 （一） 创建手表通知
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-27T19:54:50+08:00" content="2016-02-27">
-              2016-02-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>I bought a moto 360 last year. But I seldom wear it, because it’s kind of useless. No app in Android Wear is irreplaceable. Many people never wears it in life because a cellphone is enough. So it’s necessary to develop a functional Wearable app whose performance is better in wearable devices than in cellphones.</p>
-<h1 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h1><p>首先来看 <code>Notification</code>. 要创建同时发送到手表的手机通知，使用 <code>NotificationCompat.Builder</code>.</p>
-<p>在gradle中引入需要的包：</p>
-<pre><code>compile &quot;com.android.support:support-v4:20.0.+&quot;
-</code></pre><p>通知呈现在手机上时，用户触碰通知，调用<code>setContentIntent()</code>指定的 <code>PendingIntent</code> 。而在手表上，用户将通知滑动至左边以显示<strong>Open</strong>动作，后者调用手机上的intent。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/27/Wear-Dev-1/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1169,7 +1164,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">117</span>
+              <span class="site-state-item-count">118</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1179,7 +1174,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-count">36</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

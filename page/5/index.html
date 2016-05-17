@@ -229,6 +229,94 @@
             
               
                 
+                <a class="post-title-link" href="/2016/01/03/Providing-Up-Navigation/" itemprop="url">
+                  安卓导航 - 提供Up导航
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-01-03T18:21:31+08:00" content="2016-01-03">
+              2016-01-03
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>所有不是主入口的屏幕都应该为用户提供一个通过action bar的Up按钮导航至逻辑父屏幕的方式。</p>
+<h1 id="明确父Activity"><a href="#明确父Activity" class="headerlink" title="明确父Activity"></a>明确父Activity</h1><p>要实现Up导航，第一步是为每个activity声明合适的父activity。这样系统就可以在manifest中获得activity的逻辑父页面，方便实现导航模式。</p>
+<p>从安卓4.1开始，可以通过在<code>&lt;activity&gt;</code>中指明<code>android:parentActivityName</code>属性来声明逻辑父activity。 4.0以下的版本这里略去。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/01/03/Providing-Up-Navigation/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/01/03/Creating-a-Navigation-Drawer/" itemprop="url">
                   安卓导航 - 创建导航抽屉
                 </a>
@@ -999,93 +1087,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/21/top-bottom-toolbar/" itemprop="url">
-                  Layout and Animation with Both Top & Bottom Bars
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-21T22:10:58+08:00" content="2015-10-21">
-              2015-10-21
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Some apps have a layout containing both a top Toolbar/Actionbar and a bottom toolbar-like view. And when you scroll a <code>RecyclerView</code>, both the top and bottom toolbar will enter/exit the screen with animation.</p>
-<p>It’s not difficult for the top toolbar. The solution is using <code>CoordinatorLayout</code> in the android material design library with a <code>Toolbar</code> and a <code>RecyclerView</code>. If the <code>RecyclerView</code> is added dynamically at runtime, you can add a <code>FrameLayout</code> as the container, and set scroll flags on it.<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/21/top-bottom-toolbar/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1132,7 +1133,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">117</span>
+              <span class="site-state-item-count">118</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1142,7 +1143,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-count">36</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

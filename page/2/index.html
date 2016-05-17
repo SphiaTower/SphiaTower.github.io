@@ -229,6 +229,93 @@
             
               
                 
+                <a class="post-title-link" href="/2016/04/08/dependency-injection-3/" itemprop="url">
+                  Dependency Injection - 实现
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-04-08T20:34:37+08:00" content="2016-04-08">
+              2016-04-08
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>本文主要内容翻译自<a href="https://en.wikipedia.org/wiki/Dependency_injection">https://en.wikipedia.org/wiki/Dependency_injection</a></p>
+<h1 id="不使用依赖注入"><a href="#不使用依赖注入" class="headerlink" title="不使用依赖注入"></a>不使用依赖注入</h1><p>在下面的Java例子中，客户类包含一个作为field的服务，后者通过客户的构造器初始化。客户控制了使用服务的哪个具体实现，并控制了其创建。在这个情景下，客户对<code>ServiceExample</code>有了hard-coded的依赖。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// An example without dependency injection</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Internal reference to the service used by this client</span></span><br><span class="line">    <span class="keyword">private</span> Service service;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Constructor</span></span><br><span class="line">    Client() &#123;</span><br><span class="line">        <span class="comment">// Specify a specific implementation in the constructor instead of using dependency injection</span></span><br><span class="line">        <span class="keyword">this</span>.service = <span class="keyword">new</span> ServiceExample();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Method within this client that uses the services</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">greet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Hello "</span> + <span class="keyword">this</span>.service.getName();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>依赖注入是一个替代的技术，可以初始化field而不显式地创建服务对象。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/08/dependency-injection-3/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/04/08/dependency-injection-2/" itemprop="url">
                   Dependency Injection - 概览
                 </a>
@@ -1017,91 +1104,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/05/wear-dev-10/" itemprop="url">
-                  Android Wear 开发 （十） 访问手表数据层
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-03-05T16:58:05+08:00" content="2016-03-05">
-              2016-03-05
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>要调用数据层API，首先创建一个<code>GoogleApiClient</code>的实例，作为所有Google Play服务API的入口。</p>
-<p><code>GoogleApiClient</code>提供了一个builder，最简单的实例如下：<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">GoogleApiClient mGoogleApiClient = <span class="keyword">new</span> GoogleApiClient.Builder(<span class="keyword">this</span>)</span><br><span class="line">        .addConnectionCallbacks(<span class="keyword">new</span> ConnectionCallbacks() &#123;</span><br><span class="line">                <span class="annotation">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onConnected</span><span class="params">(Bundle connectionHint)</span> </span>&#123;</span><br><span class="line">                    Log.d(TAG, <span class="string">"onConnected: "</span> + connectionHint);</span><br><span class="line">                    <span class="comment">// Now you can use the Data Layer API</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="annotation">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onConnectionSuspended</span><span class="params">(<span class="keyword">int</span> cause)</span> </span>&#123;</span><br><span class="line">                    Log.d(TAG, <span class="string">"onConnectionSuspended: "</span> + cause);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        .addOnConnectionFailedListener(<span class="keyword">new</span> OnConnectionFailedListener() &#123;</span><br><span class="line">                <span class="annotation">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onConnectionFailed</span><span class="params">(ConnectionResult result)</span> </span>&#123;</span><br><span class="line">                    Log.d(TAG, <span class="string">"onConnectionFailed: "</span> + result);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">        <span class="comment">// Request access only to the Wearable API</span></span><br><span class="line">        .addApi(Wearable.API)</span><br><span class="line">        .build();</span><br></pre></td></tr></table></figure><br>在使用数据层API之前，在客户端上调用<code>connect()</code>方法启动一个连接。系统为客户端调用<code>onConected()</code>回调时，就可以使用数据层API了。</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1148,7 +1150,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">117</span>
+              <span class="site-state-item-count">118</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1158,7 +1160,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-count">36</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

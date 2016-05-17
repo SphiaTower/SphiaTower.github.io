@@ -201,15 +201,95 @@
 
     
     
+
+    
       
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/17/simulate-wpf-data-binding-in-Android/" itemprop="url">
+                  Simulate WPF Data Binding in Android
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-05-17T12:57:32+08:00" content="2016-05-17">
+              2016-05-17
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        
-        
-        
       
 
       
-    
+        
+          <p>Google has released a data binding library last year. Before learning data binding in Android, I want to simulate WPF data binding in Android by myself first. In this way, I can have a better understanding of data binding.</p>
+<h1 id="WPF-data-binding"><a href="#WPF-data-binding" class="headerlink" title="WPF data binding"></a>WPF data binding</h1><p>It’s very convenient to use data binding in WPF. The following snippet in xaml declares a <code>TextBox</code> whose text is bound to a <code>Username</code> property.</p>
+<pre><code>&lt;TextBox Name=&quot;TbUserName&quot; Content=&quot;{Binding Path=Username, mode=TwoWay}&quot;&gt;
+</code></pre><p>And to bind the <code>TextBox</code> to a specified instance, you can set <code>TextBox.DataContext</code>.<br>    <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> tom = <span class="keyword">new</span> User(<span class="string">"Tom"</span>);</span><br><span class="line">TbUserName.DataContext = tom;</span><br></pre></td></tr></table></figure><br>And the <code>User</code> class should have a property <code>Username</code> which enables getting and setting.
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/17/simulate-wpf-data-binding-in-Android/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -456,6 +536,93 @@
           <h1 id="OrElseGet"><a href="#OrElseGet" class="headerlink" title="OrElseGet"></a>OrElseGet</h1><p>My last post introduced a way to deal with <code>Optional&lt;T&gt;</code> instances for both possible situations, null or non-null. Sometimes, it’s not enough to map a nullable object to different non-null values. You may want to execute different code based on whether it’s null or not. One solution is calling <code>orElseGet()</code> to invoke a “null consumer”.<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> id = <span class="number">12345</span>;</span><br><span class="line">Optional&lt;String&gt; nullableName = findNameById(id);</span><br><span class="line">nullableName.ifPresent(name -&gt; &#123;</span><br><span class="line">    System.out.println(<span class="string">"found"</span>);</span><br><span class="line">    System.out.println(<span class="string">"name is "</span> + name);</span><br><span class="line">&#125;);</span><br><span class="line">nullableName.orElseGet(() -&gt; &#123;</span><br><span class="line">    System.out.print(<span class="string">"id not found"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br>In this way, you can deal with an empty <code>Optional&lt;T&gt;</code> instance. However, there’s one drawback that the returned value of the lambda expression you pass to <code>orElseGet()</code> is not always meaningful. In the snippet above, you return a <code>null</code> to deal with the <code>null</code> cases, which is a little ironic.<br>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/04/19/war-against-null-3/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/04/19/war-against-null-2/" itemprop="url">
+                  War Against Null II - If Not Present
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-04-19T20:15:11+08:00" content="2016-04-19">
+              2016-04-19
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>As is mentioned in my last post, <code>Optional&lt;T&gt;.ifPresent()</code> could combine the check of nullity and the use of wrapped content in one step, which avoid the possibility of raising <code>NPE</code>s. However, there’s some trouble when the <code>Optional</code> object wraps a <code>null</code>.</p>
+<h1 id="OrElse"><a href="#OrElse" class="headerlink" title="OrElse"></a>OrElse</h1><p>There is a <code>Optional&lt;T&gt;.orElse(T other)</code> method which returns the wrapped value if it presents or returns the default value. However, remember the example of my last post? I need to print the name of a specified id or output “id not found” now. We can call <code>nullableName.orElse(&quot;id not found&quot;)</code> to return the msg if it’s not present. However, is there a way to work for both situations, as the traditional code snippet below does?
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/19/war-against-null-2/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -849,8 +1016,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/04/08/dependency-injection-3/" itemprop="url">
-                  Dependency Injection - 实现
+                <a class="post-title-link" href="/2016/04/08/dependency-injection-4/" itemprop="url">
+                  Dependency Injection - Configuration and Injector
                 </a>
               
             
@@ -863,7 +1030,7 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-04-08T20:34:37+08:00" content="2016-04-08">
+            <time itemprop="dateCreated" datetime="2016-04-08T21:06:46+08:00" content="2016-04-08">
               2016-04-08
             </time>
           </span>
@@ -890,10 +1057,10 @@
 
       
         
-          <p>本文主要内容翻译自<a href="https://en.wikipedia.org/wiki/Dependency_injection">https://en.wikipedia.org/wiki/Dependency_injection</a></p>
-<h1 id="不使用依赖注入"><a href="#不使用依赖注入" class="headerlink" title="不使用依赖注入"></a>不使用依赖注入</h1><p>在下面的Java例子中，客户类包含一个作为field的服务，后者通过客户的构造器初始化。客户控制了使用服务的哪个具体实现，并控制了其创建。在这个情景下，客户对<code>ServiceExample</code>有了hard-coded的依赖。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// An example without dependency injection</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Internal reference to the service used by this client</span></span><br><span class="line">    <span class="keyword">private</span> Service service;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Constructor</span></span><br><span class="line">    Client() &#123;</span><br><span class="line">        <span class="comment">// Specify a specific implementation in the constructor instead of using dependency injection</span></span><br><span class="line">        <span class="keyword">this</span>.service = <span class="keyword">new</span> ServiceExample();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Method within this client that uses the services</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">greet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Hello "</span> + <span class="keyword">this</span>.service.getName();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>依赖注入是一个替代的技术，可以初始化field而不显式地创建服务对象。<br>
+          <p>Today, after learning about the dependency injection, I refactored my code in the forementioned project. I used constructor injection for all the classes which require services. The client which needs a service/dependency doesn’t produce it by itself. It gets an instance from the constructor instead.</p>
+<p>The nested object hierarchy becomes clearer in this way. For example, a class <code>Computer</code> must receive trivial params like <code>double caseWeight</code>, <code>int fanNumber</code>, <code>String cpuBrand</code> and so on. A <code>Computer</code> constructor may take tens of arguments to get initialized. Because inside the <code>Computer</code> construtor, it <strong>produces</strong> its components, like <code>this.case = new Case(caseSize, caseColor,cpuFanSize, cpuFanSpeed, cpuBrand, cpuCoreNum, diskSize);</code>. All params of lower level objects must be passed from the upper level.<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/08/dependency-injection-3/#more" rel="contents">
+            <a class="btn" href="/2016/04/08/dependency-injection-4/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -961,7 +1128,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">117</span>
+              <span class="site-state-item-count">118</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -971,7 +1138,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-count">36</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
