@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-05-17T05:15:27.770Z</updated>
+  <updated>2016-05-17T05:17:43.871Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Simulate WPF Data Binding in Android</title>
+    <title>Simulate WPF Data Binding in Android Part I - One Way Binding</title>
     <link href="http://yoursite.com/2016/05/17/simulate-wpf-data-binding-in-Android/"/>
     <id>http://yoursite.com/2016/05/17/simulate-wpf-data-binding-in-Android/</id>
     <published>2016-05-17T04:57:32.000Z</published>
-    <updated>2016-05-17T05:15:27.770Z</updated>
+    <updated>2016-05-17T05:17:43.871Z</updated>
     
     <content type="html">&lt;p&gt;Google has released a data binding library last year. Before learning data binding in Android, I want to simulate WPF data binding in Android by myself first. In this way, I can have a better understanding of data binding.&lt;/p&gt;
 &lt;h1 id=&quot;WPF-data-binding&quot;&gt;&lt;a href=&quot;#WPF-data-binding&quot; class=&quot;headerlink&quot; title=&quot;WPF data binding&quot;&gt;&lt;/a&gt;WPF data binding&lt;/h1&gt;&lt;p&gt;It’s very convenient to use data binding in WPF. The following snippet in xaml declares a &lt;code&gt;TextBox&lt;/code&gt; whose text is bound to a &lt;code&gt;Username&lt;/code&gt; property.&lt;/p&gt;
