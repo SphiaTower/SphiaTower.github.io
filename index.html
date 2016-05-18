@@ -201,6 +201,15 @@
 
     
     
+      
+      
+        
+        
+        
+      
+
+      
+    
 
     
       
@@ -269,95 +278,6 @@
 <h1 id="Fire-Events-in-Setter"><a href="#Fire-Events-in-Setter" class="headerlink" title="Fire Events in Setter"></a>Fire Events in Setter</h1><p>The WPF implementation fires an <code>event</code> to notify the property changes, and the event is handled to notify the <code>TextBlock</code> it binds to. The event handler is added by the system, so the data class don’t need to care about the existence of binder or view. Now we try to simulate it. And then we simulate the code above using Kotlin.<br>The original pojo <code>Person</code> is like:
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/05/18/Simulate-WPF-Data-Binding-in-Android-Part-II/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/17/simulate-wpf-data-binding-in-Android/" itemprop="url">
-                  Simulate WPF Data Binding in Android, Part I - One Way Binding
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-05-17T12:57:32+08:00" content="2016-05-17">
-              2016-05-17
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Google has released a data binding library last year. Before learning data binding in Android, I want to simulate WPF data binding in Android by myself first. In this way, I can have a better understanding of data binding.</p>
-<h1 id="WPF-data-binding"><a href="#WPF-data-binding" class="headerlink" title="WPF data binding"></a>WPF data binding</h1><p>It’s very convenient to use data binding in WPF. The following snippet in xaml declares a <code>TextBox</code> whose text is bound to a <code>Username</code> property.</p>
-<pre><code>&lt;TextBox Name=&quot;TbUserName&quot; Content=&quot;{Binding Path=Username, mode=TwoWay}&quot;&gt;
-</code></pre><p>And to bind the <code>TextBox</code> to a specified instance, you can set <code>TextBox.DataContext</code>.<br>    <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> tom = <span class="keyword">new</span> User(<span class="string">"Tom"</span>);</span><br><span class="line">TbUserName.DataContext = tom;</span><br></pre></td></tr></table></figure><br>And the <code>User</code> class should have a property <code>Username</code> which enables getting and setting.
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/17/simulate-wpf-data-binding-in-Android/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
