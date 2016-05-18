@@ -201,11 +201,92 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/11/11/clion-encoding/" itemprop="url">
+                  An Encoding Problem in Clion
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-11-11T23:52:20+08:00" content="2015-11-11">
+              2015-11-11
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          
+            <p>Clion is a great IDE of C/C++, made by JetBrain. But I found a problem that when the output of console is Chinese, it can’t be displayed correctly.</p>
+<p>I tried to use the same method as Intellij IDEA, changing the encoding from GBK to UTF-8 at the right bottom corner. However, it didn’t work like IDEA 14.</p>
+<p>After a lot of attempts modifying different settings, I have found the solution: In <code>File &gt; Settings &gt; Editor &gt; File Encoding</code>, modify both <code>IDE Encoding</code> and <code>Project Encoding</code> into UTF-8. After applied, click the console dock and then change the right bottom corner from UTF-8 to GBK. Then the console can output Chinese now.</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1029,95 +1110,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/07/Auto-Pager-Recycler/" itemprop="url">
-                  Introducing Auto-Pager Recycler
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-07T12:16:58+08:00" content="2015-10-07">
-              2015-10-07
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Hey guys! I’m here introducing my repo – AutoPagerRecycler.<br><a href="https://github.com/SphiaTower/AutoPagerRecyclerManager">https://github.com/SphiaTower/AutoPagerRecyclerManager</a></p>
-<h1 id="AutoPagerRecyclerManager"><a href="#AutoPagerRecyclerManager" class="headerlink" title="AutoPagerRecyclerManager"></a>AutoPagerRecyclerManager</h1><p>Provide auto pager support for a RecycleView, loading data from a multi-page source has never been so easy!</p>
-<h2 id="When-to-use-it"><a href="#When-to-use-it" class="headerlink" title="When to use it?"></a>When to use it?</h2><p>When you are building a <code>RecyclerView</code> based on data from a multi-page source. </p>
-<p>For example, you are displaying content from a forum, like www.forum.com/board.json?page=1. The <code>AutoPagerRecyclerManager</code> can handle the async process of loading a different page. The data form <code>page=2</code> <code>page=3</code> or any other pages could be loaded easily on scroll or other custom actions.</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/07/Auto-Pager-Recycler/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1164,7 +1156,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">118</span>
+              <span class="site-state-item-count">119</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1174,7 +1166,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-count">37</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

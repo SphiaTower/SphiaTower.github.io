@@ -201,11 +201,93 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/04/08/dependency-injection-4/" itemprop="url">
+                  Dependency Injection - Configuration and Injector
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-04-08T21:06:46+08:00" content="2016-04-08">
+              2016-04-08
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          <p>Today, after learning about the dependency injection, I refactored my code in the forementioned project. I used constructor injection for all the classes which require services. The client which needs a service/dependency doesn’t produce it by itself. It gets an instance from the constructor instead.</p>
+<p>The nested object hierarchy becomes clearer in this way. For example, a class <code>Computer</code> must receive trivial params like <code>double caseWeight</code>, <code>int fanNumber</code>, <code>String cpuBrand</code> and so on. A <code>Computer</code> constructor may take tens of arguments to get initialized. Because inside the <code>Computer</code> construtor, it <strong>produces</strong> its components, like <code>this.case = new Case(caseSize, caseColor,cpuFanSize, cpuFanSpeed, cpuBrand, cpuCoreNum, diskSize);</code>. All params of lower level objects must be passed from the upper level.<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/08/dependency-injection-4/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1003,107 +1085,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/05/wear-dev-11/" itemprop="url">
-                  Android Wear 开发 （十一） 同步数据项
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-03-05T17:06:21+08:00" content="2016-03-05">
-              2016-03-05
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><code>DataItem</code>定义了系统用来在手机和手表间同步数据的数据接口。它通常包含了：</p>
-<ul>
-<li><strong>Payload</strong> - 一个字节数组，可以设置任何数据，可以自己进行对象序列化和反序列化。其大小限制在100KB。</li>
-<li><strong>Path</strong> - 一个独特的字符串，必须以一个前斜杠开始，如<code>(/path/to/data)</code>。</li>
-</ul>
-<p>一般不需要直接实现<code>DataItem</code>。只需：</p>
-<ol>
-<li>创建一个<code>PutDataRequest</code>对象，指定一个字符串路径来标识该项目。</li>
-<li>调用<code>setData()</code>来设置payload。</li>
-<li>如果同步的延迟会影响用户体验，调用<code>setUrgent()</code>。</li>
-<li>调用<code>DataApi.putDataItem()</code>。</li>
-</ol>
-<blockquote>
-<p>实测表明，不调用<code>setUrgent()</code>的话，手机向手表发送请求时，双方响应非常快。而手表向手机发送时，只有手表处马上响应，手机处则非常慢。</p>
-</blockquote>
-<p>在请求数据项时，系统返回正确实现了<code>DataItem</code>接口的对象。然而，并不推荐使用<code>setData()</code>直接设置原生的字节，建议使用data map，它用一个容易使用的类似<code>Bundle</code>的接口来暴露数据。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/05/wear-dev-11/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1150,7 +1131,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">118</span>
+              <span class="site-state-item-count">119</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1160,7 +1141,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-count">37</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

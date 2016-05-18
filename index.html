@@ -224,8 +224,95 @@
             
               
                 
+                <a class="post-title-link" href="/2016/05/18/Simulate-WPF-Data-Binding-in-Android-Part-II/" itemprop="url">
+                  Simulate WPF Data Binding in Android, Part II - Update View on Source Changed
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-05-18T21:36:39+08:00" content="2016-05-18">
+              2016-05-18
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="The-WPF-Way"><a href="#The-WPF-Way" class="headerlink" title="The WPF Way"></a>The WPF Way</h1><p>In the last post, we simulated the default implementation of WPF data binding. User inputs change the dependency property directly and the content of view is initialized by the property value. However, if the property is changed by an internal <code>setXXX()</code> call, the view won’t be updated. In WPF, the solution is to implement a <code>INotifyPropertyChanged</code> interface.<br>    <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.ComponentModel;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">SDKSample</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// This class implements INotifyPropertyChanged</span></span><br><span class="line">  <span class="comment">// to support one-way and two-way bindings</span></span><br><span class="line">  <span class="comment">// (such that the UI element updates when the source</span></span><br><span class="line">  <span class="comment">// has been changed dynamically)</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Person</span> : <span class="title">INotifyPropertyChanged</span></span><br><span class="line">  &#123;</span><br><span class="line">      <span class="keyword">private</span> <span class="keyword">string</span> name;</span><br><span class="line">      <span class="comment">// Declare the event</span></span><br><span class="line">      <span class="keyword">public</span> <span class="keyword">event</span> PropertyChangedEventHandler PropertyChanged;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="title">Person</span>(<span class="params"></span>)</span><br><span class="line">      </span>&#123;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="title">Person</span>(<span class="params"><span class="keyword">string</span> <span class="keyword">value</span></span>)</span><br><span class="line">      </span>&#123;</span><br><span class="line">          <span class="keyword">this</span>.name = <span class="keyword">value</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">public</span> <span class="keyword">string</span> PersonName</span><br><span class="line">      &#123;</span><br><span class="line">          <span class="keyword">get</span> &#123; <span class="keyword">return</span> name; &#125;</span><br><span class="line">          <span class="keyword">set</span></span><br><span class="line">          &#123;</span><br><span class="line">              name = <span class="keyword">value</span>;</span><br><span class="line">              <span class="comment">// Call OnPropertyChanged whenever the property is updated</span></span><br><span class="line">              OnPropertyChanged(<span class="string">"PersonName"</span>);</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// Create the OnPropertyChanged method to raise the event</span></span><br><span class="line">      <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">OnPropertyChanged</span>(<span class="params"><span class="keyword">string</span> name</span>)</span><br><span class="line">      </span>&#123;</span><br><span class="line">          PropertyChangedEventHandler handler = PropertyChanged;</span><br><span class="line">          <span class="keyword">if</span> (handler != <span class="keyword">null</span>)</span><br><span class="line">          &#123;</span><br><span class="line">              handler(<span class="keyword">this</span>, <span class="keyword">new</span> PropertyChangedEventArgs(name));</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="Fire-Events-in-Setter"><a href="#Fire-Events-in-Setter" class="headerlink" title="Fire Events in Setter"></a>Fire Events in Setter</h1><p>The WPF implementation fires an <code>event</code> to notify the property changes, and the event is handled to notify the <code>TextBlock</code> it binds to. The event handler is added by the system, so the data class don’t need to care about the existence of binder or view. Now we try to simulate it. And then we simulate the code above using Kotlin.<br>The original pojo <code>Person</code> is like:
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/18/Simulate-WPF-Data-Binding-in-Android-Part-II/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/05/17/simulate-wpf-data-binding-in-Android/" itemprop="url">
-                  Simulate WPF Data Binding in Android Part I - One Way Binding
+                  Simulate WPF Data Binding in Android, Part I - One Way Binding
                 </a>
               
             
@@ -995,93 +1082,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/04/08/dependency-injection-4/" itemprop="url">
-                  Dependency Injection - Configuration and Injector
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-04-08T21:06:46+08:00" content="2016-04-08">
-              2016-04-08
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Today, after learning about the dependency injection, I refactored my code in the forementioned project. I used constructor injection for all the classes which require services. The client which needs a service/dependency doesn’t produce it by itself. It gets an instance from the constructor instead.</p>
-<p>The nested object hierarchy becomes clearer in this way. For example, a class <code>Computer</code> must receive trivial params like <code>double caseWeight</code>, <code>int fanNumber</code>, <code>String cpuBrand</code> and so on. A <code>Computer</code> constructor may take tens of arguments to get initialized. Because inside the <code>Computer</code> construtor, it <strong>produces</strong> its components, like <code>this.case = new Case(caseSize, caseColor,cpuFanSize, cpuFanSpeed, cpuBrand, cpuCoreNum, diskSize);</code>. All params of lower level objects must be passed from the upper level.<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/08/dependency-injection-4/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1128,7 +1128,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">118</span>
+              <span class="site-state-item-count">119</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1138,7 +1138,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-count">37</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

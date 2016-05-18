@@ -201,11 +201,93 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/06/python-builder-pattern/" itemprop="url">
+                  Python的默认参数陷阱与Builder模式
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-06T19:14:08+08:00" content="2015-09-06">
+              2015-09-06
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          <p>上一篇探讨了Java和C#值传递和引用传递的问题，写完后又想起了Python的问题。作为一个动态类型的脚本语言，Python的情况似乎更加复杂一些，这里先按下不表，来看一下Python默认参数的一个小问题。<br>提到Python的默认参数陷阱，很多人都会想到那个经典list作为默认参数的问题。默认参数每次被使用后，list都会发生变化，导致函数每次返回的结果都不同。而这里要讨论的是另外一个问题：使用变量作为默认参数的问题。  </p>
+<h2 id="默认参数值的陷阱"><a href="#默认参数值的陷阱" class="headerlink" title="默认参数值的陷阱"></a>默认参数值的陷阱</h2><p>前一阵子，在写一个小型的Python项目时，遇到了这个问题。在项目中，经常在不同地方多次创建同一个类的实例，而所有实例的某个属性可能完全相同（但可能变化），比如：<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/06/python-builder-pattern/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -976,7 +1058,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">118</span>
+              <span class="site-state-item-count">119</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -986,7 +1068,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-count">37</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

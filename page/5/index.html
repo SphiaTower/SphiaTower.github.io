@@ -201,11 +201,99 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/01/03/Providing-Proper-Back-Navigation/" itemprop="url">
+                  安卓导航 - 提供合适的后退导航
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-01-03T18:50:14+08:00" content="2016-01-03">
+              2016-01-03
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          <p>后退导航是指用户如何从访问过的屏幕中向后移动。所有的安卓设备都提供有一个后退键，所以<strong>你的应用不应该再增加一个后退按钮。</strong></p>
+<p>在大多数的情况中，系统在用户导航时维持着一个后退栈。这使得系统能够再用户按下后退键之后合适地向后导航。然而，有一些情况下，你需要手动指明后退行为，以提供更好的用户体验。</p>
+<p>需要手动指明后退行为的导航模式有：</p>
+<ul>
+<li>用户通过一条通知、一个桌面挂件或导航抽屉直接进入到一个深层次的activity时。</li>
+<li>用户在fragment见导航的某些情况。</li>
+<li>用户在<code>WebView</code>的网页中导航时。</li>
+</ul>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/01/03/Providing-Proper-Back-Navigation/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1001,92 +1089,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/11/11/clion-encoding/" itemprop="url">
-                  An Encoding Problem in Clion
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-11-11T23:52:20+08:00" content="2015-11-11">
-              2015-11-11
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Clion is a great IDE of C/C++, made by JetBrain. But I found a problem that when the output of console is Chinese, it can’t be displayed correctly.</p>
-<p>I tried to use the same method as Intellij IDEA, changing the encoding from GBK to UTF-8 at the right bottom corner. However, it didn’t work like IDEA 14.</p>
-<p>After a lot of attempts modifying different settings, I have found the solution: In <code>File &gt; Settings &gt; Editor &gt; File Encoding</code>, modify both <code>IDE Encoding</code> and <code>Project Encoding</code> into UTF-8. After applied, click the console dock and then change the right bottom corner from UTF-8 to GBK. Then the console can output Chinese now.</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1133,7 +1135,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">118</span>
+              <span class="site-state-item-count">119</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1143,7 +1145,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-count">37</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

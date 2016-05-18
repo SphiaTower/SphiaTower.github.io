@@ -201,11 +201,93 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/13/Animation-Resources/" itemprop="url">
+                  安卓动画学习笔记（六） XML语法
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-13T21:03:08+08:00" content="2015-09-13">
+              2015-09-13
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          <p>动画资源可以定义属性动画和视图动画。其中视图动画又分为补间动画和帧动画（用<code>AnimationDrawable</code>依次显示一系列图片）。</p>
+<h2 id="属性动画"><a href="#属性动画" class="headerlink" title="属性动画"></a>属性动画</h2><h3 id="文件地址"><a href="#文件地址" class="headerlink" title="文件地址"></a>文件地址</h3><p><code>res/animator/filename.xml</code>，其中filename即资源的ID。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/13/Animation-Resources/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1015,98 +1097,6 @@ dependencies {
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/12/Handling-Multi-Touch-Gestures/" itemprop="url">
-                  安卓手势学习笔记（三） 多点触控
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-12T10:08:06+08:00" content="2015-09-12">
-              2015-09-12
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="跟踪多个触点"><a href="#跟踪多个触点" class="headerlink" title="跟踪多个触点"></a>跟踪多个触点</h2><p>当多个手指同时触碰屏幕时，系统产生如下的事件：</p>
-<ul>
-<li><code>ACTION_DOWN</code> –第一个触点。它启动了手势，在<code>MotionEvent</code>中该触点的数据索引是0.</li>
-<li><code>ACTION_POINTER_DOWN</code> –第一个触点之后触碰屏幕的其他触点。其索引通过<code>getActionIndex()</code>获取。</li>
-<li><code>ACTION_MOVE</code> –已经按下的手势发生变化。</li>
-<li><code>ACTION_POINTER_UP</code> –非最初手指抬起时发送。</li>
-<li><code>ACTION_UP</code> –最后一个手指离开屏幕时发送。
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/12/Handling-Multi-Touch-Gestures/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1153,7 +1143,7 @@ dependencies {
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">118</span>
+              <span class="site-state-item-count">119</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1163,7 +1153,7 @@ dependencies {
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-count">37</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
