@@ -201,11 +201,93 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/14/GridView/" itemprop="url">
+                  初探GridView
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-14T20:47:46+08:00" content="2015-09-14">
+              2015-09-14
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          <p>自己的项目中还从来没有用过<code>GridView</code>，这次有机会使用了，首先系统地学习一下。</p>
+<p><code>GridView</code>是一个二维展示子项的可滚动的<code>ViewGroup</code>。使用<code>ListAdapter</code>可以自动将每个格子插入至布局。  </p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/14/GridView/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1010,98 +1092,6 @@ dependencies {
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/12/Dragging-and-Scaling/" itemprop="url">
-                  安卓手势学习笔记（四） 拖动与缩放
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-12T12:16:46+08:00" content="2015-09-12">
-              2015-09-12
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>本文探讨如何使用手势拖动和缩放，用<code>onTouchEvent()</code>来拦截触屏事件。</p>
-<h2 id="拖动对象"><a href="#拖动对象" class="headerlink" title="拖动对象"></a>拖动对象</h2><p><em>如果使用3.0以上版本，可以使用内置的拖放事件侦听器<code>View.OnDragListener</code>。</em><br>拖动是一个很常用的操作：</p>
-<ul>
-<li>在拖动（或滚动）操作中，应用必须跟踪原始的触点（手指），即使其他手指也触摸了屏幕。例如，拖动图片时，用户将第二根手指放在了屏幕上，并抬起了第一根。如果应用只跟踪单独的触点，它会认为第二个触点为默认触点并将图片移动至那个位置。</li>
-<li>为了避免这种问题，应用需要辨别原始触点和后来出现的其他触点。可以通过跟踪<code>ACTION_POINTER_DOWN</code>和<code>ACTION_POINTER_UP</code>来实现。当次要触点按下或抬起时它们会被传送到<code>onTouchEvent()</code>中。</li>
-<li><code>ACTION_POINTER_UP</code>的情况下。。。</li>
-</ul>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/12/Dragging-and-Scaling/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1148,7 +1138,7 @@ dependencies {
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">119</span>
+              <span class="site-state-item-count">120</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

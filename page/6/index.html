@@ -201,11 +201,93 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/11/16/notes-about-the-activity-lifecycle/" itemprop="url">
+                  Notes on the Activity Lifecycle
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-11-16T20:52:33+08:00" content="2015-11-16">
+              2015-11-16
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          <h1 id="Starting-an-Activity"><a href="#Starting-an-Activity" class="headerlink" title="Starting an Activity"></a>Starting an Activity</h1><p>Technically, the activity becomes visible to the user when <code>onStart()</code> is called, but <code>onResume()</code> quickly follows and the activity remains in the Resumed state until something occurs to change that, such as when a phone call is received, the user navigates to another activity, or the device screen turns off.</p>
+<p>Most apps don’t need to implement this method (<code>onDestroy()</code>) because local class references are destroyed with the activity and your activity should perform most cleanup during <code>onPause()</code> and <code>onStop()</code>. However, if your activity includes background threads that you created during <code>onCreate()</code> or other long-running resources that could potentially leak memory if not properly closed, you should kill them during <code>onDestroy()</code>.<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/11/16/notes-about-the-activity-lifecycle/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1020,101 +1102,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/07/notifyDataSetChanged/" itemprop="url">
-                  A Problem about notifyDataSetChanged()
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-07T12:23:37+08:00" content="2015-10-07">
-              2015-10-07
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>I found a problem when using <code>adapter</code> of a <code>RecyclerView</code>. The <code>notifyDataSetChanged()</code> method did not work because I wrapped it in a recursive method which never returns.</p>
-<p>And I found that the <code>notifyDataSetChanged()</code> method could only work after the wrapped method returned. For example, if a sleep is added after <code>notifyDataSetChanged()</code>, it won’t take effect before the sleep is finished.</p>
-<pre><code>void wrapper(){
-    mAdapter.notifyDataSetChanged();
-    try{
-        TimeUnit.Seconds.sleep(5);
-    }catch(Exception ignored){
-    }
-}
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/07/notifyDataSetChanged/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1161,7 +1148,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">119</span>
+              <span class="site-state-item-count">120</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

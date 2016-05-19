@@ -201,11 +201,93 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/29/source-code-of-volley/" itemprop="url">
+                  源码解析 - Volley
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-29T19:45:23+08:00" content="2015-09-29">
+              2015-09-29
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          <p>Volley是安卓中处理网络请求的一个包。虽然从来没有使用过，但从文档来看使用起来还是很容易的。但一直疑惑的一点就是为什么要使用这个包来进行网络操作。接下来就从源代码看起。</p>
+<h2 id="Volley-newRequestQueue"><a href="#Volley-newRequestQueue" class="headerlink" title="Volley.newRequestQueue()"></a>Volley.newRequestQueue()</h2><p>使用Volley首先要创建一个请求队列，接下来就先看这个方法。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/29/source-code-of-volley/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1001,99 +1083,6 @@ public Singleton getInstance(Context context){
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/23/Taking-Photos-Simply/" itemprop="url">
-                  安卓拍摄和保存照片
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-23T19:58:10+08:00" content="2015-09-23">
-              2015-09-23
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在应用中可能会用到拍摄照片的功能，而这部分功能在整个应用中可能只是一小部分，所以开发时没有必要花精力去处理到底如何拍照。幸运的是，可以使用安卓设备中的其他相机应用来帮你处理。</p>
-<h2 id="要求相机权限"><a href="#要求相机权限" class="headerlink" title="要求相机权限"></a>要求相机权限</h2><p>如果拍照时应用的核心内容，那么需要限制安装应用的手机必须有相机。在manifest中可以如下处理：</p>
-<pre><code>&lt;manifest ... &gt;
-    &lt;uses-feature android:name=&quot;android.hardware.camera&quot;
-                  android:required=&quot;true&quot; /&gt;
-    ...
-&lt;/manifest&gt;
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/23/Taking-Photos-Simply/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1140,7 +1129,7 @@ public Singleton getInstance(Context context){
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">119</span>
+              <span class="site-state-item-count">120</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

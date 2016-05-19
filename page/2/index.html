@@ -201,11 +201,95 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/04/09/mvp/" itemprop="url">
+                  Create Android Apps with MVP
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-04-09T15:03:39+08:00" content="2016-04-09">
+              2016-04-09
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          <p>As is well known, traditional Android app development generally follows the MVC pattern. However, an activity or a fragment usually acts as the role of both a view and a controller. As a result, the code is tightly coupled and the complexity of activities and fragments are explosive. It’s difficult to reuse the logic behind.</p>
+<p>Model-View-Presenter(MVP) is a solution to this problem. The idea of MVP is similar to dependency injection. Different components of the framework should not have the knowledge of the concrete implementation of the dependencies they need. Activities or fragments should only act as the role of view. So let’s start with them.</p>
+<h1 id="User-Interface"><a href="#User-Interface" class="headerlink" title="User Interface"></a>User Interface</h1><p>We start with a very simple app, an accumulator, which receives a number and add into a stored number of itself.</p>
+<p>First think about the <code>View</code>s we need. We need an input <code>EditText</code> to take a number from user, a <code>TextView</code> to display the result, a <code>Button</code> to invoke the adding, and a <code>Button</code> to reset the accumulator. These <code>View</code>s could be contained directly in an activity or in a content fragment. Let’s take a fragment as example:<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/09/mvp/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1000,96 +1084,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/05/wear-dev-12/" itemprop="url">
-                  Android Wear 开发 （十二） 传输Assets
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-03-05T17:28:37+08:00" content="2016-03-05">
-              2016-03-05
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>要通过蓝牙发送较大的二进制数据块，比如图片，可以为数据项附加一个<code>Asset</code>，并将数据项添加至复制的数据商店。</p>
-<p>Assets自动处理数据的缓存，来阻止重复传送，并节省蓝牙带宽。一个通用的模式是，在手机应用上下载图片，缩小至适合手表显示的尺寸，然后作为asset传送至手表上。</p>
-<blockquote>
-<p>数据项的大小限制在100KB，而asset则可以尽可能的大。然而，传输大asset会影响用户体验，所以传输时一定要做好测试工作来确保其表现。</p>
-</blockquote>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/05/wear-dev-12/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1136,7 +1130,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">119</span>
+              <span class="site-state-item-count">120</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

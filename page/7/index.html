@@ -201,11 +201,101 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/07/notifyDataSetChanged/" itemprop="url">
+                  A Problem about notifyDataSetChanged()
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-07T12:23:37+08:00" content="2015-10-07">
+              2015-10-07
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>I found a problem when using <code>adapter</code> of a <code>RecyclerView</code>. The <code>notifyDataSetChanged()</code> method did not work because I wrapped it in a recursive method which never returns.</p>
+<p>And I found that the <code>notifyDataSetChanged()</code> method could only work after the wrapped method returned. For example, if a sleep is added after <code>notifyDataSetChanged()</code>, it won’t take effect before the sleep is finished.</p>
+<pre><code>void wrapper(){
+    mAdapter.notifyDataSetChanged();
+    try{
+        TimeUnit.Seconds.sleep(5);
+    }catch(Exception ignored){
+    }
+}
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/07/notifyDataSetChanged/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1023,93 +1113,6 @@ saxParser.parse(inputSource, defaultHandler);
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/29/source-code-of-volley/" itemprop="url">
-                  源码解析 - Volley
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-29T19:45:23+08:00" content="2015-09-29">
-              2015-09-29
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Volley是安卓中处理网络请求的一个包。虽然从来没有使用过，但从文档来看使用起来还是很容易的。但一直疑惑的一点就是为什么要使用这个包来进行网络操作。接下来就从源代码看起。</p>
-<h2 id="Volley-newRequestQueue"><a href="#Volley-newRequestQueue" class="headerlink" title="Volley.newRequestQueue()"></a>Volley.newRequestQueue()</h2><p>使用Volley首先要创建一个请求队列，接下来就先看这个方法。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/29/source-code-of-volley/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1156,7 +1159,7 @@ saxParser.parse(inputSource, defaultHandler);
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">119</span>
+              <span class="site-state-item-count">120</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

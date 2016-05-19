@@ -224,6 +224,94 @@
             
               
                 
+                <a class="post-title-link" href="/2016/05/19/Simulate-WPF-Data-Binding-in-Android-Part-III/" itemprop="url">
+                  Simulate WPF Data Binding in Android, Part III - Support More Types
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-05-19T21:28:06+08:00" content="2016-05-19">
+              2016-05-19
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>In the last two posts, we succeed simulating the WPF data binding for the <code>String</code> property in Android. However, it is obviously not enough. <code>TextView</code> and <code>EditText</code> not only display <code>String</code>s, but also <code>Integer</code>s, <code>Double</code>s and even more complicated types. Now we try to support more types for our binder.</p>
+<h1 id="Get-Property-Type"><a href="#Get-Property-Type" class="headerlink" title="Get Property Type"></a>Get Property Type</h1><p>If we just support <code>String</code> property, it’s easy to declare every type <code>String</code>. But now we have no idea on the type of the property. Do we need to make the binder class generic and pass a <code>Class&lt;T&gt;</code> argument due to the type erasure? The answer is no.</p>
+<p>We could easily get the type of property at runtime by reflex. We find the getter first, and then obtain its return type by reflex.<br>    <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">getter = data.javaClass.getDeclaredMethod(<span class="string">"get"</span> + propertyName)</span><br><span class="line"></span><br><span class="line">setter = data.javaClass.getDeclaredMethod(<span class="string">"set"</span> + propertyName, getter.returnType)</span><br></pre></td></tr></table></figure><br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/19/Simulate-WPF-Data-Binding-in-Android-Part-III/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/05/18/Simulate-WPF-Data-Binding-in-Android-Part-II/" itemprop="url">
                   Simulate WPF Data Binding in Android, Part II - Update View on Source Changed
                 </a>
@@ -312,7 +400,7 @@
               
                 
                 <a class="post-title-link" href="/2016/05/17/simulate-wpf-data-binding-in-Android/" itemprop="url">
-                  Simulate WPF Data Binding in Android, Part I - Reflect User Inputs To Property
+                  Simulate WPF Data Binding in Android, Part I - Reflect User Inputs to Property
                 </a>
               
             
@@ -993,95 +1081,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/04/09/mvp/" itemprop="url">
-                  Create Android Apps with MVP
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-04-09T15:03:39+08:00" content="2016-04-09">
-              2016-04-09
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>As is well known, traditional Android app development generally follows the MVC pattern. However, an activity or a fragment usually acts as the role of both a view and a controller. As a result, the code is tightly coupled and the complexity of activities and fragments are explosive. It’s difficult to reuse the logic behind.</p>
-<p>Model-View-Presenter(MVP) is a solution to this problem. The idea of MVP is similar to dependency injection. Different components of the framework should not have the knowledge of the concrete implementation of the dependencies they need. Activities or fragments should only act as the role of view. So let’s start with them.</p>
-<h1 id="User-Interface"><a href="#User-Interface" class="headerlink" title="User Interface"></a>User Interface</h1><p>We start with a very simple app, an accumulator, which receives a number and add into a stored number of itself.</p>
-<p>First think about the <code>View</code>s we need. We need an input <code>EditText</code> to take a number from user, a <code>TextView</code> to display the result, a <code>Button</code> to invoke the adding, and a <code>Button</code> to reset the accumulator. These <code>View</code>s could be contained directly in an activity or in a content fragment. Let’s take a fragment as example:<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/09/mvp/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1128,7 +1127,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">119</span>
+              <span class="site-state-item-count">120</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
