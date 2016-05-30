@@ -201,11 +201,110 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/02/27/Wear-Dev-4/" itemprop="url">
+                  Android Wear 开发 （四） 创建和运行手表应用
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-02-27T21:33:07+08:00" content="2016-02-27">
+              2016-02-27
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          <h1 id="更新SDK"><a href="#更新SDK" class="headerlink" title="更新SDK"></a>更新SDK</h1><p>开始创建穿戴应用前，首先：</p>
+<ul>
+<li>更新SDK工具至23.0.0或以上</li>
+<li>更新SDK至API20或以上</li>
+</ul>
+<h1 id="设置手表设备"><a href="#设置手表设备" class="headerlink" title="设置手表设备"></a>设置手表设备</h1><ol>
+<li>在手机上安装Android Wear应用。</li>
+<li>根据指示与手表配对。</li>
+<li>保持Android Wear在手机上打开。</li>
+<li>在手表上启用adb调试。<ol>
+<li>进入<strong>Settings &gt; About</strong>。</li>
+<li>点击<strong>Build number</strong>七次。</li>
+<li>右滑返回设置目录。</li>
+<li>进入屏幕底端的开发者设置。</li>
+<li>点击ADB调试来启用adb。</li>
+</ol>
+</li>
+<li>通过USB连接手表到机器上，这样可以直接安装应用。Android Wear应用和手表上都会显示一条消息表示允许调试。（如果不能通过USB连接，可以尝试使用蓝牙）</li>
+<li>在Android Wear应用上，勾选总是允许这台电脑，并点击OK。
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/27/Wear-Dev-4/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1016,102 +1115,12 @@ npm install
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/05/learning-preferences/" itemprop="url">
-                  使用Preferences API（一）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-05T15:43:43+08:00" content="2016-02-05">
-              2016-02-05
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>应用一般都包含一些用户可以自定义的设置，比如是否推送通知，更新数据的频率等等。</p>
-<p>如果想要为应用提供设置，应该使用安卓的<code>Preference</code>API来创建一致的用户体验。</p>
-<h1 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h1><p>与使用<code>View</code>创造界面不同，设置是由xml文件中声明的各种<code>Preference</code>的子类组成。</p>
-<p>一个<code>Preference</code>对象构成一个设置。每个<code>Preference</code>显示为列表中的一个子项，并提供合适的UI供用户交互。例如，<code>CheckBoxPreference</code>创造一个勾选框子项，<code>ListPreference</code>创造一个弹出选择列表对话框的子项。</p>
-<p>每个<code>Preference</code>在系统使用的默认的<code>SharedPreferences</code>文件中存在一个对应的键值对。用户更改设置后，系统在SP文件中更新相应的值。只有当需要从SP中读取值以决定应用行为时，才需要直接与SP相交互。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/05/learning-preferences/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1152,7 +1161,7 @@ npm install
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">120</span>
+              <span class="site-state-item-count">121</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1162,7 +1171,7 @@ npm install
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-count">38</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

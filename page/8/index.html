@@ -201,11 +201,102 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/30/Scheduling-Repeating-Alarms/" itemprop="url">
+                  安卓调度重复闹钟
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-30T21:24:15+08:00" content="2015-09-30">
+              2015-09-30
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          <p><code>AlarmManager</code>类实现的闹钟可以执行在应用的生命周期之外执行基于时间的操作。例如，可以设定一个闹钟来初始化一个长期运行的操作，比如每天启动一次下载天气预报的服务。</p>
+<p>闹钟有以下特性：</p>
+<ul>
+<li>可以在指定时间或时间间隔发射Intent</li>
+<li>可以与broadcast receiver一起使用来启动服务或者执行其他服务</li>
+<li>可以在应用之外进行触发事件或动作，即使应用未启动或者设备在睡眠状态中</li>
+<li>可以最小化应用要求的资源。无需依赖定时器或者连续运行的后台服务就可以调度操作。</li>
+</ul>
+<blockquote>
+<p>对确保在应用生命周期内发生的定时操作而言，考虑使用将<code>Handler</code>与<code>Timer</code>、<code>Thread</code>联合使用。这样可以使安卓更好地控制系统资源。</p>
+</blockquote>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/30/Scheduling-Repeating-Alarms/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1000,100 +1091,12 @@ public Singleton getInstance(Context context){
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/23/Generalized-Target-Type-Inference/" itemprop="url">
-                  Java 8泛型方法的自动推导
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-23T21:40:08+08:00" content="2015-09-23">
-              2015-09-23
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>今天在一个工程中写下面的语句时产生了疑问：</p>
-<pre><code>imageView.setImageBitmap(getIntent().getExtras().getParcelable());
-</code></pre><p>编译器居然没有对这个语句的类型错误进行提醒。<code>setImageBitmap()</code>接收一个<code>Bitmap</code>对象，而<code>getParcelable()</code>方法返回的应该是一个<code>Parcelable</code>对象。其中<code>Bitmap</code>类实现了<code>Parcelable</code>接口，所以这里存在一个向下转型，理应出现类型转换的问题，却没有报错。这是为什么呢？<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/23/Generalized-Target-Type-Inference/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1134,7 +1137,7 @@ public Singleton getInstance(Context context){
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">120</span>
+              <span class="site-state-item-count">121</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1144,7 +1147,7 @@ public Singleton getInstance(Context context){
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-count">38</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

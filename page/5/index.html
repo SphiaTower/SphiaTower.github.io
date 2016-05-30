@@ -201,11 +201,96 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/02/05/learning-preferences/" itemprop="url">
+                  使用Preferences API（一）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-02-05T15:43:43+08:00" content="2016-02-05">
+              2016-02-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          <p>应用一般都包含一些用户可以自定义的设置，比如是否推送通知，更新数据的频率等等。</p>
+<p>如果想要为应用提供设置，应该使用安卓的<code>Preference</code>API来创建一致的用户体验。</p>
+<h1 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h1><p>与使用<code>View</code>创造界面不同，设置是由xml文件中声明的各种<code>Preference</code>的子类组成。</p>
+<p>一个<code>Preference</code>对象构成一个设置。每个<code>Preference</code>显示为列表中的一个子项，并提供合适的UI供用户交互。例如，<code>CheckBoxPreference</code>创造一个勾选框子项，<code>ListPreference</code>创造一个弹出选择列表对话框的子项。</p>
+<p>每个<code>Preference</code>在系统使用的默认的<code>SharedPreferences</code>文件中存在一个对应的键值对。用户更改设置后，系统在SP文件中更新相应的值。只有当需要从SP中读取值以决定应用行为时，才需要直接与SP相交互。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/05/learning-preferences/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1011,99 +1096,12 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/11/16/notes-about-ContentProviders/" itemprop="url">
-                  Notes on Content Providers (I) Content Provider Basics
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-11-16T22:03:55+08:00" content="2015-11-16">
-              2015-11-16
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Content-Provider-Basics"><a href="#Content-Provider-Basics" class="headerlink" title="Content Provider Basics"></a>Content Provider Basics</h1><p>A provider isn’t required to have a primary key, and it isn’t required to use <code>_ID</code> as the column name of a primary key if one is present. However, if you want to bind data from a provider to a <code>ListView</code>, one of the column names has to be <code>_ID</code>.</p>
-<p>The <code>ContentResolver</code> object in the client application’s process and the <code>ContentProvider</code> object in the application that owns the provider automatically handle inter-process communication. <code>ContentProvider</code> also acts as an abstraction layer between its repository of data and the external appearance of data as tables.</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/11/16/notes-about-ContentProviders/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1144,7 +1142,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">120</span>
+              <span class="site-state-item-count">121</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1154,7 +1152,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-count">38</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
