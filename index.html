@@ -317,6 +317,103 @@
             
               
                 
+                <a class="post-title-link" href="/2018/04/20/circuit-breaker/" itemprop="url">
+                  容灾之断路器
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2018-04-20T13:22:40+08:00" content="2018-04-20">
+              2018-04-20
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在一个应用中，所有调用可以分为两类：内存调用和远程调用。其中最重要的区别是远程调用很可能会失败，或挂住没有响应，直到超时。最糟糕的是，当大量调用者调用一个无响应的服务时，因为关键资源的耗尽，会导致相关的多个系统发生雪崩式的崩溃。为了解决这种雪崩式的问题，Michael Nygard将断路器这一概念推广出来。</p>
+<p>断路器的基本理念非常简单：把需要保护的函数包装在一个断路器对象中，断路器负责监视函数调用的失败。失败次数达到一定阈值后，断路器发生断路，接下来的调用全部失败。</p>
+<h2 id="断路器的三个基本状态"><a href="#断路器的三个基本状态" class="headerlink" title="断路器的三个基本状态"></a>断路器的三个基本状态</h2><p>断路器的工作本质上是一个有限状态机。不同的实现可能有不同的状态及状态转换方式。最简单的断路器只有两个状态：<strong>开和关</strong>。断路器默认工作在关闭状态，允许所有函数调用。而当函数调用的失败数或失败率超过一定阈值后，断路器切换到打开状态，所有调用失败。</p>
+<p>是不是听起来很熟悉？当然，这就和我们每家每户使用的电闸一样。这种电闸的问题是，发生断电之后，需要我们手工去重新关闭断路器，才能恢复供电。而在24小时运行的服务端应用中，不可能全部由工程师去手工关闭软件中的断路器。所以断路器一定要有自动关闭的功能。因此，人们在开关两个状态之外，引入了第三种状态：<strong>半开</strong>。</p>
+<h2 id="自动重置功能"><a href="#自动重置功能" class="headerlink" title="自动重置功能"></a>自动重置功能</h2><p>要实现断路器的自动重置功能，最简单的想法就是：断路器打开一定时间后，主动调用所保护的函数，以检测是否已经恢复正常，如果正常，就重置断路器。</p>
+<p>这种新的自动检测和重置的状态，就是刚刚所提到的半开状态。半开状态也有很多种实现方式，基本的做法是，断路器部分地放开一定量的调用，统计其中成功和失败的数量及比例，根据预先设定的阈值，决定继续维持打开状态，还是重置断路器。</p>
+<p>需要注意的是，即使原理看起来比较简单，在实际应用中，究竟如何设置各个阈值的参数，如何设置超时时间，都是需要大量的测试和经验的积累的，另外还需要针对自己应用的场景，进行定制化的分析。只有这样，才能真正发挥出断路器的功效。</p>
+<p>##<br>On their own, circuit breakers help reduce resources tied up in operations which are likely to fail. You avoid waiting on timeouts for the client, and a broken circuit avoids putting load on a struggling server. I talk here about remote calls, which are a common case for circuit breakers, but they can be used in any situation where you want to protect parts of a system from failures in other parts.</p>
+<p>Circuit breakers are a valuable place for monitoring. Any change in breaker state should be logged and breakers should reveal details of their state for deeper monitoring. Breaker behavior is often a good source of warnings about deeper troubles in the environment. Operations staff should be able to trip or reset breakers.</p>
+<p>Breakers on their own are valuable, but clients using them need to react to breaker failures. As with any remote invocation you need to consider what to do in case of failure. Does it fail the operation you’re carrying out, or are there workarounds you can do? A credit card authorization could be put on a queue to deal with later, failure to get some data may be mitigated by showing some stale data that’s good enough to display.</p>
+<h2 id="Java中的断路器"><a href="#Java中的断路器" class="headerlink" title="Java中的断路器"></a>Java中的断路器</h2><p>Java中最有名的断路器实现应该是Netflix Hystrix，然而这个库在几年前就已经不再更新了，其所推荐的替代版本是resilience4j。阅读源码并试用后可以说resilience4j提供的断路器确实简单易用，代码编写的质量也很高，逻辑清晰。</p>
+<p>只需要首先创建一个断路器实例，调用函数时，将函数传递给断路器即可。<br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> circuitBreaker = <span class="type">CircuitBreaker</span>.ofDefaults(<span class="string">"name"</span>)</span><br><span class="line"><span class="type">String</span> <span class="literal">result</span> = circuitBreaker.executeSupplier(() -&gt; backendService.doSomething(param1, param2));</span><br></pre></td></tr></table></figure></p>
+<p>除此之外，resilience4j还有良好的异步支持，支持Java的<code>CompletableFuture</code>，Kotlin的<code>suspend</code>协程函数，以及Reactive Programming。使用起来都非常简单，代码简洁优雅，如Kotlin协程版本的：</p>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> circuitBreaker = <span class="type">CircuitBreaker</span>.ofDefaults(<span class="string">"name"</span>)</span><br><span class="line"><span class="type">String</span> <span class="literal">result</span> = circuitBreaker.executeSuspendFunction &#123;</span><br><span class="line">    backendService.awaitDoSomething(param1, param2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="分布式断路器？"><a href="#分布式断路器？" class="headerlink" title="分布式断路器？"></a>分布式断路器？</h2>
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/05/30/A-Study-on-Finding-the-Minimum-and-Maximum-Simultaneously/" itemprop="url">
                   A Study on Finding the Minimum and Maximum Simultaneously
                 </a>
