@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2018/04/20/circuit-breaker/</loc>
+    
+    <lastmod>2019-07-22T12:56:56.613Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2019/07/22/elasticsearch-time-indices/</loc>
     
     <lastmod>2019-07-22T12:23:33.273Z</lastmod>
