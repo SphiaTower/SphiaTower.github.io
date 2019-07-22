@@ -224,8 +224,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/03/05/check-savedStateInstance-when-adding-frag/" itemprop="url">
-                  Fragment Lifecycle, Configuration Changes and savedStateInstance
+                <a class="post-title-link" href="/2016/04/09/mvp/" itemprop="url">
+                  Create Android Apps with MVP
                 </a>
               
             
@@ -238,7 +238,709 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-03-05T10:49:53+08:00" content="2016-03-05">
+            <time itemprop="dateCreated" datetime="2016-04-09T15:03:39+08:00" content="2016-04-09">
+              2016-04-09
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>As is well known, traditional Android app development generally follows the MVC pattern. However, an activity or a fragment usually acts as the role of both a view and a controller. As a result, the code is tightly coupled and the complexity of activities and fragments are explosive. It’s difficult to reuse the logic behind.</p>
+<p>Model-View-Presenter(MVP) is a solution to this problem. The idea of MVP is similar to dependency injection. Different components of the framework should not have the knowledge of the concrete implementation of the dependencies they need. Activities or fragments should only act as the role of view. So let’s start with them.</p>
+<h1 id="User-Interface"><a href="#User-Interface" class="headerlink" title="User Interface"></a>User Interface</h1><p>We start with a very simple app, an accumulator, which receives a number and add into a stored number of itself.</p>
+<p>First think about the <code>View</code>s we need. We need an input <code>EditText</code> to take a number from user, a <code>TextView</code> to display the result, a <code>Button</code> to invoke the adding, and a <code>Button</code> to reset the accumulator. These <code>View</code>s could be contained directly in an activity or in a content fragment. Let’s take a fragment as example:<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/09/mvp/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/04/08/dependency-injection-4/" itemprop="url">
+                  Dependency Injection - Configuration and Injector
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-04-08T21:06:46+08:00" content="2016-04-08">
+              2016-04-08
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Today, after learning about the dependency injection, I refactored my code in the forementioned project. I used constructor injection for all the classes which require services. The client which needs a service/dependency doesn’t produce it by itself. It gets an instance from the constructor instead.</p>
+<p>The nested object hierarchy becomes clearer in this way. For example, a class <code>Computer</code> must receive trivial params like <code>double caseWeight</code>, <code>int fanNumber</code>, <code>String cpuBrand</code> and so on. A <code>Computer</code> constructor may take tens of arguments to get initialized. Because inside the <code>Computer</code> construtor, it <strong>produces</strong> its components, like <code>this.case = new Case(caseSize, caseColor,cpuFanSize, cpuFanSpeed, cpuBrand, cpuCoreNum, diskSize);</code>. All params of lower level objects must be passed from the upper level.<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/08/dependency-injection-4/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/04/08/dependency-injection-3/" itemprop="url">
+                  Dependency Injection - 实现
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-04-08T20:34:37+08:00" content="2016-04-08">
+              2016-04-08
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>本文主要内容翻译自<a href="https://en.wikipedia.org/wiki/Dependency_injection">https://en.wikipedia.org/wiki/Dependency_injection</a></p>
+<h1 id="不使用依赖注入"><a href="#不使用依赖注入" class="headerlink" title="不使用依赖注入"></a>不使用依赖注入</h1><p>在下面的Java例子中，客户类包含一个作为field的服务，后者通过客户的构造器初始化。客户控制了使用服务的哪个具体实现，并控制了其创建。在这个情景下，客户对<code>ServiceExample</code>有了hard-coded的依赖。<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// An example without dependency injection</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Internal reference to the service used by this client</span></span><br><span class="line">    <span class="keyword">private</span> Service service;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Constructor</span></span><br><span class="line">    Client() &#123;</span><br><span class="line">        <span class="comment">// Specify a specific implementation in the constructor instead of using dependency injection</span></span><br><span class="line">        <span class="keyword">this</span>.service = <span class="keyword">new</span> ServiceExample();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Method within this client that uses the services</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">greet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Hello "</span> + <span class="keyword">this</span>.service.getName();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>依赖注入是一个替代的技术，可以初始化field而不显式地创建服务对象。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/08/dependency-injection-3/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/04/08/dependency-injection-2/" itemprop="url">
+                  Dependency Injection - 概览
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-04-08T19:56:47+08:00" content="2016-04-08">
+              2016-04-08
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>上一篇我的英文文章中，提到了解决复杂对象层级中暴露大量参数的办法是依赖注入，这篇文章就先对依赖注入进行一下了解。</p>
+<p>本文主要内容翻译自<a href="https://en.wikipedia.org/wiki/Dependency_injection">https://en.wikipedia.org/wiki/Dependency_injection</a></p>
+<p>软件工程中，依赖注入是一种实现了控制反转的软件设计模式，用以解决依赖问题。依赖指的是一个可以被使用的对象，也称作服务。注入指的是将依赖传递给一个依靠它的对象（客户），即使用服务的对象。服务成为客户的状态的一部分。将服务传递给客户，而非允许客户创建或寻找服务，是这个模式的基本要求。</p>
+<p>依赖注入允许程序设计遵循依赖反转原则。客户将提供依赖的责任委托给外部代码（注射器）。而客户不可以调用注射器代码。<strong>注射代码</strong>构造了服务，并调用客户将服务注入。这意味着客户代码无需知晓注射代码。客户无需知道如何创建服务。客户也无需知道实际使用的是哪个服务。这将使用和创建的责任分离开。</p>
+<p>客户有三种常用的方法以接受依赖注入：setter注入，interface注入，constructor注入。setter和构造器注入主要的区别是他们被使用的时机。而接口注入有所不同的是，依赖可以获取控制其注入的机会。他们都要求单独的构造代码（注射器）负责引入客户和互相之间的依赖。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/08/dependency-injection-2/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/04/08/dependency-injection-1/" itemprop="url">
+                  Dependency Injection - Handle A Large Amount of Params with A Complex Class Hierarchy
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-04-08T19:41:28+08:00" content="2016-04-08">
+              2016-04-08
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>I’m developing a complex desktop client with C#, which is mainly for some scientific analysis work. The class hierarchy of my project is very complicated. The problem is that, a large amount of parameters should <strong>be able to be modified by the user at the entrance of the client</strong>.</p>
+<p>However, many parameters are very deep in the class hierarchy (I mean the composition hierarchy, not inheritance). As a result, classes closed to the top levels must take a lot of arguments in the constructor, because they are passed all the way up from different classes at the bottom levels.<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/08/dependency-injection-1/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/14/wear-recorder/" itemprop="url">
+                  Record Audio on Wearable Devices
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-14T13:03:59+08:00" content="2016-03-14">
+              2016-03-14
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Wearable devices have great potential in our everyday life. For example, you can simply tap the watch screen or speak a command to wake up the watch and start recording, and then transmit the recorded clip to the phone for storage. This article will put down the procedures of developing a watch recorder.</p>
+<hr>
+<h1 id="Create-a-Recorder"><a href="#Create-a-Recorder" class="headerlink" title="Create a Recorder"></a>Create a Recorder</h1><p>Recording on wearable devices is basically the same as handheld devices, except that you cannot use <code>MediaRecorder</code> APIs for wearable devices. Instead, you must use <code>AudioRecord</code> to record voice. The implementation of <code>AudioRecord</code> is completely same as handheld devices. You can read my article for reference, <a href="http://sphiatower.github.io/2016/03/06/AudioRecord/" title=" Recording with AudioRecord APIs in Android ">Recording with AudioRecord APIs in Android </a><br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/14/wear-recorder/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/11/implementing-nav-drawer/" itemprop="url">
+                  Summary on Implementing a Navigation Drawer
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-11T13:37:46+08:00" content="2016-03-11">
+              2016-03-11
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>The navigation drawer is an indispensable component in Android apps under the guidance of Material Design. It’s very convenient to implement a navigation drawer by creating a <code>DrawerLayout</code> with a <code>NavigationView</code> in it with the material design support library. However, when it comes to ‘navigation’, you should consider carefully how to implement the navigation action with drawer menu items.</p>
+<h1 id="A-Base-Activity-vs-Fragments"><a href="#A-Base-Activity-vs-Fragments" class="headerlink" title="A Base Activity vs Fragments"></a>A Base Activity vs Fragments</h1><p>Should we implement different pages as different activities, or just an Activity with dynamically loaded fragments? In my opinion, both ways are okay.<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/11/implementing-nav-drawer/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/06/AudioRecord/" itemprop="url">
+                  Record with AudioRecord APIs in Android
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-06T15:59:33+08:00" content="2016-03-06">
+              2016-03-06
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>I want to make an audio recorder app for my Android Wear device. In order to get familiar with the recording APIs of the Android platform, I will start with a simple mobile app, and then move it into my moto 360.</p>
+<h1 id="APIs"><a href="#APIs" class="headerlink" title="APIs"></a>APIs</h1><p>Two sets of audio recording APIs, <code>MediaRecorder</code> and <code>AudioRecord</code>, are available for developing handheld apps. <code>MediaRecorder</code> is much easy to use, however it’s unavailable for wearable devices. So you must process the raw data from <code>AudioRecord</code> by yourself.<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/06/AudioRecord/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/05/wear-dev-14/" itemprop="url">
+                  Android Wear 开发 （十四） 处理数据层事件
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-05T23:11:19+08:00" content="2016-03-05">
               2016-03-05
             </time>
           </span>
@@ -265,9 +967,10 @@
 
       
         
-          <p>I found such a period of code in a project generated by Android Studio today.<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// savedInstanceState is non-null when there is fragment state</span></span><br><span class="line"><span class="comment">// saved from previous configurations of this activity</span></span><br><span class="line"><span class="comment">// (e.g. when rotating the screen from portrait to landscape).</span></span><br><span class="line"><span class="comment">// In this case, the fragment will automatically be re-added</span></span><br><span class="line"><span class="comment">// to its container so we don't need to manually add it.</span></span><br><span class="line"><span class="comment">// For more information, see the Fragments API guide at:</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// http://developer.android.com/guide/components/fragments.html</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="keyword">if</span> (savedInstanceState == <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="comment">// Create the detail fragment and add it to the activity</span></span><br><span class="line">    <span class="comment">// using a fragment transaction.</span></span><br><span class="line">    Bundle arguments = <span class="keyword">new</span> Bundle();</span><br><span class="line">    arguments.putString(ItemDetailFragment.ARG_ITEM_ID,</span><br><span class="line">            getIntent().getStringExtra(ItemDetailFragment.ARG_ITEM_ID));</span><br><span class="line">    ItemDetailFragment fragment = <span class="keyword">new</span> ItemDetailFragment();</span><br><span class="line">    fragment.setArguments(arguments);</span><br><span class="line">    getSupportFragmentManager().beginTransaction()</span><br><span class="line">            .add(R.id.item_detail_container, fragment)</span><br><span class="line">            .commit();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>
+          <p>调用数据层API时，可以在完成时获取调用的状态，也可以侦听调用引起的任何改变。</p>
+<h1 id="等待数据层调用的状态"><a href="#等待数据层调用的状态" class="headerlink" title="等待数据层调用的状态"></a>等待数据层调用的状态</h1><p>数据层API有时返回一个<code>PendingResult</code>，比如<code>putDataItem()</code>。一旦<code>PendingResult</code>创建，操作会在后台被入队。如果在这之后什么也不做，操作最终会静默地完成。然而，一般情况下都想在操作完成后根据结果做些什么，所以<code>PendingResult</code>可以让你等待结果的状态，同步或异步地。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/05/check-savedStateInstance-when-adding-frag/#more" rel="contents">
+            <a class="btn" href="/2016/03/05/wear-dev-14/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -310,8 +1013,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/03/02/wear-dev-5/" itemprop="url">
-                  Android Wear 开发 （五） 创建自定义通知
+                <a class="post-title-link" href="/2016/03/05/wear-dev-13/" itemprop="url">
+                  Android Wear 开发 （十三） 发送接收消息
                 </a>
               
             
@@ -324,8 +1027,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-03-02T08:46:42+08:00" content="2016-03-02">
-              2016-03-02
+            <time itemprop="dateCreated" datetime="2016-03-05T19:22:30+08:00" content="2016-03-05">
+              2016-03-05
             </time>
           </span>
 
@@ -351,738 +1054,15 @@
 
       
         
-          <p>在手表上创建布局与手机相同，除了必须根据屏幕尺寸和瞥视动作设计以外。不要仅仅将功能和UI从手机应用中搬运至手表，这样的体验非常不好。只有在必要的时候才应该创建自定义布局。</p>
-<h1 id="创建自定义通知"><a href="#创建自定义通知" class="headerlink" title="创建自定义通知"></a>创建自定义通知</h1><p>一般应该在手机上创建通知并自动同步至手表。这样只需创建一次通知就可以出现在多种设备上（甚至包括汽车和电视）。</p>
-<p>如果标准的通知风格不适合你的话，可以显示一个有自定义布局的activity。应该只在手表上创建和发布自定义通知，这些通知不会被同步至手机上。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/02/wear-dev-5/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/27/Wear-Dev-4/" itemprop="url">
-                  Android Wear 开发 （四） 创建和运行手表应用
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-27T21:33:07+08:00" content="2016-02-27">
-              2016-02-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="更新SDK"><a href="#更新SDK" class="headerlink" title="更新SDK"></a>更新SDK</h1><p>开始创建穿戴应用前，首先：</p>
+          <p>使用<code>MessageApi</code>来发送消息，并将下面的子项附给消息：</p>
 <ul>
-<li>更新SDK工具至23.0.0或以上</li>
-<li>更新SDK至API20或以上</li>
+<li>一个任意的payload（可选）</li>
+<li>一个标识了消息动作的路径</li>
 </ul>
-<h1 id="设置手表设备"><a href="#设置手表设备" class="headerlink" title="设置手表设备"></a>设置手表设备</h1><ol>
-<li>在手机上安装Android Wear应用。</li>
-<li>根据指示与手表配对。</li>
-<li>保持Android Wear在手机上打开。</li>
-<li>在手表上启用adb调试。<ol>
-<li>进入<strong>Settings &gt; About</strong>。</li>
-<li>点击<strong>Build number</strong>七次。</li>
-<li>右滑返回设置目录。</li>
-<li>进入屏幕底端的开发者设置。</li>
-<li>点击ADB调试来启用adb。</li>
-</ol>
-</li>
-<li>通过USB连接手表到机器上，这样可以直接安装应用。Android Wear应用和手表上都会显示一条消息表示允许调试。（如果不能通过USB连接，可以尝试使用蓝牙）</li>
-<li>在Android Wear应用上，勾选总是允许这台电脑，并点击OK。
+<p>与数据项不同，手机和手表应用之间没有同步。消息是单方向的通讯机制，适合RPC操作，比如向手表发送一条消息以启动一个activity。</p>
+<p>许多手表设备可以被连接至用户的手机。网络中每个被连接的设备都可以看作一个节点。有多个连接的设备时，必须考虑由哪个节点来接受消息。例如，一个在手表上接收语音数据进行转录的应用，必须将消息发送至有足够处理能力和电池容量的节点来处理请求，比如一台手机。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/27/Wear-Dev-4/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/27/Wear-Dev-3/" itemprop="url">
-                  Android Wear 开发 （三） 在通知中添加页面
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-27T21:27:51+08:00" content="2016-02-27">
-              2016-02-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>要创建多页面的通知：</p>
-<ol>
-<li>使用<code>NotificationCompat.Builder</code>创建主通知（第一页），就像在手机上呈现一样。</li>
-<li>同样使用<code>NotificationCompat.Builder</code>创建其他页面。</li>
-<li><p>通过<code>addPage()</code>将这些页面添加至主通知，或添加<code>Collection</code>中的页面。</p>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Create builder for the main notification</span></span><br><span class="line">NotificationCompat.Builder notificationBuilder =</span><br><span class="line">        <span class="keyword">new</span> NotificationCompat.Builder(<span class="keyword">this</span>)</span><br><span class="line">        .setSmallIcon(R.drawable.new_message)</span><br><span class="line">        .setContentTitle(<span class="string">"Page 1"</span>)</span><br><span class="line">        .setContentText(<span class="string">"Short message"</span>)</span><br><span class="line">        .setContentIntent(viewPendingIntent);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create a big text style for the second page</span></span><br><span class="line">BigTextStyle secondPageStyle = <span class="keyword">new</span> NotificationCompat.BigTextStyle();</span><br><span class="line">secondPageStyle.setBigContentTitle(<span class="string">"Page 2"</span>)</span><br><span class="line">               .bigText(<span class="string">"A lot of text..."</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create second page notification</span></span><br><span class="line">Notification secondPageNotification =</span><br><span class="line">        <span class="keyword">new</span> NotificationCompat.Builder(<span class="keyword">this</span>)</span><br><span class="line">        .setStyle(secondPageStyle)</span><br><span class="line">        .build();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Extend the notification builder with the second page</span></span><br><span class="line">Notification notification = notificationBuilder</span><br><span class="line">        .extend(<span class="keyword">new</span> NotificationCompat.WearableExtender()</span><br><span class="line">                .addPage(secondPageNotification))</span><br><span class="line">        .build();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Issue the notification</span></span><br><span class="line">notificationManager =</span><br><span class="line">        NotificationManagerCompat.from(<span class="keyword">this</span>);</span><br><span class="line">notificationManager.notify(notificationId, notification);</span><br></pre></td></tr></table></figure></li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/27/Wear-Dev-2/" itemprop="url">
-                  Android Wear 开发 （二） 在通知中接收语音输入
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-27T20:53:14+08:00" content="2016-02-27">
-              2016-02-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在手机上，有需要输入文字的通知时，一般会启动一个activity以供输入。然而在手表上没有键盘输入，可以让用户通过语音回复或者通过<code>RemoteInput</code>选择预先定义的文字消息。</p>
-<p>用户使用语音回复或者选择某条消息时，系统将文字回应附在为通知指定的<code>Intent</code>上，发送至手机应用中。</p>
-<h1 id="定义语音输入"><a href="#定义语音输入" class="headerlink" title="定义语音输入"></a>定义语音输入</h1><p>要创建一个支持语音输入的动作，首先创建一个<code>RemoteInput.Builder</code>的实例，它可以添加至通知动作中。这个类的构造器接受一个字符串，系统使用它作为语音输入的key，之后使用它在手机上取回输入的文字。</p>
-<pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Key for the string that's delivered in the action's intent</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String EXTRA_VOICE_REPLY = <span class="string">"extra_voice_reply"</span>;</span><br><span class="line"></span><br><span class="line">String replyLabel = getResources().getString(R.string.reply_label);</span><br><span class="line"></span><br><span class="line">RemoteInput remoteInput = <span class="keyword">new</span> RemoteInput.Builder(EXTRA_VOICE_REPLY)</span><br><span class="line">        .setLabel(replyLabel)</span><br><span class="line">        .build();</span><br></pre></td></tr></table></figure>
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/27/Wear-Dev-2/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/27/Wear-Dev-1/" itemprop="url">
-                  Android Wear 开发 （一） 创建手表通知
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-27T19:54:50+08:00" content="2016-02-27">
-              2016-02-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>I bought a moto 360 last year. But I seldom wear it, because it’s kind of useless. No app in Android Wear is irreplaceable. Many people never wears it in life because a cellphone is enough. So it’s necessary to develop a functional Wearable app whose performance is better in wearable devices than in cellphones.</p>
-<h1 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h1><p>首先来看 <code>Notification</code>. 要创建同时发送到手表的手机通知，使用 <code>NotificationCompat.Builder</code>.</p>
-<p>在gradle中引入需要的包：</p>
-<pre><code>compile &quot;com.android.support:support-v4:20.0.+&quot;
-</code></pre><p>通知呈现在手机上时，用户触碰通知，调用<code>setContentIntent()</code>指定的 <code>PendingIntent</code> 。而在手表上，用户将通知滑动至左边以显示<strong>Open</strong>动作，后者调用手机上的intent。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/27/Wear-Dev-1/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/27/testing/" itemprop="url">
-                  testing
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-27T11:04:19+08:00" content="2016-02-27">
-              2016-02-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/27/resetting-hexo/" itemprop="url">
-                  Procedures of Restoring My Blog with Hexo
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-27T10:49:22+08:00" content="2016-02-27">
-              2016-02-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Today I spent an entire morning fixing a bug of hexo. However, I failed to fix it and leaving my blog unable to update. After trying various solutions, I decided to reconstruct my blog. Now I will record the process of resetting my blog.</p>
-<h1 id="Initialize-Hexo"><a href="#Initialize-Hexo" class="headerlink" title="Initialize Hexo"></a>Initialize Hexo</h1><p>First, delete the old repo in Github, and re-init a hexo directory:</p>
-<pre><code>hexo init my-hexo-website
-
-cd my-hexo-website
-npm install
-</code></pre><h1 id="Configure-Git"><a href="#Configure-Git" class="headerlink" title="Configure Git"></a>Configure Git</h1><p>Inside your hexo-website folder, use the command</p>
-<pre><code>git init 
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/27/resetting-hexo/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/15/visitor-double-dispatch/" itemprop="url">
-                  Understanding the Visitor Pattern - Double Dispatch
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-15T21:28:29+08:00" content="2016-02-15">
-              2016-02-15
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>For the visitor pattern, it’s not difficult to remember its syntax or use it. But why we must use a visitor pattern instead of a static method (a function) or other workarounds?</p>
-<h1 id="Static-methods"><a href="#Static-methods" class="headerlink" title="Static methods"></a>Static methods</h1><p>For a specified class hierarchy, when it comes to adding a method for every class without modifying themselves, what comes into my mind at first is to create a set of functions, i.e. a static method in java, each taking an instance of that class.</p>
-<p>For example, if I want to add a method to <code>ICarElement</code> and its implementations, <code>Wheel</code>, <code>Engine</code> and <code>Body</code>, I could write such a class as a set of functions:<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/15/visitor-double-dispatch/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/13/review-loaders-2/" itemprop="url">
-                  重探Loader（二）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-13T21:58:48+08:00" content="2016-02-13">
-              2016-02-13
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="过去"><a href="#过去" class="headerlink" title="过去"></a>过去</h1><p>在安卓3.0前，很多应用经常出现无法响应的bug。最主要的原因，便是在UI线程执行查询或加载数据。虽然文档一直强调即使回馈的重要性，之前的API并不鼓励这样的行为。过去通常使用activity的方法以管理Cursor。而且这些方法在UI线程中操作，并不跨越配置变更。</p>
-<h1 id="理解LoaderManager"><a href="#理解LoaderManager" class="headerlink" title="理解LoaderManager"></a>理解LoaderManager</h1><p>LoaderManager的一些事件会有activity或fragment的生命周期事件触发。比如activity销毁时，会通知LoaderManager销毁并关闭所有所有Loader。</p>
-<p>LoaderManager不知道也不需要知道数据如何载入。它只是告诉Loader何时开始、结束或复位加载，保持状态通过配置变更，并提供简单的接口为客户端传送结果。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/13/review-loaders-2/#more" rel="contents">
+            <a class="btn" href="/2016/03/05/wear-dev-13/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1109,7 +1089,7 @@ npm install
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1150,7 +1130,7 @@ npm install
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">123</span>
+              <span class="site-state-item-count">140</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1160,7 +1140,7 @@ npm install
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-count">55</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

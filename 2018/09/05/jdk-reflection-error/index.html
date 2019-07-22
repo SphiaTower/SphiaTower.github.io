@@ -1,0 +1,703 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java,Reflection," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="今天在开发过程中，接入了一个SDK，可是无论如何都启动不起来。每次启动其中的ChronicleMap组件时，都会报下面的错误。123456789Caused by: java.lang.IllegalAccessException: member is private: sun.nio.ch.FileChannelImpl.unmap0[Ljava.lang.Object;@21f50d2c/in">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个JDK源码引发的诡异问题">
+<meta property="og:url" content="http://yoursite.com/2018/09/05/jdk-reflection-error/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="今天在开发过程中，接入了一个SDK，可是无论如何都启动不起来。每次启动其中的ChronicleMap组件时，都会报下面的错误。123456789Caused by: java.lang.IllegalAccessException: member is private: sun.nio.ch.FileChannelImpl.unmap0[Ljava.lang.Object;@21f50d2c/in">
+<meta property="og:updated_time" content="2019-07-22T13:35:40.617Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一个JDK源码引发的诡异问题">
+<meta name="twitter:description" content="今天在开发过程中，接入了一个SDK，可是无论如何都启动不起来。每次启动其中的ChronicleMap组件时，都会报下面的错误。123456789Caused by: java.lang.IllegalAccessException: member is private: sun.nio.ch.FileChannelImpl.unmap0[Ljava.lang.Object;@21f50d2c/in">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 一个JDK源码引发的诡异问题 | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                一个JDK源码引发的诡异问题
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2018-09-05T19:12:37+08:00" content="2018-09-05">
+              2018-09-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天在开发过程中，接入了一个SDK，可是无论如何都启动不起来。每次启动其中的<code>ChronicleMap</code>组件时，都会报下面的错误。<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Caused by: java.lang.IllegalAccessException: member is private: sun.nio.ch.FileChannelImpl.unmap<span class="number">0</span>[Ljava.lang.Object;@<span class="number">21</span>f50d2c/invokeStatic, from net.openhft.chronicle.core.OS (unnamed module @<span class="number">8</span>bc0696)</span><br><span class="line">  at java.base/java.lang.invoke.MemberName.makeAccessException(MemberName.java:<span class="number">942</span>)</span><br><span class="line">  at java.base/java.lang.invoke.MethodHandles<span class="variable">$Lookup</span>.checkAccess(MethodHandles.java:<span class="number">2215</span>)</span><br><span class="line">  at java.base/java.lang.invoke.MethodHandles<span class="variable">$Lookup</span>.checkMethod(MethodHandles.java:<span class="number">2155</span>)</span><br><span class="line">  at java.base/java.lang.invoke.MethodHandles<span class="variable">$Lookup</span>.getDirectMethodCommon(MethodHandles.java:<span class="number">2299</span>)</span><br><span class="line">  at java.base/java.lang.invoke.MethodHandles<span class="variable">$Lookup</span>.getDirectMethodNoSecurityManager(MethodHandles.java:<span class="number">2292</span>)</span><br><span class="line">  at java.base/java.lang.invoke.MethodHandles<span class="variable">$Lookup</span>.unreflect(MethodHandles.java:<span class="number">1756</span>)</span><br><span class="line">  at net.openhft.chronicle.core.OS.&lt;clinit&gt;(OS.java:<span class="number">79</span>)</span><br><span class="line">  ... <span class="number">52</span> common frames omitted</span><br></pre></td></tr></table></figure></p>
+<p>顺着源码看下去，真正出问题的是下面的代码<br><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">Method</span> <span class="title">unmap0</span> = <span class="title">Jvm</span>.<span class="title">getMethod</span><span class="params">(FileChannelImpl.<span class="keyword">class</span>, "unmap0", long.<span class="keyword">class</span>, long.<span class="keyword">class</span>)</span>;</span></span><br><span class="line">UNMAPP0_MH = MethodHandles.lookup().unreflect(unmap0);</span><br></pre></td></tr></table></figure></p>
+<p><code>ChronicleMap</code>通过内部的工具类，成功地反射获取了jdk内部的一个方法，然后对其使用<code>MethodHandle</code>的<code>unreflect</code>方法获取其<code>MethodHandle</code>加速调用。按理说没什么问题，却抛出了<code>IllegalAccessException</code>，这是为何？</p>
+<p>一开始怀疑是和Java 9之后的module系统有关。在网上一番搜索，发现chronicle-map曾经出现过类似的问题，官方提出的解决方法是<code>--add-exports java.base/sun.nio.ch=ALL-UNNAMED</code>，增加这个参数，以解决模块化后不可见的问题。然而经测试加了这个参数后没有解决问题，而且我所使用的chronicle-map已经是最新版本，应该早已解决了这个问题。那么问题到底出自哪里呢？</p>
+<p>排查一个难解的问题时，有一个很有效的手段，就是简化场景。既然问题出在那两行代码，我们就将那两行代码单独提取出来，试一试。Jvm是内部类，我们换成普通的反射方法<code>Class.getDeclaredMethod()</code>。结果果然复现了问题。<br><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">Method</span> <span class="title">unmap0</span> = <span class="title">FileChannelImpl</span>.<span class="title">class</span>.<span class="title">getDeclaredMethod</span><span class="params">("unmap0", long.<span class="keyword">class</span>, long.<span class="keyword">class</span>)</span>;</span></span><br><span class="line">MethodHandles.lookup().unreflect(unmap0);</span><br></pre></td></tr></table></figure></p>
+<p>再来看unreflect方法的问题，问题豁然明了了<br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">* @throws <span class="type">IllegalAccessException</span> <span class="keyword">if</span> access checking fails</span><br><span class="line">*                                <span class="keyword">or</span> <span class="keyword">if</span> the <span class="keyword">method</span>'s variable arity modifier bit</span><br><span class="line">*                                <span class="keyword">is</span> <span class="type">set</span> <span class="keyword">and</span> &#123;@code asVarargsCollector&#125; fails</span><br></pre></td></tr></table></figure></p>
+<p>原来是access checking失败，只要补上setAccessible应该就调用了<br><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">Method</span> <span class="title">unmap0</span> = <span class="title">FileChannelImpl</span>.<span class="title">class</span>.<span class="title">getDeclaredMethod</span><span class="params">("unmap0", long.<span class="keyword">class</span>, long.<span class="keyword">class</span>)</span>;</span></span><br><span class="line">unmap0.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">MethodHandles.lookup().unreflect(unmap0);</span><br></pre></td></tr></table></figure></p>
+<p>再来看上面提到的<code>ChronicleMap</code>，经过多次检查，其中的源码也进行了setAccessible操作，然而却还是抛出了这个异常。再仔细看，其中的操作是这样的<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setAccessible</span><span class="params">(AccessibleObject h)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!IS_JAVA_9_PLUS || IS_JAVA_12_PLUS) &#123;</span><br><span class="line">        h.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// doesn't work in Java 12+</span></span><br><span class="line">        Field f = AccessibleObject.<span class="keyword">class</span>.getDeclaredField(<span class="string">"override"</span>);</span><br><span class="line">        <span class="keyword">long</span> offset = UNSAFE.objectFieldOffset(f);</span><br><span class="line">        UNSAFE.putBoolean(h, offset, <span class="literal">true</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (NoSuchFieldException e2) &#123;</span><br><span class="line">        <span class="comment">// ignored, throws an error later if private.</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这段代码很有趣，作者没有直接使用method的setAccessible方法，而是作了一个判断</p>
+<ol>
+<li>如果在Java 9-11版本，使用<code>UNSAFE</code>的方式，使方法可访问</li>
+<li>其他版本，使用传统的setAccessible方式</li>
+</ol>
+<p>反射的方法很简单，那么在Java 9-11版本，为什么要用如此复杂的方法呢？我们再来仔细看看，这一段方法做了什么</p>
+<ol>
+<li><p>获取<code>AccessibleObject</code>类的<code>override</code>字段。这里的<code>override</code>不是那个表示覆盖的注解，而是类中的一个普通字段。而这个<code>AccessibleObject</code>是<code>Method</code>，<code>Field</code>等类的父类。而这个字段的意思是</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="pi">// Indicates whether language-level access checks are overridden</span><br><span class="line">//</span> <span class="keyword">by</span> <span class="keyword">this</span> object. Initializes <span class="keyword">to</span> <span class="string">"false"</span>. This field <span class="keyword">is</span> used <span class="keyword">by</span></span><br><span class="line"><span class="pi">// Field, Method, and Constructor.</span></span><br></pre></td></tr></table></figure>
+<p>再去看这个字段的调用代码，可以看出，<code>override</code>字段为<code>false</code>时，反射时就会执行访问检查，否则就不执行。</p>
+</li>
+<li><p>用<code>UNSAFE</code>获取<code>override</code>字段在对象中的偏移offset，</p>
+</li>
+<li>用<code>UNSAFE</code>修改method对象的<code>override</code>字段为<code>true</code>。<br>这一步很简单，就是为了绕过访问检查。可是问题又来了，为什么不直接用反射的方法<code>f.setBoolean(h, true)</code>呢？</li>
+</ol>
+<p>再来看看传统的反射修改可见性，是如何实现的<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">setAccessible</span><span class="params">(<span class="keyword">boolean</span> flag)</span> </span>&#123;</span><br><span class="line">    AccessibleObject.checkPermission();</span><br><span class="line">    setAccessible0(flag);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Sets the accessible flag and returns the new value</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">setAccessible0</span><span class="params">(<span class="keyword">boolean</span> flag)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.override = flag;</span><br><span class="line">    <span class="keyword">return</span> flag;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可见，第二种<code>Unsafe</code>的方式，其实就是绕过了<code>checkPermission</code>内部的安全检查，功能和传统方法一样，都是设置<code>override</code>字段为true，使方法可见。使用这种方法的好处，就是最大限度地保证代码成功执行，以及一定程度上的性能提升（个人认为基本可以忽略）。</p>
+<p>但是这种方法有没有缺点呢？这就要说回我们这次遇到的这个难解的bug了。</p>
+<p>经过多次排查，最终定位到<code>Field f = AccessibleObject.class.getDeclaredField(&quot;override&quot;)</code>代码居然抛出了<code>NoSuchFieldException</code>异常。而在IDE中查看JDK源码时，明明就有这个这个字段，这是为什么呢？一定是实际运行的JDK本身的问题！没错，最终发现我们所用的这一版公司内部修改过的JDK11存在一些bug，导致了这个问题的发生。替换成使用open jdk后，马上就恢复正常了。另外，在网上搜索发现，在安卓上也会出现类似的问题，因为安卓源码也对open jdk进行了修改。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这个问题其实很有趣，因为他说简单也很简单，不过是一个jdk内部实现的问题；然而说复杂也很复杂，短短两行代码就涉及了<code>MethodHandle</code>，反射，Java模块化，<code>UNSAFE</code>，<code>SecurityManager</code>，JDK的不同实现，这么多的问题。排查类似的问题时，一定不要在一个方向上钻的太深，这样很容易忽视真正的原因。</p>
+<p>另外对<code>Unsafe</code>的使用一定要慎重，否则，很容易弄巧成拙。最后再附上一段对<code>UNSAFE</code>的评价作结尾。</p>
+<blockquote>
+<p>sun.misc.Unsafe是JDK内部用的工具类。它通过暴露一些Java意义上说“不安全”的功能给Java层代码，来让JDK能够更多的使用Java代码来实现一些原本是平台相关的、需要使用native语言（例如C或C++）才可以实现的功能。该类不应该在JDK核心类库之外使用。</p>
+<p>JVM的实现可以自由选择如何实现Java对象的“布局”，也就是在内存里Java对象的各个部分放在哪里，包括对象的实例字段和一些元数据之类。sun.misc.Unsafe里关于对象字段访问的方法把对象布局抽象出来，它提供了objectFieldOffset()方法用于获取某个字段相对Java对象的“起始地址”的偏移量，也提供了getInt、getLong、getObject之类的方法可以使用前面获取的偏移量来访问某个Java对象的某个字段。</p>
+</blockquote>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag">#Java</a>
+          
+            <a href="/tags/Reflection/" rel="tag">#Reflection</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/22/kotlin-maven-compile/" rel="next" title="kotlin-maven-compile">
+                <i class="fa fa-chevron-left"></i> kotlin-maven-compile
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/25/levelDB/" rel="prev" title="LevelDB的理论与实践">
+                LevelDB的理论与实践 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">140</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">1.</span> <span class="nav-text">结语</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

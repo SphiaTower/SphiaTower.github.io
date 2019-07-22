@@ -224,8 +224,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/09/26/Creating-a-Manager-for-Multiple-Threads/" itemprop="url">
-                  安卓多线程（二） 创造多线程管理者
+                <a class="post-title-link" href="/2015/10/07/notifyDataSetChanged/" itemprop="url">
+                  A Problem about notifyDataSetChanged()
                 </a>
               
             
@@ -238,8 +238,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-26T23:20:00+08:00" content="2015-09-26">
-              2015-09-26
+            <time itemprop="dateCreated" datetime="2015-10-07T12:23:37+08:00" content="2015-10-07">
+              2015-10-07
             </time>
           </span>
 
@@ -265,277 +265,18 @@
 
       
         
-          <p>上一篇文章介绍的方法适合只运行一次的任务。如果需要针对不同的数据重复运行任务，但同一时间只有一个在执行，可以使用<code>IntentService</code>。要自动在资源可用的时候运行任务，或者允许多个任务同时运行，则需要提供一个受管理的线程集合。这时应该使用<code>ThreadPoolExecutor</code>，当在池中有线程自由时从队列中取出一个任务执行。要运行一个任务，只需要添加到队列中。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/26/Creating-a-Manager-for-Multiple-Threads/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/26/Specifying-the-Code-to-Run-on-a-Thread/" itemprop="url">
-                  安卓多线程（一） 在后台运行
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-26T23:01:34+08:00" content="2015-09-26">
-              2015-09-26
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>安卓中使用多线程本身并不难，但安卓平台本身性能有限，所以有很多细节需要注意。这一系列的文章将总结一下多线程方面的一些问题。</p>
-<p>可以在单独的线程中执行<code>Runnable</code>，也可以将之传送给其他的可以把它附到线程上并运行的对象。执行特定操作的一个或多个<code>Runnable</code>有时称作<em>任务</em>。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/26/Specifying-the-Code-to-Run-on-a-Thread/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/23/Generalized-Target-Type-Inference/" itemprop="url">
-                  Java 8泛型方法的自动推导
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-23T21:40:08+08:00" content="2015-09-23">
-              2015-09-23
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>今天在一个工程中写下面的语句时产生了疑问：</p>
-<pre><code>imageView.setImageBitmap(getIntent().getExtras().getParcelable());
-</code></pre><p>编译器居然没有对这个语句的类型错误进行提醒。<code>setImageBitmap()</code>接收一个<code>Bitmap</code>对象，而<code>getParcelable()</code>方法返回的应该是一个<code>Parcelable</code>对象。其中<code>Bitmap</code>类实现了<code>Parcelable</code>接口，所以这里存在一个向下转型，理应出现类型转换的问题，却没有报错。这是为什么呢？<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/23/Generalized-Target-Type-Inference/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/23/Taking-Photos-Simply/" itemprop="url">
-                  安卓拍摄和保存照片
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-23T19:58:10+08:00" content="2015-09-23">
-              2015-09-23
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在应用中可能会用到拍摄照片的功能，而这部分功能在整个应用中可能只是一小部分，所以开发时没有必要花精力去处理到底如何拍照。幸运的是，可以使用安卓设备中的其他相机应用来帮你处理。</p>
-<h2 id="要求相机权限"><a href="#要求相机权限" class="headerlink" title="要求相机权限"></a>要求相机权限</h2><p>如果拍照时应用的核心内容，那么需要限制安装应用的手机必须有相机。在manifest中可以如下处理：</p>
-<pre><code>&lt;manifest ... &gt;
-    &lt;uses-feature android:name=&quot;android.hardware.camera&quot;
-                  android:required=&quot;true&quot; /&gt;
-    ...
-&lt;/manifest&gt;
+          <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>I found a problem when using <code>adapter</code> of a <code>RecyclerView</code>. The <code>notifyDataSetChanged()</code> method did not work because I wrapped it in a recursive method which never returns.</p>
+<p>And I found that the <code>notifyDataSetChanged()</code> method could only work after the wrapped method returned. For example, if a sleep is added after <code>notifyDataSetChanged()</code>, it won’t take effect before the sleep is finished.</p>
+<pre><code>void wrapper(){
+    mAdapter.notifyDataSetChanged();
+    try{
+        TimeUnit.Seconds.sleep(5);
+    }catch(Exception ignored){
+    }
+}
 </code></pre>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/23/Taking-Photos-Simply/#more" rel="contents">
+            <a class="btn" href="/2015/10/07/notifyDataSetChanged/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -578,8 +319,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/09/23/wrong-use-of-application/" itemprop="url">
-                  继承Application类的误区
+                <a class="post-title-link" href="/2015/10/07/Auto-Pager-Recycler/" itemprop="url">
+                  Introducing Auto-Pager Recycler
                 </a>
               
             
@@ -592,8 +333,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-23T19:41:22+08:00" content="2015-09-23">
-              2015-09-23
+            <time itemprop="dateCreated" datetime="2015-10-07T12:16:58+08:00" content="2015-10-07">
+              2015-10-07
             </time>
           </span>
 
@@ -619,9 +360,12 @@
 
       
         
-          <p><code>Application</code>类是安卓中一个维持整个应用全局状态的类。经常可以看到一些建议，将全局的内容全部放在<code>Application</code>子类中，那么这样做究竟是否正确呢？<br>今天看到了官网上是这么说的：<br>
+          <p>Hey guys! I’m here introducing my repo – AutoPagerRecycler.<br><a href="https://github.com/SphiaTower/AutoPagerRecyclerManager">https://github.com/SphiaTower/AutoPagerRecyclerManager</a></p>
+<h1 id="AutoPagerRecyclerManager"><a href="#AutoPagerRecyclerManager" class="headerlink" title="AutoPagerRecyclerManager"></a>AutoPagerRecyclerManager</h1><p>Provide auto pager support for a RecycleView, loading data from a multi-page source has never been so easy!</p>
+<h2 id="When-to-use-it"><a href="#When-to-use-it" class="headerlink" title="When to use it?"></a>When to use it?</h2><p>When you are building a <code>RecyclerView</code> based on data from a multi-page source. </p>
+<p>For example, you are displaying content from a forum, like www.forum.com/board.json?page=1. The <code>AutoPagerRecyclerManager</code> can handle the async process of loading a different page. The data form <code>page=2</code> <code>page=3</code> or any other pages could be loaded easily on scroll or other custom actions.</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/23/wrong-use-of-application/#more" rel="contents">
+            <a class="btn" href="/2015/10/07/Auto-Pager-Recycler/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -664,8 +408,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/09/22/currying/" itemprop="url">
-                  函数式编程 - Currying
+                <a class="post-title-link" href="/2015/10/05/multiscreen-2-bitmap/" itemprop="url">
+                  适配不同屏幕（二） 准备不同像素的位图
                 </a>
               
             
@@ -678,8 +422,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-22T20:27:48+08:00" content="2015-09-22">
-              2015-09-22
+            <time itemprop="dateCreated" datetime="2015-10-05T14:22:12+08:00" content="2015-10-05">
+              2015-10-05
             </time>
           </span>
 
@@ -705,193 +449,16 @@
 
       
         
-          <p>上篇文章中，数列高阶函数的签名原本是</p>
-<pre><code>array_func = lambda func,array1,array2: [func(array1[i],array2[i]) for i in range(len(array1))]
-</code></pre><p>即函数接收一个函数，两个数列作为参数。而在接下来将函数高阶化后，变成了针对两个数列的函数:</p>
-<pre><code>array_operator = lambda func:lambda array1,array2:[func(array1[i],array2[i]) for i in range(len(array1))]
-</code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/22/currying/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/22/higher-order-functions/" itemprop="url">
-                  函数式编程 - 高阶函数
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-22T19:46:29+08:00" content="2015-09-22">
-              2015-09-22
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>函数式编程与面向对象编程最大的不同就是，FP当中，函数是first class的，可以方便地进行传递和进行更高层的处理。比如在安卓中，为了给某个View提供一个侦听的行为，必须为其绑定一个<code>OnClickListener</code>接口的侦听器，而实际上需要只有一个方法签名<code>onClick(View view)</code>。这种单一方法接口的本质就是那个方法所代表的函数，或者说映射，的本身。在Java8中，可以方便地直接将一个函数传递过去，如</p>
-<pre><code>view.setOnClickListener(view -&gt; { // do something here })
-</code></pre><p>实际传递的就是一个view参数的映射。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/22/higher-order-functions/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/20/Creating-a-View-Class/" itemprop="url">
-                  创造自定义View并在XML中使用自定义特性
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-20T19:58:44+08:00" content="2015-09-20">
-              2015-09-20
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>好的自定义view应该将功能封装为方便的接口，高效使用CPU和内存。另外还要做到：</p>
+          <h1 id="提供备用位图"><a href="#提供备用位图" class="headerlink" title="提供备用位图"></a>提供备用位图</h1><p>因为安卓运行在多种密度的屏幕上，应该将位图资源裁剪使之适合各种密度，如低，中，高和超高密度。要产生这些图片，可以使用下面的尺度缩放矢量格式的原始资源：</p>
 <ul>
-<li>适应安卓标准</li>
-<li>提供自定义的风格属性，兼容安卓的XML布局</li>
-<li>发送无障碍事件</li>
-<li>兼容多个安卓平台</li>
+<li>xhdpi: 2.0</li>
+<li>hdpi: 1.5</li>
+<li>mdpi: 1.0（基准）</li>
+<li>ldpi: 0.75</li>
 </ul>
+<p>也就是说，为<code>xhdpi</code>设备产生200x200的图片的同时，应该同样为<code>hdpi</code>产生150x150的图片，为<code>mdpi</code>产生100x100的图片等等。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/20/Creating-a-View-Class/#more" rel="contents">
+            <a class="btn" href="/2015/10/05/multiscreen-2-bitmap/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -934,8 +501,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/09/19/spinners/" itemprop="url">
-                  使用Spinner下拉列表
+                <a class="post-title-link" href="/2015/10/05/multiscreen-3-viewstub/" itemprop="url">
+                  使用ViewStub
                 </a>
               
             
@@ -948,8 +515,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-19T11:00:12+08:00" content="2015-09-19">
-              2015-09-19
+            <time itemprop="dateCreated" datetime="2015-10-05T12:21:52+08:00" content="2015-10-05">
+              2015-10-05
             </time>
           </span>
 
@@ -975,99 +542,556 @@
 
       
         
-          <p>Spinner提供了一种从集合中选择元素的快速方式。默认状态下，spinner显示当前选中的值。触碰spinner会显示包含所有值的下拉目录，供用户选择。  </p>
-<h2 id="为Spinner填充数据"><a href="#为Spinner填充数据" class="headerlink" title="为Spinner填充数据"></a>为Spinner填充数据</h2><p>Spinner中的选项可以来自任何地方，但必须通过<code>SpinnerAdapter</code>提供。如果选项是数组的形式，可以使用<code>ArrayAdapter</code>，如果来自数据库，可以使用<code>CursorAdapter</code>。  </p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/19/spinners/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/19/Animating-Layout-Changes/" itemprop="url">
-                  安卓动画学习笔记（七） 布局变更动画
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-19T10:25:30+08:00" content="2015-09-19">
-              2015-09-19
-            </time>
-          </span>
-
           
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>布局动画是每当改变布局配置时执行的预加载的动画。所需要做的只是在布局中设置相应的属性来告诉安卓系统执行动画，这样布局变更时就会执行默认的动画。</p>
+            <h1 id="ViewStub"><a href="#ViewStub" class="headerlink" title="ViewStub"></a>ViewStub</h1><p><code>ViewStub</code>是个不具有尺寸，不进行绘制，不加入布局的轻量级view。所以在view层级中，非常容易填充和舍弃。每个<code>ViewStub</code>只需要简单地包含<code>android:layout</code>属性来指明需要填充的布局。</p>
+<h1 id="加载ViewStub布局"><a href="#加载ViewStub布局" class="headerlink" title="加载ViewStub布局"></a>加载ViewStub布局</h1><p>想要加载<code>ViewStub</code>的布局时，只需要调用<code>setVisible(View.VISIBLE)</code>或者<code>inflate()</code>即可。<code>inflate()</code>返回的结果就是所填充的view。</p>
+<p>一旦可见或填充后，<code>ViewStub</code>就不再是view阶层的一部分。它被所填充的布局替换，而且该布局的根view的ID成为<code>android:inflatedId</code>属性指明的ID。而<code>ViewStub</code>的<code>android:id</code>仅仅在这之前有效。</p>
 <blockquote>
-<p><strong>贴士</strong>：如果想实现自定义布局变更动画，创造<code>LayoutTransition</code>对象，并通过<code>setLayoutTransition</code>提供给布局。</p>
+<p>注意：<code>ViewStub</code>的一大缺陷就是它目前不支持将要填充的布局中的<merge>标签。</merge></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/05/understanding-dp/" itemprop="url">
+                  适配不同屏幕（一） 理解安卓测量单位
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-05T11:47:23+08:00" content="2015-10-05">
+              2015-10-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="术语和概念"><a href="#术语和概念" class="headerlink" title="术语和概念"></a>术语和概念</h1><p>屏幕尺寸：实际的物理尺寸。为了方便，所有尺寸被分为四组：small, normal, large和extra-large。</p>
+<p>屏幕密度：屏幕的单位物理区域中所包含的像素的量，一般使用dpi（每英尺点数）描述。所有密度被分为六种泛化的密度：low, medium, high, extra-high, extra-extra-high, extra-extra-extra-high。</p>
+<p>分辨率：屏幕上物理像素的总数目。支持多屏幕时，应用只需要关心泛化的屏幕尺寸和密度，而不需要关心分辨率。</p>
+<p>密度无关像素（dp)：定义UI布局时应该使用的虚拟像素单位，用来以一种密度无关的方式表达布局尺寸或位置。</p>
+<p>密度无关像素与160dpi屏幕上的一个物理像素等同，它是medium密度屏幕的基线密度。运行时，系统根据屏幕的实际密度来处理dp单位的变换。从dp至屏幕像素的转换很简单：<code>px = dp * (dpi / 160)</code>。例如，在240dpi屏幕上，1dp=1.5物理像素。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/05/understanding-dp/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/03/Volley-UTF-8/" itemprop="url">
+                  Volley解析UTF-8产生乱码的解决方法
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-03T14:11:54+08:00" content="2015-10-03">
+              2015-10-03
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在使用Volley的<code>StringRequest</code>获取字符串的时候遇到了一个问题，返回的中文部分全部都是乱码，查找了一下原因，<a href="http://my.oschina.net/u/1247737/blog/393959">在这篇文章</a>中找到了答案：</p>
+<blockquote>
+<p>如果在服务器的返回数据的header中没有指定字符集那么就会默认使用 ISO-8859-1 字符集。<br>ISO-8859-1的别名叫做Latin1。这个字符集支持部分是用于欧洲的语言，不支持中文。</p>
 </blockquote>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/19/Animating-Layout-Changes/#more" rel="contents">
+            <a class="btn" href="/2015/10/03/Volley-UTF-8/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/03/SaxParser/" itemprop="url">
+                  使用SAXParser解析XML
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-03T13:51:06+08:00" content="2015-10-03">
+              2015-10-03
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><code>SAXParser</code>是一个用来解析XML文件的工具，相比起使用正则表达式，效率更高，可操作性更强。使用起来有一些问题需要注意。</p>
+<h2 id="创建解析器"><a href="#创建解析器" class="headerlink" title="创建解析器"></a>创建解析器</h2><p>首先通过工厂方法拿到<code>SAXParser</code>的实例，接下来用<code>InputSource</code>类来包裹XML文件，然后再调用<code>parse</code>解析时，传入一个<code>DefaultHandler</code>的子类，来告诉parser解析的方式，并存储解析的结果。</p>
+<pre><code>SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
+InputSource inputSource = new InputSource();
+inputSource.setEncoding(&quot;UTF-8&quot;);
+inputSource.setCharacterStream(new StringReader(xml));
+XmlHandler defaultHandler = new XmlHandler();
+
+saxParser.parse(inputSource, defaultHandler);
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/03/SaxParser/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/01/IntentService-Reporting-Work-Status/" itemprop="url">
+                  Service学习笔记（八） 报告工作状态
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-01T12:50:49+08:00" content="2015-10-01">
+              2015-10-01
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>本文探讨如何将后台服务的结果发送到前台UI。推荐的方法是使用<code>LocalBroadcastManager</code>来发送和接收状态，它将广播<code>Intent</code>限制在自己的应用中。</p>
+<h2 id="IntentService报告状态"><a href="#IntentService报告状态" class="headerlink" title="IntentService报告状态"></a>IntentService报告状态</h2><p>为了在<code>IntentService</code>中发送工作状态到其他组件，首先创建<code>Intent</code>，在其附加data中包含当前状态。作为选项，可以添加一个动作和数据URI。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/01/IntentService-Reporting-Work-Status/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/01/Keeping-the-Device-Awake/" itemprop="url">
+                  安卓保持设备唤醒
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-01T12:02:25+08:00" content="2015-10-01">
+              2015-10-01
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>为了避免耗尽电池，闲置状态的安卓设备，很快会进入睡眠状态。然而，有时应用需要唤醒屏幕或CPU并保持唤醒状态来完成一些工作。</p>
+<p>使用的方法取决于应用本身的需求。然而，通用的原则是，应该尽量使用轻量级的方法，来减少应用对系统资源的冲击。下面将探讨当设备的默认睡眠行为无法满足应用需求时的处理方法。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/01/Keeping-the-Device-Awake/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/30/Scheduling-Repeating-Alarms/" itemprop="url">
+                  安卓调度重复闹钟
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-30T21:24:15+08:00" content="2015-09-30">
+              2015-09-30
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><code>AlarmManager</code>类实现的闹钟可以执行在应用的生命周期之外执行基于时间的操作。例如，可以设定一个闹钟来初始化一个长期运行的操作，比如每天启动一次下载天气预报的服务。</p>
+<p>闹钟有以下特性：</p>
+<ul>
+<li>可以在指定时间或时间间隔发射Intent</li>
+<li>可以与broadcast receiver一起使用来启动服务或者执行其他服务</li>
+<li>可以在应用之外进行触发事件或动作，即使应用未启动或者设备在睡眠状态中</li>
+<li>可以最小化应用要求的资源。无需依赖定时器或者连续运行的后台服务就可以调度操作。</li>
+</ul>
+<blockquote>
+<p>对确保在应用生命周期内发生的定时操作而言，考虑使用将<code>Handler</code>与<code>Timer</code>、<code>Thread</code>联合使用。这样可以使安卓更好地控制系统资源。</p>
+</blockquote>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/30/Scheduling-Repeating-Alarms/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1094,7 +1118,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1135,7 +1159,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">123</span>
+              <span class="site-state-item-count">140</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1145,7 +1169,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-count">55</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

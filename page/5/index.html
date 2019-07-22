@@ -224,8 +224,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/02/13/review-loaders/" itemprop="url">
-                  重探Loader（一）
+                <a class="post-title-link" href="/2016/03/05/wear-dev-12/" itemprop="url">
+                  Android Wear 开发 （十二） 传输Assets
                 </a>
               
             
@@ -238,8 +238,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-13T20:52:41+08:00" content="2016-02-13">
-              2016-02-13
+            <time itemprop="dateCreated" datetime="2016-03-05T17:28:37+08:00" content="2016-03-05">
+              2016-03-05
             </time>
           </span>
 
@@ -265,382 +265,114 @@
 
       
         
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>Loader是安卓中非常好用的一个pattern，也是我个人非常喜欢用的一个。Loader最方便之处，就是免除了手动保存数据之苦。但在长期的使用之中，总觉得对loader的理解还是存在一些偏差。所以，这里重新复习一下loader的基本知识。</p>
-<p>Loader自安卓3.0引入，它的出现使得在activity或fragment中异步载入数据更加容易，有以下特性：</p>
+          <p>要通过蓝牙发送较大的二进制数据块，比如图片，可以为数据项附加一个<code>Asset</code>，并将数据项添加至复制的数据商店。</p>
+<p>Assets自动处理数据的缓存，来阻止重复传送，并节省蓝牙带宽。一个通用的模式是，在手机应用上下载图片，缩小至适合手表显示的尺寸，然后作为asset传送至手表上。</p>
+<blockquote>
+<p>数据项的大小限制在100KB，而asset则可以尽可能的大。然而，传输大asset会影响用户体验，所以传输时一定要做好测试工作来确保其表现。</p>
+</blockquote>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/05/wear-dev-12/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/05/wear-dev-11/" itemprop="url">
+                  Android Wear 开发 （十一） 同步数据项
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-05T17:06:21+08:00" content="2016-03-05">
+              2016-03-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><code>DataItem</code>定义了系统用来在手机和手表间同步数据的数据接口。它通常包含了：</p>
 <ul>
-<li>每个activity或fragment都可使用</li>
-<li>异步载入数据</li>
-<li>监视数据源的变化，并获取新的数据</li>
-<li>配置变更后自动重连之前的loader cursor。无需重新获取数据
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/13/review-loaders/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/05/learning-preferences-2/" itemprop="url">
-                  使用Preferences API（二）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-05T18:48:59+08:00" content="2016-02-05">
-              2016-02-05
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="使用pref-header"><a href="#使用pref-header" class="headerlink" title="使用pref header"></a>使用pref header</h1><p>某些情况下，可能需要设计设置页面来使第一个屏幕展示一列子屏幕。在3.0以上版本中，应该使用新的header特性，而非使用嵌套的<code>PreferenceScreen</code>元素。</p>
-<ol>
-<li>分离各组设置至不同的PF实例。每组设置需要单独的XML文件。</li>
-<li>创建XML header文件，列出每个设置组，声明含有对应设置列表的fragment。</li>
-<li>继承PA类来持有设置。</li>
-<li>实现<code>onBuildHeaderes()</code>回调来指定header文件。</li>
-</ol>
-<p>这样做的一个好处是，PA可以自动在大屏幕中使用双面板布局呈现设定。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/05/learning-preferences-2/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/05/learning-preferences/" itemprop="url">
-                  使用Preferences API（一）
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-02-05T15:43:43+08:00" content="2016-02-05">
-              2016-02-05
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>应用一般都包含一些用户可以自定义的设置，比如是否推送通知，更新数据的频率等等。</p>
-<p>如果想要为应用提供设置，应该使用安卓的<code>Preference</code>API来创建一致的用户体验。</p>
-<h1 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h1><p>与使用<code>View</code>创造界面不同，设置是由xml文件中声明的各种<code>Preference</code>的子类组成。</p>
-<p>一个<code>Preference</code>对象构成一个设置。每个<code>Preference</code>显示为列表中的一个子项，并提供合适的UI供用户交互。例如，<code>CheckBoxPreference</code>创造一个勾选框子项，<code>ListPreference</code>创造一个弹出选择列表对话框的子项。</p>
-<p>每个<code>Preference</code>在系统使用的默认的<code>SharedPreferences</code>文件中存在一个对应的键值对。用户更改设置后，系统在SP文件中更新相应的值。只有当需要从SP中读取值以决定应用行为时，才需要直接与SP相交互。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/05/learning-preferences/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/01/04/Bug-of-TabLayout/" itemprop="url">
-                  A Bug of TabLayout
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-01-04T00:26:01+08:00" content="2016-01-04">
-              2016-01-04
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>In Google’s design support library, there is a bug for version 22.2.1 that the <code>TabLayout</code> in <code>Toolbar</code> may not display. I spent neary an hour debugging for this problem. There is a work-around for this bug:</p>
-<pre><code>tabLayout.post(new Runnable() {
-    @Override
-    public void run() {
-        tabLayout.setupWithViewPager(viewPager);
-    }
-});
-</code></pre><p>But the easiest way is to upgrade the design library to version 23.</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/01/03/Providing-Proper-Back-Navigation/" itemprop="url">
-                  安卓导航 - 提供合适的后退导航
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-01-03T18:50:14+08:00" content="2016-01-03">
-              2016-01-03
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>后退导航是指用户如何从访问过的屏幕中向后移动。所有的安卓设备都提供有一个后退键，所以<strong>你的应用不应该再增加一个后退按钮。</strong></p>
-<p>在大多数的情况中，系统在用户导航时维持着一个后退栈。这使得系统能够再用户按下后退键之后合适地向后导航。然而，有一些情况下，你需要手动指明后退行为，以提供更好的用户体验。</p>
-<p>需要手动指明后退行为的导航模式有：</p>
-<ul>
-<li>用户通过一条通知、一个桌面挂件或导航抽屉直接进入到一个深层次的activity时。</li>
-<li>用户在fragment见导航的某些情况。</li>
-<li>用户在<code>WebView</code>的网页中导航时。</li>
+<li><strong>Payload</strong> - 一个字节数组，可以设置任何数据，可以自己进行对象序列化和反序列化。其大小限制在100KB。</li>
+<li><strong>Path</strong> - 一个独特的字符串，必须以一个前斜杠开始，如<code>(/path/to/data)</code>。</li>
 </ul>
+<p>一般不需要直接实现<code>DataItem</code>。只需：</p>
+<ol>
+<li>创建一个<code>PutDataRequest</code>对象，指定一个字符串路径来标识该项目。</li>
+<li>调用<code>setData()</code>来设置payload。</li>
+<li>如果同步的延迟会影响用户体验，调用<code>setUrgent()</code>。</li>
+<li>调用<code>DataApi.putDataItem()</code>。</li>
+</ol>
+<blockquote>
+<p>实测表明，不调用<code>setUrgent()</code>的话，手机向手表发送请求时，双方响应非常快。而手表向手机发送时，只有手表处马上响应，手机处则非常慢。</p>
+</blockquote>
+<p>在请求数据项时，系统返回正确实现了<code>DataItem</code>接口的对象。然而，并不推荐使用<code>setData()</code>直接设置原生的字节，建议使用data map，它用一个容易使用的类似<code>Bundle</code>的接口来暴露数据。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/01/03/Providing-Proper-Back-Navigation/#more" rel="contents">
+            <a class="btn" href="/2016/03/05/wear-dev-11/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -683,8 +415,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/01/03/Providing-Up-Navigation/" itemprop="url">
-                  安卓导航 - 提供Up导航
+                <a class="post-title-link" href="/2016/03/05/wear-dev-10/" itemprop="url">
+                  Android Wear 开发 （十） 访问手表数据层
                 </a>
               
             
@@ -697,8 +429,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-01-03T18:21:31+08:00" content="2016-01-03">
-              2016-01-03
+            <time itemprop="dateCreated" datetime="2016-03-05T16:58:05+08:00" content="2016-03-05">
+              2016-03-05
             </time>
           </span>
 
@@ -724,11 +456,106 @@
 
       
         
-          <p>所有不是主入口的屏幕都应该为用户提供一个通过action bar的Up按钮导航至逻辑父屏幕的方式。</p>
-<h1 id="明确父Activity"><a href="#明确父Activity" class="headerlink" title="明确父Activity"></a>明确父Activity</h1><p>要实现Up导航，第一步是为每个activity声明合适的父activity。这样系统就可以在manifest中获得activity的逻辑父页面，方便实现导航模式。</p>
-<p>从安卓4.1开始，可以通过在<code>&lt;activity&gt;</code>中指明<code>android:parentActivityName</code>属性来声明逻辑父activity。 4.0以下的版本这里略去。<br>
+          
+            <p>要调用数据层API，首先创建一个<code>GoogleApiClient</code>的实例，作为所有Google Play服务API的入口。</p>
+<p><code>GoogleApiClient</code>提供了一个builder，最简单的实例如下：<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">GoogleApiClient mGoogleApiClient = <span class="keyword">new</span> GoogleApiClient.Builder(<span class="keyword">this</span>)</span><br><span class="line">        .addConnectionCallbacks(<span class="keyword">new</span> ConnectionCallbacks() &#123;</span><br><span class="line">                <span class="annotation">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onConnected</span><span class="params">(Bundle connectionHint)</span> </span>&#123;</span><br><span class="line">                    Log.d(TAG, <span class="string">"onConnected: "</span> + connectionHint);</span><br><span class="line">                    <span class="comment">// Now you can use the Data Layer API</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="annotation">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onConnectionSuspended</span><span class="params">(<span class="keyword">int</span> cause)</span> </span>&#123;</span><br><span class="line">                    Log.d(TAG, <span class="string">"onConnectionSuspended: "</span> + cause);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        .addOnConnectionFailedListener(<span class="keyword">new</span> OnConnectionFailedListener() &#123;</span><br><span class="line">                <span class="annotation">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onConnectionFailed</span><span class="params">(ConnectionResult result)</span> </span>&#123;</span><br><span class="line">                    Log.d(TAG, <span class="string">"onConnectionFailed: "</span> + result);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">        <span class="comment">// Request access only to the Wearable API</span></span><br><span class="line">        .addApi(Wearable.API)</span><br><span class="line">        .build();</span><br></pre></td></tr></table></figure><br>在使用数据层API之前，在客户端上调用<code>connect()</code>方法启动一个连接。系统为客户端调用<code>onConected()</code>回调时，就可以使用数据层API了。</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/05/wear-dev-bluetooth/" itemprop="url">
+                  Android Wear 开发 （九） 通过蓝牙调试
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-05T15:36:31+08:00" content="2016-03-05">
+              2016-03-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>一些安卓手表可以通过USB接口连接至电脑进行尝试，而我的moto360只能通过蓝牙进行调试。在尝试用蓝牙调试的过程中，遇到了一些问题，一并记录下来。</p>
+<p>通过蓝牙可以将手表的debug输出发送至连接在开发机上的手机上。</p>
+<h1 id="为调试设置设备"><a href="#为调试设置设备" class="headerlink" title="为调试设置设备"></a>为调试设置设备</h1><ol>
+<li>启用手机的<strong>USB调试</strong>。</li>
+<li>启用手表的<strong>蓝牙调试</strong>：<ol>
+<li>触碰主屏幕两次打开手表目录。</li>
+<li>滑至底部，点击<strong>设置</strong>。</li>
+<li>滑至底部。如果没有<strong>开发者选项</strong>，点击<strong>关于</strong>，然后点击版本号七次。</li>
+<li>点击<strong>开发者目录</strong>。</li>
+<li>启用<strong>通过蓝牙调试</strong>。</li>
+</ol>
+</li>
+</ol>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/01/03/Providing-Up-Navigation/#more" rel="contents">
+            <a class="btn" href="/2016/03/05/wear-dev-bluetooth/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -771,8 +598,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/01/03/Creating-a-Navigation-Drawer/" itemprop="url">
-                  安卓导航 - 创建导航抽屉
+                <a class="post-title-link" href="/2016/03/05/wear-dev-8/" itemprop="url">
+                  Android Wear 开发 （八） 添加语音功能
                 </a>
               
             
@@ -785,8 +612,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-01-03T14:46:01+08:00" content="2016-01-03">
-              2016-01-03
+            <time itemprop="dateCreated" datetime="2016-03-05T14:28:29+08:00" content="2016-03-05">
+              2016-03-05
             </time>
           </span>
 
@@ -812,10 +639,12 @@
 
       
         
-          <p>导航抽屉式一个屏幕左侧展示应用主要导航选项的面板。它一般隐藏起来，当用户从左侧滑动屏幕或在应用最顶级层面上点击应用图标时会出现。</p>
-<h1 id="创建DrawerLayout"><a href="#创建DrawerLayout" class="headerlink" title="创建DrawerLayout"></a>创建DrawerLayout</h1><p>要添加导航抽屉，首先在布局的根视图上添加一个<code>DrawerLayout</code>。在<code>DrawerLayout</code>中添加显示一个屏幕主要内容的view，和一个显示抽屉内容的view。</p>
+          <p>Wear提供两种语音动作：</p>
+<ul>
+<li>系统提供的：这些语音动作基于任务，并内置在Wear平台。在想要启动的activity中过滤出他们，比如“记笔记”或者“设定闹铃”。</li>
+<li>应用提供的：这些语音动作基于应用，声明他们就像启动图标一样。用户说“启动 ”来使用语音动作并启动一个指定的activity。
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/01/03/Creating-a-Navigation-Drawer/#more" rel="contents">
+            <a class="btn" href="/2016/03/05/wear-dev-8/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -858,8 +687,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/01/03/Glide-image-size/" itemprop="url">
-                  A Glide Sizing Problem
+                <a class="post-title-link" href="/2016/03/05/wear-dev-7/" itemprop="url">
+                  Android Wear 开发 （七） 保持应用可见
                 </a>
               
             
@@ -872,8 +701,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-01-03T00:02:01+08:00" content="2016-01-03">
-              2016-01-03
+            <time itemprop="dateCreated" datetime="2016-03-05T11:32:23+08:00" content="2016-03-05">
+              2016-03-05
             </time>
           </span>
 
@@ -899,12 +728,14 @@
 
       
         
-          
-            <p>Months ago, I encountered a very frustrating bug of Glide. I was using Glide to display images in a <code>RecyclerView</code>. The image was wrapped in a custom layout, and it was added dynamically. No matter how I adjust the code, images can’t be displayed  with its width matching parent. Sometimes it was even scaled into a pixel point!</p>
-<p>Until today, I found that the problem was because that Glide figured out the wrong dimensions, as is described here - “<a href="https://github.com/bumptech/glide/wiki/Transformations" target="_blank" rel="external">https://github.com/bumptech/glide/wiki/Transformations</a>“.</p>
-<p>I’m not sure about why Glide get the wrong dimension. But the solution is pretty easy: just call <code>.override(int,int)</code> to set the dimension by yourself. And a <code>.fitCenter()</code> call can then make sure that the scaling of width and height is not changed.</p>
-
-          
+          <p>一些手表应用需要对用户一直保持可见。比如，正在跑步的用户可以看一眼手表以知道跑过的距离和时间。在超市购物时，记录了购物清单后，可以很快地看一眼还有那些清单上还有那些没有购买。制作一个一直可见的应用会减少电池寿命，所以添加这个功能时一定要谨慎。</p>
+<p>Android Wear允许应用保留在前台，同时节省电源。应用可以在手表进入低功耗环境模式的同时，控制手表屏幕显示的内容。同时运行在环境模式和交互模式的应用称作常驻应用。</p>
+<h1 id="启用Ambient模式"><a href="#启用Ambient模式" class="headerlink" title="启用Ambient模式"></a>启用Ambient模式</h1><p>完成项目配置后，继承<code>WearableActivity</code>，他提供了可以启用环境模式的所有方法。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/05/wear-dev-7/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -944,8 +775,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/12/20/loader-compares-reference/" itemprop="url">
-                  LoaderManager Compares References
+                <a class="post-title-link" href="/2016/03/05/wear-dev-6/" itemprop="url">
+                  Android Wear 开发 （六） 创建自定义布局
                 </a>
               
             
@@ -958,8 +789,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-12-20T00:02:58+08:00" content="2015-12-20">
-              2015-12-20
+            <time itemprop="dateCreated" datetime="2016-03-05T11:10:05+08:00" content="2016-03-05">
+              2016-03-05
             </time>
           </span>
 
@@ -985,12 +816,18 @@
 
       
         
-          
-            <p>Today, one of my <code>Loader</code> implementations behaved totally weird after I modified its code. The <code>Loader</code> loaded successfully at the 1st time, but failed on all following attempts. The <code>loadInBackground()</code> method returned, but <code>onLoadFinished()</code> was not called.</p>
-<p>The <code>LoaderManager</code> class compares the new loaded data and old retained data by code like <code>if(oldData!=newData)</code> to decide whether to update the data or not. Note that it uses <code>==</code> operator to compare them. In my case, my <code>Loader</code> retains a same <code>TreeMap</code> object and add/update entries into it, resulting that they’re identified as the same reference, so the loader won’t deliver the new result.</p>
-<p>To solve this problem, you have to create a new <code>TreeMap</code> and add back all the old data.</p>
-
-          
+          <h1 id="使用手表UI库创建布局"><a href="#使用手表UI库创建布局" class="headerlink" title="使用手表UI库创建布局"></a>使用手表UI库创建布局</h1><p>在Android Studio中应用向导创建应用时会自动引入手表UI库。此外也可以在<code>build.gradle</code>中手动添加依赖声明：</p>
+<pre><code>dependencies {
+    compile fileTree(dir: &apos;libs&apos;, include: [&apos;*.jar&apos;])
+    compile &apos;com.google.android.support:wearable:+&apos;
+    compile &apos;com.google.android.gms:play-services-wearable:+&apos;
+}
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/05/wear-dev-6/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -1030,8 +867,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/12/16/jcenter-peer-not-authenticated/" itemprop="url">
-                  Jcenter peer not authenticated
+                <a class="post-title-link" href="/2016/03/05/check-savedStateInstance-when-adding-frag/" itemprop="url">
+                  Fragment Lifecycle, Configuration Changes and savedStateInstance
                 </a>
               
             
@@ -1044,8 +881,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-12-16T00:27:34+08:00" content="2015-12-16">
-              2015-12-16
+            <time itemprop="dateCreated" datetime="2016-03-05T10:49:53+08:00" content="2016-03-05">
+              2016-03-05
             </time>
           </span>
 
@@ -1071,13 +908,204 @@
 
       
         
-          
-            <p>Today my gradle failed to sync because the following error:</p>
-<pre><code>Error: peer not authenticated
-</code></pre><p>I found lots of solutions but none of them take effects, only to know it is caused by the problem of certificate of <code>jCenter()</code>.</p>
-<p>Finally, it was fixed by replacing all the <code>jCenter()</code> into <code>mavenCentral()</code> in all <code>build.gradle</code> files. Surprisingly, the local gradle repos work without modification.</p>
+          <p>I found such a period of code in a project generated by Android Studio today.<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// savedInstanceState is non-null when there is fragment state</span></span><br><span class="line"><span class="comment">// saved from previous configurations of this activity</span></span><br><span class="line"><span class="comment">// (e.g. when rotating the screen from portrait to landscape).</span></span><br><span class="line"><span class="comment">// In this case, the fragment will automatically be re-added</span></span><br><span class="line"><span class="comment">// to its container so we don't need to manually add it.</span></span><br><span class="line"><span class="comment">// For more information, see the Fragments API guide at:</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// http://developer.android.com/guide/components/fragments.html</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="keyword">if</span> (savedInstanceState == <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="comment">// Create the detail fragment and add it to the activity</span></span><br><span class="line">    <span class="comment">// using a fragment transaction.</span></span><br><span class="line">    Bundle arguments = <span class="keyword">new</span> Bundle();</span><br><span class="line">    arguments.putString(ItemDetailFragment.ARG_ITEM_ID,</span><br><span class="line">            getIntent().getStringExtra(ItemDetailFragment.ARG_ITEM_ID));</span><br><span class="line">    ItemDetailFragment fragment = <span class="keyword">new</span> ItemDetailFragment();</span><br><span class="line">    fragment.setArguments(arguments);</span><br><span class="line">    getSupportFragmentManager().beginTransaction()</span><br><span class="line">            .add(R.id.item_detail_container, fragment)</span><br><span class="line">            .commit();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/05/check-savedStateInstance-when-adding-frag/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/02/wear-dev-5/" itemprop="url">
+                  Android Wear 开发 （五） 创建自定义通知
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-02T08:46:42+08:00" content="2016-03-02">
+              2016-03-02
+            </time>
+          </span>
 
           
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在手表上创建布局与手机相同，除了必须根据屏幕尺寸和瞥视动作设计以外。不要仅仅将功能和UI从手机应用中搬运至手表，这样的体验非常不好。只有在必要的时候才应该创建自定义布局。</p>
+<h1 id="创建自定义通知"><a href="#创建自定义通知" class="headerlink" title="创建自定义通知"></a>创建自定义通知</h1><p>一般应该在手机上创建通知并自动同步至手表。这样只需创建一次通知就可以出现在多种设备上（甚至包括汽车和电视）。</p>
+<p>如果标准的通知风格不适合你的话，可以显示一个有自定义布局的activity。应该只在手表上创建和发布自定义通知，这些通知不会被同步至手机上。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/02/wear-dev-5/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/02/27/Wear-Dev-4/" itemprop="url">
+                  Android Wear 开发 （四） 创建和运行手表应用
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-02-27T21:33:07+08:00" content="2016-02-27">
+              2016-02-27
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="更新SDK"><a href="#更新SDK" class="headerlink" title="更新SDK"></a>更新SDK</h1><p>开始创建穿戴应用前，首先：</p>
+<ul>
+<li>更新SDK工具至23.0.0或以上</li>
+<li>更新SDK至API20或以上</li>
+</ul>
+<h1 id="设置手表设备"><a href="#设置手表设备" class="headerlink" title="设置手表设备"></a>设置手表设备</h1><ol>
+<li>在手机上安装Android Wear应用。</li>
+<li>根据指示与手表配对。</li>
+<li>保持Android Wear在手机上打开。</li>
+<li>在手表上启用adb调试。<ol>
+<li>进入<strong>Settings &gt; About</strong>。</li>
+<li>点击<strong>Build number</strong>七次。</li>
+<li>右滑返回设置目录。</li>
+<li>进入屏幕底端的开发者设置。</li>
+<li>点击ADB调试来启用adb。</li>
+</ol>
+</li>
+<li>通过USB连接手表到机器上，这样可以直接安装应用。Android Wear应用和手表上都会显示一条消息表示允许调试。（如果不能通过USB连接，可以尝试使用蓝牙）</li>
+<li>在Android Wear应用上，勾选总是允许这台电脑，并点击OK。
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/27/Wear-Dev-4/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -1101,7 +1129,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1142,7 +1170,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">123</span>
+              <span class="site-state-item-count">140</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1152,7 +1180,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-count">55</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

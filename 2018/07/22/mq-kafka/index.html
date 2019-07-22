@@ -1,0 +1,714 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Kafka,MQ," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="消息队列这个领域的发展，可以用百花齐放来形容了。Kafka、RabbitMQ、RocketMQ等等，多种多样的消息队列可供我们选择，甚至还有很多使用redis等其他数据库实现消息队列的。这一系列文章，就来看看消息队列的选型，各种消息队列的原理与区别。
+首先从Kafka谈起。
+Topic在Kafka中，最核心的抽象概念就是topic了。
+Topic是一个种类名或者订阅名，每条消息会被发布到指定的to">
+<meta property="og:type" content="article">
+<meta property="og:title" content="消息队列之Kafka">
+<meta property="og:url" content="http://yoursite.com/2018/07/22/mq-kafka/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="消息队列这个领域的发展，可以用百花齐放来形容了。Kafka、RabbitMQ、RocketMQ等等，多种多样的消息队列可供我们选择，甚至还有很多使用redis等其他数据库实现消息队列的。这一系列文章，就来看看消息队列的选型，各种消息队列的原理与区别。
+首先从Kafka谈起。
+Topic在Kafka中，最核心的抽象概念就是topic了。
+Topic是一个种类名或者订阅名，每条消息会被发布到指定的to">
+<meta property="og:updated_time" content="2019-07-22T13:34:16.589Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="消息队列之Kafka">
+<meta name="twitter:description" content="消息队列这个领域的发展，可以用百花齐放来形容了。Kafka、RabbitMQ、RocketMQ等等，多种多样的消息队列可供我们选择，甚至还有很多使用redis等其他数据库实现消息队列的。这一系列文章，就来看看消息队列的选型，各种消息队列的原理与区别。
+首先从Kafka谈起。
+Topic在Kafka中，最核心的抽象概念就是topic了。
+Topic是一个种类名或者订阅名，每条消息会被发布到指定的to">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 消息队列之Kafka | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                消息队列之Kafka
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2018-07-22T23:11:11+08:00" content="2018-07-22">
+              2018-07-22
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>消息队列这个领域的发展，可以用百花齐放来形容了。Kafka、RabbitMQ、RocketMQ等等，多种多样的消息队列可供我们选择，甚至还有很多使用redis等其他数据库实现消息队列的。这一系列文章，就来看看消息队列的选型，各种消息队列的原理与区别。</p>
+<p>首先从Kafka谈起。</p>
+<h2 id="Topic"><a href="#Topic" class="headerlink" title="Topic"></a>Topic</h2><p>在Kafka中，最核心的抽象概念就是topic了。</p>
+<p>Topic是一个种类名或者订阅名，每条消息会被发布到指定的topic中。Kafka中的topic是多订阅者的，可以有任意数量的消费者订阅同个topic。</p>
+<h3 id="Topic的数据结构"><a href="#Topic的数据结构" class="headerlink" title="Topic的数据结构"></a>Topic的数据结构</h3><p>对每个topic，kafka集群都会维持一个分区的log</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">partition <span class="number">0</span>: <span class="number">0</span>-<span class="number">1</span>-<span class="number">2</span>-<span class="number">3</span>-<span class="number">4</span>-<span class="number">5</span>-<span class="number">6</span>---<span class="number">7</span></span><br><span class="line">partition <span class="number">1</span>: <span class="number">0</span>-<span class="number">1</span>-<span class="number">2</span>-<span class="number">3</span>---<span class="number">4</span></span><br><span class="line">partition <span class="number">2</span>: <span class="number">0</span>-<span class="number">1</span>-<span class="number">2</span>-<span class="number">3</span>-<span class="number">4</span>-<span class="number">5</span>---<span class="number">6</span></span><br></pre></td></tr></table></figure>
+<p>如上面的示意图，每个分区都是连续写入的有序且不可变的消息序列，即结构化的commit log。分区中的每条消息都会分配一个序列ID，称作offset，唯一地标识分区中的每条消息。</p>
+<h3 id="消息的保存周期"><a href="#消息的保存周期" class="headerlink" title="消息的保存周期"></a>消息的保存周期</h3><p>Kafka集群，在一定的保存周期内，持久地保存所有发布的消息（不论是否消费过）。比如周期设置为两天，那么消息发布后两天内都可以被消费，过后则将会被丢弃，以清理空间。</p>
+<h3 id="消费者和offset"><a href="#消费者和offset" class="headerlink" title="消费者和offset"></a>消费者和offset</h3><p>而对消费者，唯一保存的元数据，就是消费者在log中所处的offset或位置。这个offset由消费者控制：通常消费者会在读取消息的过程中线性前进，但实际上，因为由消费者控制，所以消费者可以随便改变顺序。比如</p>
+<ul>
+<li>跳回过去的offset，重新处理旧消息</li>
+<li>调到最新的消息，只处理此刻以后的消息</li>
+</ul>
+<p>Kafka这样的设计，使得消费者的实现非常轻量，增加或减少消费者不会对kafka集群或其他消费者产生较大的影响。</p>
+<h2 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h2><p>log中的分区有很多目的。</p>
+<ol>
+<li>允许log分布到多台server上，突破单台server的容量瓶颈；每个分区必须放在一个容量足够的server中，但是一个topic可以有许多分区，所以可以承担任意量的数据</li>
+<li>分区也成为了并行的一个单元</li>
+</ol>
+<h2 id="分布"><a href="#分布" class="headerlink" title="分布"></a>分布</h2><p>log的分区分布在kafka集群中的多个服务器上，每个服务器处理多个分区。每个分区为了容灾，又会有其他服务器上存放副本。</p>
+<p>每个分区都有</p>
+<ol>
+<li>一个leader服务器</li>
+<li>0个或多个follower服务器</li>
+</ol>
+<p>leader处理分区所有的读写请求，而follower只被动地复制leader。如果leader宕机，follower中会选出一个自动成为leader。每个服务器都会作为一些分区的leader，以及另外一些分区的follower，保持集群中的负载均衡。</p>
+<h2 id="消费者"><a href="#消费者" class="headerlink" title="消费者"></a>消费者</h2><p>消费者有一个「消费组」标签，每个发布到topic的消息，都被送达到每个订阅的消费组中的一个消费者。消费者实例可能在分别的进程或分别的机器上。</p>
+<p>如果所有消费者实例的消费组都相同，那么从效果上看，消息会在所有实例中负载均衡。</p>
+<p>如果消费者有不同的消费组，那么每条消息会被广播到所有消费者进程中。</p>
+<p>Kafka实现消费的方式是，将log中的分区均分给消费者实例。</p>
+<blockquote>
+<p>N个分区/M个消费者</p>
+</blockquote>
+<p>在任意时间，每个消费者都是N/M个分区的唯一独占消费者。这一关系的维护由kafka协议动态进行。如果新实例假如，就会从其他成员处拿走一些分区；如果有实例故障，其分区会分配给其他实例。</p>
+<p>Kafka只在单个分区内部提供完全顺序性，同个topic中不同分区间没有这一特性。如果想要实现完全顺序消费，可以让topic只有一个分区来实现。这种情况下，每个消费组只有一个消费进程。</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Kafka/" rel="tag">#Kafka</a>
+          
+            <a href="/tags/MQ/" rel="tag">#MQ</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/20/circuit-breaker-1/" rel="next" title="容灾之断路器">
+                <i class="fa fa-chevron-left"></i> 容灾之断路器
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/22/kotlin-maven-compile/" rel="prev" title="kotlin-maven-compile">
+                kotlin-maven-compile <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">140</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Topic"><span class="nav-number">1.</span> <span class="nav-text">Topic</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Topic的数据结构"><span class="nav-number">1.1.</span> <span class="nav-text">Topic的数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息的保存周期"><span class="nav-number">1.2.</span> <span class="nav-text">消息的保存周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消费者和offset"><span class="nav-number">1.3.</span> <span class="nav-text">消费者和offset</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分区"><span class="nav-number">2.</span> <span class="nav-text">分区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布"><span class="nav-number">3.</span> <span class="nav-text">分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消费者"><span class="nav-number">4.</span> <span class="nav-text">消费者</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

@@ -1,0 +1,688 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Design Philosophy,Elasticsearch,MySQL," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="Java服务端的开发，无论是Web后台、移动后台，或者计算型应用，数据访问层（DAL）总是必不可少的。而数据访问层内部又会再次细分，以MySQL数据源为例，使用MyBatis的话，首先需要一层mapper.xml定义SQL操作，然后需要一层DAO接口提供CRUD调用，再往上往往还会有一层Manager层封装DAO的操作，提供给上层的Service调用。
+
+Mapper -&amp;gt; DAO -&amp;gt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="谈不同数据库的封装问题">
+<meta property="og:url" content="http://yoursite.com/2019/07/22/elasticsearch-dao/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="Java服务端的开发，无论是Web后台、移动后台，或者计算型应用，数据访问层（DAL）总是必不可少的。而数据访问层内部又会再次细分，以MySQL数据源为例，使用MyBatis的话，首先需要一层mapper.xml定义SQL操作，然后需要一层DAO接口提供CRUD调用，再往上往往还会有一层Manager层封装DAO的操作，提供给上层的Service调用。
+
+Mapper -&amp;gt; DAO -&amp;gt">
+<meta property="og:updated_time" content="2019-07-22T13:25:42.173Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="谈不同数据库的封装问题">
+<meta name="twitter:description" content="Java服务端的开发，无论是Web后台、移动后台，或者计算型应用，数据访问层（DAL）总是必不可少的。而数据访问层内部又会再次细分，以MySQL数据源为例，使用MyBatis的话，首先需要一层mapper.xml定义SQL操作，然后需要一层DAO接口提供CRUD调用，再往上往往还会有一层Manager层封装DAO的操作，提供给上层的Service调用。
+
+Mapper -&amp;gt; DAO -&amp;gt">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 谈不同数据库的封装问题 | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                谈不同数据库的封装问题
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2019-07-22T21:08:12+08:00" content="2019-07-22">
+              2019-07-22
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Java服务端的开发，无论是Web后台、移动后台，或者计算型应用，数据访问层（DAL）总是必不可少的。而数据访问层内部又会再次细分，以MySQL数据源为例，使用MyBatis的话，首先需要一层mapper.xml定义SQL操作，然后需要一层DAO接口提供CRUD调用，再往上往往还会有一层Manager层封装DAO的操作，提供给上层的Service调用。</p>
+<blockquote>
+<p>Mapper -&gt; DAO -&gt; Manager -&gt; Service -&gt; Controller</p>
+</blockquote>
+<p>在使用MySQL或其他类似关系型数据库时，这样的封装和分层方式虽然有时有些繁琐，但基本上已经算是比较好的做法。而当项目中引入了NoSQL或搜索引擎时，传统的数据访问层内部的分层方式，往往就不那么容易实现。大多数的NoSQL实现都没有提供如传统关系数据库般的复杂封装方式，一般情况下只是提供一个Client，加上一系列方法，供用户调用。当项目中需要大量使用NoSQL时，开发者难免会手痒，想要把NoSQL也封装成类似MyBatis或其他类似库的结构，以方便访问。然而，这种封装所带来的问题，也许会多过好处。</p>
+<h2 id="正视不同数据库之间的本质区别"><a href="#正视不同数据库之间的本质区别" class="headerlink" title="正视不同数据库之间的本质区别"></a>正视不同数据库之间的本质区别</h2><p>在工作过程中，笔者曾不止一次地看到有团队或开发者，在最底层就试图将不同的数据库统一封装起来，提供相同的底层API。这么做乍一看很美好，似乎可以零成本切换底层数据源，屏蔽一切数据层的细节。然而实际上，这种最底层封装所带来的收益，即使有的话，恐怕只是一时的。</p>
+<p>举一个封装MySQL和ES的例子。公司内负责ES维护和优化的团队，希望将MySQL和ES统一起来，为ES提供一套类似SQL形式的API，即支持SQL的查询语句，并提供MyBatis风格的简单CRUD API。这一想法看上去非常美好，他们也花了大量精力做出来了一个非常复杂的ES客户端library，可是很多团队在短暂地使用后，就会发现其中的种种问题。</p>
+<p>不同的数据库选型之间，往往有着本质上的区别。单机VS分布式，底层数据结构，是否支持事务，是否支持索引，索引的使用形式，等等等等。强行试图封装不同的数据库，并不是不可以，但是一定要意识到，其中的复杂度，尤其是封装后组合爆炸带来的复杂度，会远远超出你的想象。</p>
+<h3 id="复杂的查询语句"><a href="#复杂的查询语句" class="headerlink" title="复杂的查询语句"></a>复杂的查询语句</h3><p>继续以MySQL和ES为例，MySQL中使用SQL进行数据查询，而ES则使用JSON，二者所支持的数据查询方式差别极大。MySQL中基本的布尔操作还算简单，一旦涉及到聚合操作、JOIN操作等，其复杂度就会剧烈提升。一些复杂的SQL，即使是很有经验的程序员，也需要投入一定精力去细细优化。</p>
+<p>而ES中，即使是基本的逻辑操作就与SQL有很大不同，ES中的<code>filter</code>和<code>must</code>都类似<code>AND</code>操作，但二者间又有很多细微不同，<code>should</code>初看好像对应了<code>OR</code>，但实际上其语义更加复杂，在不同上下文出现有着完全不同的作用；更有<code>mininum_should_match</code>等等诸多辅助性的参数，难以在SQL中实现。因此，虽然不同的查询语法本质上的逻辑都是等价的，但在工程上，单单是想要实现SQL和ES JSON之间的互译，已经是非常困难了，要想针对双方完全不同的存储结构进行优化，就更是难上加难。当然，网络上也有将SQL翻译成ES JSON的工具，但这样的工具用在项目重构、迁移的过程中，提供辅助作用还好，在稳定的生产代码中使用这种间接性质的翻译，就难以进行针对性的优化，很可能会导致资源的严重浪费。</p>
+<h3 id="独有的功能"><a href="#独有的功能" class="headerlink" title="独有的功能"></a>独有的功能</h3><p>即使我们对查询语句的封装网开一面，单单来看其他的CRUD操作，封装的效果也是不容乐观的。以简单的一条<code>SELECT</code>为例，单机的MySQL很简单，分库分表后就需要路由，而ES中又需要考虑是否支持routing的问题。MySQL中有着复杂的事务和各种加锁功能，这些在ES上都是不可能实现的。反过来，ES的routing机制，脚本Update，天生的数组支持，refresh策略的调控，也都是MySQL所无法模拟的。</p>
+<p>在这种情况下，还要封装统一的接口，就会发现一个简单的API上，需要提供的可选参数越来越多，需要支持的独特注解也越来越多，而在方法实现时，各种复杂的parsing、映射、调参也接踵而至。即使你实现了大部分的功能，这样的代码在实际工程的复杂性面前，必然是不堪一击的。很快各个使用方就会发掘出其中越来越多的bug，你也会需要越来越多的代码去处理各种复杂的corner case。笔者在使用他们的服务时，就曾经发现一个哭笑不得的错误，将ES的JSON错误解析，丢掉了其中的重要参数。</p>
+<h2 id="失败的世界语"><a href="#失败的世界语" class="headerlink" title="失败的世界语"></a>失败的世界语</h2><p>在如此高的复杂度下，除非团队的实力足够强（需要PL领域的专家），人手、时间、测试资源都足够充裕，不要轻易地尝试统一抽象和封装不同的数据库。强如Pivotal做出的Spring Data，在实际使用中也会发现很多的不足。过度乐观地进行封装，忽视逻辑上不可消灭的高复杂度，最终面临的一定是痛苦而漫长的后续维护和测试。</p>
+<p>这就如同当年失败的世界语一样，当你真的成功封装了不同的数据库后，你所创造的新的模型，也必将需要更多的精力去学习。而在实际的项目开发中，数据源的切换和更替大多是一次性的或往复的，很多时候并不需要复杂的抽象和封装。特别是在切换数据库之后，为了充分利用新数据库的特性，业务的建模也很可能会发生大规模的变更。业务建模变化后，底层数据层的封装就会变得毫无意义。退一步讲，即使真的需要封装，也只需在更上层（如Manager层）简单封装即可。为了一次性的成本，过多的投入前期精力，往往是得不偿失的。</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Design-Philosophy/" rel="tag">#Design Philosophy</a>
+          
+            <a href="/tags/Elasticsearch/" rel="tag">#Elasticsearch</a>
+          
+            <a href="/tags/MySQL/" rel="tag">#MySQL</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/22/elasticsearch-time-indices/" rel="next" title="elasticsearch-time-indices">
+                <i class="fa fa-chevron-left"></i> elasticsearch-time-indices
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">140</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#正视不同数据库之间的本质区别"><span class="nav-number">1.</span> <span class="nav-text">正视不同数据库之间的本质区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#复杂的查询语句"><span class="nav-number">1.1.</span> <span class="nav-text">复杂的查询语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#独有的功能"><span class="nav-number">1.2.</span> <span class="nav-text">独有的功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#失败的世界语"><span class="nav-number">2.</span> <span class="nav-text">失败的世界语</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

@@ -2,6 +2,125 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2018/10/30/gc-experience/</loc>
+    
+    <lastmod>2019-07-22T13:37:17.958Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2018/09/05/jdk-reflection-error/</loc>
+    
+    <lastmod>2019-07-22T13:35:40.617Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2018/07/22/mq-kafka/</loc>
+    
+    <lastmod>2019-07-22T13:34:16.589Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2018/11/15/levelDB-as-persistence/</loc>
+    
+    <lastmod>2019-07-22T13:33:04.097Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2018/10/25/levelDB/</loc>
+    
+    <lastmod>2019-07-22T13:32:24.631Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2018/08/22/kotlin-maven-compile/</loc>
+    
+    <lastmod>2019-07-22T13:30:41.313Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2018/11/05/kotlin-13-incompatible/</loc>
+    
+    <lastmod>2019-07-22T13:30:05.913Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/04/27/antipattern-bikeshedding/</loc>
+    
+    <lastmod>2019-07-22T13:28:48.193Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/04/26/antipattern-death-march/</loc>
+    
+    <lastmod>2019-07-22T13:27:44.330Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/07/22/elasticsearch-dao/</loc>
+    
+    <lastmod>2019-07-22T13:25:42.173Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/04/18/elasticsearch-update/</loc>
+    
+    <lastmod>2019-07-22T13:24:42.700Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/05/12/elasticsearch-sniffer/</loc>
+    
+    <lastmod>2019-07-22T13:22:54.757Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/03/28/elasticsearch-minimum/</loc>
+    
+    <lastmod>2019-07-22T13:21:55.824Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/04/27/elasticsearch-nodes/</loc>
+    
+    <lastmod>2019-07-22T13:20:08.417Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/03/17/elasticsearch-optimization/</loc>
+    
+    <lastmod>2019-07-22T13:18:53.188Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/03/18/elasticsearch-ID/</loc>
+    
+    <lastmod>2019-07-22T13:15:37.247Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/03/22/elasticsearch-batch/</loc>
+    
+    <lastmod>2019-07-22T13:15:31.774Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2018/04/20/circuit-breaker-1/</loc>
     
     <lastmod>2019-07-22T13:01:52.005Z</lastmod>

@@ -224,6 +224,103 @@
             
               
                 
+                <a class="post-title-link" href="/2019/07/22/elasticsearch-dao/" itemprop="url">
+                  谈不同数据库的封装问题
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2019-07-22T21:08:12+08:00" content="2019-07-22">
+              2019-07-22
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Java服务端的开发，无论是Web后台、移动后台，或者计算型应用，数据访问层（DAL）总是必不可少的。而数据访问层内部又会再次细分，以MySQL数据源为例，使用MyBatis的话，首先需要一层mapper.xml定义SQL操作，然后需要一层DAO接口提供CRUD调用，再往上往往还会有一层Manager层封装DAO的操作，提供给上层的Service调用。</p>
+<blockquote>
+<p>Mapper -&gt; DAO -&gt; Manager -&gt; Service -&gt; Controller</p>
+</blockquote>
+<p>在使用MySQL或其他类似关系型数据库时，这样的封装和分层方式虽然有时有些繁琐，但基本上已经算是比较好的做法。而当项目中引入了NoSQL或搜索引擎时，传统的数据访问层内部的分层方式，往往就不那么容易实现。大多数的NoSQL实现都没有提供如传统关系数据库般的复杂封装方式，一般情况下只是提供一个Client，加上一系列方法，供用户调用。当项目中需要大量使用NoSQL时，开发者难免会手痒，想要把NoSQL也封装成类似MyBatis或其他类似库的结构，以方便访问。然而，这种封装所带来的问题，也许会多过好处。</p>
+<h2 id="正视不同数据库之间的本质区别"><a href="#正视不同数据库之间的本质区别" class="headerlink" title="正视不同数据库之间的本质区别"></a>正视不同数据库之间的本质区别</h2><p>在工作过程中，笔者曾不止一次地看到有团队或开发者，在最底层就试图将不同的数据库统一封装起来，提供相同的底层API。这么做乍一看很美好，似乎可以零成本切换底层数据源，屏蔽一切数据层的细节。然而实际上，这种最底层封装所带来的收益，即使有的话，恐怕只是一时的。</p>
+<p>举一个封装MySQL和ES的例子。公司内负责ES维护和优化的团队，希望将MySQL和ES统一起来，为ES提供一套类似SQL形式的API，即支持SQL的查询语句，并提供MyBatis风格的简单CRUD API。这一想法看上去非常美好，他们也花了大量精力做出来了一个非常复杂的ES客户端library，可是很多团队在短暂地使用后，就会发现其中的种种问题。</p>
+<p>不同的数据库选型之间，往往有着本质上的区别。单机VS分布式，底层数据结构，是否支持事务，是否支持索引，索引的使用形式，等等等等。强行试图封装不同的数据库，并不是不可以，但是一定要意识到，其中的复杂度，尤其是封装后组合爆炸带来的复杂度，会远远超出你的想象。</p>
+<h3 id="复杂的查询语句"><a href="#复杂的查询语句" class="headerlink" title="复杂的查询语句"></a>复杂的查询语句</h3><p>继续以MySQL和ES为例，MySQL中使用SQL进行数据查询，而ES则使用JSON，二者所支持的数据查询方式差别极大。MySQL中基本的布尔操作还算简单，一旦涉及到聚合操作、JOIN操作等，其复杂度就会剧烈提升。一些复杂的SQL，即使是很有经验的程序员，也需要投入一定精力去细细优化。</p>
+<p>而ES中，即使是基本的逻辑操作就与SQL有很大不同，ES中的<code>filter</code>和<code>must</code>都类似<code>AND</code>操作，但二者间又有很多细微不同，<code>should</code>初看好像对应了<code>OR</code>，但实际上其语义更加复杂，在不同上下文出现有着完全不同的作用；更有<code>mininum_should_match</code>等等诸多辅助性的参数，难以在SQL中实现。因此，虽然不同的查询语法本质上的逻辑都是等价的，但在工程上，单单是想要实现SQL和ES JSON之间的互译，已经是非常困难了，要想针对双方完全不同的存储结构进行优化，就更是难上加难。当然，网络上也有将SQL翻译成ES JSON的工具，但这样的工具用在项目重构、迁移的过程中，提供辅助作用还好，在稳定的生产代码中使用这种间接性质的翻译，就难以进行针对性的优化，很可能会导致资源的严重浪费。</p>
+<h3 id="独有的功能"><a href="#独有的功能" class="headerlink" title="独有的功能"></a>独有的功能</h3><p>即使我们对查询语句的封装网开一面，单单来看其他的CRUD操作，封装的效果也是不容乐观的。以简单的一条<code>SELECT</code>为例，单机的MySQL很简单，分库分表后就需要路由，而ES中又需要考虑是否支持routing的问题。MySQL中有着复杂的事务和各种加锁功能，这些在ES上都是不可能实现的。反过来，ES的routing机制，脚本Update，天生的数组支持，refresh策略的调控，也都是MySQL所无法模拟的。</p>
+<p>在这种情况下，还要封装统一的接口，就会发现一个简单的API上，需要提供的可选参数越来越多，需要支持的独特注解也越来越多，而在方法实现时，各种复杂的parsing、映射、调参也接踵而至。即使你实现了大部分的功能，这样的代码在实际工程的复杂性面前，必然是不堪一击的。很快各个使用方就会发掘出其中越来越多的bug，你也会需要越来越多的代码去处理各种复杂的corner case。笔者在使用他们的服务时，就曾经发现一个哭笑不得的错误，将ES的JSON错误解析，丢掉了其中的重要参数。</p>
+<h2 id="失败的世界语"><a href="#失败的世界语" class="headerlink" title="失败的世界语"></a>失败的世界语</h2><p>在如此高的复杂度下，除非团队的实力足够强（需要PL领域的专家），人手、时间、测试资源都足够充裕，不要轻易地尝试统一抽象和封装不同的数据库。强如Pivotal做出的Spring Data，在实际使用中也会发现很多的不足。过度乐观地进行封装，忽视逻辑上不可消灭的高复杂度，最终面临的一定是痛苦而漫长的后续维护和测试。</p>
+<p>这就如同当年失败的世界语一样，当你真的成功封装了不同的数据库后，你所创造的新的模型，也必将需要更多的精力去学习。而在实际的项目开发中，数据源的切换和更替大多是一次性的或往复的，很多时候并不需要复杂的抽象和封装。特别是在切换数据库之后，为了充分利用新数据库的特性，业务的建模也很可能会发生大规模的变更。业务建模变化后，底层数据层的封装就会变得毫无意义。退一步讲，即使真的需要封装，也只需在更上层（如Manager层）简单封装即可。为了一次性的成本，过多的投入前期精力，往往是得不偿失的。</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2019/07/22/elasticsearch-time-indices/" itemprop="url">
                   elasticsearch-time-indices
                 </a>
@@ -308,8 +405,8 @@
             
               
                 
-                <a class="post-title-link" href="/2018/04/20/circuit-breaker-1/" itemprop="url">
-                  容灾之断路器
+                <a class="post-title-link" href="/2019/05/12/elasticsearch-sniffer/" itemprop="url">
+                  ES中隐藏的关键调优 - Sniffer
                 </a>
               
             
@@ -322,8 +419,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2018-04-20T13:22:40+08:00" content="2018-04-20">
-              2018-04-20
+            <time itemprop="dateCreated" datetime="2019-05-12T19:28:07+08:00" content="2019-05-12">
+              2019-05-12
             </time>
           </span>
 
@@ -350,21 +447,16 @@
       
         
           
-            <p>在一个应用中，所有调用可以分为两类：内存调用和远程调用。其中最重要的区别是远程调用很可能会失败，或挂住没有响应，直到超时。最糟糕的是，当大量调用者调用一个无响应的服务时，因为关键资源的耗尽，会导致相关的多个系统发生雪崩式的崩溃。为了解决这种雪崩式的问题，Michael Nygard将断路器这一概念推广出来。</p>
-<p>断路器的基本理念非常简单：把需要保护的函数包装在一个断路器对象中，断路器负责监视函数调用的失败。失败次数达到一定阈值后，断路器发生断路，接下来的调用全部失败。</p>
-<h2 id="断路器的三个基本状态"><a href="#断路器的三个基本状态" class="headerlink" title="断路器的三个基本状态"></a>断路器的三个基本状态</h2><p>断路器的工作本质上是一个有限状态机。不同的实现可能有不同的状态及状态转换方式。最简单的断路器只有两个状态：<strong>开和关</strong>。断路器默认工作在关闭状态，允许所有函数调用。而当函数调用的失败数或失败率超过一定阈值后，断路器切换到打开状态，所有调用失败。</p>
-<p>是不是听起来很熟悉？当然，这就和我们每家每户使用的电闸一样。这种电闸的问题是，发生断电之后，需要我们手工去重新关闭断路器，才能恢复供电。而在24小时运行的服务端应用中，不可能全部由工程师去手工关闭软件中的断路器。所以断路器一定要有自动关闭的功能。因此，人们在开关两个状态之外，引入了第三种状态：<strong>半开</strong>。</p>
-<h2 id="自动重置功能"><a href="#自动重置功能" class="headerlink" title="自动重置功能"></a>自动重置功能</h2><p>要实现断路器的自动重置功能，最简单的想法就是：断路器打开一定时间后，主动调用所保护的函数，以检测是否已经恢复正常，如果正常，就重置断路器。</p>
-<p>这种新的自动检测和重置的状态，就是刚刚所提到的半开状态。半开状态也有很多种实现方式，基本的做法是，断路器部分地放开一定量的调用，统计其中成功和失败的数量及比例，根据预先设定的阈值，决定继续维持打开状态，还是重置断路器。</p>
-<p>需要注意的是，即使原理看起来比较简单，在实际应用中，究竟如何设置各个阈值的参数，如何设置超时时间，都是需要大量的测试和经验的积累的，另外还需要针对自己应用的场景，进行定制化的分析。只有这样，才能真正发挥出断路器的功效。</p>
-<p>##<br>On their own, circuit breakers help reduce resources tied up in operations which are likely to fail. You avoid waiting on timeouts for the client, and a broken circuit avoids putting load on a struggling server. I talk here about remote calls, which are a common case for circuit breakers, but they can be used in any situation where you want to protect parts of a system from failures in other parts.</p>
-<p>Circuit breakers are a valuable place for monitoring. Any change in breaker state should be logged and breakers should reveal details of their state for deeper monitoring. Breaker behavior is often a good source of warnings about deeper troubles in the environment. Operations staff should be able to trip or reset breakers.</p>
-<p>Breakers on their own are valuable, but clients using them need to react to breaker failures. As with any remote invocation you need to consider what to do in case of failure. Does it fail the operation you’re carrying out, or are there workarounds you can do? A credit card authorization could be put on a queue to deal with later, failure to get some data may be mitigated by showing some stale data that’s good enough to display.</p>
-<h2 id="Java中的断路器"><a href="#Java中的断路器" class="headerlink" title="Java中的断路器"></a>Java中的断路器</h2><p>Java中最有名的断路器实现应该是Netflix Hystrix，然而这个库在几年前就已经不再更新了，其所推荐的替代版本是resilience4j。阅读源码并试用后可以说resilience4j提供的断路器确实简单易用，代码编写的质量也很高，逻辑清晰。</p>
-<p>只需要首先创建一个断路器实例，调用函数时，将函数传递给断路器即可。<br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> circuitBreaker = <span class="type">CircuitBreaker</span>.ofDefaults(<span class="string">"name"</span>)</span><br><span class="line"><span class="type">String</span> <span class="literal">result</span> = circuitBreaker.executeSupplier(() -&gt; backendService.doSomething(param1, param2));</span><br></pre></td></tr></table></figure></p>
-<p>除此之外，resilience4j还有良好的异步支持，支持Java的<code>CompletableFuture</code>，Kotlin的<code>suspend</code>协程函数，以及Reactive Programming。使用起来都非常简单，代码简洁优雅，如Kotlin协程版本的：</p>
-<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> circuitBreaker = <span class="type">CircuitBreaker</span>.ofDefaults(<span class="string">"name"</span>)</span><br><span class="line"><span class="type">String</span> <span class="literal">result</span> = circuitBreaker.executeSuspendFunction &#123;</span><br><span class="line">    backendService.awaitDoSomething(param1, param2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="分布式断路器？"><a href="#分布式断路器？" class="headerlink" title="分布式断路器？"></a>分布式断路器？</h2>
+            <h2 id="默认情况下，流量全部打到VIP的Master节点"><a href="#默认情况下，流量全部打到VIP的Master节点" class="headerlink" title="默认情况下，流量全部打到VIP的Master节点"></a>默认情况下，流量全部打到VIP的Master节点</h2><p>ES集群中，节点可以粗略地分成Master节点、Data节点、Client节点三种。在笔者使用的一个ES服务中，集群没有Client节点，只有另两种节点。在其中，Data节点的机器性能非常高，而Master节点则是低配置的普通机器。</p>
+<p>在使用ES的官方rest high level client时，我们只需要提供一个endpoint URL，就可以访问远程ES集群。那么问题来了，客户端拿到这个URL之后，访问的究竟是哪台机器呢？是某个主节点？全部主节点？还是全部节点？一般情况下，这个问题似乎没有那么重要。但是当Master节点和Data节点性能差异非常明显的情况下，ES客户端的访问逻辑就变得非常重要。比如，如果所有请求都被打到性能较差的Master节点中，甚至只打到Master节点中的某一个具体节点中，那么ES集群就难以发挥出真正的性能了。</p>
+<p>首先我们要分析的是，服务商提供给我们的endpoint究竟是什么。<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">http:</span><span class="comment">//sample.es.cluster.com:9200</span></span><br></pre></td></tr></table></figure></p>
+<p>如上面的一个简单的endpoint，根据DNS的原理可知，这个域名的背后不一定只有一个IP。使用网络工具，我们很容易就可以查到这个域名URL背后的几个IP。那么这几个IP是全部节点的IP？还是其中一部分呢？</p>
+<p>很多情况下，服务商都会使用所有Master节点的IP。特别是当我们需要对集群进行配置操作时，请求都需要Master节点进行处理。到此，答案就已经揭晓，我们使用官方client指定endpoint后，客户端的所有请求就会简单地打到这个endpoint的域名上，再使用DNS自身的负载均衡功能，打到不同的Master节点上。</p>
+<h2 id="如果Master节点性能较差，集群负载飙升"><a href="#如果Master节点性能较差，集群负载飙升" class="headerlink" title="如果Master节点性能较差，集群负载飙升"></a>如果Master节点性能较差，集群负载飙升</h2><h2 id="使用默认的Sniffer配置，流量达到全部节点"><a href="#使用默认的Sniffer配置，流量达到全部节点" class="headerlink" title="使用默认的Sniffer配置，流量达到全部节点"></a>使用默认的Sniffer配置，流量达到全部节点</h2><p>ES提供了一个简单的sniffer库。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>elasticsearch-rest-client-sniffer<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">version</span>&gt;</span>8.0.0<span class="tag">&lt;/<span class="title">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>这个Sniffer虽然代码写得有些复杂，但是功能其实很简单。就是调用ES的Rest API，如<code>/_nodes/http</code>，获取ES集群的节点信息，解析后，为<code>RestClient</code>设置可用的所有<code>HttpHost</code>。其他无非是增加了定时更新和失败重试功能而已。</p>
+<p>默认情况下，获取全部节点。</p>
+<h2 id="定制HostsSniffer，流量只达到Data节点"><a href="#定制HostsSniffer，流量只达到Data节点" class="headerlink" title="定制HostsSniffer，流量只达到Data节点"></a>定制HostsSniffer，流量只达到Data节点</h2><p>增加参数即可，只指定Data节点</p>
+
           
         
       
@@ -405,8 +497,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/30/A-Study-on-Finding-the-Minimum-and-Maximum-Simultaneously/" itemprop="url">
-                  A Study on Finding the Minimum and Maximum Simultaneously
+                <a class="post-title-link" href="/2019/04/27/elasticsearch-nodes/" itemprop="url">
+                  Elasticsearch中节点类型的梳理
                 </a>
               
             
@@ -419,8 +511,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-05-30T23:12:49+08:00" content="2016-05-30">
-              2016-05-30
+            <time itemprop="dateCreated" datetime="2019-04-27T22:31:45+08:00" content="2019-04-27">
+              2019-04-27
             </time>
           </span>
 
@@ -446,13 +538,19 @@
 
       
         
-          <p>Months ago, I was developing a small procedure to display data in a graph. To scale the input data, I must find the minimum and maximum of the long data array. I thought this problem was very easy and no more improvements could be made at that time, however, until I read about a more effective algorithm.</p>
-<h1 id="An-Intuitive-Solution"><a href="#An-Intuitive-Solution" class="headerlink" title="An Intuitive Solution"></a>An Intuitive Solution</h1><p>It’s very trivial to find the minimum and maximum independently. And certainly you don’t need to pass the array twice to find them simultaneously. The solution I come up with is to pass the array and compare each element with the maximum, and the compare with the minimum if necessary. The following code is a simulation of the <code>out</code> keyword in c#.<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">findMinMax</span><span class="params">(@NotNull <span class="keyword">int</span>[] nums, @NotNull <span class="keyword">int</span>[] outMin, @NotNull <span class="keyword">int</span>[] outMax)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> length = nums.length;</span><br><span class="line">    <span class="keyword">if</span> (length == <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> max = nums[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">int</span> min = max;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; length; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> num = nums[i];</span><br><span class="line">        <span class="keyword">if</span> (num &gt; max) &#123;</span><br><span class="line">            max = num;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (num &lt; min) &#123;</span><br><span class="line">            min = num;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    outMin[<span class="number">0</span>] = min;</span><br><span class="line">    outMax[<span class="number">0</span>] = max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>How many comparisons are made for this implementation?
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/30/A-Study-on-Finding-the-Minimum-and-Maximum-Simultaneously/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
+          
+            <p>在使用ES时，很多时候我们都会使用服务商提供的开箱即用的ES版本，只需要拿到endpoint地址，用户名，密码，就可以创建客户端实例，如<code>RestHighLevelClient</code>，对ES进行访问了。然而，随着集群索引的文档数目或QPS不断增多，简单地使用默认配置或者“祖传配置”，就难以应对了。这种时候，最简单的办法就是增加ES集群的节点数。可实际上，如果不了解ES集群的构成方式，即使大量增加节点数，很多时候集群性能也不会有大幅提升，反而空耗了大量的资源。</p>
+<p>ES中节点的分类说简单也简单，说复杂也复杂。简单在，ES中本身各种节点的定义非常直接明显；而复杂在，不同层次的节点类型往往被混合在一起。下面我们来分各种层次看一看节点的不同类型。</p>
+<h2 id="Master节点和Data节点"><a href="#Master节点和Data节点" class="headerlink" title="Master节点和Data节点"></a>Master节点和Data节点</h2><p>ES中最经常提到的节点类型就是Master节点和Data节点了。然而实际上，与其称其为节点，不如说Master和Data是一个节点的两个正交的属性。一个节点可以同时是Master节点和Data节点，可以是其中一种，也可以都不是（Client节点）。</p>
+<p>Master属性：如果一个节点具有Master属性，那么该节点可以用来处理一些集群范围的工作，如索引的创建和删除，以及shard的分配等。<br>Data属性：如果一个节点具有Data属性，那么该节点就可以存放索引数据，进行索引的增删改查等操作。</p>
+<p>ES官方建议不要将Master节点和Data节点混用，使用单独的两种节点会带来更好的性能和稳定性。</p>
+<h2 id="协调节点"><a href="#协调节点" class="headerlink" title="协调节点"></a>协调节点</h2><p>协调节点与上面提到的两种节点并非同一个维度上的概念。在ES中，任何一个节点都可以随时作为协调节点，其作用是集群内请求的路由和多个replica的负载均衡。其实这个概念非常简单，ES客户端可以将ES操作请求发给ES集群中的任何一个节点，这时收到请求的节点就成为了一个协调节点，协调节点会判断该请求所需要涉及的实际Data节点，然后将请求转发给其中一个真正处理的Data节点（也可以是自己，也可以涉及多个节点，如搜索和批量操作）。</p>
+<p>协调节点本质上起到服务端的路由和负载均衡作用，与很多缓存工具的实现不同，ES的路由完全是交给服务端处理的。即使在客户端调用时指定了routing参数，也需要提交给任一协调节点之后，再有协调节点进行路由。</p>
+<h2 id="Client节点（只协调节点）"><a href="#Client节点（只协调节点）" class="headerlink" title="Client节点（只协调节点）"></a>Client节点（只协调节点）</h2><p>如果一个节点既不是Master也不是Data，那么这种节点就称作Client节点，也称作只协调节点。Client节点没有Master和Data节点的功能，不能存储数据，只能起到协调功能，作为ES集群内部的负载均衡器。</p>
+<p>使用Client节点可以为Master节点和Data节点节省掉很多协调工作的压力。最明显的就是搜索时，需要先分散到多个节点搜索，再回到协调节点将结果进行聚合。但是过多地增加协调节点也会有浪费资源和增加选举复杂度等问题，大部分情况下，使用Data节点作为协调节点就可以很好地完成任务了。</p>
+<h2 id="Ingest节点"><a href="#Ingest节点" class="headerlink" title="Ingest节点"></a>Ingest节点</h2><p>Ingest nodes can execute pre-processing pipelines, composed of one or more ingest processors. Depending on the type of operations performed by the ingest processors and the required resources, it may make sense to have dedicated ingest nodes, that will only perform this specific task.</p>
+
+          
         
       
     </div>
@@ -492,8 +590,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/19/Simulate-WPF-Data-Binding-in-Android-Part-III/" itemprop="url">
-                  Simulate WPF Data Binding in Android, Part III - Support More Types
+                <a class="post-title-link" href="/2019/04/27/antipattern-bikeshedding/" itemprop="url">
+                  项目开发中的反模式（二）轻重倒置
                 </a>
               
             
@@ -506,8 +604,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-05-19T21:28:06+08:00" content="2016-05-19">
-              2016-05-19
+            <time itemprop="dateCreated" datetime="2019-04-27T21:26:41+08:00" content="2019-04-27">
+              2019-04-27
             </time>
           </span>
 
@@ -533,14 +631,9 @@
 
       
         
-          <p>In the last two posts, we succeed simulating the WPF data binding for the <code>String</code> property in Android. However, it is obviously not enough. <code>TextView</code> and <code>EditText</code> not only display <code>String</code>s, but also <code>Integer</code>s, <code>Double</code>s and even more complicated types. Now we try to support more types for our binder.</p>
-<h1 id="Get-Property-Type"><a href="#Get-Property-Type" class="headerlink" title="Get Property Type"></a>Get Property Type</h1><p>If we just support <code>String</code> property, it’s easy to declare every type <code>String</code>. But now we have no idea on the type of the property. Do we need to make the binder class generic and pass a <code>Class&lt;T&gt;</code> argument due to the type erasure? The answer is no.</p>
-<p>We could easily get the type of property at runtime by reflex. We find the getter first, and then obtain its return type by reflex.<br>    <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">getter = data.javaClass.getDeclaredMethod(<span class="string">"get"</span> + propertyName)</span><br><span class="line"></span><br><span class="line">setter = data.javaClass.getDeclaredMethod(<span class="string">"set"</span> + propertyName, getter.returnType)</span><br></pre></td></tr></table></figure><br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/19/Simulate-WPF-Data-Binding-in-Android-Part-III/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
+          
+            
+          
         
       
     </div>
@@ -580,8 +673,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/18/Simulate-WPF-Data-Binding-in-Android-Part-II/" itemprop="url">
-                  Simulate WPF Data Binding in Android, Part II - Update View on Source Changed
+                <a class="post-title-link" href="/2019/04/26/antipattern-death-march/" itemprop="url">
+                  项目开发中的反模式（一）死亡行军
                 </a>
               
             
@@ -594,8 +687,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-05-18T21:36:39+08:00" content="2016-05-18">
-              2016-05-18
+            <time itemprop="dateCreated" datetime="2019-04-26T21:26:41+08:00" content="2019-04-26">
+              2019-04-26
             </time>
           </span>
 
@@ -621,192 +714,18 @@
 
       
         
-          <h1 id="The-WPF-Way"><a href="#The-WPF-Way" class="headerlink" title="The WPF Way"></a>The WPF Way</h1><p>In the last post, we simulated the default implementation of WPF data binding. User inputs change the dependency property directly and the content of view is initialized by the property value. However, if the property is changed by an internal <code>setXXX()</code> call, the view won’t be updated. In WPF, the solution is to implement a <code>INotifyPropertyChanged</code> interface.<br>    <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.ComponentModel;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">SDKSample</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">// This class implements INotifyPropertyChanged</span></span><br><span class="line">  <span class="comment">// to support one-way and two-way bindings</span></span><br><span class="line">  <span class="comment">// (such that the UI element updates when the source</span></span><br><span class="line">  <span class="comment">// has been changed dynamically)</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Person</span> : <span class="title">INotifyPropertyChanged</span></span><br><span class="line">  &#123;</span><br><span class="line">      <span class="keyword">private</span> <span class="keyword">string</span> name;</span><br><span class="line">      <span class="comment">// Declare the event</span></span><br><span class="line">      <span class="keyword">public</span> <span class="keyword">event</span> PropertyChangedEventHandler PropertyChanged;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="title">Person</span>(<span class="params"></span>)</span><br><span class="line">      </span>&#123;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="title">Person</span>(<span class="params"><span class="keyword">string</span> <span class="keyword">value</span></span>)</span><br><span class="line">      </span>&#123;</span><br><span class="line">          <span class="keyword">this</span>.name = <span class="keyword">value</span>;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">public</span> <span class="keyword">string</span> PersonName</span><br><span class="line">      &#123;</span><br><span class="line">          <span class="keyword">get</span> &#123; <span class="keyword">return</span> name; &#125;</span><br><span class="line">          <span class="keyword">set</span></span><br><span class="line">          &#123;</span><br><span class="line">              name = <span class="keyword">value</span>;</span><br><span class="line">              <span class="comment">// Call OnPropertyChanged whenever the property is updated</span></span><br><span class="line">              OnPropertyChanged(<span class="string">"PersonName"</span>);</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// Create the OnPropertyChanged method to raise the event</span></span><br><span class="line">      <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">OnPropertyChanged</span>(<span class="params"><span class="keyword">string</span> name</span>)</span><br><span class="line">      </span>&#123;</span><br><span class="line">          PropertyChangedEventHandler handler = PropertyChanged;</span><br><span class="line">          <span class="keyword">if</span> (handler != <span class="keyword">null</span>)</span><br><span class="line">          &#123;</span><br><span class="line">              handler(<span class="keyword">this</span>, <span class="keyword">new</span> PropertyChangedEventArgs(name));</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h1 id="Fire-Events-in-Setter"><a href="#Fire-Events-in-Setter" class="headerlink" title="Fire Events in Setter"></a>Fire Events in Setter</h1><p>The WPF implementation fires an <code>event</code> to notify the property changes, and the event is handled to notify the <code>TextBlock</code> it binds to. The event handler is added by the system, so the data class don’t need to care about the existence of binder or view. Now we try to simulate the code above with Kotlin.<br>The original pojo <code>Person</code> is like:
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/18/Simulate-WPF-Data-Binding-in-Android-Part-II/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/17/simulate-wpf-data-binding-in-Android/" itemprop="url">
-                  Simulate WPF Data Binding in Android, Part I - Reflect User Inputs to Property
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-05-17T12:57:32+08:00" content="2016-05-17">
-              2016-05-17
-            </time>
-          </span>
-
           
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Google has released a data binding library last year. Before learning data binding in Android, I want to simulate WPF data binding in Android by myself first. In this way, I can have a better understanding of data binding.</p>
-<h1 id="WPF-data-binding"><a href="#WPF-data-binding" class="headerlink" title="WPF data binding"></a>WPF data binding</h1><p>It’s very convenient to use data binding in WPF. The following snippet in xaml declares a <code>TextBox</code> whose text is bound to a <code>Username</code> property.</p>
-<pre><code>&lt;TextBox Name=&quot;TbUserName&quot; Content=&quot;{Binding Path=Username, mode=TwoWay}&quot;&gt;
-</code></pre><p>And to bind the <code>TextBox</code> to a specified instance, you can set <code>TextBox.DataContext</code>.<br>    <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> tom = <span class="keyword">new</span> User(<span class="string">"Tom"</span>);</span><br><span class="line">TbUserName.DataContext = tom;</span><br></pre></td></tr></table></figure><br>And the <code>User</code> class should have a property <code>Username</code> which enables getting and setting.
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/17/simulate-wpf-data-binding-in-Android/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/04/20/closure-and-lexical-environment/" itemprop="url">
-                  Closure and Lexical Environment
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-04-20T15:58:40+08:00" content="2016-04-20">
-              2016-04-20
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>From the previous post, we see that in Java local variables accessed within closure must be declared <code>final</code>. Why is Java designed this way? To understand this problem, you must learn about lexical environment first.</p>
+            <p>这一系列文章主要来谈一谈，在项目开发过程中遇到的各种各样的反模式。这些反模式，不一定是指的是应用开发中的某些技术，而是包括了从项目管理到团队激励各个方面的问题。其实很多时候，决定一个项目是否能够成功的最重要因素，甚至并不是技术实力，而是这些更加宏观上的管理与决策的问题。</p>
+<h2 id="什么是「死亡行军」"><a href="#什么是「死亡行军」" class="headerlink" title="什么是「死亡行军」"></a>什么是「死亡行军」</h2><p>死亡行军，英文叫做death marching。指的是在一个项目的开发过程中，所有人都不相信能够完成最后的任务，士气低落。但又没有一个人能站出来停掉这个项目，还是要继续坚持。这种项目往往伴随着大量的加班，大量的bug与修复，大量的赶工与重做。参与者会被项目折磨地疲惫不堪，最终往往以项目失败，骨干成员离职为结局。</p>
+<p>再来看看维基上对「死亡行军」这个词定义</p>
 <blockquote>
-<p>As different languages do not always have a common definition of the lexical environment, their definitions of closure may vary also. The commonly held minimalist definition of the lexical environment defines it as a set of all bindings of variables in the scope, and that is also what closures in any language have to capture. However the meaning of a variable binding also differs. In imperative languages, variables bind to relative locations in memory that can store values. Although the relative location of a binding does not change at runtime, the value in the bound location can. In such languages, since closure captures the binding, any operation on the variable, whether done from the closure or not, are performed on the same relative memory location. This is often called capturing the variable “by reference”. </p>
-<p>On the other hand, many functional languages, such as ML, bind variables directly to values. In this case, since there is no way to change the value of the variable once it is bound, there is no need to share the state between closures—they just use the same values. This is often called capturing the variable “by value”. Java’s local and anonymous classes also fall into this category—they require captured local variables to be final, which also means there is no need to share state.</p>
+<p>In project management, a death march is a project that the participants feel is destined to fail, or that requires a stretch of unsustainable overwork. The general feel of the project reflects that of an actual death march because project members are forced to continue the project by their superiors against their better judgment. </p>
 </blockquote>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/20/closure-and-lexical-environment/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
+<p>参与者根据自己的判断，都相信项目必将失败，却必须投入巨大的精力和资源，而这些仅仅是因为管理者的判断不容更改。这种项目，给团队成员带来的，不仅是时间的浪费、机会的丧失，更多的是对整个团队和管理者的不信任。</p>
+<h2 id="我所经历过的死亡行军项目"><a href="#我所经历过的死亡行军项目" class="headerlink" title="我所经历过的死亡行军项目"></a>我所经历过的死亡行军项目</h2><p>我个人在职业生涯中，目前经历过三个死亡行军项目（囧），第一个更多的是作为旁观者，而后两个则参与了一些边缘的开发过程，体会颇深。</p>
+<h3 id="项目一：过度复杂的产品设计"><a href="#项目一：过度复杂的产品设计" class="headerlink" title="项目一：过度复杂的产品设计"></a>项目一：过度复杂的产品设计</h3><p>第一个要说的项目是一个工具类的移动App。这个App在发布两年后，失去了用户的增长点，进入停滞状态。产品经理们苦思冥想，最终提出了一个新的功能模块，这个模块的主要功能是统合用户的一些账号和登录状态，具体就不细说了。这个产品方案提出之后，很快就进入了死亡行军的开发模式。产品的设计实在是太过复杂了！在一个App内，有着各种各样的账号状态，要登陆要注销，账号与账号之间又有着复杂的关联关系。App的安卓和IOS两端有着非常多的复杂页面和交互逻辑，移动</p>
+
+          
         
       
     </div>
@@ -846,8 +765,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/04/19/war-against-null-4/" itemprop="url">
-                  War Against Null IV - Closure In Consumer
+                <a class="post-title-link" href="/2019/04/18/elasticsearch-update/" itemprop="url">
+                  ES进阶功能 - 使用脚本更新
                 </a>
               
             
@@ -860,8 +779,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-04-19T23:07:29+08:00" content="2016-04-19">
-              2016-04-19
+            <time itemprop="dateCreated" datetime="2019-04-18T23:03:40+08:00" content="2019-04-18">
+              2019-04-18
             </time>
           </span>
 
@@ -887,15 +806,34 @@
 
       
         
-          <p>When you “consume” the <code>Optional</code> instance when it’s present, or call <code>map()</code> or <code>orElseGet()</code>, you have to create a lambda expression to be invoked. When it comes to passing a first-class function, you will encounter the concept of closure. In Java 8, variables you capture in the closure must be declared with <code>final</code>, which means there’s no way to modify it within the lambda expression. For example, the code below won’t compile:<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> id = <span class="number">12345</span>;</span><br><span class="line">Optional&lt;String&gt; nullableName = findNameById(id);</span><br><span class="line">String msg = <span class="string">"id not found"</span>;</span><br><span class="line">nullableName.ifPresent(name -&gt; &#123;</span><br><span class="line">    msg = <span class="string">"no! id is found"</span>; <span class="comment">// won't compile!</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br>You will get a tip from IDEA:</p>
+          
+            <p>在使用ES时，一个经常出现的操作模式就是，从ES中读取某些数据，根据本地内容进行更新，随后再重新索引到ES集群中。这么一个简单而常见的操作，实际使用过程中，如果深究的话，问题非常的多。特别是与传统的关系数据库不同，ES的数据模型并非简单的行式3NF设计，可以包含嵌套的对象，可以包含数组，甚至字段本身都可以随时增加。</p>
+<h2 id="潜在的问题"><a href="#潜在的问题" class="headerlink" title="潜在的问题"></a>潜在的问题</h2><h3 id="多出的操作损耗"><a href="#多出的操作损耗" class="headerlink" title="多出的操作损耗"></a>多出的操作损耗</h3><p>首先，最直观的问题是，这样的操作会多耗费一次操作。必须先将数据拉到本地，然后才能更新回ES。一般情况下，get操作和index操作本身都比较廉价，即使是在高QPS下，实际多出的性能损耗也并不大。然而，当ES中文档对象极为复杂或庞大时，多出操作的性能损耗就不容小觑了。</p>
+<p>比如当一个array字段，有成百上千的元素后，需要增加一个新元素，这时get和index两步操作都需要将全量的数据下载或上传，而实际增加的数据量却非常少。不仅多了一次网络IO，也会影响ES集群和应用自身集群的吞吐量。此外，如果自己应用中使用了ORM工具来处理ES文档，那么大对象的频繁序列化和反序列化所引起的性能损耗也是非常巨大的。在极端情况下，如果单个文档过大，甚至可能引发OOM问题。</p>
+<p>当然我们还要先考虑另一个问题，当一个ES文档有过长的array或过度复杂的嵌套object时，这种数据设计是否还合理？如果使用类似关系数据库的设计方式，当然可以规避这种情况，但这时也丧失了ES自身的很多独特性能优势，使得代码过度复杂化。而且，即使大部分文档的大小都控制在可接受范围内，在业务的发展过程中，也很难避免出现个别巨型对象。是否值得为了这些个别的巨型对象而修改代码或增加专门的处理方式，也是需要根据情况来看的。也因此，我们有必要事先考虑如何应对对象较复杂的情况。</p>
+<p>总结下：</p>
+<ol>
+<li>多一次IO</li>
+<li>每次IO，应用和ES两方的性能损耗</li>
+<li>序列化和反序列化，以及ORM的损耗</li>
+</ol>
+<h3 id="多个更新的竞争"><a href="#多个更新的竞争" class="headerlink" title="多个更新的竞争"></a>多个更新的竞争</h3><p>在多个请求更新同一个文档时，不可避免地会遇到race condition的问题。ES中并没有天生的事务支持，要想保持更新操作的一致性和原子性，无非是悲观和乐观两种方案，即分布式锁或版本控制。</p>
+<p>使用分布式锁时，必然要考虑在哪里加锁。如果只对更新操作加锁，基本上是起不到同步作用的，因为读取-更新操作并非原子性的。而如果对一次读取和更新全部加锁，很容易降低读取操作的吞吐量，无法并发地处理更新。</p>
+<p>另一个方案就是使用ES自带的版本控制，在更新时指定版本，ES集群发现版本不一致，则更新失败。这种做法虽然保证了一致性，但是问题是如何处理失败的情况。失败后，之前读取获得的旧操作已经失效，只能重新读取新版本的数据再重新更新。如果操作的数据并非热点数据，这种偶尔出现的重试操作效率是很高的，很好地解决了问题。但是如果操作的数据为热点数据，面临高并发的竞争，反复的重复读取-更新操作效率会急剧恶化，特别是在文档复杂的情况下。</p>
+<h2 id="使用Update-Script-API"><a href="#使用Update-Script-API" class="headerlink" title="使用Update+Script API"></a>使用Update+Script API</h2><p>ES提供了Update API，以及强大的Script机制，让我们能够更好地处理文档更新的情况。使用的方法很简单，提供一个要操作的文档ID，然后用在json中提供脚本和脚本的参数即可。<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">POST test/_<span class="keyword">update</span>/<span class="number">1</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"script"</span> : &#123;</span><br><span class="line">        <span class="string">"source"</span>: <span class="string">"ctx._source.counter += params.count"</span>,</span><br><span class="line">        <span class="string">"lang"</span>: <span class="string">"painless"</span>,</span><br><span class="line">        <span class="string">"params"</span> : &#123;</span><br><span class="line">            <span class="string">"count"</span> : <span class="number">4</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如上面的例子，<code>source</code>字段中提供了脚本的代码内容，<code>lang</code>字段指定了脚本使用的语言<code>painless</code>（也是ES的默认语言），而<code>params</code>提供了脚本的参数Map（主要是为了脚本的服用）。上面的脚本语言，看起来有些让人望而却步，实际上非常简单，完全不用害怕。<code>painless</code>语言是一种类似<code>Java</code>的脚本语言。有多类似呢？写脚本代码时，就当是在写<code>Java</code>就好了，基本可以随心所欲地使用JDK中的API。所以ES的脚本编写可以说是非常轻松和简单，并不需要去学一门新的脚本语言（比如Lua).</p>
+<p>配合脚本，我们可以很轻松地实现array类型数据的append操作<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">ctx</span><span class="class">._source</span><span class="class">.tags</span><span class="class">.add</span>(<span class="tag">params</span><span class="class">.tag</span>)</span><br></pre></td></tr></table></figure></p>
+<p>还加上判空和数组的新建操作<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (ctx._source.tags == <span class="keyword">null</span>) &#123;</span><br><span class="line">    ctx._source.tags = <span class="keyword">new</span> String[]&#123;<span class="keyword">params</span>.tag&#125;;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    ctx._source.tags.add(<span class="keyword">params</span>.tag);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>再加上类似Set的去重操作<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (ctx._source.tags == <span class="keyword">null</span>) &#123;</span><br><span class="line">    ctx._source.tags = <span class="keyword">new</span> String[]&#123;<span class="keyword">params</span>.tag&#125;;</span><br><span class="line">&#125; <span class="function"><span class="keyword">else</span> <span class="title">if</span>(<span class="params">ctx._source.tags.contains(<span class="keyword">params</span>.tag</span>)) </span>&#123;</span><br><span class="line">    <span class="comment">// 如果tags中已经包含新元素，不做任何操作</span></span><br><span class="line">    ctx.op = <span class="string">"noop"</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    ctx._source.tags.add(<span class="keyword">params</span>.tag);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <blockquote>
-<p>Variables used in lambda expression should be final or effectively final.</p>
+<p>需要额外注意的是，默认情况下，只要使用了Script进行Update操作，文档的版本号version就会+1，即使文档内容完全没有变化。很多情况下，我们是不需要真的去更新文档的（比如已存在元素），这时只需要调用<code>ctx.op = &quot;noop&quot;;</code>，就可以告诉ES不进行更新操作，文档的版本号也不会变化。</p>
 </blockquote>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/19/war-against-null-4/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
+<p>此外，ES的脚本可以分为两种：<code>inlined</code>和<code>stored</code>，前者是每次请求写上去的代码，而后者是存储在ES中，请求时只需要调用脚本ID即可。详情请看官方文档。</p>
+<h2 id="使用脚本的优点和缺点"><a href="#使用脚本的优点和缺点" class="headerlink" title="使用脚本的优点和缺点"></a>使用脚本的优点和缺点</h2><p>通过使用更新脚本，我们就可以将两步的读取-更新操作，合并成一次的更新脚本。如果善加利用脚本中的<code>Upsert</code>功能，我们甚至可以将插入-读取-更新，三步的操作合并成一次Update调用。使用脚本自然而然地解决了我们刚刚提出的第一个问题，大幅地减轻了多次往返所造成的大量开销。同时即使ES中出现了巨型文档，也不会直接对应用集群的性能造成影响。</p>
+<p>而面对竞争问题，仅仅使用脚本更新并不能解决race condition的问题，因为在ES内部并没有对脚本的执行进行同步。即使脚本内部看上去是原子性的，实际上仍然可能将脚本更新到一个旧版本的文档上。然而，即使如此，合并成一次的Update操作也大大简化了同步问题的复杂性，我们只需要给Update操作带上版本号，利用乐观的版本控制，就可以轻松地保证脚本不执行在中间状态中。而且在高度竞争的环境下，Update脚本本身的体量也非常小，也避免了大量重试带来的性能开销和程序复杂度。</p>
+<p>当然，ES脚本也并不是没有缺点的。类似SQL中逐渐被废弃的存储过程，ES脚本也有着很多存储过程所具有的问题。比如脚本更新非常难以调试，因为代码被写到了请求代码中，就很难以对脚本本身进行完备的测试。脚本代码的可读性往往也比直接的应用代码要差一些。另外，使用脚本会将很多计算逻辑从应用集群转移到ES集群，虽然节省了很多IO开销，但很有可能会增加ES的CPU负担，这点需要大量的实践测试，才能真正放心使用。而且在使用<code>stored</code>型脚本时，会给ES集群增加一个脚本ID的状态，在迁移数据、重建集群时，一定要记得迁移这个新增的状态量，否则所有使用该脚本的操作都会失效。最后，使用ES独有的脚本功能也给数据迁移到其他数据库带来了难度，使用应用和ES更加高度耦合，不过这一点其实不必过度考虑，使用ES时设计的数据模型，本就应该和其他数据库有所不同。</p>
+
+          
         
       
     </div>
@@ -935,8 +873,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/04/19/war-against-null-3/" itemprop="url">
-                  War Against Null III - If Not Present Part 2
+                <a class="post-title-link" href="/2019/03/28/elasticsearch-minimum/" itemprop="url">
+                  Elasticsearch搜索中实现At-least-N规则，暨记录一次诡异的问题排查
                 </a>
               
             
@@ -949,8 +887,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-04-19T22:06:09+08:00" content="2016-04-19">
-              2016-04-19
+            <time itemprop="dateCreated" datetime="2019-03-28T23:25:52+08:00" content="2019-03-28">
+              2019-03-28
             </time>
           </span>
 
@@ -976,12 +914,23 @@
 
       
         
-          <h1 id="OrElseGet"><a href="#OrElseGet" class="headerlink" title="OrElseGet"></a>OrElseGet</h1><p>My last post introduced a way to deal with <code>Optional&lt;T&gt;</code> instances for both possible situations, null or non-null. Sometimes, it’s not enough to map a nullable object to different non-null values. You may want to execute different code based on whether it’s null or not. One solution is calling <code>orElseGet()</code> to invoke a “null consumer”.<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> id = <span class="number">12345</span>;</span><br><span class="line">Optional&lt;String&gt; nullableName = findNameById(id);</span><br><span class="line">nullableName.ifPresent(name -&gt; &#123;</span><br><span class="line">    System.out.println(<span class="string">"found"</span>);</span><br><span class="line">    System.out.println(<span class="string">"name is "</span> + name);</span><br><span class="line">&#125;);</span><br><span class="line">nullableName.orElseGet(() -&gt; &#123;</span><br><span class="line">    System.out.print(<span class="string">"id not found"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br>In this way, you can deal with an empty <code>Optional&lt;T&gt;</code> instance. However, there’s one drawback that the returned value of the lambda expression you pass to <code>orElseGet()</code> is not always meaningful. In the snippet above, you return a <code>null</code> to deal with the <code>null</code> cases, which is a little ironic.<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/19/war-against-null-3/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
+          
+            <p>Elasticsearch素来以其强大的搜索能力闻名，然而，对其搜索DSL，我们用户可以说是又爱又恨。Elasticsearch的搜索基本是使用JSON构成，再配上少量HTTP内的参数。ES的搜索，可以说是成也JSON，败也JSON。所谓成，成在JSON语义强大，可以组合出各种各样的复杂请求，且歧义较少，对计算机友好；而所谓败，败在JSON并不算一个对人非常友好的格式，特别是当搜索条件比较复杂时，搜索字段又比较多，或字段长度比较长时，长长的JSON对人来说，并不容易debug或排查问题，甚至有时不那么容易看懂。</p>
+<p>闲话少叙，本文要说的正题，是在搜索中实现「至少匹配N项」的方法，这个问题，对熟练使用ES的人来说很简单，对新手来说，可能有点无从下手。我们首先从最基本的情况说起，最少匹配0项或1项。</p>
+<h2 id="Should的语义"><a href="#Should的语义" class="headerlink" title="Should的语义"></a>Should的语义</h2><p>ES中最奇怪也最常用的关键字应该就是这个<code>should</code>了吧。should的含义是，有must或filter的情况下，should仅仅影响结果的打分情况；而在没有must和filter的情况下，返回的结果需要至少满足一个should条件。类似布尔的OR操作，should在两种情况下分别表达出了，「可以不命中」及「至少一个命中」两种语义。</p>
+<p>需要特别注意的是，当查询语句中有must或filter时，如果还想实现至少一次should命中的语义，可以使用嵌套的bool查询，或者下面要写到的<code>minimum_should_match</code>实现。</p>
+<h2 id="minimum-should-match"><a href="#minimum-should-match" class="headerlink" title="minimum_should_match"></a>minimum_should_match</h2><p>上面普通的should，只是实现了N&lt;=1的情况，如果要实现更复杂的At-least-N查询，就需要使用ES中「鲜有问津」（后文会解释为什么这么说）的<code>minimum_should_match</code>参数了。</p>
+<p>如下面的例子（来自官网）<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GET /my_index/my_type/_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"query"</span>: &#123;</span><br><span class="line">    <span class="string">"bool"</span>: &#123;</span><br><span class="line">      <span class="string">"should"</span>: [</span><br><span class="line">        &#123; <span class="string">"match"</span>: &#123; <span class="string">"title"</span>: <span class="string">"brown"</span> &#125;&#125;,</span><br><span class="line">        &#123; <span class="string">"match"</span>: &#123; <span class="string">"title"</span>: <span class="string">"fox"</span>   &#125;&#125;,</span><br><span class="line">        &#123; <span class="string">"match"</span>: &#123; <span class="string">"title"</span>: <span class="string">"dog"</span>   &#125;&#125;</span><br><span class="line">      ],</span><br><span class="line">      <span class="string">"minimum_should_match"</span>: <span class="number">2</span> </span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>只要加入了这个参数，就可以指定搜索的结果，必须至少命中N个should语句。同时不仅支持整数，还支持百分比等形式。这一参数在一些算法中非常实用，比如在聚类算法中，往往会要求至少N个字段相同才能聚类；在搜索引擎中，也可以用这个功能来排除低相关的搜索结果。</p>
+<h2 id="一次漫长的问题排查"><a href="#一次漫长的问题排查" class="headerlink" title="一次漫长的问题排查"></a>一次漫长的问题排查</h2><p>从上面的描述也可以看到，<code>minimum_should_match</code>这个参数还是比较好用的。然而在最近的一次开发中，也是在一个比较复杂的搜索请求，用到了这个参数，用来实现至少命中2个字段，以过滤大部分候选。开始并没有注意，到测试阶段的时候才发现，ES集群返回的搜索结果中，存在一些只命中了1个字段，甚至没有命中任何字段的结果！但又因为搜索中也包含了正确结果（命中2个以上字段），所以这些错误的结果很难被发现，除非提前意识到可能有问题，加上校验函数。</p>
+<h3 id="Query语句写错了吗？"><a href="#Query语句写错了吗？" class="headerlink" title="Query语句写错了吗？"></a>Query语句写错了吗？</h3><p>首先怀疑的，就是JSON写错了。然而虽然用的JSON很复杂，使用<code>minimum_should_match</code>的部分还是比较简单和标准的。考虑到嵌套Bool的问题，尝试改了几版JSON，集群返回的搜索结果都完全相同。后来又试了最简单的用例，居然这个参数还是不生效！</p>
+<h3 id="Mapping有问题？"><a href="#Mapping有问题？" class="headerlink" title="Mapping有问题？"></a>Mapping有问题？</h3><p>接下来怀疑的就是，索引的Mapping设置有问题，也有人提出，是不是动态模板有问题，在索引时没有将字段正确地索引进去？经过检查，所有mapping都是正确的，字段的类型也没有问题（keyword或text都正确设置了），动态模板也没有问题。</p>
+<h3 id="Query和当前ES版本不兼容？"><a href="#Query和当前ES版本不兼容？" class="headerlink" title="Query和当前ES版本不兼容？"></a>Query和当前ES版本不兼容？</h3><p>我们使用的是6.2.3版本，为了确认这一问题，我又特地翻了一遍6.2.3的ES官方文档，没有发现用法错误。随后又在另一个5.X版本ES集群中测试了同样的语句，发现<code>minimum_should_match</code>完全正常工作。这就奇怪了，难道ES升级到6.x后废弃了这一功能？随后又找了6.x版本的升级说明，特别是”breaking changes”的列表，也没有找到任何说明。</p>
+<h3 id="explain-true"><a href="#explain-true" class="headerlink" title="explain:true"></a>explain:true</h3><p>接下来想到了，看一看ES到底是如何解释查询语句。加上<code>explain:true</code>的语句后，ES在正常处理搜索之外，返回了解释语句的JSON，查看返回结果，果然没有任何<code>minimum_should_match</code>存在的痕迹。难道是ES集群有问题？</p>
+<h3 id="定位问题"><a href="#定位问题" class="headerlink" title="定位问题"></a>定位问题</h3><p>逻辑上查不出来任何问题，可是实际上在6.2.3版本的ES集群上，简单的<code>minimum_should_match</code>就是不工作，实在是非常费解。最后笔者尝试了安装ES官方的6.2.3包到自己的机器上，部署，创建索引，写入数据。万事俱备之后，用同样的语句进行搜索，Work！同样的6.2.3版本，同样的搜索，在本机上正常工作，在集群上却失效。</p>
+<p>最终笔者联系了ES集群提供方，对方团队也进行了长时间的排查。最后发现，原来该团队提供的ES版本，由他们进行了特殊的定制，定制后的ES集群会在处理搜索请求时，先对ES的查询进行「优化」，而这一优化，就将这个参数彻底丢失掉了。这一bug直接影响了ES的最基本功能，可以说是影响恶劣，类比到SQL中，就好像丢掉了一个HAVING参数一样，不可容忍。然而这一版本的定制ES，居然已经提供给许多团队使用，并且线上运行超过一年以上。如此情况下，竟然无一人发现这个重大bug，所以笔者之前说，<code>minimum_should_match</code>这个参数，或许是「鲜有问津」。</p>
+
+          
         
       
     </div>
@@ -1021,8 +970,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/04/19/war-against-null-2/" itemprop="url">
-                  War Against Null II - If Not Present
+                <a class="post-title-link" href="/2019/03/22/elasticsearch-batch/" itemprop="url">
+                  TB级别Elasticsearch的存储优化经验（三) 批处理
                 </a>
               
             
@@ -1035,8 +984,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-04-19T20:15:11+08:00" content="2016-04-19">
-              2016-04-19
+            <time itemprop="dateCreated" datetime="2019-03-22T21:07:32+08:00" content="2019-03-22">
+              2019-03-22
             </time>
           </span>
 
@@ -1062,13 +1011,163 @@
 
       
         
-          <p>As is mentioned in my last post, <code>Optional&lt;T&gt;.ifPresent()</code> could combine the check of nullity and the use of wrapped content in one step, which avoid the possibility of raising <code>NPE</code>s. However, there’s some trouble when the <code>Optional</code> object wraps a <code>null</code>.</p>
-<h1 id="OrElse"><a href="#OrElse" class="headerlink" title="OrElse"></a>OrElse</h1><p>There is a <code>Optional&lt;T&gt;.orElse(T other)</code> method which returns the wrapped value if it presents or returns the default value. However, remember the example of my last post? I need to print the name of a specified id or output “id not found” now. We can call <code>nullableName.orElse(&quot;id not found&quot;)</code> to return the msg if it’s not present. However, is there a way to work for both situations, as the traditional code snippet below does?
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/19/war-against-null-2/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
+          
+            <p>前面谈了一些使用ES过程中，存储、设计等ES本身的设计经验。今天我们来看一看在使用客户端时，有什么优化方法，可以减轻对ES的损耗。</p>
+<h2 id="线性增长的调用量，非线性增长的压力"><a href="#线性增长的调用量，非线性增长的压力" class="headerlink" title="线性增长的调用量，非线性增长的压力"></a>线性增长的调用量，非线性增长的压力</h2><p>一般情况下，调用关系数据库也好，NoSQL也好，大家往往习惯按照业务逻辑编写程序，入口处每进来一个请求，后续就执行一或几次数据库CRUD操作。这是一个非常直观的选择，代码也清晰移动，但问题是，这种最简单的使用场景下，后续数据库操作的数量是和入口的请求量线性正比的。假设每个请求要进行N次CRUD操作，入口的QPS为Q，那么对数据库的调用量就是简单的N*Q。</p>
+<p>当QPS较低时，N*Q的数值较小，自然不成问题。可当我们要处理的QPS是上万甚至上十万时，每次就有数十万次CRUD。应用本身抗住几万几十万的QPS并不是难事，只要合理编程，增加机器就很容易做到。但是对数据库而言，就不是那么容易了。应用本身通常是无状态的，而数据库却经常需要各个机器节点相互同步，这一复杂度远超应用，再加上数据库应用往往有较大的IO相关损耗，所以在调用量线性增长的情况下，数据库面临的压力远超线性增长的水平，是非线性的。况且像ES这样的存储，经常需要使用SSD等高成本硬件，简单地增加机器节点，并不是好的解决方法。</p>
+<h2 id="ES的批量操作"><a href="#ES的批量操作" class="headerlink" title="ES的批量操作"></a>ES的批量操作</h2><p>既然QPS高了之后，数据库难以应对，那么唯一的办法就是想办法减少QPS。批处理就是一个减少QPS的办法。幸运的是，ES主要的API，都提供了对应版本的批量处理API。</p>
+<ul>
+<li>bulk - 批量写操作，可以混合插入、更新、删除操作</li>
+<li>mget - 批量读操作</li>
+<li>msearch - 批量搜索操作</li>
+</ul>
+<p>而且，ES对批量操作的设计是比较完善的。批量操作中，每个子项都可以设置自己的Routing，以及一些定制化的参数，互不干扰。使用这些批量API，我们可以将几十次，甚至是几千次单独的调用，合并成单一批量的读操作、写操作或搜索操作。</p>
+<h2 id="批量操作的优点"><a href="#批量操作的优点" class="headerlink" title="批量操作的优点"></a>批量操作的优点</h2><p>合并成为批量操作意味着</p>
+<ul>
+<li>减少IO次数</li>
+<li>减少成百上千次IO解析的损耗</li>
+<li>大幅减少IO失败可能和重试次数</li>
+<li>ES内部也可以减少大量冗余操作</li>
+<li>合并大量的单独写操作，对写性能消耗大的ES来说，大幅减轻了负担</li>
+</ul>
+<p>使用批量处理，我们可以将数万QPS降低到数十QPS，同时每次请求携带的payload的大小，则乘以百倍或千倍。而ES处理大体量批量请求的RT，往往不会比单次请求上升太多。所以，通过批量处理的缩放，整个ES的工作效率可以大幅提升。</p>
+<p>另外，批量操作还可以进行跨索引批量，能够进一步减少IO次数。</p>
+<h2 id="批量操作的缺点"><a href="#批量操作的缺点" class="headerlink" title="批量操作的缺点"></a>批量操作的缺点</h2><p>当然，如果处处都使用批量操作，也存在一些缺点和问题，不得不注意</p>
+<ul>
+<li>构建批量请求难度较大，需要自己设计缓冲方式</li>
+<li>解析批量请求的结果也更复杂，往往会出现多层嵌套</li>
+<li>整体的业务代码逻辑更加复杂，相比单项请求，非常不直观，难以debug，特别是跨索引的批量</li>
+<li>批量请求操作的日志的体量也会过大，无可读性，需要手动处理</li>
+<li>批量请求中出现错误或异常，很容易被忽略掉</li>
+<li>使用批量操作，虽然整体提高了效率，但必然会增加单个请求的RT</li>
+<li>不合理的批量请求设计，同样会增加ES集群的负担</li>
+</ul>
+<h2 id="批量操作不是万能药"><a href="#批量操作不是万能药" class="headerlink" title="批量操作不是万能药"></a>批量操作不是万能药</h2><p>还需要提醒的一点是，虽然批量操作能够大幅提升ES的工作效率，减少大量不必要的损耗，但是，批量操作同样不是万能的。如果批量操作中所含的操作本身就非常复杂，特别是复杂的搜索操作，那么即使缓冲批量后，也不能真正意义上提升ES集群的性能瓶颈。因为在这种情况下，真正的性能瓶颈不是IO，不是卸载请求，不是搜索语句的parsing，而是搜索本身的高复杂度。如果每条搜索本身需要占用大量内存进行操作，过度批量，并不会帮助解决任何问题，反而有增大ES集群压力的风险。</p>
+<p>根据自己的经验总结下，ES各种批量操作的性能提升层次大概是</p>
+<blockquote>
+<p>bulk &gt;&gt; mget(with routing) &gt;&gt; mget(without routing) &gt;&gt; msearch</p>
+</blockquote>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>前面提到，使用ES的批量操作，必然设计业务代码的改造，要在调用ES之前引入缓冲机制，那么去实现缓冲机制更好呢？这个问题虽然不大，但也比较有趣，我们下篇再提。</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2019/03/18/elasticsearch-ID/" itemprop="url">
+                  TB级别Elasticsearch的存储优化经验（二）如何选择ID
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2019-03-18T23:11:35+08:00" content="2019-03-18">
+              2019-03-18
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在传统的关系数据库中，ID字段的选择已经是老生常谈了。事实上，有些公司的开发标准上，甚至要求任何字段都选择自增主键。在ES索引设计中，ID字段的选择问题经常被开发人员所忽略，只是简单选择一个自然的ID字段。而实际上，ID的选择对索引的性能（尤其是写入性能），存在这至关重要的影响。</p>
+<h2 id="四种ID选择方式"><a href="#四种ID选择方式" class="headerlink" title="四种ID选择方式"></a>四种ID选择方式</h2><p>在ES中，总体而言，存在四种ID的选择方式</p>
+<ol>
+<li>自然ID</li>
+<li>不指定ID，由ES自动生成</li>
+<li>自己指定一个UUID</li>
+<li>使用文档内容的哈希值</li>
+</ol>
+<p>下面我们依次来看几种选择方式</p>
+<h3 id="自然ID"><a href="#自然ID" class="headerlink" title="自然ID"></a>自然ID</h3><p>对可以找出自然ID的业务来说，使用自然ID是最简单的方式。但是，使用自然ID并不是完美的，也有自身的缺陷。</p>
+<ol>
+<li>ES无法确定你所提供的自然ID，是否真的是独一无二的，因此，每次插入时，都需要先检查有没有相同ID的文档。如果有相同ID，需要根据操作类型进行更新或者抛出异常；如果没有，才能进行插入。所以这一步检查的过程，会额外增加写入文档的RT，并增大集群的负载。</li>
+<li>自然ID大多情况下是无序和随机的。ES在插入文档时，如果插入的文档ID有自增顺序，可以大幅提升插入速度，因为减少了搜索ID是否重复的时间。</li>
+</ol>
+<h3 id="指定UUID"><a href="#指定UUID" class="headerlink" title="指定UUID"></a>指定UUID</h3><p>UUID基本上能够保证每次生成的ID都是唯一的。使用UUID也是相对简单的一种方式。在复杂系统中，相比使用自动生成ID，使用UUID主要优势是，<strong>可以在写入ES前，先生成ID</strong>。比如，在某些需要并发多处写入的系统中，可能无法接受ES写入的RT及失败。在这种情况下，就无法使用ES自动生成的ID（因为需要等待ES返回），使用UUID就可以提前生成业务ID，并发写入多个存储系统中。</p>
+<p>但是使用UUID也有很多缺陷，笔者维护的一个历史索引中，就使用了UUID，因此对其缺陷还是比较了解的。</p>
+<ol>
+<li>UUID是完全无意义的字符串。UUID没有意义，仅仅提供了唯一性，却没能提供任何与文档本身相关的信息量。在数据迁移和重构时，UUID本身就成为了一个负担，必须要维护UUID和文档（甚至其他索引的文档）的正确关联性，却又缺少可验证的手段（比如有时可能错误写入文档ID，这种情况下无法恢复出正确的ID，而下面介绍的哈希值则可以）。</li>
+<li>插入UUID相比自动生成ID性能要差。UUID和ES自动生成ID所代表的意义基本是完全相同的（都是无意义的唯一ID），但前面已经说过，手动生成UUID获得了提前生成ID的机会，却牺牲了绕过ES写入检查的机会，会损失一些性能。</li>
+</ol>
+<h3 id="使用哈希值"><a href="#使用哈希值" class="headerlink" title="使用哈希值"></a>使用哈希值</h3><p>在没有自然ID的情况下，另一种选择是使用哈希函数，根据文档的内容生成一个哈希值。使用哈希，只要文档的内容相同，就会生成同样的哈希值。但使用哈希不可避免的一个问题，就是哈希碰撞。使用更长的哈希（比如MD5，SHA1），可以平衡哈希码长度和碰撞几率。如果要求更高，可以使用SHA256.</p>
+<p>使用复杂哈希算法来生成ID，增加了计算的消耗，增长了ID的长度，同时也牺牲了严格的唯一性。那么为什么还要使用哈希算法呢？</p>
+<ol>
+<li>使用哈希可以用文档内容反推ID。特别是对计算形式的应用，ID可以在任何阶段由文档内容反推，非常灵活。</li>
+<li>可以利用哈希值，高效排除重复文档。在没有自然主键的情况下，不管是使用UUID还是使用ES自动生成ID，都很容易重复写入完全相同的文档（或者仅仅时间不同的文档）。因为在写入时，没有能力判别过去是否有相同的文档（唯一的方法是搜索全部字段，但显然对性能的消耗过大），使用哈希作ID，就可以很容易避免重复写入多份相同文档。</li>
+<li>可以使用文档内容，校验文档ID的正确性。这一条特别是在数据迁移，或者reindex过程中非常重要。以笔者的开发经验，不论是现在开源的几个迁移工具，还是自己使用scroll API编写的，都很容易出现bug，造成迁移后，文档ID变更，或者文档内容错乱。这个时候，使用哈希值就可以很容易地发现错误，避免迁移后默默出现错误，藏在数据库中。另外日常也可以使用哈希值来排除意外写入的脏数据。</li>
+</ol>
+<h4 id="使用时间戳-哈希，构造高效ID"><a href="#使用时间戳-哈希，构造高效ID" class="headerlink" title="使用时间戳+哈希，构造高效ID"></a>使用时间戳+哈希，构造高效ID</h4><p>前面提到，如果写入的文档ID，总是遵从一定的顺序，ES就可以大大增快其写入速度。但不论是自然ID也好，UUID或哈希值也好，很少能按照写入的顺序排序。要实现按照写入顺序排序，最简单的就是利用「时间」，因为时间总是在增加的。</p>
+<p>使用时间戳作为ID的前缀，就可以让陆续写入的文档，满足ID的顺序性。此外，使用时间戳+哈希，还有额外的好处，就是可以极大地减少哈希碰撞的几率。因为只需要每个时间戳范围内，所有哈希值唯一，就可以唯一定位一个文档了。这样就可以使用更短和更简单的哈希算法了，也不用担心碰撞了。其缺点是，牺牲了使用哈希值判重的便利。</p>
+<h3 id="ES自动生成ID"><a href="#ES自动生成ID" class="headerlink" title="ES自动生成ID"></a>ES自动生成ID</h3><p>由ES自动在插入时自动生成ID，其最大的好处是：ES知道生成的ID不可能在索引中已经存在，可以做出一些优化。<strong>使用ES自动生成的ID，是写入性能最高的选项</strong>，因为不需要检查是否重复，即使索引不断增长，其性能也不会恶化（相反，使用自己指定的ID，写入性能会随数据量上涨而恶化）。因此，在允许的情况下，使用自动生成ID往往是最好的选择。</p>
+<p>当然，使用ES自动生成ID，也会有前面几种方式中提到的一些缺陷</p>
+<ol>
+<li>文档ID无意义，且自动生成的ID更容易混淆</li>
+<li>必须先执行写入操作，写入成功后才能拿到ID</li>
+</ol>
+
+          
         
       
     </div>
@@ -1092,7 +1191,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1133,7 +1232,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">123</span>
+              <span class="site-state-item-count">140</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1143,7 +1242,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-count">55</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

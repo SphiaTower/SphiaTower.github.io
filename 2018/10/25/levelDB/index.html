@@ -1,0 +1,714 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Cache,Database,LevelDB," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="提到KV数据库这些名词，人们往往要么想到Redis，要么想到Memcached。Redis和Memcached固然强大，但也并不是适合任何场景使用。而LevelDB填补了二者之间的空缺，也是KV数据库领域中，不可忽视的一个选择。当然，严格地说，LevelDB只是一个KV存储引擎，并不是一个完整的数据库服务。要想像Redis，Memcached一样使用LevelDB，还需要做服务层的封装，本文略去不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LevelDB的理论与实践">
+<meta property="og:url" content="http://yoursite.com/2018/10/25/levelDB/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="提到KV数据库这些名词，人们往往要么想到Redis，要么想到Memcached。Redis和Memcached固然强大，但也并不是适合任何场景使用。而LevelDB填补了二者之间的空缺，也是KV数据库领域中，不可忽视的一个选择。当然，严格地说，LevelDB只是一个KV存储引擎，并不是一个完整的数据库服务。要想像Redis，Memcached一样使用LevelDB，还需要做服务层的封装，本文略去不">
+<meta property="og:updated_time" content="2019-07-22T13:32:24.631Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LevelDB的理论与实践">
+<meta name="twitter:description" content="提到KV数据库这些名词，人们往往要么想到Redis，要么想到Memcached。Redis和Memcached固然强大，但也并不是适合任何场景使用。而LevelDB填补了二者之间的空缺，也是KV数据库领域中，不可忽视的一个选择。当然，严格地说，LevelDB只是一个KV存储引擎，并不是一个完整的数据库服务。要想像Redis，Memcached一样使用LevelDB，还需要做服务层的封装，本文略去不">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> LevelDB的理论与实践 | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                LevelDB的理论与实践
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2018-10-25T23:44:27+08:00" content="2018-10-25">
+              2018-10-25
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>提到KV数据库这些名词，人们往往要么想到Redis，要么想到Memcached。Redis和Memcached固然强大，但也并不是适合任何场景使用。而LevelDB填补了二者之间的空缺，也是KV数据库领域中，不可忽视的一个选择。当然，严格地说，LevelDB只是一个KV存储引擎，并不是一个完整的数据库服务。要想像Redis，Memcached一样使用LevelDB，还需要做服务层的封装，本文略去不提。</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>首先，先来看LevelDB官方的介绍。</p>
+<blockquote>
+<p>LevelDB是一个快速的KV存储库，由谷歌编写，提供有序的字符串KV映射</p>
+</blockquote>
+<p>短短一句话，其实提供了很多信息，再根据其他介绍，我们可以了解LevelDB的一些特征：</p>
+<ul>
+<li>KV都是任意的字节数组</li>
+<li>数据根据Key进行排序，用户可以提供自己的比较函数</li>
+<li>基础操作只有，put，get，delete三种</li>
+</ul>
+<p>由此可见，与Redis相比，LevelDB支持的数据类型非常简单，只是普通的KV。但LevelDB支持了Key排序的功能，可以用来实现一些哈希式的KV存储无法支持的功能。</p>
+<h2 id="实现细节"><a href="#实现细节" class="headerlink" title="实现细节"></a>实现细节</h2><p>了解一个数据库引擎，最重要的是去看其数据结构，了解了数据结构，再去看外层API，就基本能够掌握一个数据库的运作原理。<br>一般来说，有三种实现KV数据库的方式</p>
+<ol>
+<li>哈希（线性探测、分链法）</li>
+<li>树（红黑树、B树）</li>
+<li>跳表</li>
+</ol>
+<p>大体而言，哈希的读写速度最快，但最差情况较差，且随机读写多；树的读写均稍慢，但是能够提供有序性；而跳表则对并发情况更加友好</p>
+<p><a href="https://github.com/google/leveldb/blob/master/doc/impl.md" target="_blank" rel="external">https://github.com/google/leveldb/blob/master/doc/impl.md</a></p>
+<p>每个LevelDB数据库，都由一个目录下的一系列文件代表。</p>
+<h3 id="日志文件"><a href="#日志文件" class="headerlink" title="日志文件"></a>日志文件</h3><p>日志文件（*.log）存储了最近更新的序列。每个更新都会append到当前的log文件。当文件大小达到预定大小（默认4MB），就会转化成为一个排序表，并创建一个新的日志文件。</p>
+<p>当前日志文件会在内存中维持一个副本，称作memtable。每个读操作进来，都会询问这个副本，这样所有记录下的更新都会对读操作可见</p>
+<h3 id="排序表"><a href="#排序表" class="headerlink" title="排序表"></a>排序表</h3><p>排序表（*.log）存储了根据key排序的条目序列。每个条目，要么是key的value，要么是key的删除记号</p>
+<p>排序表的集合被组织成一个个level的序列。由log文件生成的排序表被放在特殊的<strong>年轻层</strong>，也就是level-0。当level-0的文件数目超过阈值后，所有年轻文件就会和所有level-1文件进行合并，产生新的level-1文件。</p>
+<p>年轻层的文件可能存在重叠key，但是其他层每个文件的key range都是不同的。假设层数为L（L&gt;=1），当level-L里合并后文件大小超过10^L MB（第一层10MB，第二层100MB）后，level-L中的一个文件，和level-(L+1)层的所有重叠文件，就会合并形成一系列新的level-(L+1)层文件。通过不断地合并，年轻层的新更新，会被逐渐迁移到只使用批量读写的最高层（减少昂贵的寻址操作）</p>
+<h3 id="Manifest"><a href="#Manifest" class="headerlink" title="Manifest"></a>Manifest</h3><p>Manifest文件列出了每个level下的排序表的集合，各自的key范围，以及其他元数据。</p>
+<h3 id="memtable"><a href="#memtable" class="headerlink" title="memtable"></a>memtable</h3><p>当level-0的日志文件增长到一定大小后，就会创建一个全新的memtable和日志文件，并将更新操作转向这里。</p>
+<h3 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h3><p>当level-L的size超过限制，就会在后台线程进行压缩。压缩从L层拿一个文件，再从L+1层拿所有交叠的文件（即使只有一小部分交叠）。注意：Level0需要特殊处理，因为key可交叠，需要取出更多文件</p>
+<p>每次压缩，会将取出文件的内容合并，然后产生一系列L+1层的新文件。压缩会丢弃被覆盖的值，同时也丢弃删除记号</p>
+<h2 id="自己的总结"><a href="#自己的总结" class="headerlink" title="自己的总结"></a>自己的总结</h2><p>首先来看LevelDB的数据结构，简单总结下，应该如下所示：</p>
+<blockquote>
+<p>log+memtable+level-0 -&gt; level-1(sorted tables) -&gt; level-2 -&gt; …</p>
+</blockquote>
+<p>要理解LevelDB，只看外面的分层模型是不够的，还要研究每一层文件的存储内容，这才是关键。整体来看，LevelDB的存储实际上是一个树形结构，每一层都有多个文件，除了0层之外互相交叠。说到树，自然就要看树中所蕴含的递归思想。在LevelDB中，一次更新操作，首先进入树的顶点（0层）；如果0层节点写满，就会将这个更新记录，与1层合并，写入1层；1层节点写满后，再进入2层，最终合并到最高层。</p>
+<p>因此，<strong>LevelDB</strong>树中节点所存储的内容，并非数据本身，而是一条条数据的更新记录，或者说是一种replay。如果一个key只写入过一次，那么在任意时刻，它也只会在其中某一层出现。而如果一个key多次出现，就有可能在多层都有写入记录。当然，越低层的写入就越接近数据的最新状态，而更高层的写入实际上已经作废了，等待在合并时被压缩处理掉。</p>
+<p>那么这种数据结构，究竟带来了什么好处呢？为什么要选取这种结构呢？下面就从另一个角度，API，来看一下。</p>
+<h3 id="Get操作"><a href="#Get操作" class="headerlink" title="Get操作"></a>Get操作</h3><p>首先来看最简单的读操作。我们知道，树形的结构都会牺牲掉一些读取性能，LevelDB也是如此。每次读取，首先会尝试内存中的memtable，如果是热点数据，读到的概率很大。但如果是冷数据，很可能已经被合并到了最高层。因此需要一层层查找，直到在某一层找到数据，就可以结束搜索。而且，只有memtable中的操作是内存读取，其他都是硬盘读取。由此可以推断，LevelDB的读取性能相对纯内存数据库来说较差。</p>
+<h3 id="Put操作"><a href="#Put操作" class="headerlink" title="Put操作"></a>Put操作</h3><p>再来看看Put操作。Put其实分为两种，插入和更新。在LevelDB中，这两种的差别并不大。因为日志文件.log的存在，LevelDB只需要确保将更新写入log文件，就可以结束本次写入。因此，写入速度是非常快的。后续，内部线程再将写入操作放到排序表的树中，这些都是后台操作。而且，因为更新数据会被不断合并到硬盘中的一层层文件中，LevelDB可以利用硬盘的存储空间存储更大量的数据（而非内存数据库只能利用内存空间），并且利用合并算法减少了随机写。同时又通过memtable维持了一部分内存读取的便利。</p>
+<p>可以看到，LevelDB中，平均情况下，写入性能是好过读取性能的。因此LevelDB非常适合读多写少的流量，且LevelDB可以利用硬盘存储大量数据，其成本要远远&lt;内存数据库。</p>
+<p>LSM (Log Structured Merge) LSM树<br>LSM通过消去随机的本地更新操作，把磁盘随机写操作变为顺序写操作，从而得到更好的写操作吞吐量。LSM树的设计思想非常朴素，将对数据的修改增量保持在内存中，达到指定的大小限制后将这些修改操作批量写入磁盘。文件是不可修改的，他们永远不会被更新，新的更新操作只会写到新的文件中。读操作会依次从最新的文件查找，通过周期性的合并这些文件来减少文件个数。所以写入性能大大提升，读取时可能需要先看是否命中内存，否则需要访问较多的磁盘文件。综上，LSM索引相比哈希索引能够大幅提高写性能，数据量非常大的情况下因为哈希碰撞哈希索引的效率低</p>
+<p><a href="https://www.zhihu.com/question/27256968/answer/309936531" target="_blank" rel="external">https://www.zhihu.com/question/27256968/answer/309936531</a></p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Cache/" rel="tag">#Cache</a>
+          
+            <a href="/tags/Database/" rel="tag">#Database</a>
+          
+            <a href="/tags/LevelDB/" rel="tag">#LevelDB</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/05/jdk-reflection-error/" rel="next" title="一个JDK源码引发的诡异问题">
+                <i class="fa fa-chevron-left"></i> 一个JDK源码引发的诡异问题
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/30/gc-experience/" rel="prev" title="线上实战GC优化经验 - CMS的调优">
+                线上实战GC优化经验 - CMS的调优 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">140</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现细节"><span class="nav-number">2.</span> <span class="nav-text">实现细节</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#日志文件"><span class="nav-number">2.1.</span> <span class="nav-text">日志文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排序表"><span class="nav-number">2.2.</span> <span class="nav-text">排序表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Manifest"><span class="nav-number">2.3.</span> <span class="nav-text">Manifest</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#memtable"><span class="nav-number">2.4.</span> <span class="nav-text">memtable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#压缩"><span class="nav-number">2.5.</span> <span class="nav-text">压缩</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自己的总结"><span class="nav-number">3.</span> <span class="nav-text">自己的总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Get操作"><span class="nav-number">3.1.</span> <span class="nav-text">Get操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Put操作"><span class="nav-number">3.2.</span> <span class="nav-text">Put操作</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

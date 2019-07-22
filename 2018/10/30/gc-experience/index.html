@@ -1,0 +1,687 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="GC," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="GC是Java服务端开发过程中所必须关注的一个重要环节。而有趣的是，对GC的调优，常常是「不见棺材不落泪」，也就是说，往往很多人会等线上真的出现问题以后，才会关注GC调优的问题。当然，这样的做法是不可取的，良好的监控，及时的预警，一旦发现GC性能恶化，及时调优，才能避免线上问题出现。
+CMS回顾很多应用往往会使用默认的GC类型和GC参数，这些「默认」可能是JVM自己的默认，公司或项目组的默认，或者">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线上实战GC优化经验 - CMS的调优">
+<meta property="og:url" content="http://yoursite.com/2018/10/30/gc-experience/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="GC是Java服务端开发过程中所必须关注的一个重要环节。而有趣的是，对GC的调优，常常是「不见棺材不落泪」，也就是说，往往很多人会等线上真的出现问题以后，才会关注GC调优的问题。当然，这样的做法是不可取的，良好的监控，及时的预警，一旦发现GC性能恶化，及时调优，才能避免线上问题出现。
+CMS回顾很多应用往往会使用默认的GC类型和GC参数，这些「默认」可能是JVM自己的默认，公司或项目组的默认，或者">
+<meta property="og:updated_time" content="2019-07-22T13:37:17.958Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="线上实战GC优化经验 - CMS的调优">
+<meta name="twitter:description" content="GC是Java服务端开发过程中所必须关注的一个重要环节。而有趣的是，对GC的调优，常常是「不见棺材不落泪」，也就是说，往往很多人会等线上真的出现问题以后，才会关注GC调优的问题。当然，这样的做法是不可取的，良好的监控，及时的预警，一旦发现GC性能恶化，及时调优，才能避免线上问题出现。
+CMS回顾很多应用往往会使用默认的GC类型和GC参数，这些「默认」可能是JVM自己的默认，公司或项目组的默认，或者">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 线上实战GC优化经验 - CMS的调优 | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                线上实战GC优化经验 - CMS的调优
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2018-10-30T20:36:27+08:00" content="2018-10-30">
+              2018-10-30
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>GC是Java服务端开发过程中所必须关注的一个重要环节。而有趣的是，对GC的调优，常常是「不见棺材不落泪」，也就是说，往往很多人会等线上真的出现问题以后，才会关注GC调优的问题。当然，这样的做法是不可取的，良好的监控，及时的预警，一旦发现GC性能恶化，及时调优，才能避免线上问题出现。</p>
+<h2 id="CMS回顾"><a href="#CMS回顾" class="headerlink" title="CMS回顾"></a>CMS回顾</h2><p>很多应用往往会使用默认的GC类型和GC参数，这些「默认」可能是JVM自己的默认，公司或项目组的默认，或者是自己开发经验的默认。但是，对不同类型的应用，其适合的GC类型和GC参数往往有巨大的不同。</p>
+<p>以最常用的CMS回收器来看，新生代和老生代的各种参数调配，起着非常重要作用。先来回顾一下CMS的工作原理</p>
+<ol>
+<li>CMS将heap分为新生代和老生代，新生代又分为Eden和两个Survivor</li>
+<li>YGC：使用标记-复制算法，回收Eden+Survivor，幸存者移动到另一个Survivor；多次存活晋升到老生代</li>
+<li>FGC：使用并发标记-扫描算法</li>
+</ol>
+<p>而在线上GC调优中，我们首要的目标是尽可能地避免Full GC，其次是减少YGC的频率和时间。</p>
+<h2 id="分析应用pattern"><a href="#分析应用pattern" class="headerlink" title="分析应用pattern"></a>分析应用pattern</h2><p>前面提到，不同的应用，其适合的GC模式完全不同。下面拿一个函数式的计算应用进行举例。</p>
+<p>众所周知，函数式编程时，对象都是无状态和不变的，因此，对复杂的计算型应用，往往在计算的流程中，需要生成大量的中间对象。这些中间对象往往是朝生暮死的（ephemeral），不会被长期持有。在高QPS的调用下，这种计算型应用会产生巨量的垃圾，这些垃圾会马上填充满新生代，引发YGC。同时因为新生代负荷过高，很容易导致一些朝生暮死的对象被错误地晋升到老生代，进而随着时间的积累，最终引发Full GC。</p>
+<h2 id="针对性的优化"><a href="#针对性的优化" class="headerlink" title="针对性的优化"></a>针对性的优化</h2><p>分析完了计算型应用的特点，就可以针对其进行一些针对性的优化。首先，针对朝生暮死的对象大量填充新生代的问题，可以将新生代的空间大大增加。如果服务器有足够的内存，就增大新生代的内存，否则就增大新生代的比例。这样新生代就有足够的空间进行缓冲，收纳大量朝生暮死的对象。</p>
+<p>那么增大新生代的空间，是否会减慢YGC的速度呢？答案是否定的。因为标记-复制算法只关心哪些存活下来的对象，对计算型应用而言，这样存活下来的对象所占的比例是极低的，YGC的耗时，主要由这些存活下来的对象的多少决定。因此，即使新生代的空间大幅增加，YGC的时间不但不会增加，反而可能会下降。</p>
+<p>仅仅增大新生代总体的空间还不够，Eden和Survivor的比例也是需要关注的问题。如果Survivor太小，也会面临新生代过小类似的问题，导致一些对象晋升。而如果Survivor太大，又会导致空间的浪费。对函数式的计算型应用而言，往往Survivor并不需要太大，可以适当调低其比例。</p>
+<h2 id="优化的效果"><a href="#优化的效果" class="headerlink" title="优化的效果"></a>优化的效果</h2><p>在实战中，我们在一台6000+QPS的函数计算型应用上做了优化测试。优化后，YGC时间从400ms降低到了50ms；而每分钟的YGC测试从15次降低到了3次，Full GC更是完全消失了。可见上面针对性的优化方案，效果是非常好的。</p>
+<h2 id="CMS是最合适的吗？"><a href="#CMS是最合适的吗？" class="headerlink" title="CMS是最合适的吗？"></a>CMS是最合适的吗？</h2><p>上面谈到的，都是针对常用的CMS垃圾回收器所做的优化。而Java发展到现在，已经出现了大量优质的垃圾回收器，如G1，ZGC，等等。CMS是否就是最合适的垃圾回收器呢？这些我们留在下一次讨论。</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/GC/" rel="tag">#GC</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/25/levelDB/" rel="next" title="LevelDB的理论与实践">
+                <i class="fa fa-chevron-left"></i> LevelDB的理论与实践
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/05/kotlin-13-incompatible/" rel="prev" title="Kotlin升级正式版协程后的性能问题">
+                Kotlin升级正式版协程后的性能问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">140</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CMS回顾"><span class="nav-number">1.</span> <span class="nav-text">CMS回顾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析应用pattern"><span class="nav-number">2.</span> <span class="nav-text">分析应用pattern</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#针对性的优化"><span class="nav-number">3.</span> <span class="nav-text">针对性的优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化的效果"><span class="nav-number">4.</span> <span class="nav-text">优化的效果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMS是最合适的吗？"><span class="nav-number">5.</span> <span class="nav-text">CMS是最合适的吗？</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>

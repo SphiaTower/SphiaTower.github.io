@@ -224,8 +224,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/09/16/layout-behavior-bug/" itemprop="url">
-                  Layout_behavior属性造成的布局异常
+                <a class="post-title-link" href="/2015/09/29/source-code-of-volley/" itemprop="url">
+                  源码解析 - Volley
                 </a>
               
             
@@ -238,8 +238,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-16T20:05:21+08:00" content="2015-09-16">
-              2015-09-16
+            <time itemprop="dateCreated" datetime="2015-09-29T19:45:23+08:00" content="2015-09-29">
+              2015-09-29
             </time>
           </span>
 
@@ -265,15 +265,104 @@
 
       
         
-          <p>前两天发现了一个布局的bug，怎么都找不到原因，今天总算是解决掉了。<br>很多异步加载的页面都会做一个”empty view”来表示加载过程，其中最常用的就是<code>ProgressBar</code>了。实现方法很简单，在布局中添加一个<code>ProgressBar</code>并在适当的时候使其可见或不可见就可以了。</p>
-<pre><code>&lt;ProgressBar android:id=&quot;@+id/loading_spinner&quot;
-             style=&quot;?android:progressBarStyleLarge&quot;
-             android:layout_width=&quot;wrap_content&quot;
-             android:layout_height=&quot;wrap_content&quot;
-             android:layout_gravity=&quot;center&quot; xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;/&gt;
+          <p>Volley是安卓中处理网络请求的一个包。虽然从来没有使用过，但从文档来看使用起来还是很容易的。但一直疑惑的一点就是为什么要使用这个包来进行网络操作。接下来就从源代码看起。</p>
+<h2 id="Volley-newRequestQueue"><a href="#Volley-newRequestQueue" class="headerlink" title="Volley.newRequestQueue()"></a>Volley.newRequestQueue()</h2><p>使用Volley首先要创建一个请求队列，接下来就先看这个方法。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/29/source-code-of-volley/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/28/singleton-in-android/" itemprop="url">
+                  安卓中使用Singleton的问题
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-28T21:48:42+08:00" content="2015-09-28">
+              2015-09-28
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在<a href="http://sphiatower.github.io/2015/09/23/wrong-use-of-application/" title="之前的文章">http://sphiatower.github.io/2015/09/23/wrong-use-of-application/</a>中提到了，安卓官方文档中，不建议使用<code>Application</code>子类来支持全局访问。而应使用静态单例，但是在静态单例的使用中也有一些问题。标准的使用方法是这样的：</p>
+<pre><code>private Singleton sInstance;
+public Singleton getInstance(Context context){
+    if(sInstance == null) {
+        sInstance = new Singleton(context.getApplicationContext());
+    }
+    retrun sInstance:
+}
 </code></pre>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/16/layout-behavior-bug/#more" rel="contents">
+            <a class="btn" href="/2015/09/28/singleton-in-android/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -316,8 +405,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/09/15/Intent-Filter-Match-URL/" itemprop="url">
-                  Intent Filter匹配URL的实例
+                <a class="post-title-link" href="/2015/09/28/source-code-of-AsyncTask/" itemprop="url">
+                  源码解析 - AsyncTask
                 </a>
               
             
@@ -330,8 +419,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-15T20:24:52+08:00" content="2015-09-15">
-              2015-09-15
+            <time itemprop="dateCreated" datetime="2015-09-28T19:50:12+08:00" content="2015-09-28">
+              2015-09-28
             </time>
           </span>
 
@@ -357,12 +446,9 @@
 
       
         
-          <p>上篇文章对Intent Filter整体的用法作了总结。现在来着重研究一下<code>&lt;data&gt;</code>标签的匹配方法，尤其是经常用到的URL链接。</p>
-<p>很多网站的客户端应用都对应一些具体的网址，经常会希望用户在其他应用打开这些网址后能够跳转到自己的应用中来。</p>
-<p>接下来结合自己的一个例子来讲解如何匹配URL，要匹配的网址是：<br><a href="http://www.sphia.com/java/android/intent-filter.html">http://www.sphia.com/java/android/intent-filter.html</a><br><a href="http://www.sphia.com/java/android/match-url.html">http://www.sphia.com/java/android/match-url.html</a><br>也就是 www.sphia.com/java/android/ 目录下的所有链接。</p>
-<p>首先放出实现的方法：<br>
+          <p><code>AsyncTask</code>是安卓中非常常用的一个类，它避免了每次都手动通过<code>Handler</code>与UI线程通讯。但也有很多人认为应该尽量避免使用<code>AsyncTask</code>，那么这个类到底该不该用呢？接下来就从源码层面上来看一看。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/15/Intent-Filter-Match-URL/#more" rel="contents">
+            <a class="btn" href="/2015/09/28/source-code-of-AsyncTask/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -405,8 +491,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/09/14/Intent-Filters/" itemprop="url">
-                  Intent Filter总结
+                <a class="post-title-link" href="/2015/09/27/phototask-summary/" itemprop="url">
+                  安卓多线程（五） PhotoTask例子的总结
                 </a>
               
             
@@ -419,8 +505,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-14T23:12:17+08:00" content="2015-09-14">
-              2015-09-14
+            <time itemprop="dateCreated" datetime="2015-09-27T18:43:48+08:00" content="2015-09-27">
+              2015-09-27
             </time>
           </span>
 
@@ -446,13 +532,11 @@
 
       
         
-          <p>Intent filter是安卓中非常有用的一个组件。以我的经验，它主要用在两处，一是BroadcastReceiver接收特定的Intent时，二是Activity接收隐式Intent来让其他应用或者自己应用的其他组件进行调用。现在就来系统学习一下，特别是传输数据的部分。</p>
-<h2 id="接收隐式Intent"><a href="#接收隐式Intent" class="headerlink" title="接收隐式Intent"></a>接收隐式Intent</h2><p>为了说明app能够接受哪些隐式intent，需要在manifest的应用组件中声明一个或多个<code>&lt;intent-filter&gt;</code>。每个intent filter根据intent的action，data和category指定它能够接收的intent的类型。只有intent可以通过intent filter的过滤，系统才会将隐式intent传送给相应的应用组件。</p>
-<blockquote>
-<p><strong>注意</strong>：显式的intent总是被传送给目标，无视其声明的filter。</p>
-</blockquote>
+          <p>接下来，总结一下前几篇中的PhotoTask的例子，例子的源代码可以在官网下载。  </p>
+<h2 id="PhotoDecodeRunnable"><a href="#PhotoDecodeRunnable" class="headerlink" title="PhotoDecodeRunnable"></a>PhotoDecodeRunnable</h2><p>这个类是照片解码的任务，创建时获得<code>PhotoTask</code>的引用，并在执行时调用<code>mPhotoTask.setImageDecodeThread(Thread.currentThread());</code>来让<code>PhotoTask</code>获得解码线程的引用。</p>
+<p>在解码工作完成后，调用<code>PhotoTask.setImage()</code>方法传递<code>Bitmap</code>的引用，调用<code>PhotoTask.handleDecodeState()</code>方法来报告状态。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/14/Intent-Filters/#more" rel="contents">
+            <a class="btn" href="/2015/09/27/phototask-summary/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -495,8 +579,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/09/14/GridView/" itemprop="url">
-                  初探GridView
+                <a class="post-title-link" href="/2015/09/27/popupwindows/" itemprop="url">
+                  DialogFragmnet与PopupWindow
                 </a>
               
             
@@ -509,8 +593,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-14T20:47:46+08:00" content="2015-09-14">
-              2015-09-14
+            <time itemprop="dateCreated" datetime="2015-09-27T11:10:43+08:00" content="2015-09-27">
+              2015-09-27
             </time>
           </span>
 
@@ -536,10 +620,12 @@
 
       
         
-          <p>自己的项目中还从来没有用过<code>GridView</code>，这次有机会使用了，首先系统地学习一下。</p>
-<p><code>GridView</code>是一个二维展示子项的可滚动的<code>ViewGroup</code>。使用<code>ListAdapter</code>可以自动将每个格子插入至布局。  </p>
+          <p>安卓中弹出窗口其实算是一个有些复杂的问题，其复杂在，弹窗的很多特性与平常的UI控件都不一样，有点像不在一个系统中的问题。这次想做一个“更多”按钮，点击后弹出一个窗口来选择更多的操作。下面记录一下整个实现的过程。</p>
+<h2 id="尝试DialogFragment"><a href="#尝试DialogFragment" class="headerlink" title="尝试DialogFragment"></a>尝试DialogFragment</h2><p>一开始想到的是使用<code>DialogFragment</code>来创建一个对话框，这个类的使用非常便捷。但最后弹出的对话框却一直不能满足要求。我想做一个横向的包含多个按钮的对话框，就像</p>
+<pre><code>|按钮1|按钮2|按钮3|
+</code></pre><p>这样的，可<code>DialogFragment</code>不管怎么调整风格和主题，最后的布局总是会出现问题。比如，在这排按钮的下方出现空条，或者在最后一个按钮的右边出现，而且窗口大小也很难控制。最后是通过重写<code>onStart</code>方法实现的。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/14/GridView/#more" rel="contents">
+            <a class="btn" href="/2015/09/27/popupwindows/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -582,8 +668,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/09/13/Animation-Resources/" itemprop="url">
-                  安卓动画学习笔记（六） XML语法
+                <a class="post-title-link" href="/2015/09/27/Communicating-with-the-UI-Thread/" itemprop="url">
+                  安卓多线程（四） 与UI线程通讯
                 </a>
               
             
@@ -596,8 +682,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-13T21:03:08+08:00" content="2015-09-13">
-              2015-09-13
+            <time itemprop="dateCreated" datetime="2015-09-27T09:56:39+08:00" content="2015-09-27">
+              2015-09-27
             </time>
           </span>
 
@@ -623,10 +709,11 @@
 
       
         
-          <p>动画资源可以定义属性动画和视图动画。其中视图动画又分为补间动画和帧动画（用<code>AnimationDrawable</code>依次显示一系列图片）。</p>
-<h2 id="属性动画"><a href="#属性动画" class="headerlink" title="属性动画"></a>属性动画</h2><h3 id="文件地址"><a href="#文件地址" class="headerlink" title="文件地址"></a>文件地址</h3><p><code>res/animator/filename.xml</code>，其中filename即资源的ID。<br>
+          <p>本篇讲述如何将任务中的数据发送至UI线程中。</p>
+<p>每个应用都有自己的独特的线程来运行UI对象，称作UI线程。只有UI线程中的对象可以访问其中其他的对象。因为线程池中线程的任务不在UI线程中，所以无法访问UI对象。要将后台数据发送到UI线程中，使用UI线程中运行的<code>Handler</code>。</p>
+<h2 id="在UI线程中定义Handler"><a href="#在UI线程中定义Handler" class="headerlink" title="在UI线程中定义Handler"></a>在UI线程中定义Handler</h2><p><code>Handler</code>是安卓系统框架的一部分，用来管理线程。<code>Handler</code>对象接收消息，并执行代码来处理消息。一般，为新线程创造<code>Handler</code>但也可以创造一个连接已存在线程的<code>Handler</code>。当连接<code>Handler</code>至UI线程时，处理消息的代码将运行在UI线程中。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/13/Animation-Resources/#more" rel="contents">
+            <a class="btn" href="/2015/09/27/Communicating-with-the-UI-Thread/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -669,8 +756,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/09/13/View-Animation/" itemprop="url">
-                  安卓动画学习笔记（五） 视图动画
+                <a class="post-title-link" href="/2015/09/27/Running-Code-on-a-Thread-Pool-Thread/" itemprop="url">
+                  安卓多线程（三） 使用线程池中的线程执行代码
                 </a>
               
             
@@ -683,8 +770,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-13T20:30:43+08:00" content="2015-09-13">
-              2015-09-13
+            <time itemprop="dateCreated" datetime="2015-09-27T00:06:38+08:00" content="2015-09-27">
+              2015-09-27
             </time>
           </span>
 
@@ -710,9 +797,10 @@
 
       
         
-          <p>视图动画系统可以为View执行补间动画。补间动画通过起始点，终止点，大小，旋转和其他特性来计算动画。<br>补间动画可以执行一系列View的简单转换<br>。比如对一个<code>TextView</code>来说，可以移动，旋转，增加或减少文字。如果有背景图片，背景图片也会随着文字变化。<code>animation package</code>提供了补间动画使用的所有类。<br>
+          <p>上一篇文章展示了如何定义一个管理线程池和任务的类。这一篇将展示如何在线程池中运行任务：将任务添加至工作队列，当有线程可用时，<code>ThreadPoolExecutor</code>从中取走任务并在线程中执行。</p>
+<p>同时也将展示如果停止一个运行中的任务。可能会在任务启动后发现其不必要执行的时候这样做。与其浪费处理器的时间，可以取消任务所在的线程。比如，从网络中下载图片，并使用缓存时，如果发现图片已经在缓存中了，可能需要将任务停止。有时可能无法在下载开始发现这个问题。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/13/View-Animation/#more" rel="contents">
+            <a class="btn" href="/2015/09/27/Running-Code-on-a-Thread-Pool-Thread/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -755,8 +843,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/09/13/Animating-with-ValueAnimator/" itemprop="url">
-                  安卓动画学习笔记（四） 属性动画（续）
+                <a class="post-title-link" href="/2015/09/26/Creating-a-Manager-for-Multiple-Threads/" itemprop="url">
+                  安卓多线程（二） 创造多线程管理者
                 </a>
               
             
@@ -769,8 +857,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-13T16:09:59+08:00" content="2015-09-13">
-              2015-09-13
+            <time itemprop="dateCreated" datetime="2015-09-26T23:20:00+08:00" content="2015-09-26">
+              2015-09-26
             </time>
           </span>
 
@@ -796,9 +884,9 @@
 
       
         
-          <h2 id="用AnimatorSet编排多个动画"><a href="#用AnimatorSet编排多个动画" class="headerlink" title="用AnimatorSet编排多个动画"></a>用AnimatorSet编排多个动画</h2><p>很多时候，播放动画的时机取决于其他动画的开始和结束。安卓系统可以将多个动画捆绑在一个<code>AnimatorSet</code>中，以指定同时播放动画，按顺序播放动画或者延迟一定时间后播放。<code>AnimatorSet</code>对象也可以互相嵌套。<br>下面的例子取自一个弹球游戏，播放下面的顺序播放<code>Animator</code>对象：<br>
+          <p>上一篇文章介绍的方法适合只运行一次的任务。如果需要针对不同的数据重复运行任务，但同一时间只有一个在执行，可以使用<code>IntentService</code>。要自动在资源可用的时候运行任务，或者允许多个任务同时运行，则需要提供一个受管理的线程集合。这时应该使用<code>ThreadPoolExecutor</code>，当在池中有线程自由时从队列中取出一个任务执行。要运行一个任务，只需要添加到队列中。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/13/Animating-with-ValueAnimator/#more" rel="contents">
+            <a class="btn" href="/2015/09/26/Creating-a-Manager-for-Multiple-Threads/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -841,8 +929,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/09/13/Property-Animation/" itemprop="url">
-                  安卓动画学习笔记（三） 属性动画
+                <a class="post-title-link" href="/2015/09/26/Specifying-the-Code-to-Run-on-a-Thread/" itemprop="url">
+                  安卓多线程（一） 在后台运行
                 </a>
               
             
@@ -855,8 +943,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-13T14:27:32+08:00" content="2015-09-13">
-              2015-09-13
+            <time itemprop="dateCreated" datetime="2015-09-26T23:01:34+08:00" content="2015-09-26">
+              2015-09-26
             </time>
           </span>
 
@@ -882,10 +970,10 @@
 
       
         
-          <p>学习了上两节发现其中的代码有很多看不懂的地方，所以接下来从动画本身来学起。  </p>
-<p>属性动画是一个几乎能为任何东西实现动画的健壮框架。可以定义动画来随时间改变对象属性，无论是否绘制在屏幕上。属性动画在一段时间内改变一个属性（对象的域）。必须指定想要进行动画的对象属性，比如其位置，动画的时长，动画起止的属性值。<br>属性动画系统允许设定以下几个特性：<br>
+          <p>安卓中使用多线程本身并不难，但安卓平台本身性能有限，所以有很多细节需要注意。这一系列的文章将总结一下多线程方面的一些问题。</p>
+<p>可以在单独的线程中执行<code>Runnable</code>，也可以将之传送给其他的可以把它附到线程上并运行的对象。执行特定操作的一个或多个<code>Runnable</code>有时称作<em>任务</em>。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/13/Property-Animation/#more" rel="contents">
+            <a class="btn" href="/2015/09/26/Specifying-the-Code-to-Run-on-a-Thread/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -928,8 +1016,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/09/13/Using-ViewPager-for-Screen-Slides/" itemprop="url">
-                  安卓动画学习笔记（二） 自定义ViewPager动画
+                <a class="post-title-link" href="/2015/09/23/Generalized-Target-Type-Inference/" itemprop="url">
+                  Java 8泛型方法的自动推导
                 </a>
               
             
@@ -942,8 +1030,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-13T13:30:49+08:00" content="2015-09-13">
-              2015-09-13
+            <time itemprop="dateCreated" datetime="2015-09-23T21:40:08+08:00" content="2015-09-23">
+              2015-09-23
             </time>
           </span>
 
@@ -969,96 +1057,11 @@
 
       
         
-          <h2 id="使用PageTransformer自定义动画"><a href="#使用PageTransformer自定义动画" class="headerlink" title="使用PageTransformer自定义动画"></a>使用PageTransformer自定义动画</h2><p>可以实现<code>ViewPager.PageTransformer</code>接口来实现自定义的滑动动画。这个接口只有一个方法<code>transformPage()</code>。在屏幕切换的每一个点上，这个方法为当前可见的页面和相邻的页面各调用一次。比如，当前显示第三页，用户滑动到第四页，<code>transformPage()</code>在手势的每一步都为第二，三，四页所调用。<br>实现<code>transformPage()</code>时，可以创建自定义的滑动动画。根据页面在屏幕上的位置（通过方法的<code>position</code>参数获取），决定哪一个页面需要被变形。<br>
+          <p>今天在一个工程中写下面的语句时产生了疑问：</p>
+<pre><code>imageView.setImageBitmap(getIntent().getExtras().getParcelable());
+</code></pre><p>编译器居然没有对这个语句的类型错误进行提醒。<code>setImageBitmap()</code>接收一个<code>Bitmap</code>对象，而<code>getParcelable()</code>方法返回的应该是一个<code>Parcelable</code>对象。其中<code>Bitmap</code>类实现了<code>Parcelable</code>接口，所以这里存在一个向下转型，理应出现类型转换的问题，却没有报错。这是为什么呢？<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/13/Using-ViewPager-for-Screen-Slides/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/13/Crossfading-Two-Views/" itemprop="url">
-                  安卓动画学习笔记（一） 淡入淡出
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-13T13:03:08+08:00" content="2015-09-13">
-              2015-09-13
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>淡入淡出动画指的是渐渐隐去一个UI组件的同时逐渐显示出另一个，经常用在用户切换内容或视图的时候。没有淡入淡出效果的话，切换的过程会有些突兀。</p>
-<h2 id="创建视图"><a href="#创建视图" class="headerlink" title="创建视图"></a>创建视图</h2><p>首先创建两个相关的视图。下面创建一个进度指示器和一个可滚动的文本：<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/13/Crossfading-Two-Views/#more" rel="contents">
+            <a class="btn" href="/2015/09/23/Generalized-Target-Type-Inference/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1085,7 +1088,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1126,7 +1129,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">123</span>
+              <span class="site-state-item-count">140</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1136,7 +1139,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-count">55</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

@@ -1,0 +1,692 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Cache,Database,LevelDB," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Welcome to SPHIA" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="最近接手了一个老项目，这个项目的主要功能是通过一系列计算，算出输入对象的某个特征信息。也就是说，计算的结果是简单的K-V形式。而大量的计算结果，都需要存储起来，提供给高QPS的请求访问。
+在这一项目中，原作者是使用了LevelDB作为最终的存储引擎，多年以来，很好地支撑了数万的QPS。
+LevelDB的优势首先说明一下，这里说的LevelDB并非原始开源版本的LevelDB，而是内部封装改良后的分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="不要用持久化缓存代替底层数据库">
+<meta property="og:url" content="http://yoursite.com/2018/11/15/levelDB-as-persistence/index.html">
+<meta property="og:site_name" content="Welcome to SPHIA">
+<meta property="og:description" content="最近接手了一个老项目，这个项目的主要功能是通过一系列计算，算出输入对象的某个特征信息。也就是说，计算的结果是简单的K-V形式。而大量的计算结果，都需要存储起来，提供给高QPS的请求访问。
+在这一项目中，原作者是使用了LevelDB作为最终的存储引擎，多年以来，很好地支撑了数万的QPS。
+LevelDB的优势首先说明一下，这里说的LevelDB并非原始开源版本的LevelDB，而是内部封装改良后的分">
+<meta property="og:updated_time" content="2019-07-22T13:33:04.097Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="不要用持久化缓存代替底层数据库">
+<meta name="twitter:description" content="最近接手了一个老项目，这个项目的主要功能是通过一系列计算，算出输入对象的某个特征信息。也就是说，计算的结果是简单的K-V形式。而大量的计算结果，都需要存储起来，提供给高QPS的请求访问。
+在这一项目中，原作者是使用了LevelDB作为最终的存储引擎，多年以来，很好地支撑了数万的QPS。
+LevelDB的优势首先说明一下，这里说的LevelDB并非原始开源版本的LevelDB，而是内部封装改良后的分">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> 不要用持久化缓存代替底层数据库 | Welcome to SPHIA </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Welcome to SPHIA</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                不要用持久化缓存代替底层数据库
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2018-11-15T22:32:27+08:00" content="2018-11-15">
+              2018-11-15
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近接手了一个老项目，这个项目的主要功能是通过一系列计算，算出输入对象的某个特征信息。也就是说，计算的结果是简单的K-V形式。而大量的计算结果，都需要存储起来，提供给高QPS的请求访问。</p>
+<p>在这一项目中，原作者是使用了LevelDB作为最终的存储引擎，多年以来，很好地支撑了数万的QPS。</p>
+<h2 id="LevelDB的优势"><a href="#LevelDB的优势" class="headerlink" title="LevelDB的优势"></a>LevelDB的优势</h2><p>首先说明一下，这里说的LevelDB并非原始开源版本的LevelDB，而是内部封装改良后的分布式版本。原始的LevelDB，有一个最突出的特性，就是「写快读慢」。在写入时，只需要写入log即可返回，而读取时，往往需要读取磁盘上的LSM树。内部改良的版本，使用了SSD作为存储介质，很好地解决了读取相对较慢的问题。</p>
+<p>在此基础上，原项目使用LevelDB的好处，主要是以下几点：</p>
+<ol>
+<li>读写速度都很快，使用SSD后，读写RT保持在0.5ms以内</li>
+<li>使用简单，单纯的KV操作，开发起来也非常轻松</li>
+<li>数据持久化，并且有replica存在，可保证数据容灾性</li>
+<li>使用硬盘存储，可支撑大量的数据</li>
+</ol>
+<h2 id="简单使用LevelDB存储的隐患"><a href="#简单使用LevelDB存储的隐患" class="headerlink" title="简单使用LevelDB存储的隐患"></a>简单使用LevelDB存储的隐患</h2><p>高QPS、超低的RT、高吞吐量、所有数据持久化、容灾机制，看起来这一版本的LevelDB已经能够满足了所有的需求。然而，正是这些高性能的表现，掩盖了LevelDB不适合作为最终存储工具的原因：LevelDB并不提供数据导出接口！</p>
+<p>不提供数据导出接口的数据存储，是无法扩展的，其本质上只能起到缓存的作用。当项目因为业务的变化，需要大量增加存储量或QPS时，或者需要改变存储结构时，再或者需要对数据进行离线分析时，都需要存储层支持数据的批量导出。比如ES就有scroll、reindex等等多个API可供操作，MySQL也有自己的数据导出机制。而LevelDB只支持数据的批量导入，却不能批量导出或全量扫描，这就意味着数据进行LevelDB后，就进入了死胡同，不可能再导出，必须有其他的数据源提供数据回流的支持，才能方便以后项目的扩展和重构。</p>
+<h2 id="无法扩展"><a href="#无法扩展" class="headerlink" title="无法扩展"></a>无法扩展</h2><p>就拿本人所遇到的这个例子来说。原项目使用LevelDB存储了大约40亿条的KV数据，其读QPS在10万左右。现在突然有一个业务合作，业务方需要以300万的QPS读取其中的40亿条KV数据。这时怎么办呢？最简单的办法，建立新的LDB集群，查不到再查原来的LDB。这种方法乍一看可行，实际上绝大多数的流量依然会打到原来的LDB上，导致其无法承受超高的QPS挂掉。还有一种更加不靠谱的思路，手动吧，遍历全部的Key，然后一条条写入新集群。这种做法本质上还是把全量的QPS引入了旧集群，即使可行，也需要注意扫描的QPS不可过高，在面对海量数据的情况下，甚至需要几天乃至一两周的时间，才能安全完成扫描。这还并不考虑新老数据的同步与覆盖的问题。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>因此，即使LevelDB性能再好，操作再简单，即使100%契合了当下的业务需求，也必须注意，不能将LevelDB作为唯一和最终的数据持久层，否则数据将被困在LevelDB中。这一问题，在公司内部的很多项目中都有见到，LevelDB的存储性能实在是太过诱人，其各项功能也总能满足业务需求，很多团队都简单地将数据最终存进LevelDB中。这样做也并非不可以，但一定要考虑到其后果！</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Cache/" rel="tag">#Cache</a>
+          
+            <a href="/tags/Database/" rel="tag">#Database</a>
+          
+            <a href="/tags/LevelDB/" rel="tag">#LevelDB</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/05/kotlin-13-incompatible/" rel="next" title="Kotlin升级正式版协程后的性能问题">
+                <i class="fa fa-chevron-left"></i> Kotlin升级正式版协程后的性能问题
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/17/elasticsearch-optimization/" rel="prev" title="TB级别Elasticsearch的存储优化经验（一）Routing">
+                TB级别Elasticsearch的存储优化经验（一）Routing <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="SphiaTower" />
+          <p class="site-author-name" itemprop="name">SphiaTower</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">140</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+          
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#LevelDB的优势"><span class="nav-number">1.</span> <span class="nav-text">LevelDB的优势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单使用LevelDB存储的隐患"><span class="nav-number">2.</span> <span class="nav-text">简单使用LevelDB存储的隐患</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无法扩展"><span class="nav-number">3.</span> <span class="nav-text">无法扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结语"><span class="nav-number">4.</span> <span class="nav-text">结语</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SphiaTower</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>
