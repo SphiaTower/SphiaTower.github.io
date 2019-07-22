@@ -201,11 +201,99 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/02/05/learning-preferences-2/" itemprop="url">
+                  使用Preferences API（二）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-02-05T18:48:59+08:00" content="2016-02-05">
+              2016-02-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          <h1 id="使用pref-header"><a href="#使用pref-header" class="headerlink" title="使用pref header"></a>使用pref header</h1><p>某些情况下，可能需要设计设置页面来使第一个屏幕展示一列子屏幕。在3.0以上版本中，应该使用新的header特性，而非使用嵌套的<code>PreferenceScreen</code>元素。</p>
+<ol>
+<li>分离各组设置至不同的PF实例。每组设置需要单独的XML文件。</li>
+<li>创建XML header文件，列出每个设置组，声明含有对应设置列表的fragment。</li>
+<li>继承PA类来持有设置。</li>
+<li>实现<code>onBuildHeaderes()</code>回调来指定header文件。</li>
+</ol>
+<p>这样做的一个好处是，PA可以自动在大屏幕中使用双面板布局呈现设定。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/05/learning-preferences-2/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1004,103 +1092,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/11/16/notes-about-ContentProviders-2/" itemprop="url">
-                  Notes on Content Providers (II) Creating a Content Provider
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-11-16T23:12:32+08:00" content="2015-11-16">
-              2015-11-16
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Before-You-Start-Building"><a href="#Before-You-Start-Building" class="headerlink" title="Before You Start Building"></a>Before You Start Building</h1><p>You need to build a content provider if you want to provide one or more of the following features:</p>
-<ul>
-<li>You want to offer complex data or files to other applications.</li>
-<li>You want to allow users to copy complex data from your app into other apps.</li>
-<li>You want to provide custom search suggestions using the search framework.</li>
-</ul>
-<p>Follow these steps to build your provider:</p>
-<ol>
-<li>Design the raw storage for your data. A content provider offers data in two ways:  File data or  “Structured” data.</li>
-<li>Define a concrete implementation of the ContentProvider class and its required methods. </li>
-<li>Define the provider’s authority string, its content URIs, and column names. If you want the provider’s application to handle intents, also define intent actions, extras data, and flags. Also define the permissions that you will require for applications that want to access your data. You should consider defining all of these values as constants in a separate contract class; later, you can expose this class to other developers.</li>
-<li>Add other optional pieces, such as sample data or an implementation of <code>AbstractThreadedSyncAdapter</code> that can synchronize data between the provider and cloud-based data.
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/11/16/notes-about-ContentProviders-2/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1147,7 +1138,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">121</span>
+              <span class="site-state-item-count">122</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1157,7 +1148,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -1202,7 +1193,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

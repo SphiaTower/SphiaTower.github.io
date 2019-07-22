@@ -201,11 +201,103 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/11/16/notes-about-ContentProviders-2/" itemprop="url">
+                  Notes on Content Providers (II) Creating a Content Provider
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-11-16T23:12:32+08:00" content="2015-11-16">
+              2015-11-16
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          <h1 id="Before-You-Start-Building"><a href="#Before-You-Start-Building" class="headerlink" title="Before You Start Building"></a>Before You Start Building</h1><p>You need to build a content provider if you want to provide one or more of the following features:</p>
+<ul>
+<li>You want to offer complex data or files to other applications.</li>
+<li>You want to allow users to copy complex data from your app into other apps.</li>
+<li>You want to provide custom search suggestions using the search framework.</li>
+</ul>
+<p>Follow these steps to build your provider:</p>
+<ol>
+<li>Design the raw storage for your data. A content provider offers data in two ways:  File data or  “Structured” data.</li>
+<li>Define a concrete implementation of the ContentProvider class and its required methods. </li>
+<li>Define the provider’s authority string, its content URIs, and column names. If you want the provider’s application to handle intents, also define intent actions, extras data, and flags. Also define the permissions that you will require for applications that want to access your data. You should consider defining all of these values as constants in a separate contract class; later, you can expose this class to other developers.</li>
+<li>Add other optional pieces, such as sample data or an implementation of <code>AbstractThreadedSyncAdapter</code> that can synchronize data between the provider and cloud-based data.
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/11/16/notes-about-ContentProviders-2/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -1016,93 +1108,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/10/ImageGetter-with-Picasso/" itemprop="url">
-                  A Failed Attempt to Implement Html.ImageGetter with Picasso
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-10-10T19:48:19+08:00" content="2015-10-10">
-              2015-10-10
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>Picasso is an very powerful for handling image downloading and caching operations. However, sometimes we need to display an image in a <code>TextView</code> by calling <code>Html.fromHtml</code>, which need a <code>ImageGetter</code> passed as a parameter.</p>
-<p>Essentially speaking, <code>ImageGetter</code> is a function interface used to wrap a single function <code>getDrawable(String source)</code>. The <code>getDrawable()</code> function is called by <code>Html.fromHtml</code> as a sync process. So <code>getDrawable()</code> could not be executed from the UI thread. And the problem is how to get a <code>Drawable</code> instance using Picasso synchronously, since an async process could not return a <code>Drawable</code> in a the method body of <code>getDrawable()</code>.</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/10/ImageGetter-with-Picasso/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1149,7 +1154,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">121</span>
+              <span class="site-state-item-count">122</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1159,7 +1164,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -1204,7 +1209,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

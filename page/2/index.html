@@ -201,11 +201,93 @@
 
     
     
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/04/17/mvp-and-others/" itemprop="url">
+                  Fuse Android Components with MVP
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-04-17T13:55:02+08:00" content="2016-04-17">
+              2016-04-17
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
       
 
       
-    
+        
+          <h1 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h1><p>In MVP pattern, service plays the role of model. Take a music player app as an example, a service playbacks music like a music player. A presenter should get a music player instance to deal with the logic behind. It’s easy to get an instance of a bound service inside the presenter.</p>
+<h2 id="Where-to-bind-service"><a href="#Where-to-bind-service" class="headerlink" title="Where to bind service?"></a>Where to bind service?</h2><p>Since views in MVP pattern should not concern about the inner logic and models. You should not bind the service in an activity or a fragment. When you bind a service, you only need a context, so you should receive a context in the constructor of the presenter.<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/17/mvp-and-others/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -996,93 +1078,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/05/wear-dev-14/" itemprop="url">
-                  Android Wear 开发 （十四） 处理数据层事件
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-03-05T23:11:19+08:00" content="2016-03-05">
-              2016-03-05
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>调用数据层API时，可以在完成时获取调用的状态，也可以侦听调用引起的任何改变。</p>
-<h1 id="等待数据层调用的状态"><a href="#等待数据层调用的状态" class="headerlink" title="等待数据层调用的状态"></a>等待数据层调用的状态</h1><p>数据层API有时返回一个<code>PendingResult</code>，比如<code>putDataItem()</code>。一旦<code>PendingResult</code>创建，操作会在后台被入队。如果在这之后什么也不做，操作最终会静默地完成。然而，一般情况下都想在操作完成后根据结果做些什么，所以<code>PendingResult</code>可以让你等待结果的状态，同步或异步地。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/05/wear-dev-14/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
@@ -1129,7 +1124,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">121</span>
+              <span class="site-state-item-count">122</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1139,7 +1134,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -1184,7 +1179,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
