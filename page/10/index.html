@@ -224,6 +224,732 @@
             
               
                 
+                <a class="post-title-link" href="/2015/10/05/multiscreen-2-bitmap/" itemprop="url">
+                  适配不同屏幕（二） 准备不同像素的位图
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-05T14:22:12+08:00" content="2015-10-05">
+              2015-10-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="提供备用位图"><a href="#提供备用位图" class="headerlink" title="提供备用位图"></a>提供备用位图</h1><p>因为安卓运行在多种密度的屏幕上，应该将位图资源裁剪使之适合各种密度，如低，中，高和超高密度。要产生这些图片，可以使用下面的尺度缩放矢量格式的原始资源：</p>
+<ul>
+<li>xhdpi: 2.0</li>
+<li>hdpi: 1.5</li>
+<li>mdpi: 1.0（基准）</li>
+<li>ldpi: 0.75</li>
+</ul>
+<p>也就是说，为<code>xhdpi</code>设备产生200x200的图片的同时，应该同样为<code>hdpi</code>产生150x150的图片，为<code>mdpi</code>产生100x100的图片等等。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/05/multiscreen-2-bitmap/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/05/multiscreen-3-viewstub/" itemprop="url">
+                  使用ViewStub
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-05T12:21:52+08:00" content="2015-10-05">
+              2015-10-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="ViewStub"><a href="#ViewStub" class="headerlink" title="ViewStub"></a>ViewStub</h1><p><code>ViewStub</code>是个不具有尺寸，不进行绘制，不加入布局的轻量级view。所以在view层级中，非常容易填充和舍弃。每个<code>ViewStub</code>只需要简单地包含<code>android:layout</code>属性来指明需要填充的布局。</p>
+<h1 id="加载ViewStub布局"><a href="#加载ViewStub布局" class="headerlink" title="加载ViewStub布局"></a>加载ViewStub布局</h1><p>想要加载<code>ViewStub</code>的布局时，只需要调用<code>setVisible(View.VISIBLE)</code>或者<code>inflate()</code>即可。<code>inflate()</code>返回的结果就是所填充的view。</p>
+<p>一旦可见或填充后，<code>ViewStub</code>就不再是view阶层的一部分。它被所填充的布局替换，而且该布局的根view的ID成为<code>android:inflatedId</code>属性指明的ID。而<code>ViewStub</code>的<code>android:id</code>仅仅在这之前有效。</p>
+<blockquote>
+<p>注意：<code>ViewStub</code>的一大缺陷就是它目前不支持将要填充的布局中的<merge>标签。</merge></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/05/understanding-dp/" itemprop="url">
+                  适配不同屏幕（一） 理解安卓测量单位
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-05T11:47:23+08:00" content="2015-10-05">
+              2015-10-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="术语和概念"><a href="#术语和概念" class="headerlink" title="术语和概念"></a>术语和概念</h1><p>屏幕尺寸：实际的物理尺寸。为了方便，所有尺寸被分为四组：small, normal, large和extra-large。</p>
+<p>屏幕密度：屏幕的单位物理区域中所包含的像素的量，一般使用dpi（每英尺点数）描述。所有密度被分为六种泛化的密度：low, medium, high, extra-high, extra-extra-high, extra-extra-extra-high。</p>
+<p>分辨率：屏幕上物理像素的总数目。支持多屏幕时，应用只需要关心泛化的屏幕尺寸和密度，而不需要关心分辨率。</p>
+<p>密度无关像素（dp)：定义UI布局时应该使用的虚拟像素单位，用来以一种密度无关的方式表达布局尺寸或位置。</p>
+<p>密度无关像素与160dpi屏幕上的一个物理像素等同，它是medium密度屏幕的基线密度。运行时，系统根据屏幕的实际密度来处理dp单位的变换。从dp至屏幕像素的转换很简单：<code>px = dp * (dpi / 160)</code>。例如，在240dpi屏幕上，1dp=1.5物理像素。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/05/understanding-dp/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/03/Volley-UTF-8/" itemprop="url">
+                  Volley解析UTF-8产生乱码的解决方法
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-03T14:11:54+08:00" content="2015-10-03">
+              2015-10-03
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在使用Volley的<code>StringRequest</code>获取字符串的时候遇到了一个问题，返回的中文部分全部都是乱码，查找了一下原因，<a href="http://my.oschina.net/u/1247737/blog/393959">在这篇文章</a>中找到了答案：</p>
+<blockquote>
+<p>如果在服务器的返回数据的header中没有指定字符集那么就会默认使用 ISO-8859-1 字符集。<br>ISO-8859-1的别名叫做Latin1。这个字符集支持部分是用于欧洲的语言，不支持中文。</p>
+</blockquote>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/03/Volley-UTF-8/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/03/SaxParser/" itemprop="url">
+                  使用SAXParser解析XML
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-03T13:51:06+08:00" content="2015-10-03">
+              2015-10-03
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><code>SAXParser</code>是一个用来解析XML文件的工具，相比起使用正则表达式，效率更高，可操作性更强。使用起来有一些问题需要注意。</p>
+<h2 id="创建解析器"><a href="#创建解析器" class="headerlink" title="创建解析器"></a>创建解析器</h2><p>首先通过工厂方法拿到<code>SAXParser</code>的实例，接下来用<code>InputSource</code>类来包裹XML文件，然后再调用<code>parse</code>解析时，传入一个<code>DefaultHandler</code>的子类，来告诉parser解析的方式，并存储解析的结果。</p>
+<pre><code>SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
+InputSource inputSource = new InputSource();
+inputSource.setEncoding(&quot;UTF-8&quot;);
+inputSource.setCharacterStream(new StringReader(xml));
+XmlHandler defaultHandler = new XmlHandler();
+
+saxParser.parse(inputSource, defaultHandler);
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/03/SaxParser/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/01/IntentService-Reporting-Work-Status/" itemprop="url">
+                  Service学习笔记（八） 报告工作状态
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-01T12:50:49+08:00" content="2015-10-01">
+              2015-10-01
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>本文探讨如何将后台服务的结果发送到前台UI。推荐的方法是使用<code>LocalBroadcastManager</code>来发送和接收状态，它将广播<code>Intent</code>限制在自己的应用中。</p>
+<h2 id="IntentService报告状态"><a href="#IntentService报告状态" class="headerlink" title="IntentService报告状态"></a>IntentService报告状态</h2><p>为了在<code>IntentService</code>中发送工作状态到其他组件，首先创建<code>Intent</code>，在其附加data中包含当前状态。作为选项，可以添加一个动作和数据URI。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/01/IntentService-Reporting-Work-Status/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/10/01/Keeping-the-Device-Awake/" itemprop="url">
+                  安卓保持设备唤醒
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-01T12:02:25+08:00" content="2015-10-01">
+              2015-10-01
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>为了避免耗尽电池，闲置状态的安卓设备，很快会进入睡眠状态。然而，有时应用需要唤醒屏幕或CPU并保持唤醒状态来完成一些工作。</p>
+<p>使用的方法取决于应用本身的需求。然而，通用的原则是，应该尽量使用轻量级的方法，来减少应用对系统资源的冲击。下面将探讨当设备的默认睡眠行为无法满足应用需求时的处理方法。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/01/Keeping-the-Device-Awake/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/30/Scheduling-Repeating-Alarms/" itemprop="url">
+                  安卓调度重复闹钟
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-30T21:24:15+08:00" content="2015-09-30">
+              2015-09-30
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><code>AlarmManager</code>类实现的闹钟可以执行在应用的生命周期之外执行基于时间的操作。例如，可以设定一个闹钟来初始化一个长期运行的操作，比如每天启动一次下载天气预报的服务。</p>
+<p>闹钟有以下特性：</p>
+<ul>
+<li>可以在指定时间或时间间隔发射Intent</li>
+<li>可以与broadcast receiver一起使用来启动服务或者执行其他服务</li>
+<li>可以在应用之外进行触发事件或动作，即使应用未启动或者设备在睡眠状态中</li>
+<li>可以最小化应用要求的资源。无需依赖定时器或者连续运行的后台服务就可以调度操作。</li>
+</ul>
+<blockquote>
+<p>对确保在应用生命周期内发生的定时操作而言，考虑使用将<code>Handler</code>与<code>Timer</code>、<code>Thread</code>联合使用。这样可以使安卓更好地控制系统资源。</p>
+</blockquote>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/09/30/Scheduling-Repeating-Alarms/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/09/29/source-code-of-volley/" itemprop="url">
                   源码解析 - Volley
                 </a>
@@ -384,711 +1110,12 @@ public Singleton getInstance(Context context){
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/28/source-code-of-AsyncTask/" itemprop="url">
-                  源码解析 - AsyncTask
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-28T19:50:12+08:00" content="2015-09-28">
-              2015-09-28
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><code>AsyncTask</code>是安卓中非常常用的一个类，它避免了每次都手动通过<code>Handler</code>与UI线程通讯。但也有很多人认为应该尽量避免使用<code>AsyncTask</code>，那么这个类到底该不该用呢？接下来就从源码层面上来看一看。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/28/source-code-of-AsyncTask/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/27/phototask-summary/" itemprop="url">
-                  安卓多线程（五） PhotoTask例子的总结
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-27T18:43:48+08:00" content="2015-09-27">
-              2015-09-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>接下来，总结一下前几篇中的PhotoTask的例子，例子的源代码可以在官网下载。  </p>
-<h2 id="PhotoDecodeRunnable"><a href="#PhotoDecodeRunnable" class="headerlink" title="PhotoDecodeRunnable"></a>PhotoDecodeRunnable</h2><p>这个类是照片解码的任务，创建时获得<code>PhotoTask</code>的引用，并在执行时调用<code>mPhotoTask.setImageDecodeThread(Thread.currentThread());</code>来让<code>PhotoTask</code>获得解码线程的引用。</p>
-<p>在解码工作完成后，调用<code>PhotoTask.setImage()</code>方法传递<code>Bitmap</code>的引用，调用<code>PhotoTask.handleDecodeState()</code>方法来报告状态。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/27/phototask-summary/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/27/popupwindows/" itemprop="url">
-                  DialogFragmnet与PopupWindow
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-27T11:10:43+08:00" content="2015-09-27">
-              2015-09-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>安卓中弹出窗口其实算是一个有些复杂的问题，其复杂在，弹窗的很多特性与平常的UI控件都不一样，有点像不在一个系统中的问题。这次想做一个“更多”按钮，点击后弹出一个窗口来选择更多的操作。下面记录一下整个实现的过程。</p>
-<h2 id="尝试DialogFragment"><a href="#尝试DialogFragment" class="headerlink" title="尝试DialogFragment"></a>尝试DialogFragment</h2><p>一开始想到的是使用<code>DialogFragment</code>来创建一个对话框，这个类的使用非常便捷。但最后弹出的对话框却一直不能满足要求。我想做一个横向的包含多个按钮的对话框，就像</p>
-<pre><code>|按钮1|按钮2|按钮3|
-</code></pre><p>这样的，可<code>DialogFragment</code>不管怎么调整风格和主题，最后的布局总是会出现问题。比如，在这排按钮的下方出现空条，或者在最后一个按钮的右边出现，而且窗口大小也很难控制。最后是通过重写<code>onStart</code>方法实现的。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/27/popupwindows/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/27/Communicating-with-the-UI-Thread/" itemprop="url">
-                  安卓多线程（四） 与UI线程通讯
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-27T09:56:39+08:00" content="2015-09-27">
-              2015-09-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>本篇讲述如何将任务中的数据发送至UI线程中。</p>
-<p>每个应用都有自己的独特的线程来运行UI对象，称作UI线程。只有UI线程中的对象可以访问其中其他的对象。因为线程池中线程的任务不在UI线程中，所以无法访问UI对象。要将后台数据发送到UI线程中，使用UI线程中运行的<code>Handler</code>。</p>
-<h2 id="在UI线程中定义Handler"><a href="#在UI线程中定义Handler" class="headerlink" title="在UI线程中定义Handler"></a>在UI线程中定义Handler</h2><p><code>Handler</code>是安卓系统框架的一部分，用来管理线程。<code>Handler</code>对象接收消息，并执行代码来处理消息。一般，为新线程创造<code>Handler</code>但也可以创造一个连接已存在线程的<code>Handler</code>。当连接<code>Handler</code>至UI线程时，处理消息的代码将运行在UI线程中。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/27/Communicating-with-the-UI-Thread/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/27/Running-Code-on-a-Thread-Pool-Thread/" itemprop="url">
-                  安卓多线程（三） 使用线程池中的线程执行代码
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-27T00:06:38+08:00" content="2015-09-27">
-              2015-09-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>上一篇文章展示了如何定义一个管理线程池和任务的类。这一篇将展示如何在线程池中运行任务：将任务添加至工作队列，当有线程可用时，<code>ThreadPoolExecutor</code>从中取走任务并在线程中执行。</p>
-<p>同时也将展示如果停止一个运行中的任务。可能会在任务启动后发现其不必要执行的时候这样做。与其浪费处理器的时间，可以取消任务所在的线程。比如，从网络中下载图片，并使用缓存时，如果发现图片已经在缓存中了，可能需要将任务停止。有时可能无法在下载开始发现这个问题。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/27/Running-Code-on-a-Thread-Pool-Thread/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/26/Creating-a-Manager-for-Multiple-Threads/" itemprop="url">
-                  安卓多线程（二） 创造多线程管理者
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-26T23:20:00+08:00" content="2015-09-26">
-              2015-09-26
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>上一篇文章介绍的方法适合只运行一次的任务。如果需要针对不同的数据重复运行任务，但同一时间只有一个在执行，可以使用<code>IntentService</code>。要自动在资源可用的时候运行任务，或者允许多个任务同时运行，则需要提供一个受管理的线程集合。这时应该使用<code>ThreadPoolExecutor</code>，当在池中有线程自由时从队列中取出一个任务执行。要运行一个任务，只需要添加到队列中。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/26/Creating-a-Manager-for-Multiple-Threads/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/26/Specifying-the-Code-to-Run-on-a-Thread/" itemprop="url">
-                  安卓多线程（一） 在后台运行
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-26T23:01:34+08:00" content="2015-09-26">
-              2015-09-26
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>安卓中使用多线程本身并不难，但安卓平台本身性能有限，所以有很多细节需要注意。这一系列的文章将总结一下多线程方面的一些问题。</p>
-<p>可以在单独的线程中执行<code>Runnable</code>，也可以将之传送给其他的可以把它附到线程上并运行的对象。执行特定操作的一个或多个<code>Runnable</code>有时称作<em>任务</em>。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/26/Specifying-the-Code-to-Run-on-a-Thread/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/23/Generalized-Target-Type-Inference/" itemprop="url">
-                  Java 8泛型方法的自动推导
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-23T21:40:08+08:00" content="2015-09-23">
-              2015-09-23
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>今天在一个工程中写下面的语句时产生了疑问：</p>
-<pre><code>imageView.setImageBitmap(getIntent().getExtras().getParcelable());
-</code></pre><p>编译器居然没有对这个语句的类型错误进行提醒。<code>setImageBitmap()</code>接收一个<code>Bitmap</code>对象，而<code>getParcelable()</code>方法返回的应该是一个<code>Parcelable</code>对象。其中<code>Bitmap</code>类实现了<code>Parcelable</code>接口，所以这里存在一个向下转型，理应出现类型转换的问题，却没有报错。这是为什么呢？<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/23/Generalized-Target-Type-Inference/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1129,7 +1156,7 @@ public Singleton getInstance(Context context){
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">140</span>
+              <span class="site-state-item-count">148</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1139,7 +1166,7 @@ public Singleton getInstance(Context context){
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-count">60</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

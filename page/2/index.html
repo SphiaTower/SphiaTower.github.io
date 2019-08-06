@@ -224,6 +224,808 @@
             
               
                 
+                <a class="post-title-link" href="/2019/05/12/elasticsearch-sniffer/" itemprop="url">
+                  ES中隐藏的关键调优 - Sniffer
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2019-05-12T19:28:07+08:00" content="2019-05-12">
+              2019-05-12
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="默认情况下，流量全部打到VIP的Master节点"><a href="#默认情况下，流量全部打到VIP的Master节点" class="headerlink" title="默认情况下，流量全部打到VIP的Master节点"></a>默认情况下，流量全部打到VIP的Master节点</h2><p>ES集群中，节点可以粗略地分成Master节点、Data节点、Client节点三种。在笔者使用的一个ES服务中，集群没有Client节点，只有另两种节点。在其中，Data节点的机器性能非常高，而Master节点则是低配置的普通机器。</p>
+<p>在使用ES的官方rest high level client时，我们只需要提供一个endpoint URL，就可以访问远程ES集群。那么问题来了，客户端拿到这个URL之后，访问的究竟是哪台机器呢？是某个主节点？全部主节点？还是全部节点？一般情况下，这个问题似乎没有那么重要。但是当Master节点和Data节点性能差异非常明显的情况下，ES客户端的访问逻辑就变得非常重要。比如，如果所有请求都被打到性能较差的Master节点中，甚至只打到Master节点中的某一个具体节点中，那么ES集群就难以发挥出真正的性能了。</p>
+<p>首先我们要分析的是，服务商提供给我们的endpoint究竟是什么。<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">http:</span><span class="comment">//sample.es.cluster.com:9200</span></span><br></pre></td></tr></table></figure></p>
+<p>如上面的一个简单的endpoint，根据DNS的原理可知，这个域名的背后不一定只有一个IP。使用网络工具，我们很容易就可以查到这个域名URL背后的几个IP。那么这几个IP是全部节点的IP？还是其中一部分呢？</p>
+<p>很多情况下，服务商都会使用所有Master节点的IP。特别是当我们需要对集群进行配置操作时，请求都需要Master节点进行处理。到此，答案就已经揭晓，我们使用官方client指定endpoint后，客户端的所有请求就会简单地打到这个endpoint的域名上，再使用DNS自身的负载均衡功能，打到不同的Master节点上。</p>
+<h2 id="如果Master节点性能较差，集群负载飙升"><a href="#如果Master节点性能较差，集群负载飙升" class="headerlink" title="如果Master节点性能较差，集群负载飙升"></a>如果Master节点性能较差，集群负载飙升</h2><h2 id="使用默认的Sniffer配置，流量达到全部节点"><a href="#使用默认的Sniffer配置，流量达到全部节点" class="headerlink" title="使用默认的Sniffer配置，流量达到全部节点"></a>使用默认的Sniffer配置，流量达到全部节点</h2><p>ES提供了一个简单的sniffer库。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>elasticsearch-rest-client-sniffer<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">version</span>&gt;</span>8.0.0<span class="tag">&lt;/<span class="title">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>这个Sniffer虽然代码写得有些复杂，但是功能其实很简单。就是调用ES的Rest API，如<code>/_nodes/http</code>，获取ES集群的节点信息，解析后，为<code>RestClient</code>设置可用的所有<code>HttpHost</code>。其他无非是增加了定时更新和失败重试功能而已。</p>
+<p>默认情况下，获取全部节点。</p>
+<h2 id="定制HostsSniffer，流量只达到Data节点"><a href="#定制HostsSniffer，流量只达到Data节点" class="headerlink" title="定制HostsSniffer，流量只达到Data节点"></a>定制HostsSniffer，流量只达到Data节点</h2><p>增加参数即可，只指定Data节点</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2019/04/27/elasticsearch-nodes/" itemprop="url">
+                  Elasticsearch中节点类型的梳理
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2019-04-27T22:31:45+08:00" content="2019-04-27">
+              2019-04-27
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在使用ES时，很多时候我们都会使用服务商提供的开箱即用的ES版本，只需要拿到endpoint地址，用户名，密码，就可以创建客户端实例，如<code>RestHighLevelClient</code>，对ES进行访问了。然而，随着集群索引的文档数目或QPS不断增多，简单地使用默认配置或者“祖传配置”，就难以应对了。这种时候，最简单的办法就是增加ES集群的节点数。可实际上，如果不了解ES集群的构成方式，即使大量增加节点数，很多时候集群性能也不会有大幅提升，反而空耗了大量的资源。</p>
+<p>ES中节点的分类说简单也简单，说复杂也复杂。简单在，ES中本身各种节点的定义非常直接明显；而复杂在，不同层次的节点类型往往被混合在一起。下面我们来分各种层次看一看节点的不同类型。</p>
+<h2 id="Master节点和Data节点"><a href="#Master节点和Data节点" class="headerlink" title="Master节点和Data节点"></a>Master节点和Data节点</h2><p>ES中最经常提到的节点类型就是Master节点和Data节点了。然而实际上，与其称其为节点，不如说Master和Data是一个节点的两个正交的属性。一个节点可以同时是Master节点和Data节点，可以是其中一种，也可以都不是（Client节点）。</p>
+<p>Master属性：如果一个节点具有Master属性，那么该节点可以用来处理一些集群范围的工作，如索引的创建和删除，以及shard的分配等。<br>Data属性：如果一个节点具有Data属性，那么该节点就可以存放索引数据，进行索引的增删改查等操作。</p>
+<p>ES官方建议不要将Master节点和Data节点混用，使用单独的两种节点会带来更好的性能和稳定性。</p>
+<h2 id="协调节点"><a href="#协调节点" class="headerlink" title="协调节点"></a>协调节点</h2><p>协调节点与上面提到的两种节点并非同一个维度上的概念。在ES中，任何一个节点都可以随时作为协调节点，其作用是集群内请求的路由和多个replica的负载均衡。其实这个概念非常简单，ES客户端可以将ES操作请求发给ES集群中的任何一个节点，这时收到请求的节点就成为了一个协调节点，协调节点会判断该请求所需要涉及的实际Data节点，然后将请求转发给其中一个真正处理的Data节点（也可以是自己，也可以涉及多个节点，如搜索和批量操作）。</p>
+<p>协调节点本质上起到服务端的路由和负载均衡作用，与很多缓存工具的实现不同，ES的路由完全是交给服务端处理的。即使在客户端调用时指定了routing参数，也需要提交给任一协调节点之后，再有协调节点进行路由。</p>
+<h2 id="Client节点（只协调节点）"><a href="#Client节点（只协调节点）" class="headerlink" title="Client节点（只协调节点）"></a>Client节点（只协调节点）</h2><p>如果一个节点既不是Master也不是Data，那么这种节点就称作Client节点，也称作只协调节点。Client节点没有Master和Data节点的功能，不能存储数据，只能起到协调功能，作为ES集群内部的负载均衡器。</p>
+<p>使用Client节点可以为Master节点和Data节点节省掉很多协调工作的压力。最明显的就是搜索时，需要先分散到多个节点搜索，再回到协调节点将结果进行聚合。但是过多地增加协调节点也会有浪费资源和增加选举复杂度等问题，大部分情况下，使用Data节点作为协调节点就可以很好地完成任务了。</p>
+<h2 id="Ingest节点"><a href="#Ingest节点" class="headerlink" title="Ingest节点"></a>Ingest节点</h2><p>Ingest nodes can execute pre-processing pipelines, composed of one or more ingest processors. Depending on the type of operations performed by the ingest processors and the required resources, it may make sense to have dedicated ingest nodes, that will only perform this specific task.</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2019/04/27/antipattern-bikeshedding/" itemprop="url">
+                  项目开发中的反模式（二）轻重倒置
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2019-04-27T21:26:41+08:00" content="2019-04-27">
+              2019-04-27
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2019/04/26/antipattern-death-march/" itemprop="url">
+                  项目开发中的反模式（一）死亡行军
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2019-04-26T21:26:41+08:00" content="2019-04-26">
+              2019-04-26
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这一系列文章主要来谈一谈，在项目开发过程中遇到的各种各样的反模式。这些反模式，不一定是指的是应用开发中的某些技术，而是包括了从项目管理到团队激励各个方面的问题。其实很多时候，决定一个项目是否能够成功的最重要因素，甚至并不是技术实力，而是这些更加宏观上的管理与决策的问题。</p>
+<h2 id="什么是「死亡行军」"><a href="#什么是「死亡行军」" class="headerlink" title="什么是「死亡行军」"></a>什么是「死亡行军」</h2><p>死亡行军，英文叫做death marching。指的是在一个项目的开发过程中，所有人都不相信能够完成最后的任务，士气低落。但又没有一个人能站出来停掉这个项目，还是要继续坚持。这种项目往往伴随着大量的加班，大量的bug与修复，大量的赶工与重做。参与者会被项目折磨地疲惫不堪，最终往往以项目失败，骨干成员离职为结局。</p>
+<p>再来看看维基上对「死亡行军」这个词定义</p>
+<blockquote>
+<p>In project management, a death march is a project that the participants feel is destined to fail, or that requires a stretch of unsustainable overwork. The general feel of the project reflects that of an actual death march because project members are forced to continue the project by their superiors against their better judgment. </p>
+</blockquote>
+<p>参与者根据自己的判断，都相信项目必将失败，却必须投入巨大的精力和资源，而这些仅仅是因为管理者的判断不容更改。这种项目，给团队成员带来的，不仅是时间的浪费、机会的丧失，更多的是对整个团队和管理者的不信任。</p>
+<h2 id="我所经历过的死亡行军项目"><a href="#我所经历过的死亡行军项目" class="headerlink" title="我所经历过的死亡行军项目"></a>我所经历过的死亡行军项目</h2><p>我个人在职业生涯中，目前经历过三个死亡行军项目（囧），第一个更多的是作为旁观者，而后两个则参与了一些边缘的开发过程，体会颇深。</p>
+<h3 id="项目一：过度复杂的产品设计"><a href="#项目一：过度复杂的产品设计" class="headerlink" title="项目一：过度复杂的产品设计"></a>项目一：过度复杂的产品设计</h3><p>第一个要说的项目是一个工具类的移动App。这个App在发布两年后，失去了用户的增长点，进入停滞状态。产品经理们苦思冥想，最终提出了一个新的功能模块，这个模块的主要功能是统合用户的一些账号和登录状态，具体就不细说了。这个产品方案提出之后，很快就进入了死亡行军的开发模式。产品的设计实在是太过复杂了！在一个App内，有着各种各样的账号状态，要登陆要注销，账号与账号之间又有着复杂的关联关系。App的安卓和IOS两端有着非常多的复杂页面和交互逻辑，移动</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2019/04/18/elasticsearch-update/" itemprop="url">
+                  ES进阶功能 - 使用脚本更新
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2019-04-18T23:03:40+08:00" content="2019-04-18">
+              2019-04-18
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在使用ES时，一个经常出现的操作模式就是，从ES中读取某些数据，根据本地内容进行更新，随后再重新索引到ES集群中。这么一个简单而常见的操作，实际使用过程中，如果深究的话，问题非常的多。特别是与传统的关系数据库不同，ES的数据模型并非简单的行式3NF设计，可以包含嵌套的对象，可以包含数组，甚至字段本身都可以随时增加。</p>
+<h2 id="潜在的问题"><a href="#潜在的问题" class="headerlink" title="潜在的问题"></a>潜在的问题</h2><h3 id="多出的操作损耗"><a href="#多出的操作损耗" class="headerlink" title="多出的操作损耗"></a>多出的操作损耗</h3><p>首先，最直观的问题是，这样的操作会多耗费一次操作。必须先将数据拉到本地，然后才能更新回ES。一般情况下，get操作和index操作本身都比较廉价，即使是在高QPS下，实际多出的性能损耗也并不大。然而，当ES中文档对象极为复杂或庞大时，多出操作的性能损耗就不容小觑了。</p>
+<p>比如当一个array字段，有成百上千的元素后，需要增加一个新元素，这时get和index两步操作都需要将全量的数据下载或上传，而实际增加的数据量却非常少。不仅多了一次网络IO，也会影响ES集群和应用自身集群的吞吐量。此外，如果自己应用中使用了ORM工具来处理ES文档，那么大对象的频繁序列化和反序列化所引起的性能损耗也是非常巨大的。在极端情况下，如果单个文档过大，甚至可能引发OOM问题。</p>
+<p>当然我们还要先考虑另一个问题，当一个ES文档有过长的array或过度复杂的嵌套object时，这种数据设计是否还合理？如果使用类似关系数据库的设计方式，当然可以规避这种情况，但这时也丧失了ES自身的很多独特性能优势，使得代码过度复杂化。而且，即使大部分文档的大小都控制在可接受范围内，在业务的发展过程中，也很难避免出现个别巨型对象。是否值得为了这些个别的巨型对象而修改代码或增加专门的处理方式，也是需要根据情况来看的。也因此，我们有必要事先考虑如何应对对象较复杂的情况。</p>
+<p>总结下：</p>
+<ol>
+<li>多一次IO</li>
+<li>每次IO，应用和ES两方的性能损耗</li>
+<li>序列化和反序列化，以及ORM的损耗</li>
+</ol>
+<h3 id="多个更新的竞争"><a href="#多个更新的竞争" class="headerlink" title="多个更新的竞争"></a>多个更新的竞争</h3><p>在多个请求更新同一个文档时，不可避免地会遇到race condition的问题。ES中并没有天生的事务支持，要想保持更新操作的一致性和原子性，无非是悲观和乐观两种方案，即分布式锁或版本控制。</p>
+<p>使用分布式锁时，必然要考虑在哪里加锁。如果只对更新操作加锁，基本上是起不到同步作用的，因为读取-更新操作并非原子性的。而如果对一次读取和更新全部加锁，很容易降低读取操作的吞吐量，无法并发地处理更新。</p>
+<p>另一个方案就是使用ES自带的版本控制，在更新时指定版本，ES集群发现版本不一致，则更新失败。这种做法虽然保证了一致性，但是问题是如何处理失败的情况。失败后，之前读取获得的旧操作已经失效，只能重新读取新版本的数据再重新更新。如果操作的数据并非热点数据，这种偶尔出现的重试操作效率是很高的，很好地解决了问题。但是如果操作的数据为热点数据，面临高并发的竞争，反复的重复读取-更新操作效率会急剧恶化，特别是在文档复杂的情况下。</p>
+<h2 id="使用Update-Script-API"><a href="#使用Update-Script-API" class="headerlink" title="使用Update+Script API"></a>使用Update+Script API</h2><p>ES提供了Update API，以及强大的Script机制，让我们能够更好地处理文档更新的情况。使用的方法很简单，提供一个要操作的文档ID，然后用在json中提供脚本和脚本的参数即可。<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">POST test/_<span class="keyword">update</span>/<span class="number">1</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"script"</span> : &#123;</span><br><span class="line">        <span class="string">"source"</span>: <span class="string">"ctx._source.counter += params.count"</span>,</span><br><span class="line">        <span class="string">"lang"</span>: <span class="string">"painless"</span>,</span><br><span class="line">        <span class="string">"params"</span> : &#123;</span><br><span class="line">            <span class="string">"count"</span> : <span class="number">4</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如上面的例子，<code>source</code>字段中提供了脚本的代码内容，<code>lang</code>字段指定了脚本使用的语言<code>painless</code>（也是ES的默认语言），而<code>params</code>提供了脚本的参数Map（主要是为了脚本的服用）。上面的脚本语言，看起来有些让人望而却步，实际上非常简单，完全不用害怕。<code>painless</code>语言是一种类似<code>Java</code>的脚本语言。有多类似呢？写脚本代码时，就当是在写<code>Java</code>就好了，基本可以随心所欲地使用JDK中的API。所以ES的脚本编写可以说是非常轻松和简单，并不需要去学一门新的脚本语言（比如Lua).</p>
+<p>配合脚本，我们可以很轻松地实现array类型数据的append操作<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">ctx</span><span class="class">._source</span><span class="class">.tags</span><span class="class">.add</span>(<span class="tag">params</span><span class="class">.tag</span>)</span><br></pre></td></tr></table></figure></p>
+<p>还加上判空和数组的新建操作<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (ctx._source.tags == <span class="keyword">null</span>) &#123;</span><br><span class="line">    ctx._source.tags = <span class="keyword">new</span> String[]&#123;<span class="keyword">params</span>.tag&#125;;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    ctx._source.tags.add(<span class="keyword">params</span>.tag);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>再加上类似Set的去重操作<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (ctx._source.tags == <span class="keyword">null</span>) &#123;</span><br><span class="line">    ctx._source.tags = <span class="keyword">new</span> String[]&#123;<span class="keyword">params</span>.tag&#125;;</span><br><span class="line">&#125; <span class="function"><span class="keyword">else</span> <span class="title">if</span>(<span class="params">ctx._source.tags.contains(<span class="keyword">params</span>.tag</span>)) </span>&#123;</span><br><span class="line">    <span class="comment">// 如果tags中已经包含新元素，不做任何操作</span></span><br><span class="line">    ctx.op = <span class="string">"noop"</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    ctx._source.tags.add(<span class="keyword">params</span>.tag);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>需要额外注意的是，默认情况下，只要使用了Script进行Update操作，文档的版本号version就会+1，即使文档内容完全没有变化。很多情况下，我们是不需要真的去更新文档的（比如已存在元素），这时只需要调用<code>ctx.op = &quot;noop&quot;;</code>，就可以告诉ES不进行更新操作，文档的版本号也不会变化。</p>
+</blockquote>
+<p>此外，ES的脚本可以分为两种：<code>inlined</code>和<code>stored</code>，前者是每次请求写上去的代码，而后者是存储在ES中，请求时只需要调用脚本ID即可。详情请看官方文档。</p>
+<h2 id="使用脚本的优点和缺点"><a href="#使用脚本的优点和缺点" class="headerlink" title="使用脚本的优点和缺点"></a>使用脚本的优点和缺点</h2><p>通过使用更新脚本，我们就可以将两步的读取-更新操作，合并成一次的更新脚本。如果善加利用脚本中的<code>Upsert</code>功能，我们甚至可以将插入-读取-更新，三步的操作合并成一次Update调用。使用脚本自然而然地解决了我们刚刚提出的第一个问题，大幅地减轻了多次往返所造成的大量开销。同时即使ES中出现了巨型文档，也不会直接对应用集群的性能造成影响。</p>
+<p>而面对竞争问题，仅仅使用脚本更新并不能解决race condition的问题，因为在ES内部并没有对脚本的执行进行同步。即使脚本内部看上去是原子性的，实际上仍然可能将脚本更新到一个旧版本的文档上。然而，即使如此，合并成一次的Update操作也大大简化了同步问题的复杂性，我们只需要给Update操作带上版本号，利用乐观的版本控制，就可以轻松地保证脚本不执行在中间状态中。而且在高度竞争的环境下，Update脚本本身的体量也非常小，也避免了大量重试带来的性能开销和程序复杂度。</p>
+<p>当然，ES脚本也并不是没有缺点的。类似SQL中逐渐被废弃的存储过程，ES脚本也有着很多存储过程所具有的问题。比如脚本更新非常难以调试，因为代码被写到了请求代码中，就很难以对脚本本身进行完备的测试。脚本代码的可读性往往也比直接的应用代码要差一些。另外，使用脚本会将很多计算逻辑从应用集群转移到ES集群，虽然节省了很多IO开销，但很有可能会增加ES的CPU负担，这点需要大量的实践测试，才能真正放心使用。而且在使用<code>stored</code>型脚本时，会给ES集群增加一个脚本ID的状态，在迁移数据、重建集群时，一定要记得迁移这个新增的状态量，否则所有使用该脚本的操作都会失效。最后，使用ES独有的脚本功能也给数据迁移到其他数据库带来了难度，使用应用和ES更加高度耦合，不过这一点其实不必过度考虑，使用ES时设计的数据模型，本就应该和其他数据库有所不同。</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2019/03/28/elasticsearch-minimum/" itemprop="url">
+                  Elasticsearch搜索中实现At-least-N规则，暨记录一次诡异的问题排查
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2019-03-28T23:25:52+08:00" content="2019-03-28">
+              2019-03-28
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Elasticsearch素来以其强大的搜索能力闻名，然而，对其搜索DSL，我们用户可以说是又爱又恨。Elasticsearch的搜索基本是使用JSON构成，再配上少量HTTP内的参数。ES的搜索，可以说是成也JSON，败也JSON。所谓成，成在JSON语义强大，可以组合出各种各样的复杂请求，且歧义较少，对计算机友好；而所谓败，败在JSON并不算一个对人非常友好的格式，特别是当搜索条件比较复杂时，搜索字段又比较多，或字段长度比较长时，长长的JSON对人来说，并不容易debug或排查问题，甚至有时不那么容易看懂。</p>
+<p>闲话少叙，本文要说的正题，是在搜索中实现「至少匹配N项」的方法，这个问题，对熟练使用ES的人来说很简单，对新手来说，可能有点无从下手。我们首先从最基本的情况说起，最少匹配0项或1项。</p>
+<h2 id="Should的语义"><a href="#Should的语义" class="headerlink" title="Should的语义"></a>Should的语义</h2><p>ES中最奇怪也最常用的关键字应该就是这个<code>should</code>了吧。should的含义是，有must或filter的情况下，should仅仅影响结果的打分情况；而在没有must和filter的情况下，返回的结果需要至少满足一个should条件。类似布尔的OR操作，should在两种情况下分别表达出了，「可以不命中」及「至少一个命中」两种语义。</p>
+<p>需要特别注意的是，当查询语句中有must或filter时，如果还想实现至少一次should命中的语义，可以使用嵌套的bool查询，或者下面要写到的<code>minimum_should_match</code>实现。</p>
+<h2 id="minimum-should-match"><a href="#minimum-should-match" class="headerlink" title="minimum_should_match"></a>minimum_should_match</h2><p>上面普通的should，只是实现了N&lt;=1的情况，如果要实现更复杂的At-least-N查询，就需要使用ES中「鲜有问津」（后文会解释为什么这么说）的<code>minimum_should_match</code>参数了。</p>
+<p>如下面的例子（来自官网）<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GET /my_index/my_type/_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"query"</span>: &#123;</span><br><span class="line">    <span class="string">"bool"</span>: &#123;</span><br><span class="line">      <span class="string">"should"</span>: [</span><br><span class="line">        &#123; <span class="string">"match"</span>: &#123; <span class="string">"title"</span>: <span class="string">"brown"</span> &#125;&#125;,</span><br><span class="line">        &#123; <span class="string">"match"</span>: &#123; <span class="string">"title"</span>: <span class="string">"fox"</span>   &#125;&#125;,</span><br><span class="line">        &#123; <span class="string">"match"</span>: &#123; <span class="string">"title"</span>: <span class="string">"dog"</span>   &#125;&#125;</span><br><span class="line">      ],</span><br><span class="line">      <span class="string">"minimum_should_match"</span>: <span class="number">2</span> </span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>只要加入了这个参数，就可以指定搜索的结果，必须至少命中N个should语句。同时不仅支持整数，还支持百分比等形式。这一参数在一些算法中非常实用，比如在聚类算法中，往往会要求至少N个字段相同才能聚类；在搜索引擎中，也可以用这个功能来排除低相关的搜索结果。</p>
+<h2 id="一次漫长的问题排查"><a href="#一次漫长的问题排查" class="headerlink" title="一次漫长的问题排查"></a>一次漫长的问题排查</h2><p>从上面的描述也可以看到，<code>minimum_should_match</code>这个参数还是比较好用的。然而在最近的一次开发中，也是在一个比较复杂的搜索请求，用到了这个参数，用来实现至少命中2个字段，以过滤大部分候选。开始并没有注意，到测试阶段的时候才发现，ES集群返回的搜索结果中，存在一些只命中了1个字段，甚至没有命中任何字段的结果！但又因为搜索中也包含了正确结果（命中2个以上字段），所以这些错误的结果很难被发现，除非提前意识到可能有问题，加上校验函数。</p>
+<h3 id="Query语句写错了吗？"><a href="#Query语句写错了吗？" class="headerlink" title="Query语句写错了吗？"></a>Query语句写错了吗？</h3><p>首先怀疑的，就是JSON写错了。然而虽然用的JSON很复杂，使用<code>minimum_should_match</code>的部分还是比较简单和标准的。考虑到嵌套Bool的问题，尝试改了几版JSON，集群返回的搜索结果都完全相同。后来又试了最简单的用例，居然这个参数还是不生效！</p>
+<h3 id="Mapping有问题？"><a href="#Mapping有问题？" class="headerlink" title="Mapping有问题？"></a>Mapping有问题？</h3><p>接下来怀疑的就是，索引的Mapping设置有问题，也有人提出，是不是动态模板有问题，在索引时没有将字段正确地索引进去？经过检查，所有mapping都是正确的，字段的类型也没有问题（keyword或text都正确设置了），动态模板也没有问题。</p>
+<h3 id="Query和当前ES版本不兼容？"><a href="#Query和当前ES版本不兼容？" class="headerlink" title="Query和当前ES版本不兼容？"></a>Query和当前ES版本不兼容？</h3><p>我们使用的是6.2.3版本，为了确认这一问题，我又特地翻了一遍6.2.3的ES官方文档，没有发现用法错误。随后又在另一个5.X版本ES集群中测试了同样的语句，发现<code>minimum_should_match</code>完全正常工作。这就奇怪了，难道ES升级到6.x后废弃了这一功能？随后又找了6.x版本的升级说明，特别是”breaking changes”的列表，也没有找到任何说明。</p>
+<h3 id="explain-true"><a href="#explain-true" class="headerlink" title="explain:true"></a>explain:true</h3><p>接下来想到了，看一看ES到底是如何解释查询语句。加上<code>explain:true</code>的语句后，ES在正常处理搜索之外，返回了解释语句的JSON，查看返回结果，果然没有任何<code>minimum_should_match</code>存在的痕迹。难道是ES集群有问题？</p>
+<h3 id="定位问题"><a href="#定位问题" class="headerlink" title="定位问题"></a>定位问题</h3><p>逻辑上查不出来任何问题，可是实际上在6.2.3版本的ES集群上，简单的<code>minimum_should_match</code>就是不工作，实在是非常费解。最后笔者尝试了安装ES官方的6.2.3包到自己的机器上，部署，创建索引，写入数据。万事俱备之后，用同样的语句进行搜索，Work！同样的6.2.3版本，同样的搜索，在本机上正常工作，在集群上却失效。</p>
+<p>最终笔者联系了ES集群提供方，对方团队也进行了长时间的排查。最后发现，原来该团队提供的ES版本，由他们进行了特殊的定制，定制后的ES集群会在处理搜索请求时，先对ES的查询进行「优化」，而这一优化，就将这个参数彻底丢失掉了。这一bug直接影响了ES的最基本功能，可以说是影响恶劣，类比到SQL中，就好像丢掉了一个HAVING参数一样，不可容忍。然而这一版本的定制ES，居然已经提供给许多团队使用，并且线上运行超过一年以上。如此情况下，竟然无一人发现这个重大bug，所以笔者之前说，<code>minimum_should_match</code>这个参数，或许是「鲜有问津」。</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2019/03/22/elasticsearch-batch/" itemprop="url">
+                  TB级别Elasticsearch的存储优化经验（三) 批处理
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2019-03-22T21:07:32+08:00" content="2019-03-22">
+              2019-03-22
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>前面谈了一些使用ES过程中，存储、设计等ES本身的设计经验。今天我们来看一看在使用客户端时，有什么优化方法，可以减轻对ES的损耗。</p>
+<h2 id="线性增长的调用量，非线性增长的压力"><a href="#线性增长的调用量，非线性增长的压力" class="headerlink" title="线性增长的调用量，非线性增长的压力"></a>线性增长的调用量，非线性增长的压力</h2><p>一般情况下，调用关系数据库也好，NoSQL也好，大家往往习惯按照业务逻辑编写程序，入口处每进来一个请求，后续就执行一或几次数据库CRUD操作。这是一个非常直观的选择，代码也清晰移动，但问题是，这种最简单的使用场景下，后续数据库操作的数量是和入口的请求量线性正比的。假设每个请求要进行N次CRUD操作，入口的QPS为Q，那么对数据库的调用量就是简单的N*Q。</p>
+<p>当QPS较低时，N*Q的数值较小，自然不成问题。可当我们要处理的QPS是上万甚至上十万时，每次就有数十万次CRUD。应用本身抗住几万几十万的QPS并不是难事，只要合理编程，增加机器就很容易做到。但是对数据库而言，就不是那么容易了。应用本身通常是无状态的，而数据库却经常需要各个机器节点相互同步，这一复杂度远超应用，再加上数据库应用往往有较大的IO相关损耗，所以在调用量线性增长的情况下，数据库面临的压力远超线性增长的水平，是非线性的。况且像ES这样的存储，经常需要使用SSD等高成本硬件，简单地增加机器节点，并不是好的解决方法。</p>
+<h2 id="ES的批量操作"><a href="#ES的批量操作" class="headerlink" title="ES的批量操作"></a>ES的批量操作</h2><p>既然QPS高了之后，数据库难以应对，那么唯一的办法就是想办法减少QPS。批处理就是一个减少QPS的办法。幸运的是，ES主要的API，都提供了对应版本的批量处理API。</p>
+<ul>
+<li>bulk - 批量写操作，可以混合插入、更新、删除操作</li>
+<li>mget - 批量读操作</li>
+<li>msearch - 批量搜索操作</li>
+</ul>
+<p>而且，ES对批量操作的设计是比较完善的。批量操作中，每个子项都可以设置自己的Routing，以及一些定制化的参数，互不干扰。使用这些批量API，我们可以将几十次，甚至是几千次单独的调用，合并成单一批量的读操作、写操作或搜索操作。</p>
+<h2 id="批量操作的优点"><a href="#批量操作的优点" class="headerlink" title="批量操作的优点"></a>批量操作的优点</h2><p>合并成为批量操作意味着</p>
+<ul>
+<li>减少IO次数</li>
+<li>减少成百上千次IO解析的损耗</li>
+<li>大幅减少IO失败可能和重试次数</li>
+<li>ES内部也可以减少大量冗余操作</li>
+<li>合并大量的单独写操作，对写性能消耗大的ES来说，大幅减轻了负担</li>
+</ul>
+<p>使用批量处理，我们可以将数万QPS降低到数十QPS，同时每次请求携带的payload的大小，则乘以百倍或千倍。而ES处理大体量批量请求的RT，往往不会比单次请求上升太多。所以，通过批量处理的缩放，整个ES的工作效率可以大幅提升。</p>
+<p>另外，批量操作还可以进行跨索引批量，能够进一步减少IO次数。</p>
+<h2 id="批量操作的缺点"><a href="#批量操作的缺点" class="headerlink" title="批量操作的缺点"></a>批量操作的缺点</h2><p>当然，如果处处都使用批量操作，也存在一些缺点和问题，不得不注意</p>
+<ul>
+<li>构建批量请求难度较大，需要自己设计缓冲方式</li>
+<li>解析批量请求的结果也更复杂，往往会出现多层嵌套</li>
+<li>整体的业务代码逻辑更加复杂，相比单项请求，非常不直观，难以debug，特别是跨索引的批量</li>
+<li>批量请求操作的日志的体量也会过大，无可读性，需要手动处理</li>
+<li>批量请求中出现错误或异常，很容易被忽略掉</li>
+<li>使用批量操作，虽然整体提高了效率，但必然会增加单个请求的RT</li>
+<li>不合理的批量请求设计，同样会增加ES集群的负担</li>
+</ul>
+<h2 id="批量操作不是万能药"><a href="#批量操作不是万能药" class="headerlink" title="批量操作不是万能药"></a>批量操作不是万能药</h2><p>还需要提醒的一点是，虽然批量操作能够大幅提升ES的工作效率，减少大量不必要的损耗，但是，批量操作同样不是万能的。如果批量操作中所含的操作本身就非常复杂，特别是复杂的搜索操作，那么即使缓冲批量后，也不能真正意义上提升ES集群的性能瓶颈。因为在这种情况下，真正的性能瓶颈不是IO，不是卸载请求，不是搜索语句的parsing，而是搜索本身的高复杂度。如果每条搜索本身需要占用大量内存进行操作，过度批量，并不会帮助解决任何问题，反而有增大ES集群压力的风险。</p>
+<p>根据自己的经验总结下，ES各种批量操作的性能提升层次大概是</p>
+<blockquote>
+<p>bulk &gt;&gt; mget(with routing) &gt;&gt; mget(without routing) &gt;&gt; msearch</p>
+</blockquote>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>前面提到，使用ES的批量操作，必然设计业务代码的改造，要在调用ES之前引入缓冲机制，那么去实现缓冲机制更好呢？这个问题虽然不大，但也比较有趣，我们下篇再提。</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2019/03/18/elasticsearch-ID/" itemprop="url">
+                  TB级别Elasticsearch的存储优化经验（二）如何选择ID
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2019-03-18T23:11:35+08:00" content="2019-03-18">
+              2019-03-18
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在传统的关系数据库中，ID字段的选择已经是老生常谈了。事实上，有些公司的开发标准上，甚至要求任何字段都选择自增主键。在ES索引设计中，ID字段的选择问题经常被开发人员所忽略，只是简单选择一个自然的ID字段。而实际上，ID的选择对索引的性能（尤其是写入性能），存在这至关重要的影响。</p>
+<h2 id="四种ID选择方式"><a href="#四种ID选择方式" class="headerlink" title="四种ID选择方式"></a>四种ID选择方式</h2><p>在ES中，总体而言，存在四种ID的选择方式</p>
+<ol>
+<li>自然ID</li>
+<li>不指定ID，由ES自动生成</li>
+<li>自己指定一个UUID</li>
+<li>使用文档内容的哈希值</li>
+</ol>
+<p>下面我们依次来看几种选择方式</p>
+<h3 id="自然ID"><a href="#自然ID" class="headerlink" title="自然ID"></a>自然ID</h3><p>对可以找出自然ID的业务来说，使用自然ID是最简单的方式。但是，使用自然ID并不是完美的，也有自身的缺陷。</p>
+<ol>
+<li>ES无法确定你所提供的自然ID，是否真的是独一无二的，因此，每次插入时，都需要先检查有没有相同ID的文档。如果有相同ID，需要根据操作类型进行更新或者抛出异常；如果没有，才能进行插入。所以这一步检查的过程，会额外增加写入文档的RT，并增大集群的负载。</li>
+<li>自然ID大多情况下是无序和随机的。ES在插入文档时，如果插入的文档ID有自增顺序，可以大幅提升插入速度，因为减少了搜索ID是否重复的时间。</li>
+</ol>
+<h3 id="指定UUID"><a href="#指定UUID" class="headerlink" title="指定UUID"></a>指定UUID</h3><p>UUID基本上能够保证每次生成的ID都是唯一的。使用UUID也是相对简单的一种方式。在复杂系统中，相比使用自动生成ID，使用UUID主要优势是，<strong>可以在写入ES前，先生成ID</strong>。比如，在某些需要并发多处写入的系统中，可能无法接受ES写入的RT及失败。在这种情况下，就无法使用ES自动生成的ID（因为需要等待ES返回），使用UUID就可以提前生成业务ID，并发写入多个存储系统中。</p>
+<p>但是使用UUID也有很多缺陷，笔者维护的一个历史索引中，就使用了UUID，因此对其缺陷还是比较了解的。</p>
+<ol>
+<li>UUID是完全无意义的字符串。UUID没有意义，仅仅提供了唯一性，却没能提供任何与文档本身相关的信息量。在数据迁移和重构时，UUID本身就成为了一个负担，必须要维护UUID和文档（甚至其他索引的文档）的正确关联性，却又缺少可验证的手段（比如有时可能错误写入文档ID，这种情况下无法恢复出正确的ID，而下面介绍的哈希值则可以）。</li>
+<li>插入UUID相比自动生成ID性能要差。UUID和ES自动生成ID所代表的意义基本是完全相同的（都是无意义的唯一ID），但前面已经说过，手动生成UUID获得了提前生成ID的机会，却牺牲了绕过ES写入检查的机会，会损失一些性能。</li>
+</ol>
+<h3 id="使用哈希值"><a href="#使用哈希值" class="headerlink" title="使用哈希值"></a>使用哈希值</h3><p>在没有自然ID的情况下，另一种选择是使用哈希函数，根据文档的内容生成一个哈希值。使用哈希，只要文档的内容相同，就会生成同样的哈希值。但使用哈希不可避免的一个问题，就是哈希碰撞。使用更长的哈希（比如MD5，SHA1），可以平衡哈希码长度和碰撞几率。如果要求更高，可以使用SHA256.</p>
+<p>使用复杂哈希算法来生成ID，增加了计算的消耗，增长了ID的长度，同时也牺牲了严格的唯一性。那么为什么还要使用哈希算法呢？</p>
+<ol>
+<li>使用哈希可以用文档内容反推ID。特别是对计算形式的应用，ID可以在任何阶段由文档内容反推，非常灵活。</li>
+<li>可以利用哈希值，高效排除重复文档。在没有自然主键的情况下，不管是使用UUID还是使用ES自动生成ID，都很容易重复写入完全相同的文档（或者仅仅时间不同的文档）。因为在写入时，没有能力判别过去是否有相同的文档（唯一的方法是搜索全部字段，但显然对性能的消耗过大），使用哈希作ID，就可以很容易避免重复写入多份相同文档。</li>
+<li>可以使用文档内容，校验文档ID的正确性。这一条特别是在数据迁移，或者reindex过程中非常重要。以笔者的开发经验，不论是现在开源的几个迁移工具，还是自己使用scroll API编写的，都很容易出现bug，造成迁移后，文档ID变更，或者文档内容错乱。这个时候，使用哈希值就可以很容易地发现错误，避免迁移后默默出现错误，藏在数据库中。另外日常也可以使用哈希值来排除意外写入的脏数据。</li>
+</ol>
+<h4 id="使用时间戳-哈希，构造高效ID"><a href="#使用时间戳-哈希，构造高效ID" class="headerlink" title="使用时间戳+哈希，构造高效ID"></a>使用时间戳+哈希，构造高效ID</h4><p>前面提到，如果写入的文档ID，总是遵从一定的顺序，ES就可以大大增快其写入速度。但不论是自然ID也好，UUID或哈希值也好，很少能按照写入的顺序排序。要实现按照写入顺序排序，最简单的就是利用「时间」，因为时间总是在增加的。</p>
+<p>使用时间戳作为ID的前缀，就可以让陆续写入的文档，满足ID的顺序性。此外，使用时间戳+哈希，还有额外的好处，就是可以极大地减少哈希碰撞的几率。因为只需要每个时间戳范围内，所有哈希值唯一，就可以唯一定位一个文档了。这样就可以使用更短和更简单的哈希算法了，也不用担心碰撞了。其缺点是，牺牲了使用哈希值判重的便利。</p>
+<h3 id="ES自动生成ID"><a href="#ES自动生成ID" class="headerlink" title="ES自动生成ID"></a>ES自动生成ID</h3><p>由ES自动在插入时自动生成ID，其最大的好处是：ES知道生成的ID不可能在索引中已经存在，可以做出一些优化。<strong>使用ES自动生成的ID，是写入性能最高的选项</strong>，因为不需要检查是否重复，即使索引不断增长，其性能也不会恶化（相反，使用自己指定的ID，写入性能会随数据量上涨而恶化）。因此，在允许的情况下，使用自动生成ID往往是最好的选择。</p>
+<p>当然，使用ES自动生成ID，也会有前面几种方式中提到的一些缺陷</p>
+<ol>
+<li>文档ID无意义，且自动生成的ID更容易混淆</li>
+<li>必须先执行写入操作，写入成功后才能拿到ID</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2019/03/17/elasticsearch-optimization/" itemprop="url">
                   TB级别Elasticsearch的存储优化经验（一）Routing
                 </a>
@@ -393,831 +1195,12 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2018/11/05/kotlin-13-incompatible/" itemprop="url">
-                  Kotlin升级正式版协程后的性能问题
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2018-11-05T22:10:00+08:00" content="2018-11-05">
-              2018-11-05
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Kotlin协程可以说是大大的弥补了Java在异步开发上的劣势。笔者所工作的项目，使用Kotlin协程进行全异步的开发，已经有半年之久，线上性能非常出色，异步开发也不再繁琐，代码可读性非常好。在数万QPS的线上请求下，Kotlin协程没有出现任何性能问题，强力地支撑着应用的运转。</p>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>最近，JetBrain发布了Kotlin1.3版本，将协程包前面的expremental去掉，正式发布，并做了一些变更，比如引入了coroutineScope等等。笔者很快就完成了1.3版本的升级，仅仅对原来的代码进行了极少量的修改。然而升级之后，在测试中发现，原本性能强劲的协程，升级到正式版后，大量使用CPU，原来5%的CPU占用率居然升到了50%之多！</p>
-<p>即使是将代码简化成下面最简单的形式，在同样的QPS下，还是重现同样的症状。<br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">GlobalScope</span>.launch &#123;</span><br><span class="line">  val <span class="literal">result</span> = awaitExecute()</span><br><span class="line">  doSomething(<span class="literal">result</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="定位原因"><a href="#定位原因" class="headerlink" title="定位原因"></a>定位原因</h2><p>观察日志，我们发现，升级1.3之后，执行同样的代码的线程池变了。在1.3之前，默认执行协程的线程池是Java公共的<code>ForkJoinPool.commonPool()</code>，而升级之后，执行的线程名变成了<code>DefaultDispatcher-worker-32</code>，也就说，在另一个<code>DefaultDispatcher</code>所在的线程池中执行。</p>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>发现线程池变了，寻找解决办法就很容易了。</p>
-<p>最简单的方法，Kotlin中可以自己指定协程运行背后的线程池，只要重新设置一个<code>ForkJoinPool</code>就可以。</p>
-<p>另外，我们还可以观察<code>launch()</code>方法内部究竟如何更改了实现。从代码中可以看到，用户没有指定线程池的情况下，Kotlin会根据<code>kotlinx.coroutines.scheduler</code>这个JVM参数，来决定使用Java的公共线程池，还是自己的<code>DefaultScheduler</code>。</p>
-<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">internal actual <span class="function"><span class="keyword">fun</span> <span class="title">createDefaultDispatcher</span></span>(): <span class="constant">CoroutineDispatcher</span> =</span><br><span class="line">    <span class="keyword">if</span> (useCoroutinesScheduler) <span class="constant">DefaultScheduler</span> <span class="keyword">else</span> <span class="constant">CommonPool</span></span><br></pre></td></tr></table></figure>
-<p>默认情况下，这个参数的值是true，我们只需手动将其设置为false，就可以恢复到Kotlin 1.3之前的默认行为了。</p>
-<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><p>Kotlin 1.3正式版的协程，带来了structured concurrency，不再鼓励大家使用全局的协程。在使用协程时，合理地自定义线程池，合理创建coroutine scope是非常重要的，这样也可以避免这种版本升级后带来的全局性问题。</p>
-<h2 id="根本原因"><a href="#根本原因" class="headerlink" title="根本原因"></a>根本原因</h2><p>说到这里，我们还没有涉及到最根本的问题。究竟为什么替换了线程池后，性能会如此恶化？要解决这个问题，我们需要对Kotlin的<code>DefaultScheduler</code>进行深入的研究。</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2018/10/30/gc-experience/" itemprop="url">
-                  线上实战GC优化经验 - CMS的调优
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2018-10-30T20:36:27+08:00" content="2018-10-30">
-              2018-10-30
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>GC是Java服务端开发过程中所必须关注的一个重要环节。而有趣的是，对GC的调优，常常是「不见棺材不落泪」，也就是说，往往很多人会等线上真的出现问题以后，才会关注GC调优的问题。当然，这样的做法是不可取的，良好的监控，及时的预警，一旦发现GC性能恶化，及时调优，才能避免线上问题出现。</p>
-<h2 id="CMS回顾"><a href="#CMS回顾" class="headerlink" title="CMS回顾"></a>CMS回顾</h2><p>很多应用往往会使用默认的GC类型和GC参数，这些「默认」可能是JVM自己的默认，公司或项目组的默认，或者是自己开发经验的默认。但是，对不同类型的应用，其适合的GC类型和GC参数往往有巨大的不同。</p>
-<p>以最常用的CMS回收器来看，新生代和老生代的各种参数调配，起着非常重要作用。先来回顾一下CMS的工作原理</p>
-<ol>
-<li>CMS将heap分为新生代和老生代，新生代又分为Eden和两个Survivor</li>
-<li>YGC：使用标记-复制算法，回收Eden+Survivor，幸存者移动到另一个Survivor；多次存活晋升到老生代</li>
-<li>FGC：使用并发标记-扫描算法</li>
-</ol>
-<p>而在线上GC调优中，我们首要的目标是尽可能地避免Full GC，其次是减少YGC的频率和时间。</p>
-<h2 id="分析应用pattern"><a href="#分析应用pattern" class="headerlink" title="分析应用pattern"></a>分析应用pattern</h2><p>前面提到，不同的应用，其适合的GC模式完全不同。下面拿一个函数式的计算应用进行举例。</p>
-<p>众所周知，函数式编程时，对象都是无状态和不变的，因此，对复杂的计算型应用，往往在计算的流程中，需要生成大量的中间对象。这些中间对象往往是朝生暮死的（ephemeral），不会被长期持有。在高QPS的调用下，这种计算型应用会产生巨量的垃圾，这些垃圾会马上填充满新生代，引发YGC。同时因为新生代负荷过高，很容易导致一些朝生暮死的对象被错误地晋升到老生代，进而随着时间的积累，最终引发Full GC。</p>
-<h2 id="针对性的优化"><a href="#针对性的优化" class="headerlink" title="针对性的优化"></a>针对性的优化</h2><p>分析完了计算型应用的特点，就可以针对其进行一些针对性的优化。首先，针对朝生暮死的对象大量填充新生代的问题，可以将新生代的空间大大增加。如果服务器有足够的内存，就增大新生代的内存，否则就增大新生代的比例。这样新生代就有足够的空间进行缓冲，收纳大量朝生暮死的对象。</p>
-<p>那么增大新生代的空间，是否会减慢YGC的速度呢？答案是否定的。因为标记-复制算法只关心哪些存活下来的对象，对计算型应用而言，这样存活下来的对象所占的比例是极低的，YGC的耗时，主要由这些存活下来的对象的多少决定。因此，即使新生代的空间大幅增加，YGC的时间不但不会增加，反而可能会下降。</p>
-<p>仅仅增大新生代总体的空间还不够，Eden和Survivor的比例也是需要关注的问题。如果Survivor太小，也会面临新生代过小类似的问题，导致一些对象晋升。而如果Survivor太大，又会导致空间的浪费。对函数式的计算型应用而言，往往Survivor并不需要太大，可以适当调低其比例。</p>
-<h2 id="优化的效果"><a href="#优化的效果" class="headerlink" title="优化的效果"></a>优化的效果</h2><p>在实战中，我们在一台6000+QPS的函数计算型应用上做了优化测试。优化后，YGC时间从400ms降低到了50ms；而每分钟的YGC测试从15次降低到了3次，Full GC更是完全消失了。可见上面针对性的优化方案，效果是非常好的。</p>
-<h2 id="CMS是最合适的吗？"><a href="#CMS是最合适的吗？" class="headerlink" title="CMS是最合适的吗？"></a>CMS是最合适的吗？</h2><p>上面谈到的，都是针对常用的CMS垃圾回收器所做的优化。而Java发展到现在，已经出现了大量优质的垃圾回收器，如G1，ZGC，等等。CMS是否就是最合适的垃圾回收器呢？这些我们留在下一次讨论。</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2018/10/25/levelDB/" itemprop="url">
-                  LevelDB的理论与实践
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2018-10-25T23:44:27+08:00" content="2018-10-25">
-              2018-10-25
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>提到KV数据库这些名词，人们往往要么想到Redis，要么想到Memcached。Redis和Memcached固然强大，但也并不是适合任何场景使用。而LevelDB填补了二者之间的空缺，也是KV数据库领域中，不可忽视的一个选择。当然，严格地说，LevelDB只是一个KV存储引擎，并不是一个完整的数据库服务。要想像Redis，Memcached一样使用LevelDB，还需要做服务层的封装，本文略去不提。</p>
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>首先，先来看LevelDB官方的介绍。</p>
-<blockquote>
-<p>LevelDB是一个快速的KV存储库，由谷歌编写，提供有序的字符串KV映射</p>
-</blockquote>
-<p>短短一句话，其实提供了很多信息，再根据其他介绍，我们可以了解LevelDB的一些特征：</p>
-<ul>
-<li>KV都是任意的字节数组</li>
-<li>数据根据Key进行排序，用户可以提供自己的比较函数</li>
-<li>基础操作只有，put，get，delete三种</li>
-</ul>
-<p>由此可见，与Redis相比，LevelDB支持的数据类型非常简单，只是普通的KV。但LevelDB支持了Key排序的功能，可以用来实现一些哈希式的KV存储无法支持的功能。</p>
-<h2 id="实现细节"><a href="#实现细节" class="headerlink" title="实现细节"></a>实现细节</h2><p>了解一个数据库引擎，最重要的是去看其数据结构，了解了数据结构，再去看外层API，就基本能够掌握一个数据库的运作原理。<br>一般来说，有三种实现KV数据库的方式</p>
-<ol>
-<li>哈希（线性探测、分链法）</li>
-<li>树（红黑树、B树）</li>
-<li>跳表</li>
-</ol>
-<p>大体而言，哈希的读写速度最快，但最差情况较差，且随机读写多；树的读写均稍慢，但是能够提供有序性；而跳表则对并发情况更加友好</p>
-<p><a href="https://github.com/google/leveldb/blob/master/doc/impl.md" target="_blank" rel="external">https://github.com/google/leveldb/blob/master/doc/impl.md</a></p>
-<p>每个LevelDB数据库，都由一个目录下的一系列文件代表。</p>
-<h3 id="日志文件"><a href="#日志文件" class="headerlink" title="日志文件"></a>日志文件</h3><p>日志文件（*.log）存储了最近更新的序列。每个更新都会append到当前的log文件。当文件大小达到预定大小（默认4MB），就会转化成为一个排序表，并创建一个新的日志文件。</p>
-<p>当前日志文件会在内存中维持一个副本，称作memtable。每个读操作进来，都会询问这个副本，这样所有记录下的更新都会对读操作可见</p>
-<h3 id="排序表"><a href="#排序表" class="headerlink" title="排序表"></a>排序表</h3><p>排序表（*.log）存储了根据key排序的条目序列。每个条目，要么是key的value，要么是key的删除记号</p>
-<p>排序表的集合被组织成一个个level的序列。由log文件生成的排序表被放在特殊的<strong>年轻层</strong>，也就是level-0。当level-0的文件数目超过阈值后，所有年轻文件就会和所有level-1文件进行合并，产生新的level-1文件。</p>
-<p>年轻层的文件可能存在重叠key，但是其他层每个文件的key range都是不同的。假设层数为L（L&gt;=1），当level-L里合并后文件大小超过10^L MB（第一层10MB，第二层100MB）后，level-L中的一个文件，和level-(L+1)层的所有重叠文件，就会合并形成一系列新的level-(L+1)层文件。通过不断地合并，年轻层的新更新，会被逐渐迁移到只使用批量读写的最高层（减少昂贵的寻址操作）</p>
-<h3 id="Manifest"><a href="#Manifest" class="headerlink" title="Manifest"></a>Manifest</h3><p>Manifest文件列出了每个level下的排序表的集合，各自的key范围，以及其他元数据。</p>
-<h3 id="memtable"><a href="#memtable" class="headerlink" title="memtable"></a>memtable</h3><p>当level-0的日志文件增长到一定大小后，就会创建一个全新的memtable和日志文件，并将更新操作转向这里。</p>
-<h3 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h3><p>当level-L的size超过限制，就会在后台线程进行压缩。压缩从L层拿一个文件，再从L+1层拿所有交叠的文件（即使只有一小部分交叠）。注意：Level0需要特殊处理，因为key可交叠，需要取出更多文件</p>
-<p>每次压缩，会将取出文件的内容合并，然后产生一系列L+1层的新文件。压缩会丢弃被覆盖的值，同时也丢弃删除记号</p>
-<h2 id="自己的总结"><a href="#自己的总结" class="headerlink" title="自己的总结"></a>自己的总结</h2><p>首先来看LevelDB的数据结构，简单总结下，应该如下所示：</p>
-<blockquote>
-<p>log+memtable+level-0 -&gt; level-1(sorted tables) -&gt; level-2 -&gt; …</p>
-</blockquote>
-<p>要理解LevelDB，只看外面的分层模型是不够的，还要研究每一层文件的存储内容，这才是关键。整体来看，LevelDB的存储实际上是一个树形结构，每一层都有多个文件，除了0层之外互相交叠。说到树，自然就要看树中所蕴含的递归思想。在LevelDB中，一次更新操作，首先进入树的顶点（0层）；如果0层节点写满，就会将这个更新记录，与1层合并，写入1层；1层节点写满后，再进入2层，最终合并到最高层。</p>
-<p>因此，<strong>LevelDB</strong>树中节点所存储的内容，并非数据本身，而是一条条数据的更新记录，或者说是一种replay。如果一个key只写入过一次，那么在任意时刻，它也只会在其中某一层出现。而如果一个key多次出现，就有可能在多层都有写入记录。当然，越低层的写入就越接近数据的最新状态，而更高层的写入实际上已经作废了，等待在合并时被压缩处理掉。</p>
-<p>那么这种数据结构，究竟带来了什么好处呢？为什么要选取这种结构呢？下面就从另一个角度，API，来看一下。</p>
-<h3 id="Get操作"><a href="#Get操作" class="headerlink" title="Get操作"></a>Get操作</h3><p>首先来看最简单的读操作。我们知道，树形的结构都会牺牲掉一些读取性能，LevelDB也是如此。每次读取，首先会尝试内存中的memtable，如果是热点数据，读到的概率很大。但如果是冷数据，很可能已经被合并到了最高层。因此需要一层层查找，直到在某一层找到数据，就可以结束搜索。而且，只有memtable中的操作是内存读取，其他都是硬盘读取。由此可以推断，LevelDB的读取性能相对纯内存数据库来说较差。</p>
-<h3 id="Put操作"><a href="#Put操作" class="headerlink" title="Put操作"></a>Put操作</h3><p>再来看看Put操作。Put其实分为两种，插入和更新。在LevelDB中，这两种的差别并不大。因为日志文件.log的存在，LevelDB只需要确保将更新写入log文件，就可以结束本次写入。因此，写入速度是非常快的。后续，内部线程再将写入操作放到排序表的树中，这些都是后台操作。而且，因为更新数据会被不断合并到硬盘中的一层层文件中，LevelDB可以利用硬盘的存储空间存储更大量的数据（而非内存数据库只能利用内存空间），并且利用合并算法减少了随机写。同时又通过memtable维持了一部分内存读取的便利。</p>
-<p>可以看到，LevelDB中，平均情况下，写入性能是好过读取性能的。因此LevelDB非常适合读多写少的流量，且LevelDB可以利用硬盘存储大量数据，其成本要远远&lt;内存数据库。</p>
-<p>LSM (Log Structured Merge) LSM树<br>LSM通过消去随机的本地更新操作，把磁盘随机写操作变为顺序写操作，从而得到更好的写操作吞吐量。LSM树的设计思想非常朴素，将对数据的修改增量保持在内存中，达到指定的大小限制后将这些修改操作批量写入磁盘。文件是不可修改的，他们永远不会被更新，新的更新操作只会写到新的文件中。读操作会依次从最新的文件查找，通过周期性的合并这些文件来减少文件个数。所以写入性能大大提升，读取时可能需要先看是否命中内存，否则需要访问较多的磁盘文件。综上，LSM索引相比哈希索引能够大幅提高写性能，数据量非常大的情况下因为哈希碰撞哈希索引的效率低</p>
-<p><a href="https://www.zhihu.com/question/27256968/answer/309936531" target="_blank" rel="external">https://www.zhihu.com/question/27256968/answer/309936531</a></p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2018/09/05/jdk-reflection-error/" itemprop="url">
-                  一个JDK源码引发的诡异问题
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2018-09-05T19:12:37+08:00" content="2018-09-05">
-              2018-09-05
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今天在开发过程中，接入了一个SDK，可是无论如何都启动不起来。每次启动其中的<code>ChronicleMap</code>组件时，都会报下面的错误。<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Caused by: java.lang.IllegalAccessException: member is private: sun.nio.ch.FileChannelImpl.unmap<span class="number">0</span>[Ljava.lang.Object;@<span class="number">21</span>f50d2c/invokeStatic, from net.openhft.chronicle.core.OS (unnamed module @<span class="number">8</span>bc0696)</span><br><span class="line">  at java.base/java.lang.invoke.MemberName.makeAccessException(MemberName.java:<span class="number">942</span>)</span><br><span class="line">  at java.base/java.lang.invoke.MethodHandles<span class="variable">$Lookup</span>.checkAccess(MethodHandles.java:<span class="number">2215</span>)</span><br><span class="line">  at java.base/java.lang.invoke.MethodHandles<span class="variable">$Lookup</span>.checkMethod(MethodHandles.java:<span class="number">2155</span>)</span><br><span class="line">  at java.base/java.lang.invoke.MethodHandles<span class="variable">$Lookup</span>.getDirectMethodCommon(MethodHandles.java:<span class="number">2299</span>)</span><br><span class="line">  at java.base/java.lang.invoke.MethodHandles<span class="variable">$Lookup</span>.getDirectMethodNoSecurityManager(MethodHandles.java:<span class="number">2292</span>)</span><br><span class="line">  at java.base/java.lang.invoke.MethodHandles<span class="variable">$Lookup</span>.unreflect(MethodHandles.java:<span class="number">1756</span>)</span><br><span class="line">  at net.openhft.chronicle.core.OS.&lt;clinit&gt;(OS.java:<span class="number">79</span>)</span><br><span class="line">  ... <span class="number">52</span> common frames omitted</span><br></pre></td></tr></table></figure></p>
-<p>顺着源码看下去，真正出问题的是下面的代码<br><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">Method</span> <span class="title">unmap0</span> = <span class="title">Jvm</span>.<span class="title">getMethod</span><span class="params">(FileChannelImpl.<span class="keyword">class</span>, "unmap0", long.<span class="keyword">class</span>, long.<span class="keyword">class</span>)</span>;</span></span><br><span class="line">UNMAPP0_MH = MethodHandles.lookup().unreflect(unmap0);</span><br></pre></td></tr></table></figure></p>
-<p><code>ChronicleMap</code>通过内部的工具类，成功地反射获取了jdk内部的一个方法，然后对其使用<code>MethodHandle</code>的<code>unreflect</code>方法获取其<code>MethodHandle</code>加速调用。按理说没什么问题，却抛出了<code>IllegalAccessException</code>，这是为何？</p>
-<p>一开始怀疑是和Java 9之后的module系统有关。在网上一番搜索，发现chronicle-map曾经出现过类似的问题，官方提出的解决方法是<code>--add-exports java.base/sun.nio.ch=ALL-UNNAMED</code>，增加这个参数，以解决模块化后不可见的问题。然而经测试加了这个参数后没有解决问题，而且我所使用的chronicle-map已经是最新版本，应该早已解决了这个问题。那么问题到底出自哪里呢？</p>
-<p>排查一个难解的问题时，有一个很有效的手段，就是简化场景。既然问题出在那两行代码，我们就将那两行代码单独提取出来，试一试。Jvm是内部类，我们换成普通的反射方法<code>Class.getDeclaredMethod()</code>。结果果然复现了问题。<br><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">Method</span> <span class="title">unmap0</span> = <span class="title">FileChannelImpl</span>.<span class="title">class</span>.<span class="title">getDeclaredMethod</span><span class="params">("unmap0", long.<span class="keyword">class</span>, long.<span class="keyword">class</span>)</span>;</span></span><br><span class="line">MethodHandles.lookup().unreflect(unmap0);</span><br></pre></td></tr></table></figure></p>
-<p>再来看unreflect方法的问题，问题豁然明了了<br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">* @throws <span class="type">IllegalAccessException</span> <span class="keyword">if</span> access checking fails</span><br><span class="line">*                                <span class="keyword">or</span> <span class="keyword">if</span> the <span class="keyword">method</span>'s variable arity modifier bit</span><br><span class="line">*                                <span class="keyword">is</span> <span class="type">set</span> <span class="keyword">and</span> &#123;@code asVarargsCollector&#125; fails</span><br></pre></td></tr></table></figure></p>
-<p>原来是access checking失败，只要补上setAccessible应该就调用了<br><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">Method</span> <span class="title">unmap0</span> = <span class="title">FileChannelImpl</span>.<span class="title">class</span>.<span class="title">getDeclaredMethod</span><span class="params">("unmap0", long.<span class="keyword">class</span>, long.<span class="keyword">class</span>)</span>;</span></span><br><span class="line">unmap0.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">MethodHandles.lookup().unreflect(unmap0);</span><br></pre></td></tr></table></figure></p>
-<p>再来看上面提到的<code>ChronicleMap</code>，经过多次检查，其中的源码也进行了setAccessible操作，然而却还是抛出了这个异常。再仔细看，其中的操作是这样的<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setAccessible</span><span class="params">(AccessibleObject h)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!IS_JAVA_9_PLUS || IS_JAVA_12_PLUS) &#123;</span><br><span class="line">        h.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// doesn't work in Java 12+</span></span><br><span class="line">        Field f = AccessibleObject.<span class="keyword">class</span>.getDeclaredField(<span class="string">"override"</span>);</span><br><span class="line">        <span class="keyword">long</span> offset = UNSAFE.objectFieldOffset(f);</span><br><span class="line">        UNSAFE.putBoolean(h, offset, <span class="literal">true</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (NoSuchFieldException e2) &#123;</span><br><span class="line">        <span class="comment">// ignored, throws an error later if private.</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>这段代码很有趣，作者没有直接使用method的setAccessible方法，而是作了一个判断</p>
-<ol>
-<li>如果在Java 9-11版本，使用<code>UNSAFE</code>的方式，使方法可访问</li>
-<li>其他版本，使用传统的setAccessible方式</li>
-</ol>
-<p>反射的方法很简单，那么在Java 9-11版本，为什么要用如此复杂的方法呢？我们再来仔细看看，这一段方法做了什么</p>
-<ol>
-<li><p>获取<code>AccessibleObject</code>类的<code>override</code>字段。这里的<code>override</code>不是那个表示覆盖的注解，而是类中的一个普通字段。而这个<code>AccessibleObject</code>是<code>Method</code>，<code>Field</code>等类的父类。而这个字段的意思是</p>
-<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="pi">// Indicates whether language-level access checks are overridden</span><br><span class="line">//</span> <span class="keyword">by</span> <span class="keyword">this</span> object. Initializes <span class="keyword">to</span> <span class="string">"false"</span>. This field <span class="keyword">is</span> used <span class="keyword">by</span></span><br><span class="line"><span class="pi">// Field, Method, and Constructor.</span></span><br></pre></td></tr></table></figure>
-<p>再去看这个字段的调用代码，可以看出，<code>override</code>字段为<code>false</code>时，反射时就会执行访问检查，否则就不执行。</p>
-</li>
-<li><p>用<code>UNSAFE</code>获取<code>override</code>字段在对象中的偏移offset，</p>
-</li>
-<li>用<code>UNSAFE</code>修改method对象的<code>override</code>字段为<code>true</code>。<br>这一步很简单，就是为了绕过访问检查。可是问题又来了，为什么不直接用反射的方法<code>f.setBoolean(h, true)</code>呢？</li>
-</ol>
-<p>再来看看传统的反射修改可见性，是如何实现的<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">setAccessible</span><span class="params">(<span class="keyword">boolean</span> flag)</span> </span>&#123;</span><br><span class="line">    AccessibleObject.checkPermission();</span><br><span class="line">    setAccessible0(flag);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Sets the accessible flag and returns the new value</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">setAccessible0</span><span class="params">(<span class="keyword">boolean</span> flag)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.override = flag;</span><br><span class="line">    <span class="keyword">return</span> flag;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>可见，第二种<code>Unsafe</code>的方式，其实就是绕过了<code>checkPermission</code>内部的安全检查，功能和传统方法一样，都是设置<code>override</code>字段为true，使方法可见。使用这种方法的好处，就是最大限度地保证代码成功执行，以及一定程度上的性能提升（个人认为基本可以忽略）。</p>
-<p>但是这种方法有没有缺点呢？这就要说回我们这次遇到的这个难解的bug了。</p>
-<p>经过多次排查，最终定位到<code>Field f = AccessibleObject.class.getDeclaredField(&quot;override&quot;)</code>代码居然抛出了<code>NoSuchFieldException</code>异常。而在IDE中查看JDK源码时，明明就有这个这个字段，这是为什么呢？一定是实际运行的JDK本身的问题！没错，最终发现我们所用的这一版公司内部修改过的JDK11存在一些bug，导致了这个问题的发生。替换成使用open jdk后，马上就恢复正常了。另外，在网上搜索发现，在安卓上也会出现类似的问题，因为安卓源码也对open jdk进行了修改。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这个问题其实很有趣，因为他说简单也很简单，不过是一个jdk内部实现的问题；然而说复杂也很复杂，短短两行代码就涉及了<code>MethodHandle</code>，反射，Java模块化，<code>UNSAFE</code>，<code>SecurityManager</code>，JDK的不同实现，这么多的问题。排查类似的问题时，一定不要在一个方向上钻的太深，这样很容易忽视真正的原因。</p>
-<p>另外对<code>Unsafe</code>的使用一定要慎重，否则，很容易弄巧成拙。最后再附上一段对<code>UNSAFE</code>的评价作结尾。</p>
-<blockquote>
-<p>sun.misc.Unsafe是JDK内部用的工具类。它通过暴露一些Java意义上说“不安全”的功能给Java层代码，来让JDK能够更多的使用Java代码来实现一些原本是平台相关的、需要使用native语言（例如C或C++）才可以实现的功能。该类不应该在JDK核心类库之外使用。</p>
-<p>JVM的实现可以自由选择如何实现Java对象的“布局”，也就是在内存里Java对象的各个部分放在哪里，包括对象的实例字段和一些元数据之类。sun.misc.Unsafe里关于对象字段访问的方法把对象布局抽象出来，它提供了objectFieldOffset()方法用于获取某个字段相对Java对象的“起始地址”的偏移量，也提供了getInt、getLong、getObject之类的方法可以使用前面获取的偏移量来访问某个Java对象的某个字段。</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2018/08/22/kotlin-maven-compile/" itemprop="url">
-                  kotlin-maven-compile
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2018-08-22T21:10:17+08:00" content="2018-08-22">
-              2018-08-22
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="引入Kotlin后项目Pom需要注意的问题"><a href="#引入Kotlin后项目Pom需要注意的问题" class="headerlink" title="引入Kotlin后项目Pom需要注意的问题"></a>引入Kotlin后项目Pom需要注意的问题</h1><h2 id="Kotlin插件必须放在Maven之前"><a href="#Kotlin插件必须放在Maven之前" class="headerlink" title="Kotlin插件必须放在Maven之前"></a>Kotlin插件必须放在Maven之前</h2><h2 id="引入Spring或JPA等插件支持"><a href="#引入Spring或JPA等插件支持" class="headerlink" title="引入Spring或JPA等插件支持"></a>引入Spring或JPA等插件支持</h2><h2 id="Kotlin版本"><a href="#Kotlin版本" class="headerlink" title="Kotlin版本"></a>Kotlin版本</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.jetbrains.kotlin<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>kotlin-maven-plugin<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">version</span>&gt;</span>$&#123;kotlin.version&#125;<span class="tag">&lt;/<span class="title">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">executions</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">execution</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">id</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">goals</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="title">goal</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">goal</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="title">goals</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">configuration</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="title">sourceDirs</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="title">sourceDir</span>&gt;</span>$&#123;project.basedir&#125;/src/main/kotlin<span class="tag">&lt;/<span class="title">sourceDir</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="title">sourceDir</span>&gt;</span>$&#123;project.basedir&#125;/src/main/java<span class="tag">&lt;/<span class="title">sourceDir</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="title">sourceDirs</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="title">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">execution</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">execution</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">id</span>&gt;</span>test-compile<span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">goals</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="title">goal</span>&gt;</span>test-compile<span class="tag">&lt;/<span class="title">goal</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="title">goals</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">configuration</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="title">sourceDirs</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="title">sourceDir</span>&gt;</span>$&#123;project.basedir&#125;/src/test/kotlin<span class="tag">&lt;/<span class="title">sourceDir</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="title">sourceDir</span>&gt;</span>$&#123;project.basedir&#125;/src/test/java<span class="tag">&lt;/<span class="title">sourceDir</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="title">sourceDirs</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="title">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="title">executions</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">jvmTarget</span>&gt;</span>1.8<span class="tag">&lt;/<span class="title">jvmTarget</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">compilerPlugins</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!-- Or "jpa" for JPA support --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">plugin</span>&gt;</span>jpa<span class="tag">&lt;/<span class="title">plugin</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">compilerPlugins</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="title">configuration</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">dependencies</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">dependency</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.jetbrains.kotlin<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>kotlin-maven-noarg<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">version</span>&gt;</span>$&#123;kotlin.version&#125;<span class="tag">&lt;/<span class="title">version</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="title">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>maven-compiler-plugin<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">version</span>&gt;</span>3.5.1<span class="tag">&lt;/<span class="title">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">executions</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!-- Replacing default-compile as it is treated specially by maven --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">execution</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">id</span>&gt;</span>default-compile<span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">phase</span>&gt;</span>none<span class="tag">&lt;/<span class="title">phase</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">execution</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!-- Replacing default-testCompile as it is treated specially by maven --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">execution</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">id</span>&gt;</span>default-testCompile<span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">phase</span>&gt;</span>none<span class="tag">&lt;/<span class="title">phase</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">execution</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">execution</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">id</span>&gt;</span>java-compile<span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">phase</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">phase</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">goals</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="title">goal</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">goal</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="title">goals</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">execution</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">execution</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">id</span>&gt;</span>java-test-compile<span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">phase</span>&gt;</span>test-compile<span class="tag">&lt;/<span class="title">phase</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">goals</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="title">goal</span>&gt;</span>testCompile<span class="tag">&lt;/<span class="title">goal</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="title">goals</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="title">executions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2018/07/22/mq-kafka/" itemprop="url">
-                  消息队列之Kafka
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2018-07-22T23:11:11+08:00" content="2018-07-22">
-              2018-07-22
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>消息队列这个领域的发展，可以用百花齐放来形容了。Kafka、RabbitMQ、RocketMQ等等，多种多样的消息队列可供我们选择，甚至还有很多使用redis等其他数据库实现消息队列的。这一系列文章，就来看看消息队列的选型，各种消息队列的原理与区别。</p>
-<p>首先从Kafka谈起。</p>
-<h2 id="Topic"><a href="#Topic" class="headerlink" title="Topic"></a>Topic</h2><p>在Kafka中，最核心的抽象概念就是topic了。</p>
-<p>Topic是一个种类名或者订阅名，每条消息会被发布到指定的topic中。Kafka中的topic是多订阅者的，可以有任意数量的消费者订阅同个topic。</p>
-<h3 id="Topic的数据结构"><a href="#Topic的数据结构" class="headerlink" title="Topic的数据结构"></a>Topic的数据结构</h3><p>对每个topic，kafka集群都会维持一个分区的log</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">partition <span class="number">0</span>: <span class="number">0</span>-<span class="number">1</span>-<span class="number">2</span>-<span class="number">3</span>-<span class="number">4</span>-<span class="number">5</span>-<span class="number">6</span>---<span class="number">7</span></span><br><span class="line">partition <span class="number">1</span>: <span class="number">0</span>-<span class="number">1</span>-<span class="number">2</span>-<span class="number">3</span>---<span class="number">4</span></span><br><span class="line">partition <span class="number">2</span>: <span class="number">0</span>-<span class="number">1</span>-<span class="number">2</span>-<span class="number">3</span>-<span class="number">4</span>-<span class="number">5</span>---<span class="number">6</span></span><br></pre></td></tr></table></figure>
-<p>如上面的示意图，每个分区都是连续写入的有序且不可变的消息序列，即结构化的commit log。分区中的每条消息都会分配一个序列ID，称作offset，唯一地标识分区中的每条消息。</p>
-<h3 id="消息的保存周期"><a href="#消息的保存周期" class="headerlink" title="消息的保存周期"></a>消息的保存周期</h3><p>Kafka集群，在一定的保存周期内，持久地保存所有发布的消息（不论是否消费过）。比如周期设置为两天，那么消息发布后两天内都可以被消费，过后则将会被丢弃，以清理空间。</p>
-<h3 id="消费者和offset"><a href="#消费者和offset" class="headerlink" title="消费者和offset"></a>消费者和offset</h3><p>而对消费者，唯一保存的元数据，就是消费者在log中所处的offset或位置。这个offset由消费者控制：通常消费者会在读取消息的过程中线性前进，但实际上，因为由消费者控制，所以消费者可以随便改变顺序。比如</p>
-<ul>
-<li>跳回过去的offset，重新处理旧消息</li>
-<li>调到最新的消息，只处理此刻以后的消息</li>
-</ul>
-<p>Kafka这样的设计，使得消费者的实现非常轻量，增加或减少消费者不会对kafka集群或其他消费者产生较大的影响。</p>
-<h2 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h2><p>log中的分区有很多目的。</p>
-<ol>
-<li>允许log分布到多台server上，突破单台server的容量瓶颈；每个分区必须放在一个容量足够的server中，但是一个topic可以有许多分区，所以可以承担任意量的数据</li>
-<li>分区也成为了并行的一个单元</li>
-</ol>
-<h2 id="分布"><a href="#分布" class="headerlink" title="分布"></a>分布</h2><p>log的分区分布在kafka集群中的多个服务器上，每个服务器处理多个分区。每个分区为了容灾，又会有其他服务器上存放副本。</p>
-<p>每个分区都有</p>
-<ol>
-<li>一个leader服务器</li>
-<li>0个或多个follower服务器</li>
-</ol>
-<p>leader处理分区所有的读写请求，而follower只被动地复制leader。如果leader宕机，follower中会选出一个自动成为leader。每个服务器都会作为一些分区的leader，以及另外一些分区的follower，保持集群中的负载均衡。</p>
-<h2 id="消费者"><a href="#消费者" class="headerlink" title="消费者"></a>消费者</h2><p>消费者有一个「消费组」标签，每个发布到topic的消息，都被送达到每个订阅的消费组中的一个消费者。消费者实例可能在分别的进程或分别的机器上。</p>
-<p>如果所有消费者实例的消费组都相同，那么从效果上看，消息会在所有实例中负载均衡。</p>
-<p>如果消费者有不同的消费组，那么每条消息会被广播到所有消费者进程中。</p>
-<p>Kafka实现消费的方式是，将log中的分区均分给消费者实例。</p>
-<blockquote>
-<p>N个分区/M个消费者</p>
-</blockquote>
-<p>在任意时间，每个消费者都是N/M个分区的唯一独占消费者。这一关系的维护由kafka协议动态进行。如果新实例假如，就会从其他成员处拿走一些分区；如果有实例故障，其分区会分配给其他实例。</p>
-<p>Kafka只在单个分区内部提供完全顺序性，同个topic中不同分区间没有这一特性。如果想要实现完全顺序消费，可以让topic只有一个分区来实现。这种情况下，每个消费组只有一个消费进程。</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2018/04/20/circuit-breaker-1/" itemprop="url">
-                  容灾之断路器
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2018-04-20T13:22:40+08:00" content="2018-04-20">
-              2018-04-20
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在一个应用中，所有调用可以分为两类：内存调用和远程调用。其中最重要的区别是远程调用很可能会失败，或挂住没有响应，直到超时。最糟糕的是，当大量调用者调用一个无响应的服务时，因为关键资源的耗尽，会导致相关的多个系统发生雪崩式的崩溃。为了解决这种雪崩式的问题，Michael Nygard将断路器这一概念推广出来。</p>
-<p>断路器的基本理念非常简单：把需要保护的函数包装在一个断路器对象中，断路器负责监视函数调用的失败。失败次数达到一定阈值后，断路器发生断路，接下来的调用全部失败。</p>
-<h2 id="断路器的三个基本状态"><a href="#断路器的三个基本状态" class="headerlink" title="断路器的三个基本状态"></a>断路器的三个基本状态</h2><p>断路器的工作本质上是一个有限状态机。不同的实现可能有不同的状态及状态转换方式。最简单的断路器只有两个状态：<strong>开和关</strong>。断路器默认工作在关闭状态，允许所有函数调用。而当函数调用的失败数或失败率超过一定阈值后，断路器切换到打开状态，所有调用失败。</p>
-<p>是不是听起来很熟悉？当然，这就和我们每家每户使用的电闸一样。这种电闸的问题是，发生断电之后，需要我们手工去重新关闭断路器，才能恢复供电。而在24小时运行的服务端应用中，不可能全部由工程师去手工关闭软件中的断路器。所以断路器一定要有自动关闭的功能。因此，人们在开关两个状态之外，引入了第三种状态：<strong>半开</strong>。</p>
-<h2 id="自动重置功能"><a href="#自动重置功能" class="headerlink" title="自动重置功能"></a>自动重置功能</h2><p>要实现断路器的自动重置功能，最简单的想法就是：断路器打开一定时间后，主动调用所保护的函数，以检测是否已经恢复正常，如果正常，就重置断路器。</p>
-<p>这种新的自动检测和重置的状态，就是刚刚所提到的半开状态。半开状态也有很多种实现方式，基本的做法是，断路器部分地放开一定量的调用，统计其中成功和失败的数量及比例，根据预先设定的阈值，决定继续维持打开状态，还是重置断路器。</p>
-<p>需要注意的是，即使原理看起来比较简单，在实际应用中，究竟如何设置各个阈值的参数，如何设置超时时间，都是需要大量的测试和经验的积累的，另外还需要针对自己应用的场景，进行定制化的分析。只有这样，才能真正发挥出断路器的功效。</p>
-<p>##<br>On their own, circuit breakers help reduce resources tied up in operations which are likely to fail. You avoid waiting on timeouts for the client, and a broken circuit avoids putting load on a struggling server. I talk here about remote calls, which are a common case for circuit breakers, but they can be used in any situation where you want to protect parts of a system from failures in other parts.</p>
-<p>Circuit breakers are a valuable place for monitoring. Any change in breaker state should be logged and breakers should reveal details of their state for deeper monitoring. Breaker behavior is often a good source of warnings about deeper troubles in the environment. Operations staff should be able to trip or reset breakers.</p>
-<p>Breakers on their own are valuable, but clients using them need to react to breaker failures. As with any remote invocation you need to consider what to do in case of failure. Does it fail the operation you’re carrying out, or are there workarounds you can do? A credit card authorization could be put on a queue to deal with later, failure to get some data may be mitigated by showing some stale data that’s good enough to display.</p>
-<h2 id="Java中的断路器"><a href="#Java中的断路器" class="headerlink" title="Java中的断路器"></a>Java中的断路器</h2><p>Java中最有名的断路器实现应该是Netflix Hystrix，然而这个库在几年前就已经不再更新了，其所推荐的替代版本是resilience4j。阅读源码并试用后可以说resilience4j提供的断路器确实简单易用，代码编写的质量也很高，逻辑清晰。</p>
-<p>只需要首先创建一个断路器实例，调用函数时，将函数传递给断路器即可。<br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> circuitBreaker = <span class="type">CircuitBreaker</span>.ofDefaults(<span class="string">"name"</span>)</span><br><span class="line"><span class="type">String</span> <span class="literal">result</span> = circuitBreaker.executeSupplier(() -&gt; backendService.doSomething(param1, param2));</span><br></pre></td></tr></table></figure></p>
-<p>除此之外，resilience4j还有良好的异步支持，支持Java的<code>CompletableFuture</code>，Kotlin的<code>suspend</code>协程函数，以及Reactive Programming。使用起来都非常简单，代码简洁优雅，如Kotlin协程版本的：</p>
-<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> circuitBreaker = <span class="type">CircuitBreaker</span>.ofDefaults(<span class="string">"name"</span>)</span><br><span class="line"><span class="type">String</span> <span class="literal">result</span> = circuitBreaker.executeSuspendFunction &#123;</span><br><span class="line">    backendService.awaitDoSomething(param1, param2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="分布式断路器？"><a href="#分布式断路器？" class="headerlink" title="分布式断路器？"></a>分布式断路器？</h2>
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/30/A-Study-on-Finding-the-Minimum-and-Maximum-Simultaneously/" itemprop="url">
-                  A Study on Finding the Minimum and Maximum Simultaneously
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-05-30T23:12:49+08:00" content="2016-05-30">
-              2016-05-30
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Months ago, I was developing a small procedure to display data in a graph. To scale the input data, I must find the minimum and maximum of the long data array. I thought this problem was very easy and no more improvements could be made at that time, however, until I read about a more effective algorithm.</p>
-<h1 id="An-Intuitive-Solution"><a href="#An-Intuitive-Solution" class="headerlink" title="An Intuitive Solution"></a>An Intuitive Solution</h1><p>It’s very trivial to find the minimum and maximum independently. And certainly you don’t need to pass the array twice to find them simultaneously. The solution I come up with is to pass the array and compare each element with the maximum, and the compare with the minimum if necessary. The following code is a simulation of the <code>out</code> keyword in c#.<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">findMinMax</span><span class="params">(@NotNull <span class="keyword">int</span>[] nums, @NotNull <span class="keyword">int</span>[] outMin, @NotNull <span class="keyword">int</span>[] outMax)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> length = nums.length;</span><br><span class="line">    <span class="keyword">if</span> (length == <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> max = nums[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">int</span> min = max;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; length; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> num = nums[i];</span><br><span class="line">        <span class="keyword">if</span> (num &gt; max) &#123;</span><br><span class="line">            max = num;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (num &lt; min) &#123;</span><br><span class="line">            min = num;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    outMin[<span class="number">0</span>] = min;</span><br><span class="line">    outMax[<span class="number">0</span>] = max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>How many comparisons are made for this implementation?
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/30/A-Study-on-Finding-the-Minimum-and-Maximum-Simultaneously/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1258,7 +1241,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">140</span>
+              <span class="site-state-item-count">148</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1268,7 +1251,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-count">60</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

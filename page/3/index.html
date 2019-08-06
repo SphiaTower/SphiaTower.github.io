@@ -224,6 +224,825 @@
             
               
                 
+                <a class="post-title-link" href="/2018/11/05/kotlin-13-incompatible/" itemprop="url">
+                  Kotlin升级正式版协程后的性能问题
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2018-11-05T22:10:00+08:00" content="2018-11-05">
+              2018-11-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Kotlin协程可以说是大大的弥补了Java在异步开发上的劣势。笔者所工作的项目，使用Kotlin协程进行全异步的开发，已经有半年之久，线上性能非常出色，异步开发也不再繁琐，代码可读性非常好。在数万QPS的线上请求下，Kotlin协程没有出现任何性能问题，强力地支撑着应用的运转。</p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>最近，JetBrain发布了Kotlin1.3版本，将协程包前面的expremental去掉，正式发布，并做了一些变更，比如引入了coroutineScope等等。笔者很快就完成了1.3版本的升级，仅仅对原来的代码进行了极少量的修改。然而升级之后，在测试中发现，原本性能强劲的协程，升级到正式版后，大量使用CPU，原来5%的CPU占用率居然升到了50%之多！</p>
+<p>即使是将代码简化成下面最简单的形式，在同样的QPS下，还是重现同样的症状。<br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">GlobalScope</span>.launch &#123;</span><br><span class="line">  val <span class="literal">result</span> = awaitExecute()</span><br><span class="line">  doSomething(<span class="literal">result</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="定位原因"><a href="#定位原因" class="headerlink" title="定位原因"></a>定位原因</h2><p>观察日志，我们发现，升级1.3之后，执行同样的代码的线程池变了。在1.3之前，默认执行协程的线程池是Java公共的<code>ForkJoinPool.commonPool()</code>，而升级之后，执行的线程名变成了<code>DefaultDispatcher-worker-32</code>，也就说，在另一个<code>DefaultDispatcher</code>所在的线程池中执行。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>发现线程池变了，寻找解决办法就很容易了。</p>
+<p>最简单的方法，Kotlin中可以自己指定协程运行背后的线程池，只要重新设置一个<code>ForkJoinPool</code>就可以。</p>
+<p>另外，我们还可以观察<code>launch()</code>方法内部究竟如何更改了实现。从代码中可以看到，用户没有指定线程池的情况下，Kotlin会根据<code>kotlinx.coroutines.scheduler</code>这个JVM参数，来决定使用Java的公共线程池，还是自己的<code>DefaultScheduler</code>。</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">internal actual <span class="function"><span class="keyword">fun</span> <span class="title">createDefaultDispatcher</span></span>(): <span class="constant">CoroutineDispatcher</span> =</span><br><span class="line">    <span class="keyword">if</span> (useCoroutinesScheduler) <span class="constant">DefaultScheduler</span> <span class="keyword">else</span> <span class="constant">CommonPool</span></span><br></pre></td></tr></table></figure>
+<p>默认情况下，这个参数的值是true，我们只需手动将其设置为false，就可以恢复到Kotlin 1.3之前的默认行为了。</p>
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><p>Kotlin 1.3正式版的协程，带来了structured concurrency，不再鼓励大家使用全局的协程。在使用协程时，合理地自定义线程池，合理创建coroutine scope是非常重要的，这样也可以避免这种版本升级后带来的全局性问题。</p>
+<h2 id="根本原因"><a href="#根本原因" class="headerlink" title="根本原因"></a>根本原因</h2><p>说到这里，我们还没有涉及到最根本的问题。究竟为什么替换了线程池后，性能会如此恶化？要解决这个问题，我们需要对Kotlin的<code>DefaultScheduler</code>进行深入的研究。</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/10/30/gc-experience/" itemprop="url">
+                  线上实战GC优化经验 - CMS的调优
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2018-10-30T20:36:27+08:00" content="2018-10-30">
+              2018-10-30
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>GC是Java服务端开发过程中所必须关注的一个重要环节。而有趣的是，对GC的调优，常常是「不见棺材不落泪」，也就是说，往往很多人会等线上真的出现问题以后，才会关注GC调优的问题。当然，这样的做法是不可取的，良好的监控，及时的预警，一旦发现GC性能恶化，及时调优，才能避免线上问题出现。</p>
+<h2 id="CMS回顾"><a href="#CMS回顾" class="headerlink" title="CMS回顾"></a>CMS回顾</h2><p>很多应用往往会使用默认的GC类型和GC参数，这些「默认」可能是JVM自己的默认，公司或项目组的默认，或者是自己开发经验的默认。但是，对不同类型的应用，其适合的GC类型和GC参数往往有巨大的不同。</p>
+<p>以最常用的CMS回收器来看，新生代和老生代的各种参数调配，起着非常重要作用。先来回顾一下CMS的工作原理</p>
+<ol>
+<li>CMS将heap分为新生代和老生代，新生代又分为Eden和两个Survivor</li>
+<li>YGC：使用标记-复制算法，回收Eden+Survivor，幸存者移动到另一个Survivor；多次存活晋升到老生代</li>
+<li>FGC：使用并发标记-扫描算法</li>
+</ol>
+<p>而在线上GC调优中，我们首要的目标是尽可能地避免Full GC，其次是减少YGC的频率和时间。</p>
+<h2 id="分析应用pattern"><a href="#分析应用pattern" class="headerlink" title="分析应用pattern"></a>分析应用pattern</h2><p>前面提到，不同的应用，其适合的GC模式完全不同。下面拿一个函数式的计算应用进行举例。</p>
+<p>众所周知，函数式编程时，对象都是无状态和不变的，因此，对复杂的计算型应用，往往在计算的流程中，需要生成大量的中间对象。这些中间对象往往是朝生暮死的（ephemeral），不会被长期持有。在高QPS的调用下，这种计算型应用会产生巨量的垃圾，这些垃圾会马上填充满新生代，引发YGC。同时因为新生代负荷过高，很容易导致一些朝生暮死的对象被错误地晋升到老生代，进而随着时间的积累，最终引发Full GC。</p>
+<h2 id="针对性的优化"><a href="#针对性的优化" class="headerlink" title="针对性的优化"></a>针对性的优化</h2><p>分析完了计算型应用的特点，就可以针对其进行一些针对性的优化。首先，针对朝生暮死的对象大量填充新生代的问题，可以将新生代的空间大大增加。如果服务器有足够的内存，就增大新生代的内存，否则就增大新生代的比例。这样新生代就有足够的空间进行缓冲，收纳大量朝生暮死的对象。</p>
+<p>那么增大新生代的空间，是否会减慢YGC的速度呢？答案是否定的。因为标记-复制算法只关心哪些存活下来的对象，对计算型应用而言，这样存活下来的对象所占的比例是极低的，YGC的耗时，主要由这些存活下来的对象的多少决定。因此，即使新生代的空间大幅增加，YGC的时间不但不会增加，反而可能会下降。</p>
+<p>仅仅增大新生代总体的空间还不够，Eden和Survivor的比例也是需要关注的问题。如果Survivor太小，也会面临新生代过小类似的问题，导致一些对象晋升。而如果Survivor太大，又会导致空间的浪费。对函数式的计算型应用而言，往往Survivor并不需要太大，可以适当调低其比例。</p>
+<h2 id="优化的效果"><a href="#优化的效果" class="headerlink" title="优化的效果"></a>优化的效果</h2><p>在实战中，我们在一台6000+QPS的函数计算型应用上做了优化测试。优化后，YGC时间从400ms降低到了50ms；而每分钟的YGC测试从15次降低到了3次，Full GC更是完全消失了。可见上面针对性的优化方案，效果是非常好的。</p>
+<h2 id="CMS是最合适的吗？"><a href="#CMS是最合适的吗？" class="headerlink" title="CMS是最合适的吗？"></a>CMS是最合适的吗？</h2><p>上面谈到的，都是针对常用的CMS垃圾回收器所做的优化。而Java发展到现在，已经出现了大量优质的垃圾回收器，如G1，ZGC，等等。CMS是否就是最合适的垃圾回收器呢？这些我们留在下一次讨论。</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/10/25/levelDB/" itemprop="url">
+                  LevelDB的理论与实践
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2018-10-25T23:44:27+08:00" content="2018-10-25">
+              2018-10-25
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>提到KV数据库这些名词，人们往往要么想到Redis，要么想到Memcached。Redis和Memcached固然强大，但也并不是适合任何场景使用。而LevelDB填补了二者之间的空缺，也是KV数据库领域中，不可忽视的一个选择。当然，严格地说，LevelDB只是一个KV存储引擎，并不是一个完整的数据库服务。要想像Redis，Memcached一样使用LevelDB，还需要做服务层的封装，本文略去不提。</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>首先，先来看LevelDB官方的介绍。</p>
+<blockquote>
+<p>LevelDB是一个快速的KV存储库，由谷歌编写，提供有序的字符串KV映射</p>
+</blockquote>
+<p>短短一句话，其实提供了很多信息，再根据其他介绍，我们可以了解LevelDB的一些特征：</p>
+<ul>
+<li>KV都是任意的字节数组</li>
+<li>数据根据Key进行排序，用户可以提供自己的比较函数</li>
+<li>基础操作只有，put，get，delete三种</li>
+</ul>
+<p>由此可见，与Redis相比，LevelDB支持的数据类型非常简单，只是普通的KV。但LevelDB支持了Key排序的功能，可以用来实现一些哈希式的KV存储无法支持的功能。</p>
+<h2 id="实现细节"><a href="#实现细节" class="headerlink" title="实现细节"></a>实现细节</h2><p>了解一个数据库引擎，最重要的是去看其数据结构，了解了数据结构，再去看外层API，就基本能够掌握一个数据库的运作原理。<br>一般来说，有三种实现KV数据库的方式</p>
+<ol>
+<li>哈希（线性探测、分链法）</li>
+<li>树（红黑树、B树）</li>
+<li>跳表</li>
+</ol>
+<p>大体而言，哈希的读写速度最快，但最差情况较差，且随机读写多；树的读写均稍慢，但是能够提供有序性；而跳表则对并发情况更加友好</p>
+<p><a href="https://github.com/google/leveldb/blob/master/doc/impl.md" target="_blank" rel="external">https://github.com/google/leveldb/blob/master/doc/impl.md</a></p>
+<p>每个LevelDB数据库，都由一个目录下的一系列文件代表。</p>
+<h3 id="日志文件"><a href="#日志文件" class="headerlink" title="日志文件"></a>日志文件</h3><p>日志文件（*.log）存储了最近更新的序列。每个更新都会append到当前的log文件。当文件大小达到预定大小（默认4MB），就会转化成为一个排序表，并创建一个新的日志文件。</p>
+<p>当前日志文件会在内存中维持一个副本，称作memtable。每个读操作进来，都会询问这个副本，这样所有记录下的更新都会对读操作可见</p>
+<h3 id="排序表"><a href="#排序表" class="headerlink" title="排序表"></a>排序表</h3><p>排序表（*.log）存储了根据key排序的条目序列。每个条目，要么是key的value，要么是key的删除记号</p>
+<p>排序表的集合被组织成一个个level的序列。由log文件生成的排序表被放在特殊的<strong>年轻层</strong>，也就是level-0。当level-0的文件数目超过阈值后，所有年轻文件就会和所有level-1文件进行合并，产生新的level-1文件。</p>
+<p>年轻层的文件可能存在重叠key，但是其他层每个文件的key range都是不同的。假设层数为L（L&gt;=1），当level-L里合并后文件大小超过10^L MB（第一层10MB，第二层100MB）后，level-L中的一个文件，和level-(L+1)层的所有重叠文件，就会合并形成一系列新的level-(L+1)层文件。通过不断地合并，年轻层的新更新，会被逐渐迁移到只使用批量读写的最高层（减少昂贵的寻址操作）</p>
+<h3 id="Manifest"><a href="#Manifest" class="headerlink" title="Manifest"></a>Manifest</h3><p>Manifest文件列出了每个level下的排序表的集合，各自的key范围，以及其他元数据。</p>
+<h3 id="memtable"><a href="#memtable" class="headerlink" title="memtable"></a>memtable</h3><p>当level-0的日志文件增长到一定大小后，就会创建一个全新的memtable和日志文件，并将更新操作转向这里。</p>
+<h3 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h3><p>当level-L的size超过限制，就会在后台线程进行压缩。压缩从L层拿一个文件，再从L+1层拿所有交叠的文件（即使只有一小部分交叠）。注意：Level0需要特殊处理，因为key可交叠，需要取出更多文件</p>
+<p>每次压缩，会将取出文件的内容合并，然后产生一系列L+1层的新文件。压缩会丢弃被覆盖的值，同时也丢弃删除记号</p>
+<h2 id="自己的总结"><a href="#自己的总结" class="headerlink" title="自己的总结"></a>自己的总结</h2><p>首先来看LevelDB的数据结构，简单总结下，应该如下所示：</p>
+<blockquote>
+<p>log+memtable+level-0 -&gt; level-1(sorted tables) -&gt; level-2 -&gt; …</p>
+</blockquote>
+<p>要理解LevelDB，只看外面的分层模型是不够的，还要研究每一层文件的存储内容，这才是关键。整体来看，LevelDB的存储实际上是一个树形结构，每一层都有多个文件，除了0层之外互相交叠。说到树，自然就要看树中所蕴含的递归思想。在LevelDB中，一次更新操作，首先进入树的顶点（0层）；如果0层节点写满，就会将这个更新记录，与1层合并，写入1层；1层节点写满后，再进入2层，最终合并到最高层。</p>
+<p>因此，<strong>LevelDB</strong>树中节点所存储的内容，并非数据本身，而是一条条数据的更新记录，或者说是一种replay。如果一个key只写入过一次，那么在任意时刻，它也只会在其中某一层出现。而如果一个key多次出现，就有可能在多层都有写入记录。当然，越低层的写入就越接近数据的最新状态，而更高层的写入实际上已经作废了，等待在合并时被压缩处理掉。</p>
+<p>那么这种数据结构，究竟带来了什么好处呢？为什么要选取这种结构呢？下面就从另一个角度，API，来看一下。</p>
+<h3 id="Get操作"><a href="#Get操作" class="headerlink" title="Get操作"></a>Get操作</h3><p>首先来看最简单的读操作。我们知道，树形的结构都会牺牲掉一些读取性能，LevelDB也是如此。每次读取，首先会尝试内存中的memtable，如果是热点数据，读到的概率很大。但如果是冷数据，很可能已经被合并到了最高层。因此需要一层层查找，直到在某一层找到数据，就可以结束搜索。而且，只有memtable中的操作是内存读取，其他都是硬盘读取。由此可以推断，LevelDB的读取性能相对纯内存数据库来说较差。</p>
+<h3 id="Put操作"><a href="#Put操作" class="headerlink" title="Put操作"></a>Put操作</h3><p>再来看看Put操作。Put其实分为两种，插入和更新。在LevelDB中，这两种的差别并不大。因为日志文件.log的存在，LevelDB只需要确保将更新写入log文件，就可以结束本次写入。因此，写入速度是非常快的。后续，内部线程再将写入操作放到排序表的树中，这些都是后台操作。而且，因为更新数据会被不断合并到硬盘中的一层层文件中，LevelDB可以利用硬盘的存储空间存储更大量的数据（而非内存数据库只能利用内存空间），并且利用合并算法减少了随机写。同时又通过memtable维持了一部分内存读取的便利。</p>
+<p>可以看到，LevelDB中，平均情况下，写入性能是好过读取性能的。因此LevelDB非常适合读多写少的流量，且LevelDB可以利用硬盘存储大量数据，其成本要远远&lt;内存数据库。</p>
+<p>LSM (Log Structured Merge) LSM树<br>LSM通过消去随机的本地更新操作，把磁盘随机写操作变为顺序写操作，从而得到更好的写操作吞吐量。LSM树的设计思想非常朴素，将对数据的修改增量保持在内存中，达到指定的大小限制后将这些修改操作批量写入磁盘。文件是不可修改的，他们永远不会被更新，新的更新操作只会写到新的文件中。读操作会依次从最新的文件查找，通过周期性的合并这些文件来减少文件个数。所以写入性能大大提升，读取时可能需要先看是否命中内存，否则需要访问较多的磁盘文件。综上，LSM索引相比哈希索引能够大幅提高写性能，数据量非常大的情况下因为哈希碰撞哈希索引的效率低</p>
+<p><a href="https://www.zhihu.com/question/27256968/answer/309936531" target="_blank" rel="external">https://www.zhihu.com/question/27256968/answer/309936531</a></p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/09/05/jdk-reflection-error/" itemprop="url">
+                  一个JDK源码引发的诡异问题
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2018-09-05T19:12:37+08:00" content="2018-09-05">
+              2018-09-05
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>今天在开发过程中，接入了一个SDK，可是无论如何都启动不起来。每次启动其中的<code>ChronicleMap</code>组件时，都会报下面的错误。<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Caused by: java.lang.IllegalAccessException: member is private: sun.nio.ch.FileChannelImpl.unmap<span class="number">0</span>[Ljava.lang.Object;@<span class="number">21</span>f50d2c/invokeStatic, from net.openhft.chronicle.core.OS (unnamed module @<span class="number">8</span>bc0696)</span><br><span class="line">  at java.base/java.lang.invoke.MemberName.makeAccessException(MemberName.java:<span class="number">942</span>)</span><br><span class="line">  at java.base/java.lang.invoke.MethodHandles<span class="variable">$Lookup</span>.checkAccess(MethodHandles.java:<span class="number">2215</span>)</span><br><span class="line">  at java.base/java.lang.invoke.MethodHandles<span class="variable">$Lookup</span>.checkMethod(MethodHandles.java:<span class="number">2155</span>)</span><br><span class="line">  at java.base/java.lang.invoke.MethodHandles<span class="variable">$Lookup</span>.getDirectMethodCommon(MethodHandles.java:<span class="number">2299</span>)</span><br><span class="line">  at java.base/java.lang.invoke.MethodHandles<span class="variable">$Lookup</span>.getDirectMethodNoSecurityManager(MethodHandles.java:<span class="number">2292</span>)</span><br><span class="line">  at java.base/java.lang.invoke.MethodHandles<span class="variable">$Lookup</span>.unreflect(MethodHandles.java:<span class="number">1756</span>)</span><br><span class="line">  at net.openhft.chronicle.core.OS.&lt;clinit&gt;(OS.java:<span class="number">79</span>)</span><br><span class="line">  ... <span class="number">52</span> common frames omitted</span><br></pre></td></tr></table></figure></p>
+<p>顺着源码看下去，真正出问题的是下面的代码<br><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">Method</span> <span class="title">unmap0</span> = <span class="title">Jvm</span>.<span class="title">getMethod</span><span class="params">(FileChannelImpl.<span class="keyword">class</span>, "unmap0", long.<span class="keyword">class</span>, long.<span class="keyword">class</span>)</span>;</span></span><br><span class="line">UNMAPP0_MH = MethodHandles.lookup().unreflect(unmap0);</span><br></pre></td></tr></table></figure></p>
+<p><code>ChronicleMap</code>通过内部的工具类，成功地反射获取了jdk内部的一个方法，然后对其使用<code>MethodHandle</code>的<code>unreflect</code>方法获取其<code>MethodHandle</code>加速调用。按理说没什么问题，却抛出了<code>IllegalAccessException</code>，这是为何？</p>
+<p>一开始怀疑是和Java 9之后的module系统有关。在网上一番搜索，发现chronicle-map曾经出现过类似的问题，官方提出的解决方法是<code>--add-exports java.base/sun.nio.ch=ALL-UNNAMED</code>，增加这个参数，以解决模块化后不可见的问题。然而经测试加了这个参数后没有解决问题，而且我所使用的chronicle-map已经是最新版本，应该早已解决了这个问题。那么问题到底出自哪里呢？</p>
+<p>排查一个难解的问题时，有一个很有效的手段，就是简化场景。既然问题出在那两行代码，我们就将那两行代码单独提取出来，试一试。Jvm是内部类，我们换成普通的反射方法<code>Class.getDeclaredMethod()</code>。结果果然复现了问题。<br><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">Method</span> <span class="title">unmap0</span> = <span class="title">FileChannelImpl</span>.<span class="title">class</span>.<span class="title">getDeclaredMethod</span><span class="params">("unmap0", long.<span class="keyword">class</span>, long.<span class="keyword">class</span>)</span>;</span></span><br><span class="line">MethodHandles.lookup().unreflect(unmap0);</span><br></pre></td></tr></table></figure></p>
+<p>再来看unreflect方法的问题，问题豁然明了了<br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">* @throws <span class="type">IllegalAccessException</span> <span class="keyword">if</span> access checking fails</span><br><span class="line">*                                <span class="keyword">or</span> <span class="keyword">if</span> the <span class="keyword">method</span>'s variable arity modifier bit</span><br><span class="line">*                                <span class="keyword">is</span> <span class="type">set</span> <span class="keyword">and</span> &#123;@code asVarargsCollector&#125; fails</span><br></pre></td></tr></table></figure></p>
+<p>原来是access checking失败，只要补上setAccessible应该就调用了<br><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">Method</span> <span class="title">unmap0</span> = <span class="title">FileChannelImpl</span>.<span class="title">class</span>.<span class="title">getDeclaredMethod</span><span class="params">("unmap0", long.<span class="keyword">class</span>, long.<span class="keyword">class</span>)</span>;</span></span><br><span class="line">unmap0.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">MethodHandles.lookup().unreflect(unmap0);</span><br></pre></td></tr></table></figure></p>
+<p>再来看上面提到的<code>ChronicleMap</code>，经过多次检查，其中的源码也进行了setAccessible操作，然而却还是抛出了这个异常。再仔细看，其中的操作是这样的<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setAccessible</span><span class="params">(AccessibleObject h)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!IS_JAVA_9_PLUS || IS_JAVA_12_PLUS) &#123;</span><br><span class="line">        h.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// doesn't work in Java 12+</span></span><br><span class="line">        Field f = AccessibleObject.<span class="keyword">class</span>.getDeclaredField(<span class="string">"override"</span>);</span><br><span class="line">        <span class="keyword">long</span> offset = UNSAFE.objectFieldOffset(f);</span><br><span class="line">        UNSAFE.putBoolean(h, offset, <span class="literal">true</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (NoSuchFieldException e2) &#123;</span><br><span class="line">        <span class="comment">// ignored, throws an error later if private.</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这段代码很有趣，作者没有直接使用method的setAccessible方法，而是作了一个判断</p>
+<ol>
+<li>如果在Java 9-11版本，使用<code>UNSAFE</code>的方式，使方法可访问</li>
+<li>其他版本，使用传统的setAccessible方式</li>
+</ol>
+<p>反射的方法很简单，那么在Java 9-11版本，为什么要用如此复杂的方法呢？我们再来仔细看看，这一段方法做了什么</p>
+<ol>
+<li><p>获取<code>AccessibleObject</code>类的<code>override</code>字段。这里的<code>override</code>不是那个表示覆盖的注解，而是类中的一个普通字段。而这个<code>AccessibleObject</code>是<code>Method</code>，<code>Field</code>等类的父类。而这个字段的意思是</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="pi">// Indicates whether language-level access checks are overridden</span><br><span class="line">//</span> <span class="keyword">by</span> <span class="keyword">this</span> object. Initializes <span class="keyword">to</span> <span class="string">"false"</span>. This field <span class="keyword">is</span> used <span class="keyword">by</span></span><br><span class="line"><span class="pi">// Field, Method, and Constructor.</span></span><br></pre></td></tr></table></figure>
+<p>再去看这个字段的调用代码，可以看出，<code>override</code>字段为<code>false</code>时，反射时就会执行访问检查，否则就不执行。</p>
+</li>
+<li><p>用<code>UNSAFE</code>获取<code>override</code>字段在对象中的偏移offset，</p>
+</li>
+<li>用<code>UNSAFE</code>修改method对象的<code>override</code>字段为<code>true</code>。<br>这一步很简单，就是为了绕过访问检查。可是问题又来了，为什么不直接用反射的方法<code>f.setBoolean(h, true)</code>呢？</li>
+</ol>
+<p>再来看看传统的反射修改可见性，是如何实现的<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">setAccessible</span><span class="params">(<span class="keyword">boolean</span> flag)</span> </span>&#123;</span><br><span class="line">    AccessibleObject.checkPermission();</span><br><span class="line">    setAccessible0(flag);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Sets the accessible flag and returns the new value</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">setAccessible0</span><span class="params">(<span class="keyword">boolean</span> flag)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.override = flag;</span><br><span class="line">    <span class="keyword">return</span> flag;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可见，第二种<code>Unsafe</code>的方式，其实就是绕过了<code>checkPermission</code>内部的安全检查，功能和传统方法一样，都是设置<code>override</code>字段为true，使方法可见。使用这种方法的好处，就是最大限度地保证代码成功执行，以及一定程度上的性能提升（个人认为基本可以忽略）。</p>
+<p>但是这种方法有没有缺点呢？这就要说回我们这次遇到的这个难解的bug了。</p>
+<p>经过多次排查，最终定位到<code>Field f = AccessibleObject.class.getDeclaredField(&quot;override&quot;)</code>代码居然抛出了<code>NoSuchFieldException</code>异常。而在IDE中查看JDK源码时，明明就有这个这个字段，这是为什么呢？一定是实际运行的JDK本身的问题！没错，最终发现我们所用的这一版公司内部修改过的JDK11存在一些bug，导致了这个问题的发生。替换成使用open jdk后，马上就恢复正常了。另外，在网上搜索发现，在安卓上也会出现类似的问题，因为安卓源码也对open jdk进行了修改。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这个问题其实很有趣，因为他说简单也很简单，不过是一个jdk内部实现的问题；然而说复杂也很复杂，短短两行代码就涉及了<code>MethodHandle</code>，反射，Java模块化，<code>UNSAFE</code>，<code>SecurityManager</code>，JDK的不同实现，这么多的问题。排查类似的问题时，一定不要在一个方向上钻的太深，这样很容易忽视真正的原因。</p>
+<p>另外对<code>Unsafe</code>的使用一定要慎重，否则，很容易弄巧成拙。最后再附上一段对<code>UNSAFE</code>的评价作结尾。</p>
+<blockquote>
+<p>sun.misc.Unsafe是JDK内部用的工具类。它通过暴露一些Java意义上说“不安全”的功能给Java层代码，来让JDK能够更多的使用Java代码来实现一些原本是平台相关的、需要使用native语言（例如C或C++）才可以实现的功能。该类不应该在JDK核心类库之外使用。</p>
+<p>JVM的实现可以自由选择如何实现Java对象的“布局”，也就是在内存里Java对象的各个部分放在哪里，包括对象的实例字段和一些元数据之类。sun.misc.Unsafe里关于对象字段访问的方法把对象布局抽象出来，它提供了objectFieldOffset()方法用于获取某个字段相对Java对象的“起始地址”的偏移量，也提供了getInt、getLong、getObject之类的方法可以使用前面获取的偏移量来访问某个Java对象的某个字段。</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/08/22/kotlin-maven-compile/" itemprop="url">
+                  kotlin-maven-compile
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2018-08-22T21:10:17+08:00" content="2018-08-22">
+              2018-08-22
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="引入Kotlin后项目Pom需要注意的问题"><a href="#引入Kotlin后项目Pom需要注意的问题" class="headerlink" title="引入Kotlin后项目Pom需要注意的问题"></a>引入Kotlin后项目Pom需要注意的问题</h1><h2 id="Kotlin插件必须放在Maven之前"><a href="#Kotlin插件必须放在Maven之前" class="headerlink" title="Kotlin插件必须放在Maven之前"></a>Kotlin插件必须放在Maven之前</h2><h2 id="引入Spring或JPA等插件支持"><a href="#引入Spring或JPA等插件支持" class="headerlink" title="引入Spring或JPA等插件支持"></a>引入Spring或JPA等插件支持</h2><h2 id="Kotlin版本"><a href="#Kotlin版本" class="headerlink" title="Kotlin版本"></a>Kotlin版本</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.jetbrains.kotlin<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>kotlin-maven-plugin<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">version</span>&gt;</span>$&#123;kotlin.version&#125;<span class="tag">&lt;/<span class="title">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">executions</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">execution</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">id</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">goals</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="title">goal</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">goal</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="title">goals</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">configuration</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="title">sourceDirs</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="title">sourceDir</span>&gt;</span>$&#123;project.basedir&#125;/src/main/kotlin<span class="tag">&lt;/<span class="title">sourceDir</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="title">sourceDir</span>&gt;</span>$&#123;project.basedir&#125;/src/main/java<span class="tag">&lt;/<span class="title">sourceDir</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="title">sourceDirs</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="title">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">execution</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">execution</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">id</span>&gt;</span>test-compile<span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">goals</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="title">goal</span>&gt;</span>test-compile<span class="tag">&lt;/<span class="title">goal</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="title">goals</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">configuration</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="title">sourceDirs</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="title">sourceDir</span>&gt;</span>$&#123;project.basedir&#125;/src/test/kotlin<span class="tag">&lt;/<span class="title">sourceDir</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="title">sourceDir</span>&gt;</span>$&#123;project.basedir&#125;/src/test/java<span class="tag">&lt;/<span class="title">sourceDir</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="title">sourceDirs</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="title">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="title">executions</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">jvmTarget</span>&gt;</span>1.8<span class="tag">&lt;/<span class="title">jvmTarget</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">compilerPlugins</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!-- Or "jpa" for JPA support --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">plugin</span>&gt;</span>jpa<span class="tag">&lt;/<span class="title">plugin</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">compilerPlugins</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="title">configuration</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">dependencies</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">dependency</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.jetbrains.kotlin<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>kotlin-maven-noarg<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">version</span>&gt;</span>$&#123;kotlin.version&#125;<span class="tag">&lt;/<span class="title">version</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="title">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>maven-compiler-plugin<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">version</span>&gt;</span>3.5.1<span class="tag">&lt;/<span class="title">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">executions</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!-- Replacing default-compile as it is treated specially by maven --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">execution</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">id</span>&gt;</span>default-compile<span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">phase</span>&gt;</span>none<span class="tag">&lt;/<span class="title">phase</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">execution</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!-- Replacing default-testCompile as it is treated specially by maven --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">execution</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">id</span>&gt;</span>default-testCompile<span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">phase</span>&gt;</span>none<span class="tag">&lt;/<span class="title">phase</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">execution</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">execution</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">id</span>&gt;</span>java-compile<span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">phase</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">phase</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">goals</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="title">goal</span>&gt;</span>compile<span class="tag">&lt;/<span class="title">goal</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="title">goals</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">execution</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">execution</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">id</span>&gt;</span>java-test-compile<span class="tag">&lt;/<span class="title">id</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">phase</span>&gt;</span>test-compile<span class="tag">&lt;/<span class="title">phase</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">goals</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="title">goal</span>&gt;</span>testCompile<span class="tag">&lt;/<span class="title">goal</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="title">goals</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="title">executions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/07/22/mq-kafka/" itemprop="url">
+                  消息队列之Kafka
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2018-07-22T23:11:11+08:00" content="2018-07-22">
+              2018-07-22
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>消息队列这个领域的发展，可以用百花齐放来形容了。Kafka、RabbitMQ、RocketMQ等等，多种多样的消息队列可供我们选择，甚至还有很多使用redis等其他数据库实现消息队列的。这一系列文章，就来看看消息队列的选型，各种消息队列的原理与区别。</p>
+<p>首先从Kafka谈起。</p>
+<h2 id="Topic"><a href="#Topic" class="headerlink" title="Topic"></a>Topic</h2><p>在Kafka中，最核心的抽象概念就是topic了。</p>
+<p>Topic是一个种类名或者订阅名，每条消息会被发布到指定的topic中。Kafka中的topic是多订阅者的，可以有任意数量的消费者订阅同个topic。</p>
+<h3 id="Topic的数据结构"><a href="#Topic的数据结构" class="headerlink" title="Topic的数据结构"></a>Topic的数据结构</h3><p>对每个topic，kafka集群都会维持一个分区的log</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">partition <span class="number">0</span>: <span class="number">0</span>-<span class="number">1</span>-<span class="number">2</span>-<span class="number">3</span>-<span class="number">4</span>-<span class="number">5</span>-<span class="number">6</span>---<span class="number">7</span></span><br><span class="line">partition <span class="number">1</span>: <span class="number">0</span>-<span class="number">1</span>-<span class="number">2</span>-<span class="number">3</span>---<span class="number">4</span></span><br><span class="line">partition <span class="number">2</span>: <span class="number">0</span>-<span class="number">1</span>-<span class="number">2</span>-<span class="number">3</span>-<span class="number">4</span>-<span class="number">5</span>---<span class="number">6</span></span><br></pre></td></tr></table></figure>
+<p>如上面的示意图，每个分区都是连续写入的有序且不可变的消息序列，即结构化的commit log。分区中的每条消息都会分配一个序列ID，称作offset，唯一地标识分区中的每条消息。</p>
+<h3 id="消息的保存周期"><a href="#消息的保存周期" class="headerlink" title="消息的保存周期"></a>消息的保存周期</h3><p>Kafka集群，在一定的保存周期内，持久地保存所有发布的消息（不论是否消费过）。比如周期设置为两天，那么消息发布后两天内都可以被消费，过后则将会被丢弃，以清理空间。</p>
+<h3 id="消费者和offset"><a href="#消费者和offset" class="headerlink" title="消费者和offset"></a>消费者和offset</h3><p>而对消费者，唯一保存的元数据，就是消费者在log中所处的offset或位置。这个offset由消费者控制：通常消费者会在读取消息的过程中线性前进，但实际上，因为由消费者控制，所以消费者可以随便改变顺序。比如</p>
+<ul>
+<li>跳回过去的offset，重新处理旧消息</li>
+<li>调到最新的消息，只处理此刻以后的消息</li>
+</ul>
+<p>Kafka这样的设计，使得消费者的实现非常轻量，增加或减少消费者不会对kafka集群或其他消费者产生较大的影响。</p>
+<h2 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h2><p>log中的分区有很多目的。</p>
+<ol>
+<li>允许log分布到多台server上，突破单台server的容量瓶颈；每个分区必须放在一个容量足够的server中，但是一个topic可以有许多分区，所以可以承担任意量的数据</li>
+<li>分区也成为了并行的一个单元</li>
+</ol>
+<h2 id="分布"><a href="#分布" class="headerlink" title="分布"></a>分布</h2><p>log的分区分布在kafka集群中的多个服务器上，每个服务器处理多个分区。每个分区为了容灾，又会有其他服务器上存放副本。</p>
+<p>每个分区都有</p>
+<ol>
+<li>一个leader服务器</li>
+<li>0个或多个follower服务器</li>
+</ol>
+<p>leader处理分区所有的读写请求，而follower只被动地复制leader。如果leader宕机，follower中会选出一个自动成为leader。每个服务器都会作为一些分区的leader，以及另外一些分区的follower，保持集群中的负载均衡。</p>
+<h2 id="消费者"><a href="#消费者" class="headerlink" title="消费者"></a>消费者</h2><p>消费者有一个「消费组」标签，每个发布到topic的消息，都被送达到每个订阅的消费组中的一个消费者。消费者实例可能在分别的进程或分别的机器上。</p>
+<p>如果所有消费者实例的消费组都相同，那么从效果上看，消息会在所有实例中负载均衡。</p>
+<p>如果消费者有不同的消费组，那么每条消息会被广播到所有消费者进程中。</p>
+<p>Kafka实现消费的方式是，将log中的分区均分给消费者实例。</p>
+<blockquote>
+<p>N个分区/M个消费者</p>
+</blockquote>
+<p>在任意时间，每个消费者都是N/M个分区的唯一独占消费者。这一关系的维护由kafka协议动态进行。如果新实例假如，就会从其他成员处拿走一些分区；如果有实例故障，其分区会分配给其他实例。</p>
+<p>Kafka只在单个分区内部提供完全顺序性，同个topic中不同分区间没有这一特性。如果想要实现完全顺序消费，可以让topic只有一个分区来实现。这种情况下，每个消费组只有一个消费进程。</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/04/20/circuit-breaker-1/" itemprop="url">
+                  容灾之断路器
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2018-04-20T13:22:40+08:00" content="2018-04-20">
+              2018-04-20
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在一个应用中，所有调用可以分为两类：内存调用和远程调用。其中最重要的区别是远程调用很可能会失败，或挂住没有响应，直到超时。最糟糕的是，当大量调用者调用一个无响应的服务时，因为关键资源的耗尽，会导致相关的多个系统发生雪崩式的崩溃。为了解决这种雪崩式的问题，Michael Nygard将断路器这一概念推广出来。</p>
+<p>断路器的基本理念非常简单：把需要保护的函数包装在一个断路器对象中，断路器负责监视函数调用的失败。失败次数达到一定阈值后，断路器发生断路，接下来的调用全部失败。</p>
+<h2 id="断路器的三个基本状态"><a href="#断路器的三个基本状态" class="headerlink" title="断路器的三个基本状态"></a>断路器的三个基本状态</h2><p>断路器的工作本质上是一个有限状态机。不同的实现可能有不同的状态及状态转换方式。最简单的断路器只有两个状态：<strong>开和关</strong>。断路器默认工作在关闭状态，允许所有函数调用。而当函数调用的失败数或失败率超过一定阈值后，断路器切换到打开状态，所有调用失败。</p>
+<p>是不是听起来很熟悉？当然，这就和我们每家每户使用的电闸一样。这种电闸的问题是，发生断电之后，需要我们手工去重新关闭断路器，才能恢复供电。而在24小时运行的服务端应用中，不可能全部由工程师去手工关闭软件中的断路器。所以断路器一定要有自动关闭的功能。因此，人们在开关两个状态之外，引入了第三种状态：<strong>半开</strong>。</p>
+<h2 id="自动重置功能"><a href="#自动重置功能" class="headerlink" title="自动重置功能"></a>自动重置功能</h2><p>要实现断路器的自动重置功能，最简单的想法就是：断路器打开一定时间后，主动调用所保护的函数，以检测是否已经恢复正常，如果正常，就重置断路器。</p>
+<p>这种新的自动检测和重置的状态，就是刚刚所提到的半开状态。半开状态也有很多种实现方式，基本的做法是，断路器部分地放开一定量的调用，统计其中成功和失败的数量及比例，根据预先设定的阈值，决定继续维持打开状态，还是重置断路器。</p>
+<p>需要注意的是，即使原理看起来比较简单，在实际应用中，究竟如何设置各个阈值的参数，如何设置超时时间，都是需要大量的测试和经验的积累的，另外还需要针对自己应用的场景，进行定制化的分析。只有这样，才能真正发挥出断路器的功效。</p>
+<p>##<br>On their own, circuit breakers help reduce resources tied up in operations which are likely to fail. You avoid waiting on timeouts for the client, and a broken circuit avoids putting load on a struggling server. I talk here about remote calls, which are a common case for circuit breakers, but they can be used in any situation where you want to protect parts of a system from failures in other parts.</p>
+<p>Circuit breakers are a valuable place for monitoring. Any change in breaker state should be logged and breakers should reveal details of their state for deeper monitoring. Breaker behavior is often a good source of warnings about deeper troubles in the environment. Operations staff should be able to trip or reset breakers.</p>
+<p>Breakers on their own are valuable, but clients using them need to react to breaker failures. As with any remote invocation you need to consider what to do in case of failure. Does it fail the operation you’re carrying out, or are there workarounds you can do? A credit card authorization could be put on a queue to deal with later, failure to get some data may be mitigated by showing some stale data that’s good enough to display.</p>
+<h2 id="Java中的断路器"><a href="#Java中的断路器" class="headerlink" title="Java中的断路器"></a>Java中的断路器</h2><p>Java中最有名的断路器实现应该是Netflix Hystrix，然而这个库在几年前就已经不再更新了，其所推荐的替代版本是resilience4j。阅读源码并试用后可以说resilience4j提供的断路器确实简单易用，代码编写的质量也很高，逻辑清晰。</p>
+<p>只需要首先创建一个断路器实例，调用函数时，将函数传递给断路器即可。<br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> circuitBreaker = <span class="type">CircuitBreaker</span>.ofDefaults(<span class="string">"name"</span>)</span><br><span class="line"><span class="type">String</span> <span class="literal">result</span> = circuitBreaker.executeSupplier(() -&gt; backendService.doSomething(param1, param2));</span><br></pre></td></tr></table></figure></p>
+<p>除此之外，resilience4j还有良好的异步支持，支持Java的<code>CompletableFuture</code>，Kotlin的<code>suspend</code>协程函数，以及Reactive Programming。使用起来都非常简单，代码简洁优雅，如Kotlin协程版本的：</p>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> circuitBreaker = <span class="type">CircuitBreaker</span>.ofDefaults(<span class="string">"name"</span>)</span><br><span class="line"><span class="type">String</span> <span class="literal">result</span> = circuitBreaker.executeSuspendFunction &#123;</span><br><span class="line">    backendService.awaitDoSomething(param1, param2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="分布式断路器？"><a href="#分布式断路器？" class="headerlink" title="分布式断路器？"></a>分布式断路器？</h2>
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/30/A-Study-on-Finding-the-Minimum-and-Maximum-Simultaneously/" itemprop="url">
+                  A Study on Finding the Minimum and Maximum Simultaneously
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-05-30T23:12:49+08:00" content="2016-05-30">
+              2016-05-30
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Months ago, I was developing a small procedure to display data in a graph. To scale the input data, I must find the minimum and maximum of the long data array. I thought this problem was very easy and no more improvements could be made at that time, however, until I read about a more effective algorithm.</p>
+<h1 id="An-Intuitive-Solution"><a href="#An-Intuitive-Solution" class="headerlink" title="An Intuitive Solution"></a>An Intuitive Solution</h1><p>It’s very trivial to find the minimum and maximum independently. And certainly you don’t need to pass the array twice to find them simultaneously. The solution I come up with is to pass the array and compare each element with the maximum, and the compare with the minimum if necessary. The following code is a simulation of the <code>out</code> keyword in c#.<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">findMinMax</span><span class="params">(@NotNull <span class="keyword">int</span>[] nums, @NotNull <span class="keyword">int</span>[] outMin, @NotNull <span class="keyword">int</span>[] outMax)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> length = nums.length;</span><br><span class="line">    <span class="keyword">if</span> (length == <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> max = nums[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">int</span> min = max;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; length; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> num = nums[i];</span><br><span class="line">        <span class="keyword">if</span> (num &gt; max) &#123;</span><br><span class="line">            max = num;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (num &lt; min) &#123;</span><br><span class="line">            min = num;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    outMin[<span class="number">0</span>] = min;</span><br><span class="line">    outMax[<span class="number">0</span>] = max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>How many comparisons are made for this implementation?
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/30/A-Study-on-Finding-the-Minimum-and-Maximum-Simultaneously/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/05/19/Simulate-WPF-Data-Binding-in-Android-Part-III/" itemprop="url">
                   Simulate WPF Data Binding in Android, Part III - Support More Types
                 </a>
@@ -378,715 +1197,12 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/05/17/simulate-wpf-data-binding-in-Android/" itemprop="url">
-                  Simulate WPF Data Binding in Android, Part I - Reflect User Inputs to Property
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-05-17T12:57:32+08:00" content="2016-05-17">
-              2016-05-17
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Google has released a data binding library last year. Before learning data binding in Android, I want to simulate WPF data binding in Android by myself first. In this way, I can have a better understanding of data binding.</p>
-<h1 id="WPF-data-binding"><a href="#WPF-data-binding" class="headerlink" title="WPF data binding"></a>WPF data binding</h1><p>It’s very convenient to use data binding in WPF. The following snippet in xaml declares a <code>TextBox</code> whose text is bound to a <code>Username</code> property.</p>
-<pre><code>&lt;TextBox Name=&quot;TbUserName&quot; Content=&quot;{Binding Path=Username, mode=TwoWay}&quot;&gt;
-</code></pre><p>And to bind the <code>TextBox</code> to a specified instance, you can set <code>TextBox.DataContext</code>.<br>    <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> tom = <span class="keyword">new</span> User(<span class="string">"Tom"</span>);</span><br><span class="line">TbUserName.DataContext = tom;</span><br></pre></td></tr></table></figure><br>And the <code>User</code> class should have a property <code>Username</code> which enables getting and setting.
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/17/simulate-wpf-data-binding-in-Android/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/04/20/closure-and-lexical-environment/" itemprop="url">
-                  Closure and Lexical Environment
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-04-20T15:58:40+08:00" content="2016-04-20">
-              2016-04-20
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>From the previous post, we see that in Java local variables accessed within closure must be declared <code>final</code>. Why is Java designed this way? To understand this problem, you must learn about lexical environment first.</p>
-<blockquote>
-<p>As different languages do not always have a common definition of the lexical environment, their definitions of closure may vary also. The commonly held minimalist definition of the lexical environment defines it as a set of all bindings of variables in the scope, and that is also what closures in any language have to capture. However the meaning of a variable binding also differs. In imperative languages, variables bind to relative locations in memory that can store values. Although the relative location of a binding does not change at runtime, the value in the bound location can. In such languages, since closure captures the binding, any operation on the variable, whether done from the closure or not, are performed on the same relative memory location. This is often called capturing the variable “by reference”. </p>
-<p>On the other hand, many functional languages, such as ML, bind variables directly to values. In this case, since there is no way to change the value of the variable once it is bound, there is no need to share the state between closures—they just use the same values. This is often called capturing the variable “by value”. Java’s local and anonymous classes also fall into this category—they require captured local variables to be final, which also means there is no need to share state.</p>
-</blockquote>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/20/closure-and-lexical-environment/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/04/19/war-against-null-4/" itemprop="url">
-                  War Against Null IV - Closure In Consumer
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-04-19T23:07:29+08:00" content="2016-04-19">
-              2016-04-19
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>When you “consume” the <code>Optional</code> instance when it’s present, or call <code>map()</code> or <code>orElseGet()</code>, you have to create a lambda expression to be invoked. When it comes to passing a first-class function, you will encounter the concept of closure. In Java 8, variables you capture in the closure must be declared with <code>final</code>, which means there’s no way to modify it within the lambda expression. For example, the code below won’t compile:<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> id = <span class="number">12345</span>;</span><br><span class="line">Optional&lt;String&gt; nullableName = findNameById(id);</span><br><span class="line">String msg = <span class="string">"id not found"</span>;</span><br><span class="line">nullableName.ifPresent(name -&gt; &#123;</span><br><span class="line">    msg = <span class="string">"no! id is found"</span>; <span class="comment">// won't compile!</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br>You will get a tip from IDEA:</p>
-<blockquote>
-<p>Variables used in lambda expression should be final or effectively final.</p>
-</blockquote>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/19/war-against-null-4/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/04/19/war-against-null-3/" itemprop="url">
-                  War Against Null III - If Not Present Part 2
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-04-19T22:06:09+08:00" content="2016-04-19">
-              2016-04-19
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="OrElseGet"><a href="#OrElseGet" class="headerlink" title="OrElseGet"></a>OrElseGet</h1><p>My last post introduced a way to deal with <code>Optional&lt;T&gt;</code> instances for both possible situations, null or non-null. Sometimes, it’s not enough to map a nullable object to different non-null values. You may want to execute different code based on whether it’s null or not. One solution is calling <code>orElseGet()</code> to invoke a “null consumer”.<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> id = <span class="number">12345</span>;</span><br><span class="line">Optional&lt;String&gt; nullableName = findNameById(id);</span><br><span class="line">nullableName.ifPresent(name -&gt; &#123;</span><br><span class="line">    System.out.println(<span class="string">"found"</span>);</span><br><span class="line">    System.out.println(<span class="string">"name is "</span> + name);</span><br><span class="line">&#125;);</span><br><span class="line">nullableName.orElseGet(() -&gt; &#123;</span><br><span class="line">    System.out.print(<span class="string">"id not found"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br>In this way, you can deal with an empty <code>Optional&lt;T&gt;</code> instance. However, there’s one drawback that the returned value of the lambda expression you pass to <code>orElseGet()</code> is not always meaningful. In the snippet above, you return a <code>null</code> to deal with the <code>null</code> cases, which is a little ironic.<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/19/war-against-null-3/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/04/19/war-against-null-2/" itemprop="url">
-                  War Against Null II - If Not Present
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-04-19T20:15:11+08:00" content="2016-04-19">
-              2016-04-19
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>As is mentioned in my last post, <code>Optional&lt;T&gt;.ifPresent()</code> could combine the check of nullity and the use of wrapped content in one step, which avoid the possibility of raising <code>NPE</code>s. However, there’s some trouble when the <code>Optional</code> object wraps a <code>null</code>.</p>
-<h1 id="OrElse"><a href="#OrElse" class="headerlink" title="OrElse"></a>OrElse</h1><p>There is a <code>Optional&lt;T&gt;.orElse(T other)</code> method which returns the wrapped value if it presents or returns the default value. However, remember the example of my last post? I need to print the name of a specified id or output “id not found” now. We can call <code>nullableName.orElse(&quot;id not found&quot;)</code> to return the msg if it’s not present. However, is there a way to work for both situations, as the traditional code snippet below does?
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/19/war-against-null-2/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/04/18/war-against-null-1/" itemprop="url">
-                  War Against Null I - Simulate Optional Class in Java 7
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-04-18T00:37:25+08:00" content="2016-04-18">
-              2016-04-18
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="A-Billion-Dollar-Mistake"><a href="#A-Billion-Dollar-Mistake" class="headerlink" title="A Billion-Dollar Mistake"></a>A Billion-Dollar Mistake</h1><blockquote>
-<p>I call it my billion-dollar mistake. It was the invention of the null reference in 1965. At that time, I was designing the first comprehensive type system for references in an object oriented language (ALGOL W). My goal was to ensure that all use of references should be absolutely safe, with checking performed automatically by the compiler. But I couldn’t resist the temptation to put in a null reference, simply because it was so easy to implement. This has led to innumerable errors, vulnerabilities, and system crashes, which have probably caused a billion dollars of pain and damage in the last forty years. - Tony Hoare</p>
-</blockquote>
-<h1 id="Optional-in-Java-8"><a href="#Optional-in-Java-8" class="headerlink" title="Optional in Java 8"></a>Optional in Java 8</h1><p>As is stated by its inventor, Tony Hoare, <code>null</code> reference has caused innumerable errors. In Android, <code>NPE</code> is like a lurking demon which appears here and there and crashes the app. There have been lots of methods to avoid potential <code>null</code> problems in compile time. From Java 8 and on, you can create an <code>Optional&lt;T&gt;</code> class to wrap the object may be null, and execute code inside the lambda expression.<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/18/war-against-null-1/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/04/17/mvp-and-others/" itemprop="url">
-                  Fuse Android Components with MVP
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-04-17T13:55:02+08:00" content="2016-04-17">
-              2016-04-17
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h1><p>In MVP pattern, service plays the role of model. Take a music player app as an example, a service playbacks music like a music player. A presenter should get a music player instance to deal with the logic behind. It’s easy to get an instance of a bound service inside the presenter.</p>
-<h2 id="Where-to-bind-service"><a href="#Where-to-bind-service" class="headerlink" title="Where to bind service?"></a>Where to bind service?</h2><p>Since views in MVP pattern should not concern about the inner logic and models. You should not bind the service in an activity or a fragment. When you bind a service, you only need a context, so you should receive a context in the constructor of the presenter.<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/17/mvp-and-others/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/04/16/Arrays-asList/" itemprop="url">
-                  Interesting implementation behind Arrays.asList()
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-04-16T23:07:16+08:00" content="2016-04-16">
-              2016-04-16
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>It’s very convenient to “convert” an array of params into a list by calling <code>Arrays.asList()</code>. Today when I check the source code of this method, I found it very interesting. It’s not difficult to write a method by iterating through the array, like:<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> List&lt;T&gt; <span class="title">toList</span><span class="params">(T... array)</span> </span>&#123;</span><br><span class="line">    List&lt;T&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;(array.length);</span><br><span class="line">    <span class="keyword">for</span> (T t : array) &#123;</span><br><span class="line">        list.add(t);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> list;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>However, when I looked into the implementation of <code>Arrays.asList()</code>, I was astonished. The code is:<br>    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@SafeVarargs</span></span><br><span class="line"><span class="annotation">@SuppressWarnings</span>(<span class="string">"varargs"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">List&lt;T&gt; <span class="title">asList</span><span class="params">(T... a)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ArrayList&lt;&gt;(a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/04/16/Arrays-asList/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
 
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1127,7 +1243,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">140</span>
+              <span class="site-state-item-count">148</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1137,7 +1253,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-count">60</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

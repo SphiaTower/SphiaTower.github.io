@@ -224,6 +224,767 @@
             
               
                 
+                <a class="post-title-link" href="/2019/08/06/kotlin-channel-actor/" itemprop="url">
+                  Kotlin Channel与Actor模式
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2019-08-06T20:38:33+08:00" content="2019-08-06">
+              2019-08-06
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2019/07/30/kotlin-channel-micro-batch/" itemprop="url">
+                  Kotlin Channel与Micro-batch
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2019-07-30T21:48:23+08:00" content="2019-07-30">
+              2019-07-30
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="手动打造batch-buffer"><a href="#手动打造batch-buffer" class="headerlink" title="手动打造batch buffer"></a>手动打造batch buffer</h2><p>除了<code>Channel</code>自身的buffer空间外，很多时候我们还需要将一条条生产出的流式数据组合成较大的批量数据。在反应式编程中，我们只需要调用<code>buffer()</code>就可以很容易地将数据进行micro-batch处理。而在使用<code>Channel</code>时，我们也可以很轻松地实现类似的缓冲功能。话不多说，直接看代码</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#123;% codeblock lang:kotlin %&#125;</span><br><span class="line"><span class="label">val</span> channel = Channel&lt;<span class="preprocessor">Data</span>&gt;(<span class="number">20</span>)</span><br><span class="line"><span class="label">val</span> <span class="keyword">batchChannel </span>= Channel&lt;List&lt;<span class="preprocessor">Data</span>&gt;&gt;(<span class="number">5</span>)</span><br><span class="line"><span class="label">coroutineScope</span> &#123;</span><br><span class="line">    async &#123;</span><br><span class="line">        // 创建一个大小为<span class="number">100</span>的<span class="keyword">buffer</span><br><span class="line"></span>        var <span class="keyword">buffer </span>= ArrayList&lt;<span class="preprocessor">Data</span>&gt;(<span class="number">100</span>)</span><br><span class="line">       </span><br><span class="line">        for (msg in channel) &#123;</span><br><span class="line">            <span class="keyword">buffer.add(msg)</span><br><span class="line"></span>            // 在协程上下文中，无需考虑复杂的同步问题</span><br><span class="line">            <span class="preprocessor">if</span>(<span class="keyword">buffer.size&gt;=100)&#123;</span><br><span class="line"></span>                // <span class="keyword">buffer满，发送给接收batch数据的channel</span><br><span class="line"></span>                <span class="keyword">batchChannel.send(buffer)</span><br><span class="line"></span>                // 替换新的<span class="keyword">buffer</span><br><span class="line"></span>                <span class="keyword">buffer </span>= ArrayList(<span class="number">100</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        // 上游channel关闭后，退出循环，但一定要记得处理剩下<span class="keyword">buffer中的数据</span><br><span class="line"></span>        <span class="preprocessor">if</span> (<span class="keyword">buffer.isNotEmpty())&#123;</span><br><span class="line"></span>            <span class="keyword">batchChannel.send(buffer)</span><br><span class="line"></span>        &#125;</span><br><span class="line">        // 全部数据处理完毕后，关掉本channel</span><br><span class="line">        <span class="keyword">batchChannel.close()</span><br><span class="line"></span>    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#123;% endcodeblock %&#125;</span><br></pre></td></tr></table></figure>
+<p>上面多个<code>Channel</code>协作的方式，在协程编程中非常常见，即Pipeline模式。通过多个<code>Channel</code>级联形成Pipeline，可以打造更为复杂的生产消费系统，同时各个部分的职责也更加解耦。</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2019/07/30/kotlin-channel-backpressure/" itemprop="url">
+                  Kotlin Channel与Backpressure
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2019-07-30T20:33:59+08:00" content="2019-07-30">
+              2019-07-30
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>上次一次我们谈了使用<code>Channel</code>实现生产者-消费者模式的方法及其优点。今天我们来看看，怎么利用<code>Channel</code>去实现反应是编程中常常提到的<strong>Backpressure</strong></p>
+<h2 id="实现Backpressure"><a href="#实现Backpressure" class="headerlink" title="实现Backpressure"></a>实现Backpressure</h2><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;% codeblock lang:kotlin %&#125;</span><br><span class="line">val channel = Channel&lt;Data&gt;(<span class="number">20</span>)</span><br><span class="line">coroutineScope &#123;</span><br><span class="line">    repeat(<span class="number">10</span>)&#123;</span><br><span class="line">        async &#123;</span><br><span class="line">            val data = awaitProduce()</span><br><span class="line">            channel.send(data)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    repeat(<span class="number">5</span>)&#123;</span><br><span class="line">        async &#123;</span><br><span class="line">            for (msg in channel) &#123;</span><br><span class="line">                awaitConsume(msg)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#123;% endcodeblock %&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的例子中，可以注意到，生产者和消费者外面的<code>repeat</code>中，刻意使用了不同的数字。此外，在一开始创建<code>Channel</code>时，同样指定了一个数字。这三个不同的数字，就是实现反应式编程中<strong>Backpressure</strong>的关键。</p>
+<p>在创建<code>Channel</code>时，我们可以提供一个数字，作为<code>Channel</code>的<code>capacity</code>，这个数字的默认值是0.当<code>Channel</code>大小为0时，其功能就是提供并发编程中的<strong>交会点</strong>，类似Java阻塞编程中的<code>SynchronousQueue</code>，给生产者和消费者协程一个交会的场所，二者都必须等待数据被生产或取出才能继续。显然，这种情况下，一旦生产者或消费者失速，系统就会进入停滞状态。要想达到更大的吞吐量，我们需要给<code>Channel</code>提供一个缓冲长度，这样就可以减少无谓的等待时间。而这个长度同样需要精心设计，</p>
+<ul>
+<li>过短时，和交会点一样，双方协程频繁挂起，整体吞吐量较差，资源闲置</li>
+<li>过长时，生产消费其中一方失速或过快后，容易引起系统频繁FGC、高负载或远程数据库高负载，进而导致系统大幅减速。</li>
+</ul>
+<p>而生产者和消费者协程的数量，同样需要慎重考虑。在<code>Channel</code>本身充分长的情况下，生产者协程过多，就会引起生产者的超速，而消费者协程过多，则会引起消费者的超速，两种情况下同样会导致系统高负载。</p>
+<h2 id="参数调节经验"><a href="#参数调节经验" class="headerlink" title="参数调节经验"></a>参数调节经验</h2><p>那么，在实际线上生产时，究竟该怎么调整这些参数呢？</p>
+<h3 id="Channel的缓冲大小"><a href="#Channel的缓冲大小" class="headerlink" title="Channel的缓冲大小"></a><code>Channel</code>的缓冲大小</h3><p>这一参数的本质作用，是为了给生产者和消费者之间的速度差提供缓冲。在设置参数时，我们主要考虑几个问题</p>
+<ol>
+<li>生产消费的速度差。当预计生产者-消费者的速度差越大或越不稳定的情况下，<code>Channel</code>的值就应该越大一些，以提供更多的缓冲。如果有信心使二者速度平稳一致（很难做到），就可以设置很小的缓冲值。</li>
+<li>单条数据的大小和JVM的内存情况。如果单条数据的体量非常小（如一个int），那么即使设置较大的缓冲，往往也无可厚非。但是当单条数据的体量非常大时（如包含数千条数据的一个bundle），就需要重点考虑缓冲大小，以避免引发Full GC甚至是OOM.</li>
+<li>一方失速可能引起的后果。这一条最容易被忽视掉，即使我们的内存空间足够大，可以缓冲无限长的数据在<code>Channel</code>中，也不能高枕无忧。举个例子，消费者协程因远程数据库原因突然失速，<code>Channel</code>中就会马上积累起极大量的数据，而当远程恢复正常后，消费者协程就会源源不断地从<code>Channel</code>中取出数据，非常容易引起系统的高负载。而如果<code>Channel</code>缓冲较小的话，即时发生上面的问题，也完全不会引发高负载的问题。当然，是以较低的吞吐量为代价。简单地讲，可以讲<code>Channel</code>比作一个水库，开闸放水时，水量越大，就越容易冲垮下游。</li>
+</ol>
+<p>因此，设置<code>Channel</code>的缓冲时，总体上还是应该控制其大小，不宜过大。在系统性能（内存及负载）可承受的情况下，适当增加缓冲大小。当缓冲大小有限时，<code>Channel</code>才能最好地发挥出backpressure的作用：消费者降速后，通过<code>Channel</code>挂起生产者协程；消费者提速后，生产者也随着恢复速度。</p>
+<h3 id="生产者协程的数量"><a href="#生产者协程的数量" class="headerlink" title="生产者协程的数量"></a>生产者协程的数量</h3><p>设置相对较小的<code>Channel</code>后，为了避免系统吞吐量的损失，我们可以增加生产者协程的数量。生产者处在这个生产消费系统的上游，也是应用内backpressure的终点。因此，生产者可以很好地利用backpressure的功能。我们可以放心地设置较多的生产者协程，因为在任何情况下，backpressure都会自动调节生产者的速度。</p>
+<ul>
+<li>消费者较慢时，<code>Channel</code>接近满负荷运作，多数生产者挂起，系统整体速率被稳定控制住。而且协程的挂起几乎没有性能损耗。</li>
+<li>消费者较快时，大量的生产者可以充分发挥出生产速度，提升整个系统的吞吐量。</li>
+</ul>
+<h3 id="消费者协程的数量"><a href="#消费者协程的数量" class="headerlink" title="消费者协程的数量"></a>消费者协程的数量</h3><p>我们已经有了稍小的<code>Channel</code>加上较多的生产者协程，那么如何设置消费者协程的数量呢？做了上面的设置后，此时消费者协程的数量几乎决定了整个系统的吞吐量。我们只需要考虑系统和远程数据库的的负载承受能力即可。当生产消费的数据较繁重、负载较高时，可以将消费者协程的数量设置得小一些；反之，则适当增大。</p>
+<h2 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h2><ol>
+<li><code>Channel</code>缓冲设置偏小一些，但不要太小</li>
+<li>生产者协程数量可以较多一些</li>
+<li>消费者协程数量决定整体吞吐量，视系统负载情况而定</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2019/07/25/elasticsearch-time-indices-4/" itemprop="url">
+                  用时间滚动索引优化ES读写速度（四）再谈shard数量设置
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2019-07-25T22:03:12+08:00" content="2019-07-25">
+              2019-07-25
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>unwieldy</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2019/07/25/elasticsearch-time-indices-3/" itemprop="url">
+                  用时间滚动索引优化ES读写速度（三）冷索引优化
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2019-07-25T21:36:49+08:00" content="2019-07-25">
+              2019-07-25
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>上一篇我们讲了用冷热分离、读写分离、时间滚动的方案动态构建索引。这一篇，主要来简单补全一下，要实现所需要的ES机制。</p>
+<h2 id="索引模板"><a href="#索引模板" class="headerlink" title="索引模板"></a>索引模板</h2><p>每一天，我们都需要不断创建新的热索引和冷索引，因此用索引模板统一索引设置很重要了。这里就不放代码了，简单写一下设置方式</p>
+<ul>
+<li>热索引：shard数量较多，replica适量，所在节点需要RAM较少</li>
+<li>冷索引：shard数量较少，replica开始设置为0，所在节点需要RAM较大</li>
+</ul>
+<h2 id="索引别名"><a href="#索引别名" class="headerlink" title="索引别名"></a>索引别名</h2><p>因为我们的索引是不断动态创建、迁移和销毁的，因此，需要在索引名前面再增加一层抽象，以减少应用读写索引时的复杂度。应用仅仅需要指向索引别名，不需要关心背后操作的是具体的哪个索引或者哪些索引。<br><figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">别名：active-<span class="typedef"><span class="keyword">data</span></span></span><br><span class="line">背后的索引：active-<span class="typedef"><span class="keyword">data</span>-2019.07.25（每天变化）</span></span><br><span class="line"></span><br><span class="line">别名：search-<span class="typedef"><span class="keyword">data</span></span></span><br><span class="line">背后的索引：active-<span class="typedef"><span class="keyword">data</span>-2019.07.25（每天变化）加上所有的inactive-<span class="keyword">data</span>-2019.xx.xx</span></span><br></pre></td></tr></table></figure></p>
+<p>这样，写入时，应用就会一直指向最新的索引，而搜索时，应用会指向所有active或inactive的索引，当然，也可以实现更加精细的控制，任由开发人员想象。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2019/07/25/elasticsearch-time-indices-3/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2019/07/25/elasticsearch-time-indices-2/" itemprop="url">
+                  用时间滚动索引优化ES读写速度（二）滚动索引构成
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2019-07-25T21:02:03+08:00" content="2019-07-25">
+              2019-07-25
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>上一篇文章讲了ES数据量增大后，优化搜索和写入性能的方案，简单回顾下就是</p>
+<ol>
+<li>要提升写入速度，需要将数据尽可能分布到多个节点的多个shard上，每个shard保持较小的体量。</li>
+<li>要提升搜索速度，需要尽量减少shard的数量，以更好地利用缓存，减少分布式搜索过程中的性能损耗。</li>
+</ol>
+<p>有意思的是，上面的两条方案竟然是完全相反的。提升了写入速度，shard就会变多，搜索损耗就会增大。而提升了搜索性能，shard就会减少，数据更加集中，写入速度就会减慢。那么两者是否可以兼得，答案是可以的，就是利用时间滚动索引的方案。</p>
+<h2 id="时间滚动索引"><a href="#时间滚动索引" class="headerlink" title="时间滚动索引"></a>时间滚动索引</h2><p>既然ES读写优化上存在天然的矛盾，我们自然而然需要对读写操作分离，也就是我们常讲的读写分离。而这种append-only的数据模式下，新写入的数据我们可以称作活跃数据或者热数据，旧数据则可以称作非活跃数据或冷数据。新数据既要写入也要能够被搜索，而旧数据只需要被搜索，不会被搜索。我们可以利用这一点，将冷热数据进行分离。</p>
+<p>首先考虑不断新写入的数据，这些数据需要一个较小的索引以保持写入速度，而当索引大小超过一定量或者索引存活超过一定时间后，就需要更换新的索引写入。简便起见，我们接下来就统一用一天的时间作为索引的寿命。那么，今天的写入索引就可以叫做<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">active-data-<span class="number">2019.07</span><span class="number">.25</span></span><br></pre></td></tr></table></figure></p>
+<p>如上文所说，这一索引需要较多的shard数目以提升写入速度，因此假设我们有8个数据节点，我们可以设置<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"number_of_shards"</span>:<span class="number">16</span></span><br></pre></td></tr></table></figure></p>
+<p>因为该节点也需要参与搜索，因此可以适当的设置shard数目，具体的最优数值还是需要大量的测试才能得出结论。</p>
+<p>而在今天过去之后，我们就需要创建新的索引来容纳写入数据，以避免写入速度因数据量过大而降低<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">active-data-<span class="number">2019.07</span><span class="number">.26</span></span><br></pre></td></tr></table></figure></p>
+<p>索引设置还是和上一个索引一样。</p>
+<p>而已经不再写入的旧索引，我们就只需要对索引进行针对搜索性能的优化。优化的方案有很多种，这里就介绍ES官方推荐的一种，即</p>
+<ol>
+<li>设置索引为只读</li>
+<li>将索引所有shard移动到一个节点上</li>
+<li>合并所有shard到一个大的shard中，创建新的冷数据索引</li>
+<li>执行force merge操作合并所有segment</li>
+<li>删除旧的热索引</li>
+</ol>
+<p>这样我们就得到了一个新的索引<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inactive-data-<span class="number">2019.07</span><span class="number">.25</span></span><br></pre></td></tr></table></figure></p>
+<p>这个索引只有一个primary shard，shard内部只有一个segment，并且拒绝任何写入，最大程度地减少了搜索的损耗。</p>
+<p>这样，随着时间的进行，我们就得到了一系列的索引<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">active-data-<span class="number">2019.08</span><span class="number">.02</span></span><br><span class="line">inactive-data-<span class="number">2019.08</span><span class="number">.01</span></span><br><span class="line">inactive-data-<span class="number">2019.07</span><span class="number">.31</span></span><br><span class="line">inactive-data-<span class="number">2019.07</span><span class="number">.30</span></span><br><span class="line">inactive-data-<span class="number">2019.07</span><span class="number">.29</span></span><br><span class="line">inactive-data-<span class="number">2019.07</span><span class="number">.28</span></span><br><span class="line">inactive-data-<span class="number">2019.07</span><span class="number">.27</span></span><br><span class="line">inactive-data-<span class="number">2019.07</span><span class="number">.26</span></span><br><span class="line">inactive-data-<span class="number">2019.07</span><span class="number">.25</span></span><br></pre></td></tr></table></figure></p>
+<p>利用时间索引的特性，我们还可以很方便地实现数据窗口的功能。即如果只需要保存一定时间的数据，就可以简单地删掉之前时间的索引。ES中删除整个索引的性能要远远超过按搜索条件删除。</p>
+<p>基本的方案搞清楚了，那么上面这些复杂的操作，怎么执行和实现呢，我们还需要几个ES提供的武器：索引模板、索引别名、rollover API、shrink等等等，下篇再看。</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2019/07/25/elasticsearch-forcemerge/" itemprop="url">
+                  elasticsearch-forcemerge
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2019-07-25T20:17:34+08:00" content="2019-07-25">
+              2019-07-25
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2019/07/23/kotlin-channel/" itemprop="url">
+                  Kotlin Channel与生产者-消费者模式
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2019-07-23T20:29:51+08:00" content="2019-07-23">
+              2019-07-23
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>自从实验版本发布之后，Kotlin协程就受到了广泛的关注和应用。顺序编写，异步执行，这一特性就足以令Kotlin协程战胜众多并发编程的候选方案了。然而，并发编程并不仅仅是让代码异步执行这么简单。在异步之外，还需要考虑很多因素。下面我们就从最常见的生产者-消费者模式谈起。</p>
+<h2 id="生产者-消费者模式"><a href="#生产者-消费者模式" class="headerlink" title="生产者-消费者模式"></a>生产者-消费者模式</h2><p>传统Java中的生产者-消费者模式很简单，一个或多个生产者线程，一个公用的阻塞队列（往往有ArrayBlockingQueue和LinkedBlockingQueue两种选择），以及一个或多个消费者线程。生产者源源不断地将数据入队到阻塞队列中，消费者则循环从队列中取出元素进行消费。这样看似简单的设计，在实际生产环境的应用中，往往会出现大量的问题。</p>
+<p>我们就以从迁移数据的场景为例子。我们的生产者需要从远程数据源A中源源不断地拉取数据，而消费者负责将数据写入迁移后的远程数据存储B，并且在写入之前，可能需要对数据进行一定的重构以适应新数据存储。这一系列过程中，实际上有多个不同的环节，会影响整体的工作速度：</p>
+<ol>
+<li>远程数据源A处理拉取数据请求的速度</li>
+<li>生产者从远程数据源A中拉取数据的速度</li>
+<li>生产者将数据放入队列的速度</li>
+<li>消费者取出数据的速度</li>
+<li>消费者对数据进行业务处理的速度</li>
+<li>消费者将数据写入远程数据存储B的速度</li>
+<li>远程数据存储B接纳新写入数据的速度</li>
+</ol>
+<p>首先我们假设一切顺利，生产者拉取数据的速度非常快，而阻塞队列的长度无限，消费者写入的速度也非常快，两端数据源处理性能也足够强，这种情况下，是不是就可以高枕无忧了呢？答案是错的，当整个流程的速度增长过快且不受限制时，很大几率会导致机器本身的性能出现问题，成为新的瓶颈。生产者拉取数据、内部对数据的处理、消费者写入数据，甚至加上日志的大量，这些操作如果不受限制，将会带来大量的IO开销+CPU开销，即使不考虑内存的问题，CPU和磁盘一样很容易被打满并导致Load飙高。而Load过高往往会引起TCP重传，这时整个系统的性能就会急剧恶化。消费者将是最先受到影响的，数据远程写入的速度将大幅降低，引起队列中数据堆积，进而引发Full GC，进一步恶化性能，甚至最终导致OOM崩溃。</p>
+<p>如果消费者的消费速度过慢（IO速度慢），而消费者线程又太少，这时就一定会引起上游的问题。如果我们使用的是无限长的阻塞队列，生产的消息会不停往队列中堆积。而应用自身的内存空间是有限的，因此最终必定会引起整个JVM的OOM。而如果使用有限长的阻塞队列，那么当消费者过慢时，就会频繁触发队列的拒绝策略，如抛异常、拒绝入队、阻塞生产者线程、超时后丢弃等等等等。不同的代码编写和API调用，会有不同的拒绝策略。而这些拒绝策略都会带来问题，要么使得上游线程池阻塞并耗尽，要么使得队列被耗尽或引发OOM。那么，有没有更好的解决方式呢？</p>
+<p>而当消费者速度过快，生产者过慢时。队列长时间为空，引起消费者全部阻塞，也会平白无故地浪费线程资源。</p>
+<h2 id="Kotlin-Channel"><a href="#Kotlin-Channel" class="headerlink" title="Kotlin Channel"></a>Kotlin Channel</h2><p>Kotlin中的<code>Channel</code>与Java的<code>BlockingQueue</code>看起来很相似，最大的不同是，阻塞队列中的入队和出队方法全部是阻塞的，当队满时和队空时，相应线程会阻塞；而在<code>Channel</code>中，<code>send</code>和<code>receive</code>方法是<code>suspend</code>的，并不阻塞。那么和<code>BlockingQueue</code>相比，<code>Channel</code>究竟好在哪里呢？</p>
+<h3 id="挂起协程而非阻塞线程"><a href="#挂起协程而非阻塞线程" class="headerlink" title="挂起协程而非阻塞线程"></a>挂起协程而非阻塞线程</h3><p>在<code>Channel</code>中，<code>send</code>和<code>receive</code>方法都是<code>suspend</code>方法。这意味着，在需要向满了的队列中放入元素或从空队列中取出元素时，负责任务的协程将会挂起，等待条件恢复执行。我们知道，协程的本质是回调，是非常轻量级的，因此协程挂起时并不会消耗资源。而在使用阻塞队列时，当<code>put</code>和<code>take</code>函数发生阻塞，或者处理生产者或消费者线程自己发生阻塞时，整个线程会被阻塞，这就带来了一个难以解决的矛盾：要提升整个系统的处理速度，必须增加生产者和消费者线程的数目；而线程数目越多，发生阻塞的可能性就越大，大量的线程资源会被浪费在阻塞状态下。这种状况下，各个部分线程数目的调优就非常重要，但不幸的是，这种调优的难度也是非常大的，往往非常依赖经验，而无法准确判断。当然，在Java中也可以使用多路复用、Reactor等方式，去减少这种阻塞对性能的影响，但开发过程会相对复杂一些，也更容易出错。</p>
+<p>除此之外，使用挂起API，可以享受整个Kotlin协程下的红利，无论是开发速度、代码简洁度，还是程序的运行速度，都会受益。</p>
+<h3 id="可关闭"><a href="#可关闭" class="headerlink" title="可关闭"></a>可关闭</h3><p><code>Channel</code>相较阻塞队列还有一点很方便的好处，即<code>Channel</code>是可以主动关闭的。在使用阻塞队列时，所有生产者完成全部生产工作后，要想准确地通知消费者，多数情况下都要使用共享内存变量的方式，让消费者主动去轮询，进而结束消费。而对那些不幸停留在阻塞状态的消费者线程而言，还需要用中断或者取消的机制去强制结束阻塞。这一系列操作看起来不重要，开发起来总会遇到各种各样的corner case。可以说，如果真的想开发一个完全无懈可击的取消机制，还是存在一定难度和复杂度的。</p>
+<p>也有一种方式，是使用特殊的<em>end of stream</em>标志对象，以通知消费者消费结束。且不提这种方法稍显麻烦，单个的特殊对象也只能通知一个消费者线程，只能在多路复用的场景下发挥作用。</p>
+<p>而使用<code>Channel</code>时这个问题甚至不再是一个问题。因为<code>Channel</code>提供了<code>close()</code>方法，用户可以显式地调用关闭函数。调用关闭后，<code>Channel</code>的<code>Iterator</code>会配合关闭状态，适时地结束消费循环。如下面简单的代码就可以展示：<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">coroutineScope &#123;</span><br><span class="line">    <span class="command">launch</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (msg <span class="keyword">in</span> channel) &#123;</span><br><span class="line">            awaitConsume(msg)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>生产者调用<code>channel.close()</code>之后，消费者的for循环，可以自动等到<code>channel</code>中的所有对象被取出后，结束循环，完全无需额外的工作去手动结束消费。这也符合了并发编程中的一个很有名的原则</p>
+<blockquote>
+<p>Do not communicate by sharing memory; instead, share memory by communicating.</p>
+</blockquote>
+<h3 id="Fan-in和Fan-out"><a href="#Fan-in和Fan-out" class="headerlink" title="Fan-in和Fan-out"></a>Fan-in和Fan-out</h3><p>在前面讨论阻塞队列时，我们说到，阻塞队列很难控制生产者线程和消费者线程的数量，线程过少时，整体性能不能充分发挥；线程过多时，因为线程太重量级以及频繁的阻塞，会引入不少的性能损耗。而在使用协程时，我们同样需要去考虑协程数量的问题。</p>
+<p>所幸，使用协程时，调整协程数量非常的轻松而且直观。我们只需要将上面代码中的for循环，多重复几分，就可以生成多个消费者协程，也就是所谓的<em>Fan-out</em>.<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;% codeblock lang:kotlin %&#125;</span><br><span class="line">coroutineScope &#123;</span><br><span class="line">    repeat(<span class="number">5</span>)&#123;</span><br><span class="line">        launch &#123;</span><br><span class="line">            for (msg in channel) &#123;</span><br><span class="line">                awaitConsume(msg)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#123;% endcodeblock %&#125;</span><br></pre></td></tr></table></figure></p>
+<p>同样，在生产者一侧，也可以用同样的方式去调整生产者数量，即<em>Fan-in</em>.<br><figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;% codeblock lang:kotlin %&#125;</span><br><span class="line"><span class="title">coroutineScope</span> &#123;</span><br><span class="line">    repeat(<span class="number">10</span>)&#123;</span><br><span class="line">        launch &#123;</span><br><span class="line">            val <span class="typedef"><span class="keyword">data</span> = awaitProduce<span class="container">()</span></span></span><br><span class="line">            channel.send(<span class="typedef"><span class="keyword">data</span>)</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#123;% endcodeblock %&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Structured-Concurrency"><a href="#Structured-Concurrency" class="headerlink" title="Structured Concurrency"></a>Structured Concurrency</h3><p>使用<code>Channel</code>实现生产者-消费者模式，还有一个非常重要的优势，那就是Kotlin引以为傲的<em>Structured Concurrency</em>。当一个系统中有大量生产者和消费者时，因为DB的原因或业务代码的原因，再或者是个别脏数据的影响，很容易导致部分生产者或消费者失败发生异常。在有些场景下，这种失败是致命的。如在迁移一些重要的用户数据、业务数据中出现无法解决的错误时，必须让中断整个迁移过程再重新开始。特别是当单个生产者或消费者出错，而其他生产者消费者正常运转时，开发者很容易误以为全部任务成功，而在不知不觉中丢掉了部分数据。</p>
+<p>使用Kotlin的<em>Structured Concurrency</em>就可以轻松解决这一问题。我们只需要将所有生产者和消费者协程（不管有多少个），统统放到一个专门的<code>coroutineScope</code>中，再将上面例子中的<code>launch</code>改为<code>async</code>（为了传播异常），就可以实现：一个生产者或消费者协程抛出异常，所有生产者和消费者协程立即取消。<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;% codeblock lang:kotlin %&#125;</span><br><span class="line">val channel = Channel&lt;Data&gt;(<span class="number">20</span>)</span><br><span class="line">coroutineScope &#123;</span><br><span class="line">    repeat(<span class="number">10</span>)&#123;</span><br><span class="line">        async &#123;</span><br><span class="line">            val data = awaitProduce()</span><br><span class="line">            channel.send(data)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    repeat(<span class="number">5</span>)&#123;</span><br><span class="line">        async &#123;</span><br><span class="line">            for (msg in channel) &#123;</span><br><span class="line">                awaitConsume(msg)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#123;% endcodeblock %&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2019/07/22/elasticsearch-dao/" itemprop="url">
                   谈不同数据库的封装问题
                 </a>
@@ -322,7 +1083,7 @@
               
                 
                 <a class="post-title-link" href="/2019/07/22/elasticsearch-time-indices/" itemprop="url">
-                  elasticsearch-time-indices
+                  用时间滚动索引优化ES读写速度（一）读写性能分析
                 </a>
               
             
@@ -363,809 +1124,30 @@
       
         
           
-            <p>Welcome back, commander</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2019/05/12/elasticsearch-sniffer/" itemprop="url">
-                  ES中隐藏的关键调优 - Sniffer
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2019-05-12T19:28:07+08:00" content="2019-05-12">
-              2019-05-12
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="默认情况下，流量全部打到VIP的Master节点"><a href="#默认情况下，流量全部打到VIP的Master节点" class="headerlink" title="默认情况下，流量全部打到VIP的Master节点"></a>默认情况下，流量全部打到VIP的Master节点</h2><p>ES集群中，节点可以粗略地分成Master节点、Data节点、Client节点三种。在笔者使用的一个ES服务中，集群没有Client节点，只有另两种节点。在其中，Data节点的机器性能非常高，而Master节点则是低配置的普通机器。</p>
-<p>在使用ES的官方rest high level client时，我们只需要提供一个endpoint URL，就可以访问远程ES集群。那么问题来了，客户端拿到这个URL之后，访问的究竟是哪台机器呢？是某个主节点？全部主节点？还是全部节点？一般情况下，这个问题似乎没有那么重要。但是当Master节点和Data节点性能差异非常明显的情况下，ES客户端的访问逻辑就变得非常重要。比如，如果所有请求都被打到性能较差的Master节点中，甚至只打到Master节点中的某一个具体节点中，那么ES集群就难以发挥出真正的性能了。</p>
-<p>首先我们要分析的是，服务商提供给我们的endpoint究竟是什么。<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">http:</span><span class="comment">//sample.es.cluster.com:9200</span></span><br></pre></td></tr></table></figure></p>
-<p>如上面的一个简单的endpoint，根据DNS的原理可知，这个域名的背后不一定只有一个IP。使用网络工具，我们很容易就可以查到这个域名URL背后的几个IP。那么这几个IP是全部节点的IP？还是其中一部分呢？</p>
-<p>很多情况下，服务商都会使用所有Master节点的IP。特别是当我们需要对集群进行配置操作时，请求都需要Master节点进行处理。到此，答案就已经揭晓，我们使用官方client指定endpoint后，客户端的所有请求就会简单地打到这个endpoint的域名上，再使用DNS自身的负载均衡功能，打到不同的Master节点上。</p>
-<h2 id="如果Master节点性能较差，集群负载飙升"><a href="#如果Master节点性能较差，集群负载飙升" class="headerlink" title="如果Master节点性能较差，集群负载飙升"></a>如果Master节点性能较差，集群负载飙升</h2><h2 id="使用默认的Sniffer配置，流量达到全部节点"><a href="#使用默认的Sniffer配置，流量达到全部节点" class="headerlink" title="使用默认的Sniffer配置，流量达到全部节点"></a>使用默认的Sniffer配置，流量达到全部节点</h2><p>ES提供了一个简单的sniffer库。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>org.elasticsearch.client<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>elasticsearch-rest-client-sniffer<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">version</span>&gt;</span>8.0.0<span class="tag">&lt;/<span class="title">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>这个Sniffer虽然代码写得有些复杂，但是功能其实很简单。就是调用ES的Rest API，如<code>/_nodes/http</code>，获取ES集群的节点信息，解析后，为<code>RestClient</code>设置可用的所有<code>HttpHost</code>。其他无非是增加了定时更新和失败重试功能而已。</p>
-<p>默认情况下，获取全部节点。</p>
-<h2 id="定制HostsSniffer，流量只达到Data节点"><a href="#定制HostsSniffer，流量只达到Data节点" class="headerlink" title="定制HostsSniffer，流量只达到Data节点"></a>定制HostsSniffer，流量只达到Data节点</h2><p>增加参数即可，只指定Data节点</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2019/04/27/elasticsearch-nodes/" itemprop="url">
-                  Elasticsearch中节点类型的梳理
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2019-04-27T22:31:45+08:00" content="2019-04-27">
-              2019-04-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在使用ES时，很多时候我们都会使用服务商提供的开箱即用的ES版本，只需要拿到endpoint地址，用户名，密码，就可以创建客户端实例，如<code>RestHighLevelClient</code>，对ES进行访问了。然而，随着集群索引的文档数目或QPS不断增多，简单地使用默认配置或者“祖传配置”，就难以应对了。这种时候，最简单的办法就是增加ES集群的节点数。可实际上，如果不了解ES集群的构成方式，即使大量增加节点数，很多时候集群性能也不会有大幅提升，反而空耗了大量的资源。</p>
-<p>ES中节点的分类说简单也简单，说复杂也复杂。简单在，ES中本身各种节点的定义非常直接明显；而复杂在，不同层次的节点类型往往被混合在一起。下面我们来分各种层次看一看节点的不同类型。</p>
-<h2 id="Master节点和Data节点"><a href="#Master节点和Data节点" class="headerlink" title="Master节点和Data节点"></a>Master节点和Data节点</h2><p>ES中最经常提到的节点类型就是Master节点和Data节点了。然而实际上，与其称其为节点，不如说Master和Data是一个节点的两个正交的属性。一个节点可以同时是Master节点和Data节点，可以是其中一种，也可以都不是（Client节点）。</p>
-<p>Master属性：如果一个节点具有Master属性，那么该节点可以用来处理一些集群范围的工作，如索引的创建和删除，以及shard的分配等。<br>Data属性：如果一个节点具有Data属性，那么该节点就可以存放索引数据，进行索引的增删改查等操作。</p>
-<p>ES官方建议不要将Master节点和Data节点混用，使用单独的两种节点会带来更好的性能和稳定性。</p>
-<h2 id="协调节点"><a href="#协调节点" class="headerlink" title="协调节点"></a>协调节点</h2><p>协调节点与上面提到的两种节点并非同一个维度上的概念。在ES中，任何一个节点都可以随时作为协调节点，其作用是集群内请求的路由和多个replica的负载均衡。其实这个概念非常简单，ES客户端可以将ES操作请求发给ES集群中的任何一个节点，这时收到请求的节点就成为了一个协调节点，协调节点会判断该请求所需要涉及的实际Data节点，然后将请求转发给其中一个真正处理的Data节点（也可以是自己，也可以涉及多个节点，如搜索和批量操作）。</p>
-<p>协调节点本质上起到服务端的路由和负载均衡作用，与很多缓存工具的实现不同，ES的路由完全是交给服务端处理的。即使在客户端调用时指定了routing参数，也需要提交给任一协调节点之后，再有协调节点进行路由。</p>
-<h2 id="Client节点（只协调节点）"><a href="#Client节点（只协调节点）" class="headerlink" title="Client节点（只协调节点）"></a>Client节点（只协调节点）</h2><p>如果一个节点既不是Master也不是Data，那么这种节点就称作Client节点，也称作只协调节点。Client节点没有Master和Data节点的功能，不能存储数据，只能起到协调功能，作为ES集群内部的负载均衡器。</p>
-<p>使用Client节点可以为Master节点和Data节点节省掉很多协调工作的压力。最明显的就是搜索时，需要先分散到多个节点搜索，再回到协调节点将结果进行聚合。但是过多地增加协调节点也会有浪费资源和增加选举复杂度等问题，大部分情况下，使用Data节点作为协调节点就可以很好地完成任务了。</p>
-<h2 id="Ingest节点"><a href="#Ingest节点" class="headerlink" title="Ingest节点"></a>Ingest节点</h2><p>Ingest nodes can execute pre-processing pipelines, composed of one or more ingest processors. Depending on the type of operations performed by the ingest processors and the required resources, it may make sense to have dedicated ingest nodes, that will only perform this specific task.</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2019/04/27/antipattern-bikeshedding/" itemprop="url">
-                  项目开发中的反模式（二）轻重倒置
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2019-04-27T21:26:41+08:00" content="2019-04-27">
-              2019-04-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2019/04/26/antipattern-death-march/" itemprop="url">
-                  项目开发中的反模式（一）死亡行军
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2019-04-26T21:26:41+08:00" content="2019-04-26">
-              2019-04-26
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>这一系列文章主要来谈一谈，在项目开发过程中遇到的各种各样的反模式。这些反模式，不一定是指的是应用开发中的某些技术，而是包括了从项目管理到团队激励各个方面的问题。其实很多时候，决定一个项目是否能够成功的最重要因素，甚至并不是技术实力，而是这些更加宏观上的管理与决策的问题。</p>
-<h2 id="什么是「死亡行军」"><a href="#什么是「死亡行军」" class="headerlink" title="什么是「死亡行军」"></a>什么是「死亡行军」</h2><p>死亡行军，英文叫做death marching。指的是在一个项目的开发过程中，所有人都不相信能够完成最后的任务，士气低落。但又没有一个人能站出来停掉这个项目，还是要继续坚持。这种项目往往伴随着大量的加班，大量的bug与修复，大量的赶工与重做。参与者会被项目折磨地疲惫不堪，最终往往以项目失败，骨干成员离职为结局。</p>
-<p>再来看看维基上对「死亡行军」这个词定义</p>
-<blockquote>
-<p>In project management, a death march is a project that the participants feel is destined to fail, or that requires a stretch of unsustainable overwork. The general feel of the project reflects that of an actual death march because project members are forced to continue the project by their superiors against their better judgment. </p>
-</blockquote>
-<p>参与者根据自己的判断，都相信项目必将失败，却必须投入巨大的精力和资源，而这些仅仅是因为管理者的判断不容更改。这种项目，给团队成员带来的，不仅是时间的浪费、机会的丧失，更多的是对整个团队和管理者的不信任。</p>
-<h2 id="我所经历过的死亡行军项目"><a href="#我所经历过的死亡行军项目" class="headerlink" title="我所经历过的死亡行军项目"></a>我所经历过的死亡行军项目</h2><p>我个人在职业生涯中，目前经历过三个死亡行军项目（囧），第一个更多的是作为旁观者，而后两个则参与了一些边缘的开发过程，体会颇深。</p>
-<h3 id="项目一：过度复杂的产品设计"><a href="#项目一：过度复杂的产品设计" class="headerlink" title="项目一：过度复杂的产品设计"></a>项目一：过度复杂的产品设计</h3><p>第一个要说的项目是一个工具类的移动App。这个App在发布两年后，失去了用户的增长点，进入停滞状态。产品经理们苦思冥想，最终提出了一个新的功能模块，这个模块的主要功能是统合用户的一些账号和登录状态，具体就不细说了。这个产品方案提出之后，很快就进入了死亡行军的开发模式。产品的设计实在是太过复杂了！在一个App内，有着各种各样的账号状态，要登陆要注销，账号与账号之间又有着复杂的关联关系。App的安卓和IOS两端有着非常多的复杂页面和交互逻辑，移动</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2019/04/18/elasticsearch-update/" itemprop="url">
-                  ES进阶功能 - 使用脚本更新
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2019-04-18T23:03:40+08:00" content="2019-04-18">
-              2019-04-18
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在使用ES时，一个经常出现的操作模式就是，从ES中读取某些数据，根据本地内容进行更新，随后再重新索引到ES集群中。这么一个简单而常见的操作，实际使用过程中，如果深究的话，问题非常的多。特别是与传统的关系数据库不同，ES的数据模型并非简单的行式3NF设计，可以包含嵌套的对象，可以包含数组，甚至字段本身都可以随时增加。</p>
-<h2 id="潜在的问题"><a href="#潜在的问题" class="headerlink" title="潜在的问题"></a>潜在的问题</h2><h3 id="多出的操作损耗"><a href="#多出的操作损耗" class="headerlink" title="多出的操作损耗"></a>多出的操作损耗</h3><p>首先，最直观的问题是，这样的操作会多耗费一次操作。必须先将数据拉到本地，然后才能更新回ES。一般情况下，get操作和index操作本身都比较廉价，即使是在高QPS下，实际多出的性能损耗也并不大。然而，当ES中文档对象极为复杂或庞大时，多出操作的性能损耗就不容小觑了。</p>
-<p>比如当一个array字段，有成百上千的元素后，需要增加一个新元素，这时get和index两步操作都需要将全量的数据下载或上传，而实际增加的数据量却非常少。不仅多了一次网络IO，也会影响ES集群和应用自身集群的吞吐量。此外，如果自己应用中使用了ORM工具来处理ES文档，那么大对象的频繁序列化和反序列化所引起的性能损耗也是非常巨大的。在极端情况下，如果单个文档过大，甚至可能引发OOM问题。</p>
-<p>当然我们还要先考虑另一个问题，当一个ES文档有过长的array或过度复杂的嵌套object时，这种数据设计是否还合理？如果使用类似关系数据库的设计方式，当然可以规避这种情况，但这时也丧失了ES自身的很多独特性能优势，使得代码过度复杂化。而且，即使大部分文档的大小都控制在可接受范围内，在业务的发展过程中，也很难避免出现个别巨型对象。是否值得为了这些个别的巨型对象而修改代码或增加专门的处理方式，也是需要根据情况来看的。也因此，我们有必要事先考虑如何应对对象较复杂的情况。</p>
-<p>总结下：</p>
+            <h2 id="逐渐恶化的性能"><a href="#逐渐恶化的性能" class="headerlink" title="逐渐恶化的性能"></a>逐渐恶化的性能</h2><p>使用ES时，有很多场景，我们只需要插入新数据，不需要对旧数据进行更新或随机删除。最典型的场景就是日志了，只会新增新的日志，不需要对旧数据进行任何的修改。在其他场景下，只要你的数据符合append-only特征，都会有以下的共同特性：</p>
 <ol>
-<li>多一次IO</li>
-<li>每次IO，应用和ES两方的性能损耗</li>
-<li>序列化和反序列化，以及ORM的损耗</li>
+<li>数据只新增，没有更新，可能有批量删除但是没有随机删除</li>
+<li>所有数据都需要能够被搜索</li>
+<li>数据带有时间戳</li>
+<li>数据量往往非常大</li>
 </ol>
-<h3 id="多个更新的竞争"><a href="#多个更新的竞争" class="headerlink" title="多个更新的竞争"></a>多个更新的竞争</h3><p>在多个请求更新同一个文档时，不可避免地会遇到race condition的问题。ES中并没有天生的事务支持，要想保持更新操作的一致性和原子性，无非是悲观和乐观两种方案，即分布式锁或版本控制。</p>
-<p>使用分布式锁时，必然要考虑在哪里加锁。如果只对更新操作加锁，基本上是起不到同步作用的，因为读取-更新操作并非原子性的。而如果对一次读取和更新全部加锁，很容易降低读取操作的吞吐量，无法并发地处理更新。</p>
-<p>另一个方案就是使用ES自带的版本控制，在更新时指定版本，ES集群发现版本不一致，则更新失败。这种做法虽然保证了一致性，但是问题是如何处理失败的情况。失败后，之前读取获得的旧操作已经失效，只能重新读取新版本的数据再重新更新。如果操作的数据并非热点数据，这种偶尔出现的重试操作效率是很高的，很好地解决了问题。但是如果操作的数据为热点数据，面临高并发的竞争，反复的重复读取-更新操作效率会急剧恶化，特别是在文档复杂的情况下。</p>
-<h2 id="使用Update-Script-API"><a href="#使用Update-Script-API" class="headerlink" title="使用Update+Script API"></a>使用Update+Script API</h2><p>ES提供了Update API，以及强大的Script机制，让我们能够更好地处理文档更新的情况。使用的方法很简单，提供一个要操作的文档ID，然后用在json中提供脚本和脚本的参数即可。<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">POST test/_<span class="keyword">update</span>/<span class="number">1</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"script"</span> : &#123;</span><br><span class="line">        <span class="string">"source"</span>: <span class="string">"ctx._source.counter += params.count"</span>,</span><br><span class="line">        <span class="string">"lang"</span>: <span class="string">"painless"</span>,</span><br><span class="line">        <span class="string">"params"</span> : &#123;</span><br><span class="line">            <span class="string">"count"</span> : <span class="number">4</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>如上面的例子，<code>source</code>字段中提供了脚本的代码内容，<code>lang</code>字段指定了脚本使用的语言<code>painless</code>（也是ES的默认语言），而<code>params</code>提供了脚本的参数Map（主要是为了脚本的服用）。上面的脚本语言，看起来有些让人望而却步，实际上非常简单，完全不用害怕。<code>painless</code>语言是一种类似<code>Java</code>的脚本语言。有多类似呢？写脚本代码时，就当是在写<code>Java</code>就好了，基本可以随心所欲地使用JDK中的API。所以ES的脚本编写可以说是非常轻松和简单，并不需要去学一门新的脚本语言（比如Lua).</p>
-<p>配合脚本，我们可以很轻松地实现array类型数据的append操作<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">ctx</span><span class="class">._source</span><span class="class">.tags</span><span class="class">.add</span>(<span class="tag">params</span><span class="class">.tag</span>)</span><br></pre></td></tr></table></figure></p>
-<p>还加上判空和数组的新建操作<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (ctx._source.tags == <span class="keyword">null</span>) &#123;</span><br><span class="line">    ctx._source.tags = <span class="keyword">new</span> String[]&#123;<span class="keyword">params</span>.tag&#125;;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    ctx._source.tags.add(<span class="keyword">params</span>.tag);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>再加上类似Set的去重操作<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (ctx._source.tags == <span class="keyword">null</span>) &#123;</span><br><span class="line">    ctx._source.tags = <span class="keyword">new</span> String[]&#123;<span class="keyword">params</span>.tag&#125;;</span><br><span class="line">&#125; <span class="function"><span class="keyword">else</span> <span class="title">if</span>(<span class="params">ctx._source.tags.contains(<span class="keyword">params</span>.tag</span>)) </span>&#123;</span><br><span class="line">    <span class="comment">// 如果tags中已经包含新元素，不做任何操作</span></span><br><span class="line">    ctx.op = <span class="string">"noop"</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    ctx._source.tags.add(<span class="keyword">params</span>.tag);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>需要额外注意的是，默认情况下，只要使用了Script进行Update操作，文档的版本号version就会+1，即使文档内容完全没有变化。很多情况下，我们是不需要真的去更新文档的（比如已存在元素），这时只需要调用<code>ctx.op = &quot;noop&quot;;</code>，就可以告诉ES不进行更新操作，文档的版本号也不会变化。</p>
-</blockquote>
-<p>此外，ES的脚本可以分为两种：<code>inlined</code>和<code>stored</code>，前者是每次请求写上去的代码，而后者是存储在ES中，请求时只需要调用脚本ID即可。详情请看官方文档。</p>
-<h2 id="使用脚本的优点和缺点"><a href="#使用脚本的优点和缺点" class="headerlink" title="使用脚本的优点和缺点"></a>使用脚本的优点和缺点</h2><p>通过使用更新脚本，我们就可以将两步的读取-更新操作，合并成一次的更新脚本。如果善加利用脚本中的<code>Upsert</code>功能，我们甚至可以将插入-读取-更新，三步的操作合并成一次Update调用。使用脚本自然而然地解决了我们刚刚提出的第一个问题，大幅地减轻了多次往返所造成的大量开销。同时即使ES中出现了巨型文档，也不会直接对应用集群的性能造成影响。</p>
-<p>而面对竞争问题，仅仅使用脚本更新并不能解决race condition的问题，因为在ES内部并没有对脚本的执行进行同步。即使脚本内部看上去是原子性的，实际上仍然可能将脚本更新到一个旧版本的文档上。然而，即使如此，合并成一次的Update操作也大大简化了同步问题的复杂性，我们只需要给Update操作带上版本号，利用乐观的版本控制，就可以轻松地保证脚本不执行在中间状态中。而且在高度竞争的环境下，Update脚本本身的体量也非常小，也避免了大量重试带来的性能开销和程序复杂度。</p>
-<p>当然，ES脚本也并不是没有缺点的。类似SQL中逐渐被废弃的存储过程，ES脚本也有着很多存储过程所具有的问题。比如脚本更新非常难以调试，因为代码被写到了请求代码中，就很难以对脚本本身进行完备的测试。脚本代码的可读性往往也比直接的应用代码要差一些。另外，使用脚本会将很多计算逻辑从应用集群转移到ES集群，虽然节省了很多IO开销，但很有可能会增加ES的CPU负担，这点需要大量的实践测试，才能真正放心使用。而且在使用<code>stored</code>型脚本时，会给ES集群增加一个脚本ID的状态，在迁移数据、重建集群时，一定要记得迁移这个新增的状态量，否则所有使用该脚本的操作都会失效。最后，使用ES独有的脚本功能也给数据迁移到其他数据库带来了难度，使用应用和ES更加高度耦合，不过这一点其实不必过度考虑，使用ES时设计的数据模型，本就应该和其他数据库有所不同。</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2019/03/28/elasticsearch-minimum/" itemprop="url">
-                  Elasticsearch搜索中实现At-least-N规则，暨记录一次诡异的问题排查
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2019-03-28T23:25:52+08:00" content="2019-03-28">
-              2019-03-28
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Elasticsearch素来以其强大的搜索能力闻名，然而，对其搜索DSL，我们用户可以说是又爱又恨。Elasticsearch的搜索基本是使用JSON构成，再配上少量HTTP内的参数。ES的搜索，可以说是成也JSON，败也JSON。所谓成，成在JSON语义强大，可以组合出各种各样的复杂请求，且歧义较少，对计算机友好；而所谓败，败在JSON并不算一个对人非常友好的格式，特别是当搜索条件比较复杂时，搜索字段又比较多，或字段长度比较长时，长长的JSON对人来说，并不容易debug或排查问题，甚至有时不那么容易看懂。</p>
-<p>闲话少叙，本文要说的正题，是在搜索中实现「至少匹配N项」的方法，这个问题，对熟练使用ES的人来说很简单，对新手来说，可能有点无从下手。我们首先从最基本的情况说起，最少匹配0项或1项。</p>
-<h2 id="Should的语义"><a href="#Should的语义" class="headerlink" title="Should的语义"></a>Should的语义</h2><p>ES中最奇怪也最常用的关键字应该就是这个<code>should</code>了吧。should的含义是，有must或filter的情况下，should仅仅影响结果的打分情况；而在没有must和filter的情况下，返回的结果需要至少满足一个should条件。类似布尔的OR操作，should在两种情况下分别表达出了，「可以不命中」及「至少一个命中」两种语义。</p>
-<p>需要特别注意的是，当查询语句中有must或filter时，如果还想实现至少一次should命中的语义，可以使用嵌套的bool查询，或者下面要写到的<code>minimum_should_match</code>实现。</p>
-<h2 id="minimum-should-match"><a href="#minimum-should-match" class="headerlink" title="minimum_should_match"></a>minimum_should_match</h2><p>上面普通的should，只是实现了N&lt;=1的情况，如果要实现更复杂的At-least-N查询，就需要使用ES中「鲜有问津」（后文会解释为什么这么说）的<code>minimum_should_match</code>参数了。</p>
-<p>如下面的例子（来自官网）<br><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GET /my_index/my_type/_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"query"</span>: &#123;</span><br><span class="line">    <span class="string">"bool"</span>: &#123;</span><br><span class="line">      <span class="string">"should"</span>: [</span><br><span class="line">        &#123; <span class="string">"match"</span>: &#123; <span class="string">"title"</span>: <span class="string">"brown"</span> &#125;&#125;,</span><br><span class="line">        &#123; <span class="string">"match"</span>: &#123; <span class="string">"title"</span>: <span class="string">"fox"</span>   &#125;&#125;,</span><br><span class="line">        &#123; <span class="string">"match"</span>: &#123; <span class="string">"title"</span>: <span class="string">"dog"</span>   &#125;&#125;</span><br><span class="line">      ],</span><br><span class="line">      <span class="string">"minimum_should_match"</span>: <span class="number">2</span> </span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>只要加入了这个参数，就可以指定搜索的结果，必须至少命中N个should语句。同时不仅支持整数，还支持百分比等形式。这一参数在一些算法中非常实用，比如在聚类算法中，往往会要求至少N个字段相同才能聚类；在搜索引擎中，也可以用这个功能来排除低相关的搜索结果。</p>
-<h2 id="一次漫长的问题排查"><a href="#一次漫长的问题排查" class="headerlink" title="一次漫长的问题排查"></a>一次漫长的问题排查</h2><p>从上面的描述也可以看到，<code>minimum_should_match</code>这个参数还是比较好用的。然而在最近的一次开发中，也是在一个比较复杂的搜索请求，用到了这个参数，用来实现至少命中2个字段，以过滤大部分候选。开始并没有注意，到测试阶段的时候才发现，ES集群返回的搜索结果中，存在一些只命中了1个字段，甚至没有命中任何字段的结果！但又因为搜索中也包含了正确结果（命中2个以上字段），所以这些错误的结果很难被发现，除非提前意识到可能有问题，加上校验函数。</p>
-<h3 id="Query语句写错了吗？"><a href="#Query语句写错了吗？" class="headerlink" title="Query语句写错了吗？"></a>Query语句写错了吗？</h3><p>首先怀疑的，就是JSON写错了。然而虽然用的JSON很复杂，使用<code>minimum_should_match</code>的部分还是比较简单和标准的。考虑到嵌套Bool的问题，尝试改了几版JSON，集群返回的搜索结果都完全相同。后来又试了最简单的用例，居然这个参数还是不生效！</p>
-<h3 id="Mapping有问题？"><a href="#Mapping有问题？" class="headerlink" title="Mapping有问题？"></a>Mapping有问题？</h3><p>接下来怀疑的就是，索引的Mapping设置有问题，也有人提出，是不是动态模板有问题，在索引时没有将字段正确地索引进去？经过检查，所有mapping都是正确的，字段的类型也没有问题（keyword或text都正确设置了），动态模板也没有问题。</p>
-<h3 id="Query和当前ES版本不兼容？"><a href="#Query和当前ES版本不兼容？" class="headerlink" title="Query和当前ES版本不兼容？"></a>Query和当前ES版本不兼容？</h3><p>我们使用的是6.2.3版本，为了确认这一问题，我又特地翻了一遍6.2.3的ES官方文档，没有发现用法错误。随后又在另一个5.X版本ES集群中测试了同样的语句，发现<code>minimum_should_match</code>完全正常工作。这就奇怪了，难道ES升级到6.x后废弃了这一功能？随后又找了6.x版本的升级说明，特别是”breaking changes”的列表，也没有找到任何说明。</p>
-<h3 id="explain-true"><a href="#explain-true" class="headerlink" title="explain:true"></a>explain:true</h3><p>接下来想到了，看一看ES到底是如何解释查询语句。加上<code>explain:true</code>的语句后，ES在正常处理搜索之外，返回了解释语句的JSON，查看返回结果，果然没有任何<code>minimum_should_match</code>存在的痕迹。难道是ES集群有问题？</p>
-<h3 id="定位问题"><a href="#定位问题" class="headerlink" title="定位问题"></a>定位问题</h3><p>逻辑上查不出来任何问题，可是实际上在6.2.3版本的ES集群上，简单的<code>minimum_should_match</code>就是不工作，实在是非常费解。最后笔者尝试了安装ES官方的6.2.3包到自己的机器上，部署，创建索引，写入数据。万事俱备之后，用同样的语句进行搜索，Work！同样的6.2.3版本，同样的搜索，在本机上正常工作，在集群上却失效。</p>
-<p>最终笔者联系了ES集群提供方，对方团队也进行了长时间的排查。最后发现，原来该团队提供的ES版本，由他们进行了特殊的定制，定制后的ES集群会在处理搜索请求时，先对ES的查询进行「优化」，而这一优化，就将这个参数彻底丢失掉了。这一bug直接影响了ES的最基本功能，可以说是影响恶劣，类比到SQL中，就好像丢掉了一个HAVING参数一样，不可容忍。然而这一版本的定制ES，居然已经提供给许多团队使用，并且线上运行超过一年以上。如此情况下，竟然无一人发现这个重大bug，所以笔者之前说，<code>minimum_should_match</code>这个参数，或许是「鲜有问津」。</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2019/03/22/elasticsearch-batch/" itemprop="url">
-                  TB级别Elasticsearch的存储优化经验（三) 批处理
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2019-03-22T21:07:32+08:00" content="2019-03-22">
-              2019-03-22
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>前面谈了一些使用ES过程中，存储、设计等ES本身的设计经验。今天我们来看一看在使用客户端时，有什么优化方法，可以减轻对ES的损耗。</p>
-<h2 id="线性增长的调用量，非线性增长的压力"><a href="#线性增长的调用量，非线性增长的压力" class="headerlink" title="线性增长的调用量，非线性增长的压力"></a>线性增长的调用量，非线性增长的压力</h2><p>一般情况下，调用关系数据库也好，NoSQL也好，大家往往习惯按照业务逻辑编写程序，入口处每进来一个请求，后续就执行一或几次数据库CRUD操作。这是一个非常直观的选择，代码也清晰移动，但问题是，这种最简单的使用场景下，后续数据库操作的数量是和入口的请求量线性正比的。假设每个请求要进行N次CRUD操作，入口的QPS为Q，那么对数据库的调用量就是简单的N*Q。</p>
-<p>当QPS较低时，N*Q的数值较小，自然不成问题。可当我们要处理的QPS是上万甚至上十万时，每次就有数十万次CRUD。应用本身抗住几万几十万的QPS并不是难事，只要合理编程，增加机器就很容易做到。但是对数据库而言，就不是那么容易了。应用本身通常是无状态的，而数据库却经常需要各个机器节点相互同步，这一复杂度远超应用，再加上数据库应用往往有较大的IO相关损耗，所以在调用量线性增长的情况下，数据库面临的压力远超线性增长的水平，是非线性的。况且像ES这样的存储，经常需要使用SSD等高成本硬件，简单地增加机器节点，并不是好的解决方法。</p>
-<h2 id="ES的批量操作"><a href="#ES的批量操作" class="headerlink" title="ES的批量操作"></a>ES的批量操作</h2><p>既然QPS高了之后，数据库难以应对，那么唯一的办法就是想办法减少QPS。批处理就是一个减少QPS的办法。幸运的是，ES主要的API，都提供了对应版本的批量处理API。</p>
-<ul>
-<li>bulk - 批量写操作，可以混合插入、更新、删除操作</li>
-<li>mget - 批量读操作</li>
-<li>msearch - 批量搜索操作</li>
-</ul>
-<p>而且，ES对批量操作的设计是比较完善的。批量操作中，每个子项都可以设置自己的Routing，以及一些定制化的参数，互不干扰。使用这些批量API，我们可以将几十次，甚至是几千次单独的调用，合并成单一批量的读操作、写操作或搜索操作。</p>
-<h2 id="批量操作的优点"><a href="#批量操作的优点" class="headerlink" title="批量操作的优点"></a>批量操作的优点</h2><p>合并成为批量操作意味着</p>
-<ul>
-<li>减少IO次数</li>
-<li>减少成百上千次IO解析的损耗</li>
-<li>大幅减少IO失败可能和重试次数</li>
-<li>ES内部也可以减少大量冗余操作</li>
-<li>合并大量的单独写操作，对写性能消耗大的ES来说，大幅减轻了负担</li>
-</ul>
-<p>使用批量处理，我们可以将数万QPS降低到数十QPS，同时每次请求携带的payload的大小，则乘以百倍或千倍。而ES处理大体量批量请求的RT，往往不会比单次请求上升太多。所以，通过批量处理的缩放，整个ES的工作效率可以大幅提升。</p>
-<p>另外，批量操作还可以进行跨索引批量，能够进一步减少IO次数。</p>
-<h2 id="批量操作的缺点"><a href="#批量操作的缺点" class="headerlink" title="批量操作的缺点"></a>批量操作的缺点</h2><p>当然，如果处处都使用批量操作，也存在一些缺点和问题，不得不注意</p>
-<ul>
-<li>构建批量请求难度较大，需要自己设计缓冲方式</li>
-<li>解析批量请求的结果也更复杂，往往会出现多层嵌套</li>
-<li>整体的业务代码逻辑更加复杂，相比单项请求，非常不直观，难以debug，特别是跨索引的批量</li>
-<li>批量请求操作的日志的体量也会过大，无可读性，需要手动处理</li>
-<li>批量请求中出现错误或异常，很容易被忽略掉</li>
-<li>使用批量操作，虽然整体提高了效率，但必然会增加单个请求的RT</li>
-<li>不合理的批量请求设计，同样会增加ES集群的负担</li>
-</ul>
-<h2 id="批量操作不是万能药"><a href="#批量操作不是万能药" class="headerlink" title="批量操作不是万能药"></a>批量操作不是万能药</h2><p>还需要提醒的一点是，虽然批量操作能够大幅提升ES的工作效率，减少大量不必要的损耗，但是，批量操作同样不是万能的。如果批量操作中所含的操作本身就非常复杂，特别是复杂的搜索操作，那么即使缓冲批量后，也不能真正意义上提升ES集群的性能瓶颈。因为在这种情况下，真正的性能瓶颈不是IO，不是卸载请求，不是搜索语句的parsing，而是搜索本身的高复杂度。如果每条搜索本身需要占用大量内存进行操作，过度批量，并不会帮助解决任何问题，反而有增大ES集群压力的风险。</p>
-<p>根据自己的经验总结下，ES各种批量操作的性能提升层次大概是</p>
-<blockquote>
-<p>bulk &gt;&gt; mget(with routing) &gt;&gt; mget(without routing) &gt;&gt; msearch</p>
-</blockquote>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>前面提到，使用ES的批量操作，必然设计业务代码的改造，要在调用ES之前引入缓冲机制，那么去实现缓冲机制更好呢？这个问题虽然不大，但也比较有趣，我们下篇再提。</p>
-
-          
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2019/03/18/elasticsearch-ID/" itemprop="url">
-                  TB级别Elasticsearch的存储优化经验（二）如何选择ID
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2019-03-18T23:11:35+08:00" content="2019-03-18">
-              2019-03-18
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在传统的关系数据库中，ID字段的选择已经是老生常谈了。事实上，有些公司的开发标准上，甚至要求任何字段都选择自增主键。在ES索引设计中，ID字段的选择问题经常被开发人员所忽略，只是简单选择一个自然的ID字段。而实际上，ID的选择对索引的性能（尤其是写入性能），存在这至关重要的影响。</p>
-<h2 id="四种ID选择方式"><a href="#四种ID选择方式" class="headerlink" title="四种ID选择方式"></a>四种ID选择方式</h2><p>在ES中，总体而言，存在四种ID的选择方式</p>
+<p>这种类型的数据，如果全部存储到一个巨大的索引中，不管是搜索性能还是插入性能，都会随着时间的增加不断恶化。在笔者所管理过的一个线上ES索引中，仅仅过了6个月，搜索RT就从20ms上涨到了120ms。在分布式开发时，我们常讲一个方案是否时scalable的，那种单一索引的方案在时间维度上，就是完全不scalable的。</p>
+<p>索性，ES官方提出了一种时间滚动索引的方案，可以有效地解决该类场景下，性能逐渐恶化的问题。</p>
+<h2 id="写入的优化"><a href="#写入的优化" class="headerlink" title="写入的优化"></a>写入的优化</h2><p>首先我们来看看写入的场景。ES单个shard的数据量上涨地非常高以后，插入一些新文档后，索引内部执行refresh、merge和flush的时间都将大幅上涨。因此，我们有必要控制写入索引的索引大小不要过大，这样新文档就能尽快完成写入和刷新。</p>
+<p>而从shard数量上看，单个索引内的shard数量越多，插入操作的性能一般就会越好。每个插入的文档都会被route到其中一个shard上，当然shard本身的体积越小，插入就会越轻量，性能更好。特别是写入到不同节点上，各个节点互相独立，写入速度可以得到大幅提升。</p>
+<p>因此，要优化写入速度，我们需要控制写入索引的大小，同时适量增大shard的数目。</p>
+<h2 id="搜索的优化"><a href="#搜索的优化" class="headerlink" title="搜索的优化"></a>搜索的优化</h2><p>然后我们再来看看看搜索的场景。搜索性能的分析要比写入更加复杂一些，我们还是先从单个shard的大小上来分析。我们都知道，ES的一个shard就是lucene的一个Index，背后是由倒排索引提供支持。Lucene的倒排索引中，影响搜索速度的关键是term dictionary，其搜索时间复杂度为<code>O(logN)</code>。在对数时间复杂度下，增大总数据量，时间的增加相对较小。因此，使用较大的shard是可以接受的。</p>
+<p>在非Routing搜索的情况下，大部分搜索请求，都需要询问全部节点上的全部shard，然后再对所有结果进行聚合，才能获得最终答案。同样大小的索引，如果我们多分一些shard，到多一些节点上，单个shard的搜索时间就会降低，而最后需要聚合的时间以及可能损耗在分布式集群中的时间就会增加一些。但是需要注意的是，搜索阶段的时间下降是对数的而非线性的，也就是说其下降效果并不显著。而且整个搜索阶段的时间损耗受木桶效应影响，也就是说取决于最慢的那一个shard。而且shard增多后，某个shard失败的可能性也会增加，这时就需要重试，会严重增加搜索阶段的总时间损耗。而聚合阶段的时间损耗则是必定上升的。因此，可以得出结论，平均情况下，多分出shard到不同的节点，对搜索性能的提升有限，甚至更大的可能是会引起性能下降。</p>
+<p>此外，还有一个不容小觑的因素，即ES对cache的利用。当某个节点上shard过多时，cache miss就可能会增加，就会增加读取硬盘的次数。事实上，往往这个问题才是最终决定性影响ES搜索性能的关键因素。</p>
+<p>总结下就是</p>
 <ol>
-<li>自然ID</li>
-<li>不指定ID，由ES自动生成</li>
-<li>自己指定一个UUID</li>
-<li>使用文档内容的哈希值</li>
+<li>对数复杂度下，增大shard，时间恶化较少</li>
+<li>多shard下，搜索阶段时间减少较少，而shard出错概率增加，木桶效应可能导致时间反而增加</li>
+<li>多shard下，聚合阶段时间损耗增加</li>
+<li>多shard下，对cache的利用会恶化。</li>
 </ol>
-<p>下面我们依次来看几种选择方式</p>
-<h3 id="自然ID"><a href="#自然ID" class="headerlink" title="自然ID"></a>自然ID</h3><p>对可以找出自然ID的业务来说，使用自然ID是最简单的方式。但是，使用自然ID并不是完美的，也有自身的缺陷。</p>
-<ol>
-<li>ES无法确定你所提供的自然ID，是否真的是独一无二的，因此，每次插入时，都需要先检查有没有相同ID的文档。如果有相同ID，需要根据操作类型进行更新或者抛出异常；如果没有，才能进行插入。所以这一步检查的过程，会额外增加写入文档的RT，并增大集群的负载。</li>
-<li>自然ID大多情况下是无序和随机的。ES在插入文档时，如果插入的文档ID有自增顺序，可以大幅提升插入速度，因为减少了搜索ID是否重复的时间。</li>
-</ol>
-<h3 id="指定UUID"><a href="#指定UUID" class="headerlink" title="指定UUID"></a>指定UUID</h3><p>UUID基本上能够保证每次生成的ID都是唯一的。使用UUID也是相对简单的一种方式。在复杂系统中，相比使用自动生成ID，使用UUID主要优势是，<strong>可以在写入ES前，先生成ID</strong>。比如，在某些需要并发多处写入的系统中，可能无法接受ES写入的RT及失败。在这种情况下，就无法使用ES自动生成的ID（因为需要等待ES返回），使用UUID就可以提前生成业务ID，并发写入多个存储系统中。</p>
-<p>但是使用UUID也有很多缺陷，笔者维护的一个历史索引中，就使用了UUID，因此对其缺陷还是比较了解的。</p>
-<ol>
-<li>UUID是完全无意义的字符串。UUID没有意义，仅仅提供了唯一性，却没能提供任何与文档本身相关的信息量。在数据迁移和重构时，UUID本身就成为了一个负担，必须要维护UUID和文档（甚至其他索引的文档）的正确关联性，却又缺少可验证的手段（比如有时可能错误写入文档ID，这种情况下无法恢复出正确的ID，而下面介绍的哈希值则可以）。</li>
-<li>插入UUID相比自动生成ID性能要差。UUID和ES自动生成ID所代表的意义基本是完全相同的（都是无意义的唯一ID），但前面已经说过，手动生成UUID获得了提前生成ID的机会，却牺牲了绕过ES写入检查的机会，会损失一些性能。</li>
-</ol>
-<h3 id="使用哈希值"><a href="#使用哈希值" class="headerlink" title="使用哈希值"></a>使用哈希值</h3><p>在没有自然ID的情况下，另一种选择是使用哈希函数，根据文档的内容生成一个哈希值。使用哈希，只要文档的内容相同，就会生成同样的哈希值。但使用哈希不可避免的一个问题，就是哈希碰撞。使用更长的哈希（比如MD5，SHA1），可以平衡哈希码长度和碰撞几率。如果要求更高，可以使用SHA256.</p>
-<p>使用复杂哈希算法来生成ID，增加了计算的消耗，增长了ID的长度，同时也牺牲了严格的唯一性。那么为什么还要使用哈希算法呢？</p>
-<ol>
-<li>使用哈希可以用文档内容反推ID。特别是对计算形式的应用，ID可以在任何阶段由文档内容反推，非常灵活。</li>
-<li>可以利用哈希值，高效排除重复文档。在没有自然主键的情况下，不管是使用UUID还是使用ES自动生成ID，都很容易重复写入完全相同的文档（或者仅仅时间不同的文档）。因为在写入时，没有能力判别过去是否有相同的文档（唯一的方法是搜索全部字段，但显然对性能的消耗过大），使用哈希作ID，就可以很容易避免重复写入多份相同文档。</li>
-<li>可以使用文档内容，校验文档ID的正确性。这一条特别是在数据迁移，或者reindex过程中非常重要。以笔者的开发经验，不论是现在开源的几个迁移工具，还是自己使用scroll API编写的，都很容易出现bug，造成迁移后，文档ID变更，或者文档内容错乱。这个时候，使用哈希值就可以很容易地发现错误，避免迁移后默默出现错误，藏在数据库中。另外日常也可以使用哈希值来排除意外写入的脏数据。</li>
-</ol>
-<h4 id="使用时间戳-哈希，构造高效ID"><a href="#使用时间戳-哈希，构造高效ID" class="headerlink" title="使用时间戳+哈希，构造高效ID"></a>使用时间戳+哈希，构造高效ID</h4><p>前面提到，如果写入的文档ID，总是遵从一定的顺序，ES就可以大大增快其写入速度。但不论是自然ID也好，UUID或哈希值也好，很少能按照写入的顺序排序。要实现按照写入顺序排序，最简单的就是利用「时间」，因为时间总是在增加的。</p>
-<p>使用时间戳作为ID的前缀，就可以让陆续写入的文档，满足ID的顺序性。此外，使用时间戳+哈希，还有额外的好处，就是可以极大地减少哈希碰撞的几率。因为只需要每个时间戳范围内，所有哈希值唯一，就可以唯一定位一个文档了。这样就可以使用更短和更简单的哈希算法了，也不用担心碰撞了。其缺点是，牺牲了使用哈希值判重的便利。</p>
-<h3 id="ES自动生成ID"><a href="#ES自动生成ID" class="headerlink" title="ES自动生成ID"></a>ES自动生成ID</h3><p>由ES自动在插入时自动生成ID，其最大的好处是：ES知道生成的ID不可能在索引中已经存在，可以做出一些优化。<strong>使用ES自动生成的ID，是写入性能最高的选项</strong>，因为不需要检查是否重复，即使索引不断增长，其性能也不会恶化（相反，使用自己指定的ID，写入性能会随数据量上涨而恶化）。因此，在允许的情况下，使用自动生成ID往往是最好的选择。</p>
-<p>当然，使用ES自动生成ID，也会有前面几种方式中提到的一些缺陷</p>
-<ol>
-<li>文档ID无意义，且自动生成的ID更容易混淆</li>
-<li>必须先执行写入操作，写入成功后才能拿到ID</li>
-</ol>
+<p>所以，可以得出结论，要优化搜索速度，我们需要减少索引内shard的数量。</p>
+<h2 id="未完待续"><a href="#未完待续" class="headerlink" title="未完待续"></a>未完待续</h2><p>思路有了，下一篇就来看一下ES官方推荐的索引构建方式。</p>
 
           
         
@@ -1191,7 +1173,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1232,7 +1214,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">140</span>
+              <span class="site-state-item-count">148</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1242,7 +1224,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-count">60</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

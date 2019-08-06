@@ -2,6 +2,69 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2019/07/23/kotlin-channel/</loc>
+    
+    <lastmod>2019-08-06T15:16:15.597Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/07/30/kotlin-channel-backpressure/</loc>
+    
+    <lastmod>2019-08-06T15:16:12.324Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/07/30/kotlin-channel-micro-batch/</loc>
+    
+    <lastmod>2019-08-06T15:16:11.257Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/07/25/elasticsearch-time-indices-3/</loc>
+    
+    <lastmod>2019-08-06T15:15:20.409Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/07/22/elasticsearch-time-indices/</loc>
+    
+    <lastmod>2019-08-06T12:43:55.701Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/08/06/kotlin-channel-actor/</loc>
+    
+    <lastmod>2019-08-06T12:41:31.097Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/07/25/elasticsearch-time-indices-4/</loc>
+    
+    <lastmod>2019-07-25T14:05:51.891Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/07/25/elasticsearch-time-indices-2/</loc>
+    
+    <lastmod>2019-07-25T13:37:39.462Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2019/07/25/elasticsearch-forcemerge/</loc>
+    
+    <lastmod>2019-07-25T12:17:34.535Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2018/10/30/gc-experience/</loc>
     
     <lastmod>2019-07-22T13:37:17.958Z</lastmod>
@@ -124,13 +187,6 @@
     <loc>http://yoursite.com/2018/04/20/circuit-breaker-1/</loc>
     
     <lastmod>2019-07-22T13:01:52.005Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2019/07/22/elasticsearch-time-indices/</loc>
-    
-    <lastmod>2019-07-22T12:23:33.273Z</lastmod>
     
   </url>
   

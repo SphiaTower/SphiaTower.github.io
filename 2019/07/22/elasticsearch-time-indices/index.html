@@ -59,16 +59,37 @@
 
 
 
-<meta name="description" content="Welcome back, commander">
+<meta name="description" content="逐渐恶化的性能使用ES时，有很多场景，我们只需要插入新数据，不需要对旧数据进行更新或随机删除。最典型的场景就是日志了，只会新增新的日志，不需要对旧数据进行任何的修改。在其他场景下，只要你的数据符合append-only特征，都会有以下的共同特性：
+
+数据只新增，没有更新，可能有批量删除但是没有随机删除
+所有数据都需要能够被搜索
+数据带有时间戳
+数据量往往非常大
+
+这种类型的数据，如果全部存储到一个">
 <meta property="og:type" content="article">
-<meta property="og:title" content="elasticsearch-time-indices">
+<meta property="og:title" content="用时间滚动索引优化ES读写速度（一）读写性能分析">
 <meta property="og:url" content="http://yoursite.com/2019/07/22/elasticsearch-time-indices/index.html">
 <meta property="og:site_name" content="Welcome to SPHIA">
-<meta property="og:description" content="Welcome back, commander">
-<meta property="og:updated_time" content="2019-07-22T12:23:33.273Z">
+<meta property="og:description" content="逐渐恶化的性能使用ES时，有很多场景，我们只需要插入新数据，不需要对旧数据进行更新或随机删除。最典型的场景就是日志了，只会新增新的日志，不需要对旧数据进行任何的修改。在其他场景下，只要你的数据符合append-only特征，都会有以下的共同特性：
+
+数据只新增，没有更新，可能有批量删除但是没有随机删除
+所有数据都需要能够被搜索
+数据带有时间戳
+数据量往往非常大
+
+这种类型的数据，如果全部存储到一个">
+<meta property="og:updated_time" content="2019-08-06T12:43:55.701Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="elasticsearch-time-indices">
-<meta name="twitter:description" content="Welcome back, commander">
+<meta name="twitter:title" content="用时间滚动索引优化ES读写速度（一）读写性能分析">
+<meta name="twitter:description" content="逐渐恶化的性能使用ES时，有很多场景，我们只需要插入新数据，不需要对旧数据进行更新或随机删除。最典型的场景就是日志了，只会新增新的日志，不需要对旧数据进行任何的修改。在其他场景下，只要你的数据符合append-only特征，都会有以下的共同特性：
+
+数据只新增，没有更新，可能有批量删除但是没有随机删除
+所有数据都需要能够被搜索
+数据带有时间戳
+数据量往往非常大
+
+这种类型的数据，如果全部存储到一个">
 
 
 
@@ -86,7 +107,7 @@
   };
 </script>
 
-  <title> elasticsearch-time-indices | Welcome to SPHIA </title>
+  <title> 用时间滚动索引优化ES读写速度（一）读写性能分析 | Welcome to SPHIA </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -216,7 +237,7 @@
             
             
               
-                elasticsearch-time-indices
+                用时间滚动索引优化ES读写速度（一）读写性能分析
               
             
           </h1>
@@ -254,7 +275,30 @@
       
 
       
-        <p>Welcome back, commander</p>
+        <h2 id="逐渐恶化的性能"><a href="#逐渐恶化的性能" class="headerlink" title="逐渐恶化的性能"></a>逐渐恶化的性能</h2><p>使用ES时，有很多场景，我们只需要插入新数据，不需要对旧数据进行更新或随机删除。最典型的场景就是日志了，只会新增新的日志，不需要对旧数据进行任何的修改。在其他场景下，只要你的数据符合append-only特征，都会有以下的共同特性：</p>
+<ol>
+<li>数据只新增，没有更新，可能有批量删除但是没有随机删除</li>
+<li>所有数据都需要能够被搜索</li>
+<li>数据带有时间戳</li>
+<li>数据量往往非常大</li>
+</ol>
+<p>这种类型的数据，如果全部存储到一个巨大的索引中，不管是搜索性能还是插入性能，都会随着时间的增加不断恶化。在笔者所管理过的一个线上ES索引中，仅仅过了6个月，搜索RT就从20ms上涨到了120ms。在分布式开发时，我们常讲一个方案是否时scalable的，那种单一索引的方案在时间维度上，就是完全不scalable的。</p>
+<p>索性，ES官方提出了一种时间滚动索引的方案，可以有效地解决该类场景下，性能逐渐恶化的问题。</p>
+<h2 id="写入的优化"><a href="#写入的优化" class="headerlink" title="写入的优化"></a>写入的优化</h2><p>首先我们来看看写入的场景。ES单个shard的数据量上涨地非常高以后，插入一些新文档后，索引内部执行refresh、merge和flush的时间都将大幅上涨。因此，我们有必要控制写入索引的索引大小不要过大，这样新文档就能尽快完成写入和刷新。</p>
+<p>而从shard数量上看，单个索引内的shard数量越多，插入操作的性能一般就会越好。每个插入的文档都会被route到其中一个shard上，当然shard本身的体积越小，插入就会越轻量，性能更好。特别是写入到不同节点上，各个节点互相独立，写入速度可以得到大幅提升。</p>
+<p>因此，要优化写入速度，我们需要控制写入索引的大小，同时适量增大shard的数目。</p>
+<h2 id="搜索的优化"><a href="#搜索的优化" class="headerlink" title="搜索的优化"></a>搜索的优化</h2><p>然后我们再来看看看搜索的场景。搜索性能的分析要比写入更加复杂一些，我们还是先从单个shard的大小上来分析。我们都知道，ES的一个shard就是lucene的一个Index，背后是由倒排索引提供支持。Lucene的倒排索引中，影响搜索速度的关键是term dictionary，其搜索时间复杂度为<code>O(logN)</code>。在对数时间复杂度下，增大总数据量，时间的增加相对较小。因此，使用较大的shard是可以接受的。</p>
+<p>在非Routing搜索的情况下，大部分搜索请求，都需要询问全部节点上的全部shard，然后再对所有结果进行聚合，才能获得最终答案。同样大小的索引，如果我们多分一些shard，到多一些节点上，单个shard的搜索时间就会降低，而最后需要聚合的时间以及可能损耗在分布式集群中的时间就会增加一些。但是需要注意的是，搜索阶段的时间下降是对数的而非线性的，也就是说其下降效果并不显著。而且整个搜索阶段的时间损耗受木桶效应影响，也就是说取决于最慢的那一个shard。而且shard增多后，某个shard失败的可能性也会增加，这时就需要重试，会严重增加搜索阶段的总时间损耗。而聚合阶段的时间损耗则是必定上升的。因此，可以得出结论，平均情况下，多分出shard到不同的节点，对搜索性能的提升有限，甚至更大的可能是会引起性能下降。</p>
+<p>此外，还有一个不容小觑的因素，即ES对cache的利用。当某个节点上shard过多时，cache miss就可能会增加，就会增加读取硬盘的次数。事实上，往往这个问题才是最终决定性影响ES搜索性能的关键因素。</p>
+<p>总结下就是</p>
+<ol>
+<li>对数复杂度下，增大shard，时间恶化较少</li>
+<li>多shard下，搜索阶段时间减少较少，而shard出错概率增加，木桶效应可能导致时间反而增加</li>
+<li>多shard下，聚合阶段时间损耗增加</li>
+<li>多shard下，对cache的利用会恶化。</li>
+</ol>
+<p>所以，可以得出结论，要优化搜索速度，我们需要减少索引内shard的数量。</p>
+<h2 id="未完待续"><a href="#未完待续" class="headerlink" title="未完待续"></a>未完待续</h2><p>思路有了，下一篇就来看一下ES官方推荐的索引构建方式。</p>
 
       
     </div>
@@ -350,7 +394,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">140</span>
+              <span class="site-state-item-count">148</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -360,7 +404,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-count">60</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -400,7 +444,7 @@
               
             
             
-              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#逐渐恶化的性能"><span class="nav-number">1.</span> <span class="nav-text">逐渐恶化的性能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写入的优化"><span class="nav-number">2.</span> <span class="nav-text">写入的优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搜索的优化"><span class="nav-number">3.</span> <span class="nav-text">搜索的优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#未完待续"><span class="nav-number">4.</span> <span class="nav-text">未完待续</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
